@@ -1,6 +1,7 @@
 from __future__ import annotations
 import os
 import warnings
+from contextlib import nullcontext
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 import numpy as np
@@ -8,8 +9,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from .clauds_bands import HSC_AION_BANDS, ALL_BAND_FLUX_COLUMNS, ALL_FLAG_COLUMNS
-from .utils import flux_to_ab_mag, _path_tag
+from .clauds_bands import HSC_AION_BANDS, ALL_BAND_FLUX_COLUMNS, ALL_FLAG_COLUMNS, OBJECT_ID_COLUMN
+from .utils import flux_to_ab_mag, _path_tag, resolve_torch_device, table_length, table_column
 
 # Try loading AION libraries
 try:

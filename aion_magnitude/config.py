@@ -1,11 +1,16 @@
 from __future__ import annotations
+import warnings
 from dataclasses import dataclass, field, replace
 from pathlib import Path
 from typing import Any, Iterable, Mapping, Sequence
 from .clauds_bands import HSC_AION_BANDS, REDSHIFT_COLUMNS, default_hsc_mag_faint_limits
+from .dataset import resolve_include_grizy_in_mlp
+from .extra_bands import DEFAULT_EXTRA_BANDS, resolve_extra_band_names
+from .models import aion_mag_adjustment_tag
 from .utils import validate_split_fractions, _path_tag
 
 
+@dataclass
 class AIONMagnitudeConfig:
     """Defaulted configuration for the notebook training workflow.
 
@@ -165,6 +170,17 @@ def make_magnitude_config(
     return config.normalized()
 
 
+def _make_cache_run_tag(
+    catalogue_path: str | Path,
+    max_rows: int | None,
+    mag_zero_point: float,
+) -> str:
+    stem = Path(catalogue_path).stem.replace("-", "_")
+    n_tag = "all" if max_rows is None else f"n{max_rows}"
+    zp_tag = f"{mag_zero_point:.1f}".replace(".", "p")
+    return f"{stem}_zp{zp_tag}_{n_tag}"
+
+
 def resolve_training_paths(config: AIONMagnitudeConfig) -> dict[str, Path | str]:
     config = config.normalized()
     include_grizy_in_mlp = resolve_include_grizy_in_mlp(
@@ -173,7 +189,7 @@ def resolve_training_paths(config: AIONMagnitudeConfig) -> dict[str, Path | str]
         use_mlp_features=config.use_mlp_features,
         extra_bands=config.extra_bands,
     )
-    run_tag = make_cache_run_tag(config.catalogue_path, config.max_rows, config.mag_zero_point)
+    run_tag = _make_cache_run_tag(config.catalogue_path, config.max_rows, config.mag_zero_point)
     if (
         float(config.z_min) != 0.0
         or float(config.z_max) != 6.0

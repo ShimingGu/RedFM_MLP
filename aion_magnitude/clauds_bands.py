@@ -360,6 +360,16 @@ def default_hsc_mag_faint_limits() -> dict[str, float | None]:
     return {"g": 24.5, "r": 24.5, "i": 24.0, "z": 24.5, "y": 24.5}
 
 
+def _table_column_names(table) -> set[str]:
+    if hasattr(table, "names") and table.names is not None:
+        return set(table.names)
+    if hasattr(table, "dtype") and table.dtype.names is not None:
+        return set(table.dtype.names)
+    if hasattr(table, "keys"):
+        return set(table.keys())
+    raise TypeError("table must be a FITS table, structured array, or mapping of arrays")
+
+
 def validate_clauds_fits_table(table, require_redshift: bool = False) -> None:
     required = (
         [OBJECT_ID_COLUMN, RA_COLUMN, DEC_COLUMN, TRACT_COLUMN, PATCH_COLUMN]
@@ -369,4 +379,7 @@ def validate_clauds_fits_table(table, require_redshift: bool = False) -> None:
     )
     if require_redshift:
         required += list(REDSHIFT_COLUMNS.values())
-    require_columns(table, required)
+    names = _table_column_names(table)
+    missing = [column for column in required if column not in names]
+    if missing:
+        raise KeyError(f"Missing required columns: {missing}")

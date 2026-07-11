@@ -5,24 +5,30 @@ from pathlib import Path
 from typing import Any, Callable, Mapping, Sequence
 import numpy as np
 import torch
+import torch.nn as nn
+import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader
 
-from .config import AIONMagnitudeConfig, resolve_training_paths
+from .config import AIONMagnitudeConfig, make_magnitude_config, resolve_training_paths
 from .clauds_bands import HSC_AION_BANDS, REDSHIFT_COLUMNS
 from .utils import (
-    select_torch_device, set_random_seed, make_redshift_grid
+    select_torch_device, set_random_seed, make_redshift_grid, resolve_torch_device
 )
 from .dataset import (
-    dataset_for_split, CachedFusionDataset, collate_cached_fusion
+    dataset_for_split, CachedFusionBatch, CachedFusionDataset,
+    collate_cached_fusion, subset_cached_dataset,
 )
 from .models import (
     build_baseline_model, load_baseline_model_from_checkpoint
 )
 from .metrics import (
-    redshift_cross_entropy_loss, point_photoz_metrics, discrete_crps,
+    redshift_cross_entropy_loss, predict_photoz_from_logits,
+    point_photoz_metrics, discrete_crps,
     pit_values, conformal_hpd_threshold, conformal_hpd_set_mask,
-    evaluate_conformal_hpd, summarize_pdf_metrics
+    evaluate_conformal_hpd, summarize_pdf_metrics, calibration_diagnostics,
 )
+from .caching import build_and_cache_aion_embeddings_from_config
+from .plotting import plot_zpred_vs_zphot, plot_pit_histogram
 
 
 def logits_from_cached_batch(

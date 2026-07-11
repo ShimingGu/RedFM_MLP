@@ -1,4 +1,6 @@
 from __future__ import annotations
+import warnings
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Iterable, Mapping, Sequence
 import numpy as np
@@ -9,16 +11,25 @@ from .clauds_bands import (
     ALL_BAND_ERROR_COLUMNS, ALL_BAND_FLUX_COLUMNS, ALL_FLAG_COLUMNS,
     BAND_ERROR_COLUMNS, BAND_FLUX_COLUMNS, FLAG_COLUMNS, REDSHIFT_COLUMNS,
     OBJECT_ID_COLUMN, RA_COLUMN, DEC_COLUMN, TRACT_COLUMN, PATCH_COLUMN,
-    HSC_AION_BANDS
+    HSC_AION_BANDS, split_clauds_catalogue, validate_clauds_fits_table,
+    default_hsc_mag_faint_limits,
 )
 from .utils import (
     flux_to_ab_mag, require_columns, table_column_names, table_length,
     table_column, numeric_table_column, string_table_column,
-    apply_numpy_mask_to_tensor_dict, select_torch_device
+    apply_numpy_mask_to_tensor_dict, select_torch_device, validate_split_fractions,
+    finite_scale, asinh_transform,
 )
 from .extra_bands import (
     build_extra_band_feature_matrix_from_table, resolve_extra_band_names,
     DEFAULT_EXTRA_BANDS
+)
+from .metrics import normalize_redshift_reference, build_redshift_reference_from_table
+from .models import (
+    load_aion_mag_adjustment,
+    apply_aion_mag_adjustment_to_hsc_features,
+    build_aion_mag_adjustment_source_matrix_from_table,
+    aion_mag_adjustment_metadata,
 )
 
 
@@ -225,6 +236,7 @@ def build_hsc_quality_mask_from_table(table, rows=None) -> np.ndarray:
     return mask
 
 
+@dataclass
 class CLAUDSPhotoZBatch:
     object_id: list[Any]
     field: list[Any]
@@ -298,6 +310,7 @@ def collate_clauds_photoz(items: list[dict[str, Any]]) -> CLAUDSPhotoZBatch:
     )
 
 
+@dataclass
 class CachedFusionBatch:
     object_id: list[Any]
     field: list[Any]
@@ -363,6 +376,38 @@ def collate_cached_fusion(items: list[dict[str, Any]]) -> CachedFusionBatch:
         extra_features=torch.stack([item["extra_features"] for item in items]).float(),
         z_spec=z_spec,
         redshift_reference=redshift_reference,
+    )
+
+
+def load_clauds_catalogue_from_fits(
+    catalogue_path: str | Path,
+    split_output_dir: str | Path,
+    *,
+    chunk_size: int = 250_000,
+    overwrite: bool = False,
+    max_rows: int | None = None,
+) -> CLAUDSSplitCatalogue:
+    split_output_dir = Path(split_output_dir)
+    paths = {
+        "bands": split_output_dir / "clauds_bands.npy",
+        "errors": split_output_dir / "clauds_errors.npy",
+        "redshifts": split_output_dir / "clauds_redshifts.npy",
+        "flags": split_output_dir / "clauds_flags.npy",
+    }
+    if overwrite or not all(path.exists() for path in paths.values()) or not split_cache_matches_current_schema(paths):
+        paths = split_clauds_catalogue(
+            catalogue_path,
+            split_output_dir,
+            chunk_size=chunk_size,
+            overwrite=True,
+            max_rows=max_rows,
+        )
+    arrays = {key: np.load(path, mmap_mode="r") for key, path in paths.items()}
+    return CLAUDSSplitCatalogue(
+        bands=arrays["bands"],
+        errors=arrays["errors"],
+        redshifts=arrays["redshifts"],
+        flags=arrays["flags"],
     )
 
 
@@ -648,7 +693,18 @@ def dataset_for_split(
     product: Mapping[str, Any],
     split: str = "val",
 ) -> CachedFusionDataset:
-    train_dataset, val_dataset, test_dataset = split_cached_product(product)
+    dataset = CachedFusionDataset(
+        object_ids=product["object_id"],
+        fields=product["field"],
+        aion_embeddings=product["aion_embedding"],
+        extra_features=product["extra_features"],
+        z_spec=product["z_spec"],
+        redshift_reference=product.get("redshift_reference"),
+    )
+    split_labels = np.asarray(product["split_labels"])
+    train_dataset = subset_cached_dataset(dataset, split_labels == "train")
+    val_dataset = subset_cached_dataset(dataset, split_labels == "val")
+    test_dataset = subset_cached_dataset(dataset, split_labels == "test")
     datasets = {"train": train_dataset, "val": val_dataset, "validation": val_dataset, "test": test_dataset}
     if split not in datasets:
         raise ValueError(f"Unknown split {split!r}. Expected one of: {sorted(datasets)}")

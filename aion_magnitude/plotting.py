@@ -7,10 +7,16 @@ import matplotlib.pyplot as plt
 
 from .clauds_bands import REDSHIFT_COLUMNS, HSC_AION_BANDS
 from .utils import (
-    gaussian_smooth_1d, make_redshift_grid
+    gaussian_smooth_1d, make_redshift_grid, resolve_torch_device,
+    tensor_to_numpy_1d,
 )
 from .metrics import (
-    redshift_probability_distribution, pit_values, point_photoz_metrics
+    redshift_probability_distribution, pit_values, point_photoz_metrics,
+    summarize_pdf_metrics, validate_zphot_bins, tomographic_bin_labels,
+    assign_tomographic_bins, catalogue_redshift_reference,
+    sample_lognormal_from_percentiles, sample_catalogue_redshift_per_object,
+    sample_inferred_redshift_per_object, resolve_redshift_hist_edges,
+    probability_density_from_samples, sample_z_inferred_distribution,
 )
 
 
@@ -786,6 +792,9 @@ def run_config_pair(
     split: str = "test",
 ) -> dict[str, Any]:
     """Run two configs and return evaluated runs for comparison plotting."""
+    from .config import make_magnitude_config
+    from .training import run_training_and_evaluation
+
     config_1 = make_magnitude_config(config_1)
     config_2 = make_magnitude_config(config_2)
     run_1 = run_training_and_evaluation(

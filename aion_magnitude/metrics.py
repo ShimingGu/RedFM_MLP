@@ -3,10 +3,12 @@ from pathlib import Path
 from typing import Any, Mapping, Sequence
 import numpy as np
 import torch
+import torch.nn.functional as F
 
 from .clauds_bands import REDSHIFT_COLUMNS, OBJECT_ID_COLUMN
 from .utils import (
-    gaussian_kernel_1d, gaussian_smooth_1d, make_redshift_grid
+    gaussian_kernel_1d, gaussian_smooth_1d, make_redshift_grid,
+    table_column_names, numeric_table_column, tensor_to_numpy_1d,
 )
 
 
