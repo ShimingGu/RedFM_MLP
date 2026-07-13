@@ -221,6 +221,18 @@ def resolve_include_grizy_in_mlp(
     return include
 
 
+def build_grizy_mlp_feature_matrix(
+    hsc_features: Mapping[str, torch.Tensor],
+) -> tuple[torch.Tensor, list[str]]:
+    """Return grizy magnitudes as ordinary MLP/tabular features."""
+    columns = [
+        torch.as_tensor(hsc_features[f"{band}_mag"], dtype=torch.float32).reshape(-1)
+        for band in HSC_AION_BANDS
+    ]
+    feature_names = [f"{band}_mag" for band in HSC_AION_BANDS]
+    return torch.stack(columns, dim=1), feature_names
+
+
 def build_hsc_quality_mask_from_table(table, rows=None) -> np.ndarray:
     names = table_column_names(table)
     n_rows = table_length(table) if rows is None else len(table_column(table, OBJECT_ID_COLUMN, rows=rows))
@@ -386,6 +398,11 @@ def load_clauds_catalogue_from_fits(
     chunk_size: int = 250_000,
     overwrite: bool = False,
     max_rows: int | None = None,
+    sample_mode: str = "head",
+    row_start: int | None = None,
+    row_stop: int | None = None,
+    sample_seed: int = 42,
+    sample_require_valid_bands: Sequence[str] = (),
 ) -> CLAUDSSplitCatalogue:
     split_output_dir = Path(split_output_dir)
     paths = {
@@ -401,6 +418,11 @@ def load_clauds_catalogue_from_fits(
             chunk_size=chunk_size,
             overwrite=True,
             max_rows=max_rows,
+            sample_mode=sample_mode,
+            row_start=row_start,
+            row_stop=row_stop,
+            sample_seed=sample_seed,
+            require_valid_bands=sample_require_valid_bands,
         )
     arrays = {key: np.load(path, mmap_mode="r") for key, path in paths.items()}
     return CLAUDSSplitCatalogue(
@@ -411,6 +433,28 @@ def load_clauds_catalogue_from_fits(
     )
 
 
+def clauds_redshift_filter_mask(
+    redshift_values: Sequence[float] | np.ndarray | torch.Tensor,
+    *,
+    z_min: float | None = 0.0,
+    z_max: float | None = 6.0,
+    include_min: bool = True,
+    include_max: bool = True,
+) -> np.ndarray:
+    """Return a finite-redshift mask for CLAUDS catalogue filtering."""
+    if isinstance(redshift_values, torch.Tensor):
+        values = redshift_values.detach().cpu().numpy()
+    else:
+        values = np.asarray(redshift_values)
+    values = values.astype(np.float64, copy=False)
+    mask = np.isfinite(values)
+    if z_min is not None:
+        mask &= values >= float(z_min) if include_min else values > float(z_min)
+    if z_max is not None:
+        mask &= values <= float(z_max) if include_max else values < float(z_max)
+    return mask
+
+
 def build_raw_clauds_photoz_dataset(
     catalogue_path: str | Path,
     split_output_dir: str | Path,
@@ -418,10 +462,17 @@ def build_raw_clauds_photoz_dataset(
     split_chunk_size: int = 250_000,
     overwrite_split_cache: bool = False,
     max_rows: int | None = 20_000,
+    sample_mode: str = "head",
+    sample_row_start: int | None = None,
+    sample_row_stop: int | None = None,
+    sample_seed: int = 42,
+    sample_require_valid_bands: Sequence[str] = (),
     field_column: str | None = None,
     target_redshift_column: str = REDSHIFT_COLUMNS["zphot"],
     z_min: float = 0.0,
     z_max: float = 6.0,
+    redshift_include_min: bool = True,
+    redshift_include_max: bool = True,
     n_z_bins: int = 300,
     mag_zero_point: float = 23.0,
     hsc_mag_faint_limits: Mapping[str, float | None] | None = None,
@@ -439,10 +490,15 @@ def build_raw_clauds_photoz_dataset(
         chunk_size=split_chunk_size,
         overwrite=overwrite_split_cache,
         max_rows=max_rows,
+        sample_mode=sample_mode,
+        row_start=sample_row_start,
+        row_stop=sample_row_stop,
+        sample_seed=sample_seed,
+        sample_require_valid_bands=sample_require_valid_bands,
     )
     validate_clauds_fits_table(table, require_redshift=True)
 
-    rows = slice(None) if max_rows is None else slice(0, max_rows)
+    rows = slice(None)
     object_ids = table_column(table, OBJECT_ID_COLUMN, rows=rows).astype(np.int64)
     fields = build_field_labels(table, rows=rows, field_column=field_column)
 
@@ -494,7 +550,13 @@ def build_raw_clauds_photoz_dataset(
     require_columns(table, [target_redshift_column])
     z_values = numeric_table_column(table, target_redshift_column, rows=rows)
     redshift_reference = build_redshift_reference_from_table(table, rows=rows)
-    finite_z = np.isfinite(z_values) & (z_values >= z_min) & (z_values <= z_max)
+    finite_z = clauds_redshift_filter_mask(
+        z_values,
+        z_min=z_min,
+        z_max=z_max,
+        include_min=redshift_include_min,
+        include_max=redshift_include_max,
+    )
     usable_mask = valid_hsc_mask & hsc_quality_mask & hsc_faint_mask & finite_z
 
     hsc_features = apply_numpy_mask_to_tensor_dict(hsc_features, usable_mask)
@@ -539,9 +601,16 @@ def build_raw_clauds_photoz_dataset(
         "catalogue_path": str(catalogue_path),
         "split_output_dir": str(split_output_dir),
         "max_rows": max_rows,
+        "sample_mode": sample_mode,
+        "sample_row_start": sample_row_start,
+        "sample_row_stop": sample_row_stop,
+        "sample_seed": sample_seed,
+        "sample_require_valid_bands": list(sample_require_valid_bands),
         "n_usable_rows": len(dataset),
         "z_min": z_min,
         "z_max": z_max,
+        "redshift_include_min": bool(redshift_include_min),
+        "redshift_include_max": bool(redshift_include_max),
         "n_z_bins": n_z_bins,
         "mag_zero_point": mag_zero_point,
         "hsc_mag_faint_limits": dict(hsc_mag_faint_limits or default_hsc_mag_faint_limits()),

@@ -88,10 +88,17 @@ def ensure_cached_product_redshift_reference(
     split_chunk_size: int = 250_000,
     overwrite_split_cache: bool = False,
     max_rows: int | None = 20_000,
+    sample_mode: str = "head",
+    sample_row_start: int | None = None,
+    sample_row_stop: int | None = None,
+    sample_seed: int = 42,
+    sample_require_valid_bands: Sequence[str] = (),
     field_column: str | None = None,
     target_redshift_column: str = REDSHIFT_COLUMNS["zphot"],
     z_min: float = 0.0,
     z_max: float = 6.0,
+    redshift_include_min: bool = True,
+    redshift_include_max: bool = True,
     n_z_bins: int = 300,
     mag_zero_point: float = 23.0,
     hsc_mag_faint_limits: Mapping[str, float | None] | None = None,
@@ -109,10 +116,17 @@ def ensure_cached_product_redshift_reference(
         split_chunk_size=split_chunk_size,
         overwrite_split_cache=overwrite_split_cache,
         max_rows=max_rows,
+        sample_mode=sample_mode,
+        sample_row_start=sample_row_start,
+        sample_row_stop=sample_row_stop,
+        sample_seed=sample_seed,
+        sample_require_valid_bands=sample_require_valid_bands,
         field_column=field_column,
         target_redshift_column=target_redshift_column,
         z_min=z_min,
         z_max=z_max,
+        redshift_include_min=redshift_include_min,
+        redshift_include_max=redshift_include_max,
         n_z_bins=n_z_bins,
         mag_zero_point=mag_zero_point,
         hsc_mag_faint_limits=hsc_mag_faint_limits,
@@ -143,10 +157,17 @@ def refresh_cached_product_catalogue_features(
     split_chunk_size: int = 250_000,
     overwrite_split_cache: bool = False,
     max_rows: int | None = 20_000,
+    sample_mode: str = "head",
+    sample_row_start: int | None = None,
+    sample_row_stop: int | None = None,
+    sample_seed: int = 42,
+    sample_require_valid_bands: Sequence[str] = (),
     field_column: str | None = None,
     target_redshift_column: str = REDSHIFT_COLUMNS["zphot"],
     z_min: float = 0.0,
     z_max: float = 6.0,
+    redshift_include_min: bool = True,
+    redshift_include_max: bool = True,
     n_z_bins: int = 300,
     mag_zero_point: float = 23.0,
     hsc_mag_faint_limits: Mapping[str, float | None] | None = None,
@@ -165,10 +186,17 @@ def refresh_cached_product_catalogue_features(
         split_chunk_size=split_chunk_size,
         overwrite_split_cache=overwrite_split_cache,
         max_rows=max_rows,
+        sample_mode=sample_mode,
+        sample_row_start=sample_row_start,
+        sample_row_stop=sample_row_stop,
+        sample_seed=sample_seed,
+        sample_require_valid_bands=sample_require_valid_bands,
         field_column=field_column,
         target_redshift_column=target_redshift_column,
         z_min=z_min,
         z_max=z_max,
+        redshift_include_min=redshift_include_min,
+        redshift_include_max=redshift_include_max,
         n_z_bins=n_z_bins,
         mag_zero_point=mag_zero_point,
         hsc_mag_faint_limits=hsc_mag_faint_limits,
@@ -226,11 +254,27 @@ def make_cache_run_tag(
     catalogue_path: str | Path,
     max_rows: int | None,
     mag_zero_point: float,
+    *,
+    sample_mode: str = "head",
+    sample_row_start: int | None = None,
+    sample_row_stop: int | None = None,
+    sample_seed: int = 42,
+    sample_require_valid_bands: Sequence[str] = (),
 ) -> str:
     stem = Path(catalogue_path).stem.replace("-", "_")
     n_tag = "all" if max_rows is None else f"n{max_rows}"
     zp_tag = f"zp{mag_zero_point:.1f}".replace(".", "p")
-    return f"{stem}_{zp_tag}_{n_tag}"
+    run_tag = f"{stem}_{zp_tag}_{n_tag}"
+    if sample_mode != "head":
+        run_tag = f"{run_tag}_{sample_mode}_s{sample_seed}"
+    if sample_row_start is not None or sample_row_stop is not None:
+        start_tag = 0 if sample_row_start is None else sample_row_start
+        stop_tag = "end" if sample_row_stop is None else sample_row_stop
+        run_tag = f"{run_tag}_rows{start_tag}_{stop_tag}"
+    if sample_require_valid_bands:
+        required_tag = "_".join(str(band).replace("*", "star") for band in sample_require_valid_bands)
+        run_tag = f"{run_tag}_req_{required_tag}"
+    return run_tag
 
 
 def build_grizy_mlp_feature_matrix(
@@ -253,10 +297,17 @@ def build_and_cache_aion_embeddings(
     split_chunk_size: int = 250_000,
     overwrite_split_cache: bool = False,
     max_rows: int | None = 20_000,
+    sample_mode: str = "head",
+    sample_row_start: int | None = None,
+    sample_row_stop: int | None = None,
+    sample_seed: int = 42,
+    sample_require_valid_bands: Sequence[str] = (),
     field_column: str | None = None,
     target_redshift_column: str = REDSHIFT_COLUMNS["zphot"],
     z_min: float = 0.0,
     z_max: float = 6.0,
+    redshift_include_min: bool = True,
+    redshift_include_max: bool = True,
     n_z_bins: int = 300,
     mag_zero_point: float = 23.0,
     hsc_mag_faint_limits: Mapping[str, float | None] | None = None,
@@ -311,10 +362,17 @@ def build_and_cache_aion_embeddings(
             split_chunk_size=split_chunk_size,
             overwrite_split_cache=overwrite_split_cache,
             max_rows=max_rows,
+            sample_mode=sample_mode,
+            sample_row_start=sample_row_start,
+            sample_row_stop=sample_row_stop,
+            sample_seed=sample_seed,
+            sample_require_valid_bands=sample_require_valid_bands,
             field_column=field_column,
             target_redshift_column=target_redshift_column,
             z_min=z_min,
             z_max=z_max,
+            redshift_include_min=redshift_include_min,
+            redshift_include_max=redshift_include_max,
             n_z_bins=n_z_bins,
             mag_zero_point=mag_zero_point,
             hsc_mag_faint_limits=hsc_mag_faint_limits,
@@ -343,6 +401,8 @@ def build_and_cache_aion_embeddings(
         metadata["include_grizy_in_mlp"] = bool(include_grizy_in_mlp)
         metadata["aion_input_bands"] = list(HSC_AION_BANDS)
         metadata["n_z_bins"] = int(n_z_bins)
+        metadata["redshift_include_min"] = bool(redshift_include_min)
+        metadata["redshift_include_max"] = bool(redshift_include_max)
         metadata["redshift_edges"] = make_redshift_grid(z_min, z_max, n_z_bins)[0]
         metadata["redshift_centers"] = make_redshift_grid(z_min, z_max, n_z_bins)[1]
         metadata.update(aion_mag_adjustment_metadata(aion_mag_adjustment_path))
@@ -356,10 +416,17 @@ def build_and_cache_aion_embeddings(
         split_chunk_size=split_chunk_size,
         overwrite_split_cache=overwrite_split_cache,
         max_rows=max_rows,
+        sample_mode=sample_mode,
+        sample_row_start=sample_row_start,
+        sample_row_stop=sample_row_stop,
+        sample_seed=sample_seed,
+        sample_require_valid_bands=sample_require_valid_bands,
         field_column=field_column,
         target_redshift_column=target_redshift_column,
         z_min=z_min,
         z_max=z_max,
+        redshift_include_min=redshift_include_min,
+        redshift_include_max=redshift_include_max,
         n_z_bins=n_z_bins,
         mag_zero_point=mag_zero_point,
         hsc_mag_faint_limits=hsc_mag_faint_limits,
@@ -439,10 +506,17 @@ def build_and_cache_aion_embeddings_from_config(
         split_chunk_size=config.split_chunk_size,
         overwrite_split_cache=config.overwrite_split_cache,
         max_rows=config.max_rows,
+        sample_mode=config.sample_mode,
+        sample_row_start=config.sample_row_start,
+        sample_row_stop=config.sample_row_stop,
+        sample_seed=config.sample_seed,
+        sample_require_valid_bands=config.sample_require_valid_bands,
         field_column=config.field_column,
         target_redshift_column=config.target_redshift_column,
         z_min=config.z_min,
         z_max=config.z_max,
+        redshift_include_min=config.redshift_include_min,
+        redshift_include_max=config.redshift_include_max,
         n_z_bins=config.n_z_bins,
         mag_zero_point=config.mag_zero_point,
         hsc_mag_faint_limits=config.hsc_mag_faint_limits,

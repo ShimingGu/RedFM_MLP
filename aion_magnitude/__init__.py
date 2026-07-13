@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from importlib import import_module
+
 # Export clauds_bands constants and functions
 from .clauds_bands import (
     BAND_FLUX_COLUMNS,
@@ -28,6 +30,10 @@ from .clauds_bands import (
     CLAUDS_EXTRA_FLUX_BANDS,
     EXTRA_ERROR_BANDS,
     default_hsc_mag_faint_limits,
+    CATALOGUE_SAMPLE_MODES,
+    normalize_catalogue_row_range,
+    select_catalogue_row_indices,
+    select_clauds_catalogue_row_indices,
 )
 
 # Export utils
@@ -80,6 +86,8 @@ from .dataset import (
     CachedFusionDataset,
     collate_cached_fusion,
     build_raw_clauds_photoz_dataset,
+    build_grizy_mlp_feature_matrix,
+    clauds_redshift_filter_mask,
     make_field_aware_split,
     split_counts_from_fractions,
     make_random_split,
@@ -225,3 +233,41 @@ from .extra_bands import (
     run_u_magnitude_ablation,
     run_u_band_ablation,
 )
+
+_MORPHOLOGY_EXPORTS = {
+    "AION_IMAGE_TOKEN_KEY",
+    "AION_IMAGE_BAND_ALIAS",
+    "AION_IMAGE_INPUT_SIZE",
+    "AION_IMAGE_GRID_SIZE",
+    "DEFAULT_AION_IMAGE_QUANTIZER_LEVELS",
+    "AIONMorphologyConfig",
+    "resolve_morphology_paths",
+    "cache_aion_morphology_tokens",
+    "FSQTokenDecoder",
+    "ImageTokenFactorEncoder",
+    "PhotometryOnlyPhotoZModel",
+    "MorphologyResidualPhotoZModel",
+    "MorphologyTokenBatch",
+    "MorphologyTokenDataset",
+    "collate_morphology_token_batch",
+    "make_morphology_loader",
+    "morphology_product_to_dataset",
+    "split_morphology_product",
+    "train_morphology_one_epoch",
+    "evaluate_morphology_model",
+    "train_single_morphology_model",
+    "run_morphology_experiment",
+}
+
+
+def __getattr__(name: str):
+    if name not in _MORPHOLOGY_EXPORTS:
+        raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+    module = import_module(".morphology", __name__)
+    value = getattr(module, name)
+    globals()[name] = value
+    return value
+
+
+def __dir__() -> list[str]:
+    return sorted(set(globals()) | _MORPHOLOGY_EXPORTS)

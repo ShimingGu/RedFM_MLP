@@ -204,12 +204,131 @@ def _require_columns(table, required: Iterable[str]) -> None:
         raise KeyError(f"Missing required FITS columns: {missing}")
 
 
-def _copy_metadata(dst: np.ndarray, table, slc: slice) -> None:
-    dst["id"] = table["ID"][slc]
-    dst["ra"] = table["RA"][slc]
-    dst["dec"] = table["DEC"][slc]
-    dst["tract"] = table["tract"][slc].astype(str)
-    dst["patch"] = table["patch"][slc].astype(str)
+CATALOGUE_SAMPLE_MODES = ("head", "random")
+
+
+def normalize_catalogue_row_range(
+    n_rows_total: int,
+    row_start: int | None = None,
+    row_stop: int | None = None,
+) -> tuple[int, int]:
+    """Return a validated half-open source-row interval."""
+    start = 0 if row_start is None else int(row_start)
+    stop = n_rows_total if row_stop is None else min(int(row_stop), n_rows_total)
+    if start < 0:
+        raise ValueError("row_start must be >= 0.")
+    if row_stop is not None and int(row_stop) <= start:
+        raise ValueError("row_stop must be greater than row_start.")
+    if start >= n_rows_total:
+        raise ValueError(
+            f"row_start={start} is outside a catalogue with {n_rows_total} rows."
+        )
+    return start, stop
+
+
+def select_catalogue_row_indices(
+    n_rows_total: int,
+    *,
+    max_rows: int | None = None,
+    sample_mode: str = "head",
+    row_start: int | None = None,
+    row_stop: int | None = None,
+    seed: int = 42,
+) -> np.ndarray:
+    """Select source rows from an optional interval using head or random sampling."""
+    if sample_mode not in CATALOGUE_SAMPLE_MODES:
+        raise ValueError(
+            f"sample_mode must be one of {CATALOGUE_SAMPLE_MODES}, got {sample_mode!r}."
+        )
+    start, stop = normalize_catalogue_row_range(n_rows_total, row_start, row_stop)
+    available = stop - start
+    if max_rows is None:
+        sample_size = available
+    else:
+        if int(max_rows) < 1:
+            raise ValueError("max_rows must be >= 1 or None.")
+        sample_size = min(int(max_rows), available)
+
+    if sample_mode == "head" or sample_size == available:
+        return np.arange(start, start + sample_size, dtype=np.int64)
+
+    rng = np.random.default_rng(seed)
+    selected = rng.choice(available, size=sample_size, replace=False)
+    return np.sort(selected.astype(np.int64, copy=False) + start)
+
+
+def select_clauds_catalogue_row_indices(
+    table,
+    *,
+    max_rows: int | None = None,
+    sample_mode: str = "head",
+    row_start: int | None = None,
+    row_stop: int | None = None,
+    seed: int = 42,
+    require_valid_bands: Iterable[str] = (),
+) -> np.ndarray:
+    """Filter by required-band validity, then sample source rows."""
+    if sample_mode not in CATALOGUE_SAMPLE_MODES:
+        raise ValueError(
+            f"sample_mode must be one of {CATALOGUE_SAMPLE_MODES}, got {sample_mode!r}."
+        )
+    start, stop = normalize_catalogue_row_range(len(table), row_start, row_stop)
+    required_bands = tuple(dict.fromkeys(str(band) for band in require_valid_bands))
+    if not required_bands:
+        return select_catalogue_row_indices(
+            len(table),
+            max_rows=max_rows,
+            sample_mode=sample_mode,
+            row_start=start,
+            row_stop=stop,
+            seed=seed,
+        )
+
+    table_names = set(table.names)
+    source_slice = slice(start, stop)
+    valid = np.ones(stop - start, dtype=bool)
+    for band in required_bands:
+        if band not in ALL_BAND_FLUX_COLUMNS:
+            raise KeyError(
+                f"Unknown required band {band!r}. "
+                f"Expected one of: {tuple(ALL_BAND_FLUX_COLUMNS)}."
+            )
+        flux_name = ALL_BAND_FLUX_COLUMNS[band]
+        if flux_name not in table_names:
+            valid[:] = False
+            continue
+        flux = np.asarray(table[flux_name][source_slice])
+        valid &= np.isfinite(flux) & (flux > 0)
+        for prefix in ("has_bad_photometry", "is_no_data", "not_observed"):
+            flag_name = ALL_FLAG_COLUMNS.get(f"{prefix}_{band}")
+            if flag_name is not None and flag_name in table_names:
+                valid &= ~np.asarray(table[flag_name][source_slice]).astype(bool)
+
+    eligible_rows = np.flatnonzero(valid).astype(np.int64, copy=False) + start
+    if len(eligible_rows) == 0:
+        raise ValueError(
+            f"No rows in [{start}, {stop}) satisfy required bands {required_bands}."
+        )
+    if max_rows is None:
+        sample_size = len(eligible_rows)
+    else:
+        if int(max_rows) < 1:
+            raise ValueError("max_rows must be >= 1 or None.")
+        sample_size = min(int(max_rows), len(eligible_rows))
+
+    if sample_mode == "head" or sample_size == len(eligible_rows):
+        return eligible_rows[:sample_size]
+    rng = np.random.default_rng(seed)
+    selected = rng.choice(len(eligible_rows), size=sample_size, replace=False)
+    return np.sort(eligible_rows[selected])
+
+
+def _copy_metadata(dst: np.ndarray, table, source_rows) -> None:
+    dst["id"] = table["ID"][source_rows]
+    dst["ra"] = table["RA"][source_rows]
+    dst["dec"] = table["DEC"][source_rows]
+    dst["tract"] = table["tract"][source_rows].astype(str)
+    dst["patch"] = table["patch"][source_rows].astype(str)
 
 
 def _missing_flag_default(out_name: str) -> bool:
@@ -227,6 +346,11 @@ def split_clauds_catalogue(
     chunk_size: int = 250_000,
     overwrite: bool = False,
     max_rows: int | None = None,
+    sample_mode: str = "head",
+    row_start: int | None = None,
+    row_stop: int | None = None,
+    sample_seed: int = 42,
+    require_valid_bands: Iterable[str] = (),
 ) -> dict[str, Path]:
     """
     Split a CLAUDS-style FITS binary table into small structured arrays.
@@ -236,6 +360,10 @@ def split_clauds_catalogue(
       - clauds_errors.npy
       - clauds_redshifts.npy
       - clauds_flags.npy
+
+    Required-band validity is applied first within the half-open
+    ``[row_start, row_stop)`` source interval. ``max_rows`` is then applied to
+    eligible rows using either deterministic head or seeded random sampling.
 
     The output files are standard .npy structured arrays and can be loaded with
     np.load(path, mmap_mode="r") to avoid loading everything into memory.
@@ -262,8 +390,16 @@ def split_clauds_catalogue(
     with fits.open(fits_path, memmap=True) as hdul:
         table = hdul[1].data
         table_names = set(table.names)
-        n_rows_total = len(table)
-        n_rows = n_rows_total if max_rows is None else min(max_rows, n_rows_total)
+        selected_rows = select_clauds_catalogue_row_indices(
+            table,
+            max_rows=max_rows,
+            sample_mode=sample_mode,
+            row_start=row_start,
+            row_stop=row_stop,
+            seed=sample_seed,
+            require_valid_bands=require_valid_bands,
+        )
+        n_rows = len(selected_rows)
 
         required_columns = (
             ["ID", "RA", "DEC", "tract", "patch"]
@@ -301,40 +437,41 @@ def split_clauds_catalogue(
 
         for start in range(0, n_rows, chunk_size):
             stop = min(start + chunk_size, n_rows)
-            slc = slice(start, stop)
+            destination_rows = slice(start, stop)
+            source_rows = selected_rows[destination_rows]
 
             # Metadata in bands/errors.
-            _copy_metadata(bands[slc], table, slc)
-            _copy_metadata(errors[slc], table, slc)
+            _copy_metadata(bands[destination_rows], table, source_rows)
+            _copy_metadata(errors[destination_rows], table, source_rows)
 
             # Redshift products.
-            redshifts[slc]["id"] = table["ID"][slc]
+            redshifts[destination_rows]["id"] = table["ID"][source_rows]
             for out_name, fits_name in REDSHIFT_COLUMNS.items():
-                redshifts[slc][out_name] = table[fits_name][slc]
+                redshifts[destination_rows][out_name] = table[fits_name][source_rows]
 
             # Band fluxes.
             for band, fits_name in ALL_BAND_FLUX_COLUMNS.items():
                 field_name = f"flux_cmodel_{band}"
                 if fits_name in table_names:
-                    bands[slc][field_name] = table[fits_name][slc]
+                    bands[destination_rows][field_name] = table[fits_name][source_rows]
                 else:
-                    bands[slc][field_name] = np.nan
+                    bands[destination_rows][field_name] = np.nan
 
             # Band errors.
             for band, fits_name in ALL_BAND_ERROR_COLUMNS.items():
                 field_name = f"fluxerr_cmodel_{band}"
                 if fits_name in table_names:
-                    errors[slc][field_name] = table[fits_name][slc]
+                    errors[destination_rows][field_name] = table[fits_name][source_rows]
                 else:
-                    errors[slc][field_name] = np.nan
+                    errors[destination_rows][field_name] = np.nan
 
             # Flags.
-            flags[slc]["id"] = table["ID"][slc]
+            flags[destination_rows]["id"] = table["ID"][source_rows]
             for out_name, fits_name in ALL_FLAG_COLUMNS.items():
                 if fits_name in table_names:
-                    flags[slc][out_name] = table[fits_name][slc]
+                    flags[destination_rows][out_name] = table[fits_name][source_rows]
                 else:
-                    flags[slc][out_name] = _missing_flag_default(out_name)
+                    flags[destination_rows][out_name] = _missing_flag_default(out_name)
 
             print(f"Copied rows {start:,}–{stop:,} / {n_rows:,}")
 

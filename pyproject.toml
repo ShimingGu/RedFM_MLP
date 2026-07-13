@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "aion-magnitude"
-version = "0.2.1"
+version = "0.3.0"
 description = "AION + CLAUDS Magnitude Fusion and Adapter Package"
 readme = "README.md"
 requires-python = ">=3.8"
@@ -19,6 +19,9 @@ dependencies = [
     "astropy",
     "matplotlib",
 ]
+
+[project.scripts]
+aion-morphology = "aion_magnitude.morphology:main"
 
 [tool.setuptools.packages.find]
 where = ["."]

@@ -3,7 +3,12 @@ import warnings
 from dataclasses import dataclass, field, replace
 from pathlib import Path
 from typing import Any, Iterable, Mapping, Sequence
-from .clauds_bands import HSC_AION_BANDS, REDSHIFT_COLUMNS, default_hsc_mag_faint_limits
+from .clauds_bands import (
+    ALL_BAND_FLUX_COLUMNS,
+    HSC_AION_BANDS,
+    REDSHIFT_COLUMNS,
+    default_hsc_mag_faint_limits,
+)
 from .dataset import resolve_include_grizy_in_mlp
 from .extra_bands import DEFAULT_EXTRA_BANDS, resolve_extra_band_names
 from .models import aion_mag_adjustment_tag
@@ -20,6 +25,11 @@ class AIONMagnitudeConfig:
 
     catalogue_path: str | Path = Path("data/clauds/DEEP23-HSCpipe-Phosphoros.fits")
     max_rows: int | None = None
+    sample_mode: str = "head"
+    sample_row_start: int | None = None
+    sample_row_stop: int | None = None
+    sample_seed: int = 42
+    sample_require_valid_bands: Sequence[str] = field(default_factory=tuple)
     cache_root: str | Path = Path("cache")
     split_output_dir: str | Path | None = None
     cache_path: str | Path | None = None
@@ -38,6 +48,8 @@ class AIONMagnitudeConfig:
 
     z_min: float = 0.0
     z_max: float = 6.0
+    redshift_include_min: bool = True
+    redshift_include_max: bool = True
     n_z_bins: int = 300
 
     mag_zero_point: float = 23.0
@@ -80,11 +92,42 @@ class AIONMagnitudeConfig:
             extra_bands=resolve_extra_band_names(self.extra_bands),
             aion_input_bands=tuple(self.aion_input_bands),
             model_kinds=tuple(self.model_kinds),
+            redshift_include_min=bool(self.redshift_include_min),
+            redshift_include_max=bool(self.redshift_include_max),
+            sample_mode=str(self.sample_mode),
+            sample_row_start=(
+                None if self.sample_row_start is None else int(self.sample_row_start)
+            ),
+            sample_row_stop=(
+                None if self.sample_row_stop is None else int(self.sample_row_stop)
+            ),
+            sample_seed=int(self.sample_seed),
+            sample_require_valid_bands=tuple(
+                dict.fromkeys(str(band) for band in self.sample_require_valid_bands)
+            ),
         )
         include_grizy_in_mlp = config.include_grizy_in_mlp
         if include_grizy_in_mlp is not None:
             config = replace(config, include_grizy_in_mlp=bool(include_grizy_in_mlp))
         validate_split_fractions(config.train_fraction, config.test_fraction, config.val_fraction)
+        if config.sample_mode not in {"head", "random"}:
+            raise ValueError("sample_mode must be 'head' or 'random'.")
+        if config.sample_row_start is not None and config.sample_row_start < 0:
+            raise ValueError("sample_row_start must be >= 0.")
+        if (
+            config.sample_row_stop is not None
+            and config.sample_row_stop <= (config.sample_row_start or 0)
+        ):
+            raise ValueError("sample_row_stop must be greater than sample_row_start.")
+        unknown_required_bands = [
+            band
+            for band in config.sample_require_valid_bands
+            if band not in ALL_BAND_FLUX_COLUMNS
+        ]
+        if unknown_required_bands:
+            raise ValueError(
+                f"Unknown sample_require_valid_bands: {unknown_required_bands}."
+            )
         if config.split_strategy not in {"random", "field"}:
             raise ValueError("split_strategy must be 'random' or 'field'.")
         if config.use_aion_embedding and tuple(config.aion_input_bands) != tuple(HSC_AION_BANDS):
@@ -174,11 +217,27 @@ def _make_cache_run_tag(
     catalogue_path: str | Path,
     max_rows: int | None,
     mag_zero_point: float,
+    *,
+    sample_mode: str = "head",
+    sample_row_start: int | None = None,
+    sample_row_stop: int | None = None,
+    sample_seed: int = 42,
+    sample_require_valid_bands: Sequence[str] = (),
 ) -> str:
     stem = Path(catalogue_path).stem.replace("-", "_")
     n_tag = "all" if max_rows is None else f"n{max_rows}"
     zp_tag = f"{mag_zero_point:.1f}".replace(".", "p")
-    return f"{stem}_zp{zp_tag}_{n_tag}"
+    run_tag = f"{stem}_zp{zp_tag}_{n_tag}"
+    if sample_mode != "head":
+        run_tag = f"{run_tag}_{sample_mode}_s{sample_seed}"
+    if sample_row_start is not None or sample_row_stop is not None:
+        start_tag = 0 if sample_row_start is None else sample_row_start
+        stop_tag = "end" if sample_row_stop is None else sample_row_stop
+        run_tag = f"{run_tag}_rows{start_tag}_{stop_tag}"
+    if sample_require_valid_bands:
+        required_tag = "_".join(_path_tag(band) for band in sample_require_valid_bands)
+        run_tag = f"{run_tag}_req_{required_tag}"
+    return run_tag
 
 
 def resolve_training_paths(config: AIONMagnitudeConfig) -> dict[str, Path | str]:
@@ -189,7 +248,16 @@ def resolve_training_paths(config: AIONMagnitudeConfig) -> dict[str, Path | str]
         use_mlp_features=config.use_mlp_features,
         extra_bands=config.extra_bands,
     )
-    run_tag = _make_cache_run_tag(config.catalogue_path, config.max_rows, config.mag_zero_point)
+    run_tag = _make_cache_run_tag(
+        config.catalogue_path,
+        config.max_rows,
+        config.mag_zero_point,
+        sample_mode=config.sample_mode,
+        sample_row_start=config.sample_row_start,
+        sample_row_stop=config.sample_row_stop,
+        sample_seed=config.sample_seed,
+        sample_require_valid_bands=config.sample_require_valid_bands,
+    )
     if (
         float(config.z_min) != 0.0
         or float(config.z_max) != 6.0
@@ -198,6 +266,10 @@ def resolve_training_paths(config: AIONMagnitudeConfig) -> dict[str, Path | str]
         z_min_tag = f"{config.z_min:g}".replace(".", "p")
         z_max_tag = f"{config.z_max:g}".replace(".", "p")
         run_tag = f"{run_tag}_z{z_min_tag}_{z_max_tag}_bins{int(config.n_z_bins)}"
+    if not config.redshift_include_min:
+        run_tag = f"{run_tag}_openmin"
+    if not config.redshift_include_max:
+        run_tag = f"{run_tag}_openmax"
     if not config.use_mlp_features:
         extra_tag = "aiononly"
     else:
