@@ -18,6 +18,7 @@ dependencies = [
     "torch",
     "astropy",
     "matplotlib",
+    "safetensors>=0.8.0,<0.9",
 ]
 
 [project.scripts]

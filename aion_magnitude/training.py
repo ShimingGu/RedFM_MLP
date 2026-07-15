@@ -43,7 +43,7 @@ def logits_from_cached_batch(
 
     if model_kind == "fusion":
         return model(aion_embedding, extra_features)
-    if model_kind == "aion":
+    if model_kind in {"aion", "qwen"}:
         return model(aion_embedding)
     if model_kind == "tabular":
         return model(extra_features)
@@ -278,10 +278,10 @@ def train_single_baseline(
             f"model_kind={model_kind!r} requires at least one MLP feature. "
             "Set use_mlp_features=True with grizy and/or extra bands, or use model_kind='aion'."
         )
-    if model_kind in {"aion", "fusion"} and aion_dim == 0:
+    if model_kind in {"aion", "qwen", "fusion"} and aion_dim == 0:
         raise ValueError(
-            f"model_kind={model_kind!r} requires AION embeddings. "
-            "Set use_aion_embedding=True, or use model_kind='tabular' for MLP-only training."
+            f"model_kind={model_kind!r} requires frozen embeddings. "
+            "Populate the cached embedding tensor before training."
         )
     model = build_baseline_model(model_kind, aion_dim, extra_feature_dim, n_z_bins=n_z_bins).to(device)
     optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate, weight_decay=weight_decay)

@@ -20,6 +20,7 @@ FALLBACK_REMOTE_NAME = "redfm_mlp"
 EXCLUDED_PATHS = (
     "data/clauds/images",
     "data/clauds/catalogs",
+    "cache",
 )
 
 
@@ -255,7 +256,7 @@ def stage_everything_except_large_data(repo: Path) -> None:
         pathspecs.append(f":(exclude){path}")
         pathspecs.append(f":(exclude){path}/**")
 
-    print("Staging all changes except large CLAUDS images and catalogues:")
+    print("Staging all changes except generated data and cache paths:")
     for path in EXCLUDED_PATHS:
         if is_ignored(repo, path):
             print(f"  excluding {path}/ (via .gitignore)")
@@ -323,7 +324,7 @@ def main() -> int:
         maybe_pull(repo, remote, current)
         current = current_branch(repo)
 
-        print_step(4, "Stage everything except large CLAUDS data")
+        print_step(4, "Stage everything except generated data and cache paths")
         stage_everything_except_large_data(repo)
 
         print_step(5, "Enter commit message and commit")
