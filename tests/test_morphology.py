@@ -8,9 +8,11 @@ import torch
 from aion_magnitude.clauds_bands import select_catalogue_row_indices
 from aion_magnitude.dataset import clauds_redshift_filter_mask
 from aion_magnitude.morphology import (
+    AIONMagnitudeMorphologyResidualPhotoZModel,
     AIONMorphologyConfig,
     FSQTokenDecoder,
     MorphologyResidualPhotoZModel,
+    make_magnitude_config,
     resolve_morphology_paths,
 )
 
@@ -77,6 +79,30 @@ class MorphologyModuleTest(unittest.TestCase):
         )
         logits = model(
             torch.randn(2, 11),
+            torch.randint(0, 4375, (2, 24 * 24)),
+        )
+        self.assertEqual(tuple(logits.shape), (2, 100))
+
+    def test_aion_magnitude_mode_uses_embeddings_and_token_mlp(self) -> None:
+        config = AIONMorphologyConfig(
+            use_aion_magnitude_embedding=True,
+            model_kinds=("aion", "aion_morphology"),
+        )
+        magnitude_config = make_magnitude_config(config)
+        self.assertTrue(magnitude_config.use_aion_embedding)
+        self.assertFalse(magnitude_config.use_mlp_features)
+        self.assertEqual(tuple(magnitude_config.extra_bands), ())
+
+        model = AIONMagnitudeMorphologyResidualPhotoZModel(
+            aion_dim=12,
+            n_z_bins=100,
+            quantizer_levels=(7, 5, 5, 5, 5),
+            image_hidden_dim=32,
+            image_embedding_dim=16,
+            head_hidden_dim=24,
+        )
+        logits = model(
+            torch.randn(2, 12),
             torch.randint(0, 4375, (2, 24 * 24)),
         )
         self.assertEqual(tuple(logits.shape), (2, 100))

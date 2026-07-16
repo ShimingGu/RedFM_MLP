@@ -247,6 +247,7 @@ _MORPHOLOGY_EXPORTS = {
     "ImageTokenFactorEncoder",
     "PhotometryOnlyPhotoZModel",
     "MorphologyResidualPhotoZModel",
+    "AIONMagnitudeMorphologyResidualPhotoZModel",
     "MorphologyTokenBatch",
     "MorphologyTokenDataset",
     "collate_morphology_token_batch",

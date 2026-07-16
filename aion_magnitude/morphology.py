@@ -3,9 +3,11 @@ from __future__ import annotations
 """CLAUDS u-image morphology experiments through the AION image tokenizer.
 
 This module intentionally does not use the AION redshift model or AION encoder
-embeddings.  It only uses the pretrained AION image codec to turn CLAUDS
-u-band cutouts into image token IDs, decodes those IDs into their FSQ factors,
-and trains a CLAUDS-supervised photo-z MLP with non-AION magnitude features.
+embeddings for images.  It only uses the pretrained AION image codec to turn
+CLAUDS u-band cutouts into image token IDs, decodes those IDs into their FSQ
+factors, and trains a CLAUDS-supervised photo-z MLP.  The optional AION
+magnitude mode uses the frozen grizy AION embedding as the photometric input;
+it never uses AION's internal image-to-redshift representation.
 """
 
 import argparse
@@ -37,7 +39,7 @@ from .metrics import (
     redshift_cross_entropy_loss,
     summarize_pdf_metrics,
 )
-from .models import ExtraPhotometryEncoder, PhotoZHead
+from .models import AIONOnlyPhotoZModel, ExtraPhotometryEncoder, PhotoZHead
 from .training import save_calibration_artifacts
 from .utils import (
     flux_to_ab_mag,
@@ -124,6 +126,8 @@ class AIONMorphologyConfig:
     extra_band_invalid_fill: str | float = "median"
     extra_band_include_valid_flags: bool = False
     include_grizy_in_mlp: bool = True
+    use_aion_magnitude_embedding: bool = False
+    aion_embedding_batch_size: int = 512
 
     cutout_size: int = AION_IMAGE_INPUT_SIZE
     aion_image_band_alias: str = AION_IMAGE_BAND_ALIAS
@@ -161,6 +165,8 @@ class AIONMorphologyConfig:
             raise ValueError("AION image codec expects 96x96 cutouts.")
         if int(self.token_batch_size) < 1:
             raise ValueError("token_batch_size must be >= 1.")
+        if int(self.aion_embedding_batch_size) < 1:
+            raise ValueError("aion_embedding_batch_size must be >= 1.")
         if not (0.0 <= float(self.min_cutout_weight_coverage) <= 1.0):
             raise ValueError("min_cutout_weight_coverage must be in [0, 1].")
         if not np.isfinite(self.image_flux_scale) or float(self.image_flux_scale) <= 0.0:
@@ -169,9 +175,31 @@ class AIONMorphologyConfig:
         if background_mode not in {"none", "median"}:
             raise ValueError("image_background_mode must be 'none' or 'median'.")
         model_kinds = tuple(str(kind) for kind in self.model_kinds)
-        unknown = set(model_kinds).difference({"photometry", "morphology", "shuffled_morphology"})
+        unknown = set(model_kinds).difference(
+            {
+                "photometry",
+                "morphology",
+                "shuffled_morphology",
+                "aion",
+                "aion_morphology",
+                "shuffled_aion_morphology",
+            }
+        )
         if unknown:
             raise ValueError(f"Unknown model_kinds: {sorted(unknown)}")
+        aion_model_kinds = {
+            "aion",
+            "aion_morphology",
+            "shuffled_aion_morphology",
+        }
+        selected_aion_kinds = set(model_kinds) & aion_model_kinds
+        if self.use_aion_magnitude_embedding and set(model_kinds) != selected_aion_kinds:
+            raise ValueError(
+                "use_aion_magnitude_embedding=True requires only AION model kinds: "
+                "'aion', 'aion_morphology', or 'shuffled_aion_morphology'."
+            )
+        if not self.use_aion_magnitude_embedding and selected_aion_kinds:
+            raise ValueError("AION model kinds require use_aion_magnitude_embedding=True.")
 
         return replace(
             self,
@@ -192,6 +220,7 @@ class AIONMorphologyConfig:
             extra_bands=resolve_extra_band_names(self.extra_bands),
             extra_band_include_valid_flags=bool(self.extra_band_include_valid_flags),
             include_grizy_in_mlp=bool(self.include_grizy_in_mlp),
+            use_aion_magnitude_embedding=bool(self.use_aion_magnitude_embedding),
             image_background_mode=background_mode,
             test_fields=list(self.test_fields),
             model_kinds=model_kinds,
@@ -228,13 +257,16 @@ def make_magnitude_config(config: AIONMorphologyConfig) -> AIONMagnitudeConfig:
         n_z_bins=config.n_z_bins,
         mag_zero_point=config.mag_zero_point,
         hsc_mag_faint_limits=config.hsc_mag_faint_limits,
-        extra_bands=config.extra_bands,
+        extra_bands=() if config.use_aion_magnitude_embedding else config.extra_bands,
         extra_band_invalid_fill=config.extra_band_invalid_fill,
         extra_band_include_valid_flags=config.extra_band_include_valid_flags,
-        use_aion_embedding=False,
-        use_mlp_features=True,
-        include_grizy_in_mlp=config.include_grizy_in_mlp,
-        model_kinds=("tabular",),
+        use_aion_embedding=config.use_aion_magnitude_embedding,
+        use_mlp_features=not config.use_aion_magnitude_embedding,
+        include_grizy_in_mlp=(
+            False if config.use_aion_magnitude_embedding else config.include_grizy_in_mlp
+        ),
+        aion_embedding_batch_size=config.aion_embedding_batch_size,
+        model_kinds=("aion",) if config.use_aion_magnitude_embedding else ("tabular",),
         seed=config.seed,
         device_choice=config.device_choice,
     )
@@ -287,7 +319,8 @@ def build_or_load_photometry_product(config: AIONMorphologyConfig) -> dict[str, 
             category=RuntimeWarning,
         )
         product = build_and_cache_aion_embeddings_from_config(make_magnitude_config(config))
-    product["aion_embedding"] = torch.empty((len(product["object_id"]), 0), dtype=torch.float32)
+    if config.use_aion_magnitude_embedding and product["aion_embedding"].shape[1] == 0:
+        raise RuntimeError("AION magnitude mode produced no grizy AION embeddings.")
     return product
 
 
@@ -947,10 +980,48 @@ class MorphologyResidualPhotoZModel(nn.Module):
         return base_logits + delta_logits
 
 
+class AIONMagnitudeMorphologyResidualPhotoZModel(nn.Module):
+    """Add an image-token MLP residual to the standard grizy-AION head."""
+
+    def __init__(
+        self,
+        *,
+        aion_dim: int,
+        n_z_bins: int,
+        quantizer_levels: Sequence[int],
+        image_hidden_dim: int = 512,
+        image_embedding_dim: int = 128,
+        head_hidden_dim: int = 256,
+    ):
+        super().__init__()
+        self.photometry_head = PhotoZHead(aion_dim, n_z_bins, head_hidden_dim)
+        self.image_encoder = ImageTokenFactorEncoder(
+            levels=quantizer_levels,
+            hidden_dim=image_hidden_dim,
+            output_dim=image_embedding_dim,
+        )
+        self.image_delta_head = nn.Sequential(
+            nn.Linear(aion_dim + image_embedding_dim, head_hidden_dim),
+            nn.LayerNorm(head_hidden_dim),
+            nn.GELU(),
+            nn.Dropout(0.1),
+            nn.Linear(head_hidden_dim, head_hidden_dim),
+            nn.GELU(),
+            nn.Linear(head_hidden_dim, n_z_bins),
+        )
+
+    def forward(self, aion_embedding: torch.Tensor, token_ids: torch.Tensor) -> torch.Tensor:
+        base_logits = self.photometry_head(aion_embedding)
+        h_image = self.image_encoder(token_ids)
+        delta_logits = self.image_delta_head(torch.cat([aion_embedding, h_image], dim=-1))
+        return base_logits + delta_logits
+
+
 @dataclass
 class MorphologyTokenBatch:
     object_id: list[Any]
     field: list[Any]
+    aion_embedding: torch.Tensor
     extra_features: torch.Tensor
     token_ids: torch.Tensor
     z_spec: torch.Tensor | None = None
@@ -967,6 +1038,7 @@ class MorphologyTokenDataset(Dataset):
     ):
         self.object_ids = list(product["object_id"])
         self.fields = list(product["field"])
+        self.aion_embedding = torch.as_tensor(product["aion_embedding"], dtype=torch.float32)
         self.extra_features = torch.as_tensor(product["extra_features"], dtype=torch.float32)
         self.z_spec = None if product.get("z_spec") is None else torch.as_tensor(product["z_spec"], dtype=torch.float32)
         self.redshift_reference = {
@@ -990,6 +1062,7 @@ class MorphologyTokenDataset(Dataset):
         item = {
             "object_id": self.object_ids[idx],
             "field": self.fields[idx],
+            "aion_embedding": self.aion_embedding[idx],
             "extra_features": self.extra_features[idx],
             "token_ids": torch.from_numpy(np.asarray(self.token_ids[token_row], dtype=np.int64)),
         }
@@ -1017,6 +1090,7 @@ def collate_morphology_token_batch(items: list[dict[str, Any]]) -> MorphologyTok
     return MorphologyTokenBatch(
         object_id=[item["object_id"] for item in items],
         field=[item["field"] for item in items],
+        aion_embedding=torch.stack([item["aion_embedding"] for item in items]).float(),
         extra_features=torch.stack([item["extra_features"] for item in items]).float(),
         token_ids=torch.stack([item["token_ids"] for item in items]).long(),
         z_spec=z_spec,
@@ -1059,6 +1133,7 @@ def split_morphology_product(product: Mapping[str, Any]) -> tuple[dict[str, Any]
 def _build_morphology_model(
     *,
     model_kind: str,
+    aion_dim: int,
     extra_feature_dim: int,
     n_z_bins: int,
     quantizer_levels: Sequence[int],
@@ -1081,6 +1156,21 @@ def _build_morphology_model(
             image_embedding_dim=config.image_embedding_dim,
             head_hidden_dim=config.head_hidden_dim,
         )
+    if model_kind == "aion":
+        return AIONOnlyPhotoZModel(
+            aion_dim=aion_dim,
+            n_z_bins=n_z_bins,
+            head_hidden_dim=config.head_hidden_dim,
+        )
+    if model_kind in {"aion_morphology", "shuffled_aion_morphology"}:
+        return AIONMagnitudeMorphologyResidualPhotoZModel(
+            aion_dim=aion_dim,
+            n_z_bins=n_z_bins,
+            quantizer_levels=quantizer_levels,
+            image_hidden_dim=config.image_hidden_dim,
+            image_embedding_dim=config.image_embedding_dim,
+            head_hidden_dim=config.head_hidden_dim,
+        )
     raise ValueError(f"Unknown model_kind: {model_kind}")
 
 
@@ -1090,9 +1180,12 @@ def _logits_from_morphology_batch(
     *,
     device: torch.device | str,
 ) -> torch.Tensor:
-    extra_features = batch.extra_features.to(device)
+    if isinstance(model, AIONOnlyPhotoZModel):
+        return model(batch.aion_embedding.to(device))
     token_ids = batch.token_ids.to(device)
-    return model(extra_features, token_ids)
+    if isinstance(model, AIONMagnitudeMorphologyResidualPhotoZModel):
+        return model(batch.aion_embedding.to(device), token_ids)
+    return model(batch.extra_features.to(device), token_ids)
 
 
 def train_morphology_one_epoch(
@@ -1187,7 +1280,10 @@ def train_single_morphology_model(
     if len(val_product["object_id"]) == 0:
         raise ValueError("No validation rows are available after morphology filtering.")
 
-    shuffle_tokens = model_kind == "shuffled_morphology"
+    shuffle_tokens = model_kind in {
+        "shuffled_morphology",
+        "shuffled_aion_morphology",
+    }
     train_dataset = morphology_product_to_dataset(train_product, shuffle_tokens=shuffle_tokens, seed=config.seed)
     val_dataset = morphology_product_to_dataset(val_product, shuffle_tokens=shuffle_tokens, seed=config.seed + 1)
     test_dataset = morphology_product_to_dataset(test_product, shuffle_tokens=shuffle_tokens, seed=config.seed + 2)
@@ -1204,9 +1300,16 @@ def train_single_morphology_model(
 
     metadata = dict(product.get("metadata", {}))
     quantizer_levels = metadata.get("aion_image_quantizer_levels", DEFAULT_AION_IMAGE_QUANTIZER_LEVELS)
+    aion_dim = int(torch.as_tensor(product["aion_embedding"]).shape[1])
     extra_feature_dim = int(torch.as_tensor(product["extra_features"]).shape[1])
+    if model_kind.startswith("aion") or model_kind == "shuffled_aion_morphology":
+        if aion_dim == 0:
+            raise ValueError(f"model_kind={model_kind!r} requires grizy AION embeddings.")
+    elif extra_feature_dim == 0:
+        raise ValueError(f"model_kind={model_kind!r} requires MLP photometry features.")
     model = _build_morphology_model(
         model_kind=model_kind,
+        aion_dim=aion_dim,
         extra_feature_dim=extra_feature_dim,
         n_z_bins=config.n_z_bins,
         quantizer_levels=quantizer_levels,
@@ -1377,6 +1480,7 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--catalogue-path", type=Path, default=AIONMorphologyConfig.catalogue_path)
     parser.add_argument("--morphology-dir", type=Path, default=AIONMorphologyConfig.morphology_dir)
     parser.add_argument("--cache-root", type=Path, default=AIONMorphologyConfig.cache_root)
+    parser.add_argument("--output-dir", type=Path, default=AIONMorphologyConfig.output_dir)
     parser.add_argument("--max-rows", type=_optional_int, default=AIONMorphologyConfig.max_rows)
     parser.add_argument("--sample-mode", choices=("head", "random"), default=AIONMorphologyConfig.sample_mode)
     parser.add_argument("--sample-row-start", type=int, default=None)
@@ -1386,6 +1490,12 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--n-z-bins", type=int, default=AIONMorphologyConfig.n_z_bins)
     parser.add_argument("--include-z-max", action="store_true")
     parser.add_argument("--extra-valid-flags", action="store_true")
+    parser.add_argument("--use-aion-magnitude-embedding", action="store_true")
+    parser.add_argument(
+        "--aion-embedding-batch-size",
+        type=int,
+        default=AIONMorphologyConfig.aion_embedding_batch_size,
+    )
     parser.add_argument("--min-cutout-weight-coverage", type=float, default=AIONMorphologyConfig.min_cutout_weight_coverage)
     parser.add_argument("--image-flux-scale", type=float, default=AIONMorphologyConfig.image_flux_scale)
     parser.add_argument("--token-batch-size", type=int, default=AIONMorphologyConfig.token_batch_size)
@@ -1410,6 +1520,7 @@ def main(argv: Sequence[str] | None = None) -> None:
         catalogue_path=args.catalogue_path,
         morphology_dir=args.morphology_dir,
         cache_root=args.cache_root,
+        output_dir=args.output_dir,
         max_rows=args.max_rows,
         sample_mode=args.sample_mode,
         sample_row_start=args.sample_row_start,
@@ -1419,6 +1530,8 @@ def main(argv: Sequence[str] | None = None) -> None:
         redshift_include_max=bool(args.include_z_max),
         n_z_bins=args.n_z_bins,
         extra_band_include_valid_flags=bool(args.extra_valid_flags),
+        use_aion_magnitude_embedding=bool(args.use_aion_magnitude_embedding),
+        aion_embedding_batch_size=args.aion_embedding_batch_size,
         min_cutout_weight_coverage=args.min_cutout_weight_coverage,
         image_flux_scale=args.image_flux_scale,
         token_batch_size=args.token_batch_size,

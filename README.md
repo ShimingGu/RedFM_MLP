@@ -19,13 +19,14 @@ Core package modules include:
 The morphology path uses AION only as a fixed image tokenizer:
 
 ```text
-CLAUDS u cutout -> AION HSC-G image codec -> FSQ token IDs
-non-AION magnitudes + token factors -> CLAUDS-supervised photo-z MLP
+CLAUDS u cutout -> AION HSC-G image codec -> FSQ token IDs -> image MLP
+photometric features + image-MLP features -> CLAUDS-supervised photo-z head
 ```
 
-It does not use the AION image/redshift transformer embedding. The `HSC-G`
-name is an AION codec interface alias for the CLAUDS `u` image, not a claim
-that the source image is physical HSC g-band data.
+The photometric branch can use either catalogue magnitudes or the frozen grizy
+AION magnitude embedding. It does not use the AION image/redshift transformer
+embedding. The `HSC-G` name is an AION codec interface alias for the CLAUDS `u`
+image, not a claim that the source image is physical HSC g-band data.
 
 Python usage:
 
