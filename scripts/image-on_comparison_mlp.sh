@@ -27,8 +27,8 @@ if ! "${PYTHON_CMD[@]}" -c 'import numpy, torch, astropy, matplotlib, safetensor
 fi
 
 AION_CATALOGUE="${AION_CATALOGUE:-$REPO_ROOT/data/clauds/catalogs/COSMOS-HSCpipe-Phosphoros.fits}"
-AION_MORPHOLOGY_DIR="${AION_MORPHOLOGY_DIR:-$REPO_ROOT/data/clauds/morphology}"
-AION_OUTPUT_DIR="${AION_OUTPUT_DIR:-/arc/home/gsm/aion_output/figures/image-on_comparison}"
+AION_MORPHOLOGY_DIR="${AION_MORPHOLOGY_DIR:-$REPO_ROOT/data/clauds/images/tilesv5/}"
+AION_OUTPUT_DIR="${AION_OUTPUT_DIR:-/arc/home/gsm/aion_output/figures/image-on_comparison_mlp}"
 AION_CACHE_ROOT="${AION_CACHE_ROOT:-/scratch/.tmp-gsm/aion_output/cache}"
 
 REBUILD_FLAGS=()
@@ -39,27 +39,27 @@ if [[ "${AION_FORCE_RECOMPUTE_EMBEDDINGS:-0}" == "1" ]]; then
     REBUILD_FLAGS+=(--force-rebuild-photometry)
 fi
 
-# Compare the standard frozen grizy-AION embedding against the same embedding
-# plus CLAUDS u-image tokens. Images use only the AION codec; their decoded FSQ
-# token factors enter the trainable image MLP, never AION's image/redshift model.
+# Compare the standard grizy MLP against the same MLP plus CLAUDS u-image
+# tokens. Images use only the AION codec; decoded FSQ token factors enter the
+# trainable image MLP, never AION's image/redshift model.
 cd -- "$REPO_ROOT"
 exec "${PYTHON_CMD[@]}" -m aion_magnitude.morphology train \
     --catalogue-path "$AION_CATALOGUE" \
     --morphology-dir "$AION_MORPHOLOGY_DIR" \
     --output-dir "$AION_OUTPUT_DIR" \
     --cache-root "$AION_CACHE_ROOT" \
-    --max-rows "${AION_MAX_ROWS:-20000}" \
-    --epochs "${AION_EPOCHS:-20}" \
-    --aion-embedding-batch-size "${AION_EMBEDDING_BATCH_SIZE:-512}" \
+    --max-rows "${AION_MAX_ROWS:-none}" \
+    --epochs "${AION_EPOCHS:-10}" \
     --token-batch-size "${AION_TOKEN_BATCH_SIZE:-64}" \
     --train-batch-size "${AION_TRAIN_BATCH_SIZE:-256}" \
     --eval-batch-size "${AION_EVAL_BATCH_SIZE:-512}" \
     --device "${AION_DEVICE:-auto}" \
-    --n-z-bins "${AION_N_Z_BINS:-100}" \
-    --z-max "${AION_Z_MAX:-2.5}" \
+    --n-z-bins "${AION_N_Z_BINS:-300}" \
+    --z-max "${AION_Z_MAX:-6.0}" \
     --image-flux-scale "${AION_IMAGE_FLUX_SCALE:-1.0}" \
     --min-cutout-weight-coverage "${AION_MIN_CUTOUT_WEIGHT_COVERAGE:-0.90}" \
-    --use-aion-magnitude-embedding \
-    --model-kinds aion,aion_morphology \
+    --tomographic-samples "${AION_TOMOGRAPHIC_SAMPLES:-100}" \
+    --grizy-only \
+    --model-kinds photometry,morphology \
     "${REBUILD_FLAGS[@]}" \
     "$@"

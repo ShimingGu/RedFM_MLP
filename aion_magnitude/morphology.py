@@ -17,6 +17,7 @@ from dataclasses import dataclass, field, replace
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
+import matplotlib.pyplot as plt
 import numpy as np
 import torch
 import torch.nn as nn
@@ -40,6 +41,13 @@ from .metrics import (
     summarize_pdf_metrics,
 )
 from .models import AIONOnlyPhotoZModel, ExtraPhotometryEncoder, PhotoZHead
+from .plotting import (
+    compare_config_loss,
+    compare_nz_lensing_alike,
+    compare_pit_histogram,
+    compare_redshift_probability_distribution,
+    compare_zpred_vs_zphot,
+)
 from .training import save_calibration_artifacts
 from .utils import (
     flux_to_ab_mag,
@@ -84,7 +92,7 @@ class AIONMorphologyConfig:
     """Configuration for AION-tokenized CLAUDS u-image morphology training."""
 
     catalogue_path: str | Path = Path("data/clauds/COSMOS-HSCpipe-Phosphoros.fits")
-    morphology_dir: str | Path = Path("data/clauds/morphology")
+    morphology_dir: str | Path = Path("data/clauds/images/tilesv5/")
     cache_root: str | Path = Path("cache")
     split_output_dir: str | Path | None = None
     photometry_cache_path: str | Path | None = None
@@ -150,6 +158,7 @@ class AIONMorphologyConfig:
     early_stopping_patience: int | None = None
     max_train_batches: int | None = None
     max_eval_batches: int | None = None
+    tomographic_samples: int = 100
 
     seed: int = 42
     device_choice: str = "auto"
@@ -167,6 +176,8 @@ class AIONMorphologyConfig:
             raise ValueError("token_batch_size must be >= 1.")
         if int(self.aion_embedding_batch_size) < 1:
             raise ValueError("aion_embedding_batch_size must be >= 1.")
+        if int(self.tomographic_samples) < 1:
+            raise ValueError("tomographic_samples must be >= 1.")
         if not (0.0 <= float(self.min_cutout_weight_coverage) <= 1.0):
             raise ValueError("min_cutout_weight_coverage must be in [0, 1].")
         if not np.isfinite(self.image_flux_scale) or float(self.image_flux_scale) <= 0.0:
@@ -463,16 +474,36 @@ class MorphologyTile:
             self._weight_hdul = None
 
 
-def load_morphology_tiles(morphology_dir: str | Path) -> list[MorphologyTile]:
+def discover_morphology_image_paths(morphology_dir: str | Path) -> list[Path]:
+    """Return every science FITS tile with a matching weight map."""
     morphology_dir = Path(morphology_dir)
     image_paths = [
         path
-        for path in sorted(morphology_dir.glob("Mega-u_10054_*.fits"))
+        for path in sorted(morphology_dir.rglob("*.fits"))
         if not path.name.endswith(".weight.fits")
     ]
     if not image_paths:
-        raise FileNotFoundError(f"No Mega-u science FITS files found in {morphology_dir}")
-    return [MorphologyTile(path) for path in image_paths]
+        raise FileNotFoundError(f"No science FITS files found in {morphology_dir}")
+    missing_weights = [
+        path.with_name(f"{path.stem}.weight.fits")
+        for path in image_paths
+        if not path.with_name(f"{path.stem}.weight.fits").exists()
+    ]
+    if missing_weights:
+        preview = ", ".join(str(path) for path in missing_weights[:5])
+        raise FileNotFoundError(
+            f"Missing weight maps for {len(missing_weights)} science tiles; first missing: {preview}"
+        )
+    return image_paths
+
+
+def load_morphology_tiles(
+    morphology_dir: str | Path,
+    *,
+    image_paths: Sequence[Path] | None = None,
+) -> list[MorphologyTile]:
+    paths = discover_morphology_image_paths(morphology_dir) if image_paths is None else image_paths
+    return [MorphologyTile(path) for path in paths]
 
 
 def assign_tiles_to_positions(
@@ -688,6 +719,11 @@ def cache_aion_morphology_tokens(config: AIONMorphologyConfig | None = None, **o
         config = replace(config, **overrides)
     config = config.normalized()
     paths = resolve_morphology_paths(config)
+    image_paths = discover_morphology_image_paths(config.morphology_dir)
+    tile_manifest = tuple(
+        str(path.relative_to(config.morphology_dir))
+        for path in image_paths
+    )
     product_path = Path(paths["morphology_product_path"])
     token_ids_path = Path(paths["token_ids_path"])
     if (
@@ -703,12 +739,14 @@ def cache_aion_morphology_tokens(config: AIONMorphologyConfig | None = None, **o
             metadata.get("image_flux_scale"),
             metadata.get("min_cutout_weight_coverage"),
             metadata.get("aion_image_band_alias"),
+            tuple(metadata.get("morphology_tile_manifest", ())),
         )
         requested_preprocessing = (
             config.image_background_mode,
             float(config.image_flux_scale),
             float(config.min_cutout_weight_coverage),
             config.aion_image_band_alias,
+            tile_manifest,
         )
         if cached_preprocessing == requested_preprocessing:
             product = refresh_morphology_split_labels(product, config)
@@ -723,13 +761,18 @@ def cache_aion_morphology_tokens(config: AIONMorphologyConfig | None = None, **o
 
     product = build_or_load_photometry_product(config)
     ra, dec = load_product_sky_positions(product)
-    tiles = load_morphology_tiles(config.morphology_dir)
+    tiles = load_morphology_tiles(config.morphology_dir, image_paths=image_paths)
+    print(f"Loaded {len(tiles):,} morphology science tiles from {config.morphology_dir}")
     try:
         tile_index, x_image, y_image = assign_tiles_to_positions(
             ra,
             dec,
             tiles,
             chunk_size=config.tile_assignment_chunk_size,
+        )
+        assigned_tile_counts = np.bincount(
+            tile_index[tile_index >= 0],
+            minlength=len(tiles),
         )
 
         device = select_torch_device(config.device_choice)
@@ -787,26 +830,29 @@ def cache_aion_morphology_tokens(config: AIONMorphologyConfig | None = None, **o
             batch_rows.clear()
 
         for tile_idx, tile in enumerate(tiles):
-            rows = np.flatnonzero(tile_index == tile_idx)
-            for row in rows:
-                cutout, stats = _extract_cutout(
-                    tile,
-                    float(x_image[row]),
-                    float(y_image[row]),
-                    cutout_size=config.cutout_size,
-                    background_mode=config.image_background_mode,
-                    image_flux_scale=config.image_flux_scale,
-                )
-                quality["weight_coverage"][row] = stats["weight_coverage"]
-                quality["background"][row] = stats["background"]
-                quality["finite_fraction"][row] = stats["finite_fraction"]
-                if stats["weight_coverage"] < config.min_cutout_weight_coverage:
-                    continue
-                batch_cutouts.append(cutout)
-                batch_rows.append(int(row))
-                if len(batch_rows) >= config.token_batch_size:
-                    flush_batch()
-            flush_batch()
+            try:
+                rows = np.flatnonzero(tile_index == tile_idx)
+                for row in rows:
+                    cutout, stats = _extract_cutout(
+                        tile,
+                        float(x_image[row]),
+                        float(y_image[row]),
+                        cutout_size=config.cutout_size,
+                        background_mode=config.image_background_mode,
+                        image_flux_scale=config.image_flux_scale,
+                    )
+                    quality["weight_coverage"][row] = stats["weight_coverage"]
+                    quality["background"][row] = stats["background"]
+                    quality["finite_fraction"][row] = stats["finite_fraction"]
+                    if stats["weight_coverage"] < config.min_cutout_weight_coverage:
+                        continue
+                    batch_cutouts.append(cutout)
+                    batch_rows.append(int(row))
+                    if len(batch_rows) >= config.token_batch_size:
+                        flush_batch()
+                flush_batch()
+            finally:
+                tile.close()
 
         token_ids.flush()
         quality.flush()
@@ -834,6 +880,10 @@ def cache_aion_morphology_tokens(config: AIONMorphologyConfig | None = None, **o
         {
             "morphology_tag": paths["morphology_tag"],
             "morphology_dir": str(config.morphology_dir),
+            "morphology_tile_manifest": list(tile_manifest),
+            "n_morphology_tiles_loaded": int(len(tiles)),
+            "n_morphology_tiles_with_assigned_rows": int(np.sum(assigned_tile_counts > 0)),
+            "morphology_tile_assigned_row_counts": assigned_tile_counts.tolist(),
             "aion_image_tokenizer_only": True,
             "aion_image_band_alias": config.aion_image_band_alias,
             "aion_image_token_key": AION_IMAGE_TOKEN_KEY,
@@ -1442,6 +1492,90 @@ def train_single_morphology_model(
     }
 
 
+_MORPHOLOGY_COMPARISON_LABELS = {
+    "photometry": "grizy-MLP-only",
+    "morphology": "grizy-MLP+tokenized-u-image",
+    "aion": "grizy-aion-only",
+    "aion_morphology": "grizy-aion+tokenized-u-image",
+}
+
+
+def save_morphology_comparison_artifacts(
+    results: Mapping[str, Mapping[str, Any]],
+    *,
+    model_kinds: Sequence[str],
+    output_dir: str | Path,
+    tomographic_samples: int,
+) -> dict[str, str]:
+    """Save the same paired diagnostics produced by standard_comparison.sh."""
+    if len(model_kinds) != 2:
+        return {}
+    model_kind_1, model_kind_2 = tuple(model_kinds)
+    result_1 = results[model_kind_1]
+    result_2 = results[model_kind_2]
+    evaluation_1 = result_1.get("test_evaluation") or result_1["val_evaluation"]
+    evaluation_2 = result_2.get("test_evaluation") or result_2["val_evaluation"]
+    labels = (
+        _MORPHOLOGY_COMPARISON_LABELS.get(model_kind_1, model_kind_1),
+        _MORPHOLOGY_COMPARISON_LABELS.get(model_kind_2, model_kind_2),
+    )
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    prefix = output_dir / f"{model_kind_1}_{model_kind_2}_comparison"
+    artifacts = {
+        "loss": str(Path(f"{prefix}_loss.jpeg")),
+        "scatter": str(Path(f"{prefix}_scatter.jpeg")),
+        "pit": str(Path(f"{prefix}_pit.jpeg")),
+        "nz": str(Path(f"{prefix}_nz.jpeg")),
+        "nztomo": str(Path(f"{prefix}_nztomo.jpeg")),
+    }
+
+    fig, _, _ = compare_config_loss(
+        result_1,
+        result_2,
+        output_path=artifacts["loss"],
+        labels=labels,
+    )
+    plt.close(fig)
+    fig, _ = compare_zpred_vs_zphot(
+        evaluation_1,
+        evaluation_2,
+        output_path=artifacts["scatter"],
+        labels=labels,
+        pred_key="z_p50",
+        pmax=5.0,
+        show_metrics=True,
+    )
+    plt.close(fig)
+    fig, _ = compare_pit_histogram(
+        evaluation_1,
+        evaluation_2,
+        output_path=artifacts["pit"],
+        labels=labels,
+    )
+    plt.close(fig)
+    fig, _, _ = compare_redshift_probability_distribution(
+        evaluation_1,
+        evaluation_2,
+        output_path=artifacts["nz"],
+        labels=labels,
+        gaussian_sigma_bins=1.0,
+    )
+    plt.close(fig)
+    fig, _, _ = compare_nz_lensing_alike(
+        evaluation_1,
+        evaluation_2,
+        output_path=artifacts["nztomo"],
+        labels=labels,
+        zphot_bin=[0.5, 1.0, 1.5, 2.0, 2.5, 3.0],
+        gaussian_sigma_bins=1.0,
+        inferred_bin_key="z_p50",
+        n_samples_per_object=tomographic_samples,
+    )
+    plt.close(fig)
+    return artifacts
+
+
 def run_morphology_experiment(config: AIONMorphologyConfig | None = None, **overrides: Any) -> dict[str, Any]:
     config = AIONMorphologyConfig() if config is None else config
     if overrides:
@@ -1459,6 +1593,12 @@ def run_morphology_experiment(config: AIONMorphologyConfig | None = None, **over
             config=config,
             device=device,
         )
+    comparison_artifacts = save_morphology_comparison_artifacts(
+        results,
+        model_kinds=config.model_kinds,
+        output_dir=paths["morphology_output_dir"],
+        tomographic_samples=config.tomographic_samples,
+    )
     summary_path = Path(paths["morphology_output_dir"]) / "morphology_results.pt"
     torch.save(results, summary_path)
     return {
@@ -1466,6 +1606,7 @@ def run_morphology_experiment(config: AIONMorphologyConfig | None = None, **over
         "paths": paths,
         "product": product,
         "results": results,
+        "comparison_artifacts": comparison_artifacts,
         "summary_path": str(summary_path),
     }
 
@@ -1490,6 +1631,11 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--n-z-bins", type=int, default=AIONMorphologyConfig.n_z_bins)
     parser.add_argument("--include-z-max", action="store_true")
     parser.add_argument("--extra-valid-flags", action="store_true")
+    parser.add_argument(
+        "--grizy-only",
+        action="store_true",
+        help="Exclude u*, Y, J, H, and Ks from MLP features.",
+    )
     parser.add_argument("--use-aion-magnitude-embedding", action="store_true")
     parser.add_argument(
         "--aion-embedding-batch-size",
@@ -1505,6 +1651,11 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--epochs", type=int, default=AIONMorphologyConfig.epochs)
     parser.add_argument("--train-batch-size", type=int, default=AIONMorphologyConfig.train_batch_size)
     parser.add_argument("--eval-batch-size", type=int, default=AIONMorphologyConfig.eval_batch_size)
+    parser.add_argument(
+        "--tomographic-samples",
+        type=int,
+        default=AIONMorphologyConfig.tomographic_samples,
+    )
     parser.add_argument("--device", default=AIONMorphologyConfig.device_choice)
     return parser.parse_args(argv)
 
@@ -1529,6 +1680,7 @@ def main(argv: Sequence[str] | None = None) -> None:
         z_max=args.z_max,
         redshift_include_max=bool(args.include_z_max),
         n_z_bins=args.n_z_bins,
+        extra_bands=() if args.grizy_only else AIONMorphologyConfig().extra_bands,
         extra_band_include_valid_flags=bool(args.extra_valid_flags),
         use_aion_magnitude_embedding=bool(args.use_aion_magnitude_embedding),
         aion_embedding_batch_size=args.aion_embedding_batch_size,
@@ -1541,6 +1693,7 @@ def main(argv: Sequence[str] | None = None) -> None:
         epochs=args.epochs,
         train_batch_size=args.train_batch_size,
         eval_batch_size=args.eval_batch_size,
+        tomographic_samples=args.tomographic_samples,
         device_choice=args.device,
     ).normalized()
 
@@ -1552,6 +1705,8 @@ def main(argv: Sequence[str] | None = None) -> None:
 
     run = run_morphology_experiment(config)
     print(f"Morphology experiment summary: {run['summary_path']}")
+    for name, artifact_path in run["comparison_artifacts"].items():
+        print(f"Comparison {name}: {artifact_path}")
 
 
 if __name__ == "__main__":
