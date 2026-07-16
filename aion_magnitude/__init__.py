@@ -242,6 +242,7 @@ _MORPHOLOGY_EXPORTS = {
     "DEFAULT_AION_IMAGE_QUANTIZER_LEVELS",
     "AIONMorphologyConfig",
     "resolve_morphology_paths",
+    "discover_morphology_image_paths",
     "cache_aion_morphology_tokens",
     "FSQTokenDecoder",
     "ImageTokenFactorEncoder",
@@ -257,6 +258,7 @@ _MORPHOLOGY_EXPORTS = {
     "train_morphology_one_epoch",
     "evaluate_morphology_model",
     "train_single_morphology_model",
+    "save_morphology_comparison_artifacts",
     "run_morphology_experiment",
 }
 
