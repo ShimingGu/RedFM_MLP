@@ -33,7 +33,12 @@ from .config import (
     resolve_training_paths,
 )
 from .dataset import clauds_redshift_filter_mask, make_split_labels, split_metadata
-from .extra_bands import DEFAULT_EXTRA_BANDS, resolve_extra_band_names
+from .extra_bands import (
+    DEFAULT_EXTRA_BANDS,
+    EXTRA_BAND_LABELS,
+    extract_extra_band_magnitudes_from_split_arrays,
+    resolve_extra_band_names,
+)
 from .metrics import (
     evaluate_conformal_hpd,
     predict_photoz_from_logits,
@@ -64,6 +69,7 @@ AION_IMAGE_BAND_ALIAS = "HSC-G"
 AION_IMAGE_INPUT_SIZE = 96
 AION_IMAGE_GRID_SIZE = 24
 DEFAULT_AION_IMAGE_QUANTIZER_LEVELS = (7, 5, 5, 5, 5)
+MORPHOLOGY_REPORT_BANDS = ("u", "u_star", "Y", "J", "Ks")
 
 
 def _as_path_or_none(value: str | Path | None) -> Path | None:
@@ -111,6 +117,7 @@ class AIONMorphologyConfig:
     overwrite_split_cache: bool = False
     force_rebuild_photometry: bool = False
     force_rebuild_tokens: bool = False
+    preserve_photometry_splits: bool = False
     field_column: str | None = None
     split_strategy: str = "random"
     train_fraction: float = 0.20
@@ -227,6 +234,7 @@ class AIONMorphologyConfig:
             sample_row_stop=None if self.sample_row_stop is None else int(self.sample_row_stop),
             sample_seed=int(self.sample_seed),
             sample_require_valid_bands=tuple(dict.fromkeys(str(band) for band in self.sample_require_valid_bands)),
+            preserve_photometry_splits=bool(self.preserve_photometry_splits),
             hsc_mag_faint_limits=dict(self.hsc_mag_faint_limits),
             extra_bands=resolve_extra_band_names(self.extra_bands),
             extra_band_include_valid_flags=bool(self.extra_band_include_valid_flags),
@@ -436,6 +444,179 @@ def load_product_sky_positions(product: Mapping[str, Any]) -> tuple[np.ndarray, 
         np.asarray(bands["ra"][indices], dtype=np.float64),
         np.asarray(bands["dec"][indices], dtype=np.float64),
     )
+
+
+def load_product_extra_band_validity(
+    product: Mapping[str, Any],
+    *,
+    extra_bands: Sequence[str] = MORPHOLOGY_REPORT_BANDS,
+) -> tuple[np.ndarray, tuple[str, ...]]:
+    """Load per-object extra-band validity aligned to a photometry product."""
+    metadata = dict(product.get("metadata", {}))
+    split_dir = Path(metadata["split_output_dir"])
+    bands = np.load(split_dir / "clauds_bands.npy", mmap_mode="r")
+    flags = np.load(split_dir / "clauds_flags.npy", mmap_mode="r")
+    redshifts = np.load(split_dir / "clauds_redshifts.npy", mmap_mode="r")
+    usable_mask = build_photometry_usable_mask_from_split_arrays(
+        bands,
+        flags,
+        redshifts,
+        mag_zero_point=float(metadata["mag_zero_point"]),
+        hsc_mag_faint_limits=metadata.get("hsc_mag_faint_limits"),
+        target_redshift_column=metadata.get("target_redshift_column", "ZPHOT"),
+        z_min=float(metadata.get("z_min", 0.0)),
+        z_max=float(metadata.get("z_max", 6.0)),
+        redshift_include_min=bool(metadata.get("redshift_include_min", True)),
+        redshift_include_max=bool(metadata.get("redshift_include_max", True)),
+    )
+    usable_indices = np.flatnonzero(usable_mask)
+    product_ids = np.asarray(product["object_id"], dtype=np.int64)
+    usable_ids = np.asarray(bands["id"][usable_indices], dtype=np.int64)
+    if product_ids.shape == usable_ids.shape and np.array_equal(product_ids, usable_ids):
+        source_indices = usable_indices
+    else:
+        id_to_index = {
+            int(object_id): index
+            for index, object_id in enumerate(np.asarray(bands["id"], dtype=np.int64))
+        }
+        try:
+            source_indices = np.asarray(
+                [id_to_index[int(object_id)] for object_id in product_ids],
+                dtype=np.int64,
+            )
+        except KeyError as exc:
+            raise ValueError(
+                f"Photometry product object_id {exc.args[0]} is absent from the split cache."
+            ) from exc
+
+    _, valid, selected_bands = extract_extra_band_magnitudes_from_split_arrays(
+        bands[source_indices],
+        flags[source_indices],
+        extra_bands=extra_bands,
+        mag_zero_point=float(metadata["mag_zero_point"]),
+        warn_missing=False,
+    )
+    return np.asarray(valid, dtype=bool), selected_bands
+
+
+def _population_count(n_gal: int, denominator_n_gal: int) -> dict[str, float | int]:
+    n_gal = int(n_gal)
+    denominator_n_gal = int(denominator_n_gal)
+    percent = 100.0 * n_gal / denominator_n_gal if denominator_n_gal else 0.0
+    return {
+        "n_gal": n_gal,
+        "denominator_n_gal": denominator_n_gal,
+        "percent": percent,
+    }
+
+
+def build_morphology_population_report(
+    product: Mapping[str, Any],
+    *,
+    morphology_available: Sequence[bool] | np.ndarray,
+    extra_band_valid: torch.Tensor | np.ndarray,
+    extra_bands: Sequence[str],
+) -> dict[str, Any]:
+    """Count independent morphology and band availability in original splits."""
+    split_labels = np.asarray(product["split_labels"], dtype=object)
+    morphology_available = np.asarray(morphology_available, dtype=bool)
+    if isinstance(extra_band_valid, torch.Tensor):
+        extra_band_valid = extra_band_valid.detach().cpu().numpy()
+    extra_band_valid = np.asarray(extra_band_valid, dtype=bool)
+    selected_bands = tuple(extra_bands)
+    n_rows = len(split_labels)
+    if morphology_available.shape != (n_rows,):
+        raise ValueError("morphology_available must have one value per product row.")
+    if extra_band_valid.shape != (n_rows, len(selected_bands)):
+        raise ValueError(
+            "extra_band_valid must have shape "
+            f"({n_rows}, {len(selected_bands)}), got {extra_band_valid.shape}."
+        )
+
+    split_counts: dict[str, dict[str, float | int]] = {}
+    morphology_counts: dict[str, dict[str, float | int]] = {}
+    valid_band_counts: dict[str, dict[str, dict[str, float | int]]] = {}
+    for split_name in ("train", "val", "test"):
+        split_mask = split_labels == split_name
+        split_n = int(split_mask.sum())
+        split_counts[split_name] = _population_count(split_n, n_rows)
+        if split_name not in {"train", "val"}:
+            continue
+        morphology_counts[split_name] = _population_count(
+            int(np.sum(split_mask & morphology_available)),
+            split_n,
+        )
+        valid_band_counts[split_name] = {
+            band: _population_count(
+                int(np.sum(split_mask & extra_band_valid[:, band_idx])),
+                split_n,
+            )
+            for band_idx, band in enumerate(selected_bands)
+        }
+
+    return {
+        "total_selected_n_gal": int(n_rows),
+        "split_counts": split_counts,
+        "morphology_counts": morphology_counts,
+        "valid_band_counts": valid_band_counts,
+        "reported_extra_bands": list(selected_bands),
+        "band_counts_are_independent_of_morphology": True,
+    }
+
+
+def _format_population_count(record: Mapping[str, float | int]) -> str:
+    return f"n_gal={int(record['n_gal']):,} ({float(record['percent']):.2f}%)"
+
+
+def format_morphology_population_report(report: Mapping[str, Any]) -> str:
+    """Format the requested figure-prefix population report."""
+    split_counts = report["split_counts"]
+    morphology_counts = report["morphology_counts"]
+    valid_band_counts = report["valid_band_counts"]
+    lines = [
+        "Galaxy population report",
+        (
+            "selected catalogue: "
+            f"n_gal={int(report['total_selected_n_gal']):,} (100.00%)"
+        ),
+        "",
+        f"train: {_format_population_count(split_counts['train'])}",
+        f"validation: {_format_population_count(split_counts['val'])}",
+        f"test: {_format_population_count(split_counts['test'])}",
+        "",
+        (
+            "train usable matched morphology: "
+            f"{_format_population_count(morphology_counts['train'])}"
+        ),
+        (
+            "validation usable matched morphology: "
+            f"{_format_population_count(morphology_counts['val'])}"
+        ),
+        "",
+    ]
+    for band in report["reported_extra_bands"]:
+        label = EXTRA_BAND_LABELS.get(band, band)
+        lines.extend(
+            [
+                (
+                    f"train valid {label}: "
+                    f"{_format_population_count(valid_band_counts['train'][band])}"
+                ),
+                (
+                    f"validation valid {label}: "
+                    f"{_format_population_count(valid_band_counts['val'][band])}"
+                ),
+            ]
+        )
+    lines.extend(
+        [
+            "",
+            "Split percentages use the full selected catalogue.",
+            "Morphology and band percentages use their original train/validation split.",
+            "Band-validity counts are independent and are not intersected with morphology.",
+        ]
+    )
+    return "\n".join(lines) + "\n"
 
 
 class MorphologyTile:
@@ -679,24 +860,44 @@ def refresh_morphology_split_labels(
     product: Mapping[str, Any],
     config: AIONMorphologyConfig,
 ) -> dict[str, Any]:
-    """Rebuild train/val/test labels after morphology footprint filtering."""
+    """Assign post-morphology splits, optionally preserving photometry labels."""
     config = config.normalized()
     output = dict(product)
     old_metadata = dict(output.get("metadata", {}))
     old_split_counts = old_metadata.get("split_counts")
-    split_labels = make_split_labels(
-        output["field"],
-        split_strategy=config.split_strategy,
-        train_fraction=config.train_fraction,
-        test_fraction=config.test_fraction,
-        val_fraction=config.val_fraction,
-        test_fields=config.test_fields,
-        seed=config.seed,
-    )
-    output["split_labels"] = list(split_labels)
+    if config.preserve_photometry_splits:
+        source_labels = output.get("photometry_split_labels")
+        if source_labels is None:
+            raise RuntimeError(
+                "The cached morphology product predates preserved photometry splits. "
+                "Rebuild it with --force-rebuild-tokens."
+            )
+        split_labels = np.asarray(source_labels, dtype=object)
+        if split_labels.shape != (len(output["object_id"]),):
+            raise ValueError("photometry_split_labels do not match morphology product rows.")
+        split_count_scope = "preserved_photometry_assignments_after_morphology_filter"
+    else:
+        split_labels = make_split_labels(
+            output["field"],
+            split_strategy=config.split_strategy,
+            train_fraction=config.train_fraction,
+            test_fraction=config.test_fraction,
+            val_fraction=config.val_fraction,
+            test_fields=config.test_fields,
+            seed=config.seed,
+        )
+        split_count_scope = "post_morphology_filter"
 
+    output["split_labels"] = list(split_labels)
     metadata = dict(old_metadata)
-    if old_split_counts is not None and int(sum(old_split_counts.values())) != len(split_labels):
+    population_report = metadata.get("population_report", {})
+    original_split_counts = population_report.get("split_counts", {})
+    if original_split_counts:
+        metadata["pre_morphology_filter_split_counts"] = {
+            split_name: int(record["n_gal"])
+            for split_name, record in original_split_counts.items()
+        }
+    elif old_split_counts is not None and int(sum(old_split_counts.values())) != len(split_labels):
         metadata.setdefault("pre_morphology_filter_split_counts", old_split_counts)
     metadata.update(
         split_metadata(
@@ -707,7 +908,7 @@ def refresh_morphology_split_labels(
             config.val_fraction,
         )
     )
-    metadata["split_count_scope"] = "post_morphology_filter"
+    metadata["split_count_scope"] = split_count_scope
     metadata["n_usable_rows"] = int(len(split_labels))
     output["metadata"] = metadata
     return output
@@ -748,18 +949,35 @@ def cache_aion_morphology_tokens(config: AIONMorphologyConfig | None = None, **o
             config.aion_image_band_alias,
             tile_manifest,
         )
-        if cached_preprocessing == requested_preprocessing:
+        reporting_available = (
+            "population_report" in metadata
+            and "photometry_split_labels" in product
+        )
+        if (
+            cached_preprocessing == requested_preprocessing
+            and (not config.preserve_photometry_splits or reporting_available)
+        ):
             product = refresh_morphology_split_labels(product, config)
             torch.save(product, product_path)
             return product
+        if cached_preprocessing == requested_preprocessing:
+            warning_message = (
+                "Cached morphology tokens predate population reporting and preserved "
+                "photometry splits; rebuilding them."
+            )
+        else:
+            warning_message = (
+                "Cached morphology preprocessing does not match the requested config; "
+                "rebuilding AION image tokens."
+            )
         warnings.warn(
-            "Cached morphology preprocessing does not match the requested config; "
-            "rebuilding AION image tokens.",
+            warning_message,
             RuntimeWarning,
             stacklevel=2,
         )
 
     product = build_or_load_photometry_product(config)
+    extra_band_valid, report_bands = load_product_extra_band_validity(product)
     ra, dec = load_product_sky_positions(product)
     tiles = load_morphology_tiles(config.morphology_dir, image_paths=image_paths)
     print(f"Loaded {len(tiles):,} morphology science tiles from {config.morphology_dir}")
@@ -868,7 +1086,16 @@ def cache_aion_morphology_tokens(config: AIONMorphologyConfig | None = None, **o
             "No CLAUDS rows produced usable morphology tokens. "
             "Check morphology_dir, sky coverage, and min_cutout_weight_coverage."
         )
+    population_report = build_morphology_population_report(
+        product,
+        morphology_available=np.asarray(quality_array["token_available"], dtype=bool),
+        extra_band_valid=extra_band_valid,
+        extra_bands=report_bands,
+    )
     morphology_product = subset_product_rows(product, kept_indices)
+    morphology_product["photometry_split_labels"] = list(
+        np.asarray(product["split_labels"], dtype=object)[kept_indices]
+    )
     morphology_product["ra"] = torch.from_numpy(ra[kept_indices].astype(np.float64))
     morphology_product["dec"] = torch.from_numpy(dec[kept_indices].astype(np.float64))
     morphology_product["image_token_ids_path"] = str(Path(paths["token_ids_path"]))
@@ -884,6 +1111,7 @@ def cache_aion_morphology_tokens(config: AIONMorphologyConfig | None = None, **o
             "n_morphology_tiles_loaded": int(len(tiles)),
             "n_morphology_tiles_with_assigned_rows": int(np.sum(assigned_tile_counts > 0)),
             "morphology_tile_assigned_row_counts": assigned_tile_counts.tolist(),
+            "population_report": population_report,
             "aion_image_tokenizer_only": True,
             "aion_image_band_alias": config.aion_image_band_alias,
             "aion_image_token_key": AION_IMAGE_TOKEN_KEY,
@@ -1500,12 +1728,49 @@ _MORPHOLOGY_COMPARISON_LABELS = {
 }
 
 
+
+def morphology_comparison_prefix(
+    output_dir: str | Path,
+    model_kinds: Sequence[str],
+) -> Path | None:
+    if len(model_kinds) != 2:
+        return None
+    model_kind_1, model_kind_2 = tuple(model_kinds)
+    return Path(output_dir) / f"{model_kind_1}_{model_kind_2}_comparison"
+
+
+def save_morphology_population_report(
+    product: Mapping[str, Any],
+    *,
+    model_kinds: Sequence[str],
+    output_dir: str | Path,
+) -> str | None:
+    report = dict(product.get("metadata", {})).get("population_report")
+    prefix = morphology_comparison_prefix(output_dir, model_kinds)
+    if report is None or prefix is None:
+        return None
+    prefix.parent.mkdir(parents=True, exist_ok=True)
+    report_path = Path(f"{prefix}_out.log")
+    report_path.write_text(format_morphology_population_report(report))
+    return str(report_path)
+
+
+def morphology_comparison_labels(config: AIONMorphologyConfig) -> tuple[str, str] | None:
+    if tuple(config.model_kinds) == ("photometry", "morphology") and config.extra_bands:
+        return (
+            "all-magnitude-MLP-only",
+            "all-magnitude-MLP+tokenized-u-image",
+        )
+    return None
+
+
 def save_morphology_comparison_artifacts(
     results: Mapping[str, Mapping[str, Any]],
     *,
     model_kinds: Sequence[str],
     output_dir: str | Path,
     tomographic_samples: int,
+    comparison_labels: tuple[str, str] | None = None,
 ) -> dict[str, str]:
     """Save the same paired diagnostics produced by standard_comparison.sh."""
     if len(model_kinds) != 2:
@@ -1515,13 +1780,14 @@ def save_morphology_comparison_artifacts(
     result_2 = results[model_kind_2]
     evaluation_1 = result_1.get("test_evaluation") or result_1["val_evaluation"]
     evaluation_2 = result_2.get("test_evaluation") or result_2["val_evaluation"]
-    labels = (
+    labels = comparison_labels or (
         _MORPHOLOGY_COMPARISON_LABELS.get(model_kind_1, model_kind_1),
         _MORPHOLOGY_COMPARISON_LABELS.get(model_kind_2, model_kind_2),
     )
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
-    prefix = output_dir / f"{model_kind_1}_{model_kind_2}_comparison"
+    prefix = morphology_comparison_prefix(output_dir, model_kinds)
+    assert prefix is not None
     artifacts = {
         "loss": str(Path(f"{prefix}_loss.jpeg")),
         "scatter": str(Path(f"{prefix}_scatter.jpeg")),
@@ -1583,6 +1849,11 @@ def run_morphology_experiment(config: AIONMorphologyConfig | None = None, **over
     config = config.normalized()
     product = cache_aion_morphology_tokens(config)
     paths = resolve_morphology_paths(config)
+    population_report_path = save_morphology_population_report(
+        product,
+        model_kinds=config.model_kinds,
+        output_dir=paths["morphology_output_dir"],
+    )
     device = select_torch_device(config.device_choice)
     results = {}
     for model_kind in config.model_kinds:
@@ -1598,6 +1869,7 @@ def run_morphology_experiment(config: AIONMorphologyConfig | None = None, **over
         model_kinds=config.model_kinds,
         output_dir=paths["morphology_output_dir"],
         tomographic_samples=config.tomographic_samples,
+        comparison_labels=morphology_comparison_labels(config),
     )
     summary_path = Path(paths["morphology_output_dir"]) / "morphology_results.pt"
     torch.save(results, summary_path)
@@ -1607,6 +1879,7 @@ def run_morphology_experiment(config: AIONMorphologyConfig | None = None, **over
         "product": product,
         "results": results,
         "comparison_artifacts": comparison_artifacts,
+        "population_report_path": population_report_path,
         "summary_path": str(summary_path),
     }
 
@@ -1647,6 +1920,11 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--token-batch-size", type=int, default=AIONMorphologyConfig.token_batch_size)
     parser.add_argument("--force-rebuild-tokens", action="store_true")
     parser.add_argument("--force-rebuild-photometry", action="store_true")
+    parser.add_argument(
+        "--preserve-photometry-splits",
+        action="store_true",
+        help="Keep each selected galaxy original photometry train/validation/test assignment.",
+    )
     parser.add_argument("--model-kinds", type=_parse_model_kinds, default=AIONMorphologyConfig.model_kinds)
     parser.add_argument("--epochs", type=int, default=AIONMorphologyConfig.epochs)
     parser.add_argument("--train-batch-size", type=int, default=AIONMorphologyConfig.train_batch_size)
@@ -1689,6 +1967,7 @@ def main(argv: Sequence[str] | None = None) -> None:
         token_batch_size=args.token_batch_size,
         force_rebuild_tokens=bool(args.force_rebuild_tokens),
         force_rebuild_photometry=bool(args.force_rebuild_photometry),
+        preserve_photometry_splits=bool(args.preserve_photometry_splits),
         model_kinds=args.model_kinds,
         epochs=args.epochs,
         train_batch_size=args.train_batch_size,
@@ -1705,6 +1984,8 @@ def main(argv: Sequence[str] | None = None) -> None:
 
     run = run_morphology_experiment(config)
     print(f"Morphology experiment summary: {run['summary_path']}")
+    if run["population_report_path"] is not None:
+        print(f"Population report: {run['population_report_path']}")
     for name, artifact_path in run["comparison_artifacts"].items():
         print(f"Comparison {name}: {artifact_path}")
 

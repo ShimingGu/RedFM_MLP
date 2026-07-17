@@ -14,7 +14,9 @@ from aion_magnitude.morphology import (
     AIONMorphologyConfig,
     FSQTokenDecoder,
     MorphologyResidualPhotoZModel,
+    build_morphology_population_report,
     discover_morphology_image_paths,
+    format_morphology_population_report,
     make_magnitude_config,
     resolve_morphology_paths,
 )
@@ -67,6 +69,68 @@ class MorphologyModuleTest(unittest.TestCase):
         self.assertTrue(magnitude_config.include_grizy_in_mlp)
         self.assertEqual(tuple(magnitude_config.extra_bands), ())
         self.assertIsNone(magnitude_config.max_rows)
+
+    def test_all_magnitude_mlp_config_preserves_photometry_splits(self) -> None:
+        config = AIONMorphologyConfig(
+            max_rows=None,
+            model_kinds=("photometry", "morphology"),
+            preserve_photometry_splits=True,
+        ).normalized()
+        magnitude_config = make_magnitude_config(config)
+
+        self.assertEqual(
+            tuple(magnitude_config.extra_bands),
+            ("u", "u_star", "Y", "J", "H", "Ks"),
+        )
+        self.assertTrue(config.preserve_photometry_splits)
+        self.assertIsNone(magnitude_config.max_rows)
+
+    def test_population_report_uses_original_split_denominators(self) -> None:
+        product = {
+            "split_labels": ["train"] * 5 + ["val"] * 3 + ["test"] * 2,
+        }
+        morphology_available = np.asarray(
+            [True, False, True, False, True, True, False, False, True, False]
+        )
+        extra_band_valid = np.asarray(
+            [
+                [1, 1, 1, 1, 1],
+                [1, 0, 1, 0, 1],
+                [0, 1, 1, 0, 0],
+                [1, 0, 0, 1, 0],
+                [0, 0, 0, 0, 0],
+                [1, 1, 1, 1, 1],
+                [0, 1, 0, 1, 0],
+                [1, 0, 0, 0, 1],
+                [1, 1, 1, 1, 1],
+                [0, 0, 0, 0, 0],
+            ],
+            dtype=bool,
+        )
+        report = build_morphology_population_report(
+            product,
+            morphology_available=morphology_available,
+            extra_band_valid=extra_band_valid,
+            extra_bands=("u", "u_star", "Y", "J", "Ks"),
+        )
+
+        self.assertEqual(report["split_counts"]["train"]["n_gal"], 5)
+        self.assertEqual(report["split_counts"]["train"]["percent"], 50.0)
+        self.assertEqual(report["morphology_counts"]["train"]["n_gal"], 3)
+        self.assertEqual(report["morphology_counts"]["train"]["percent"], 60.0)
+        self.assertEqual(report["morphology_counts"]["val"]["n_gal"], 1)
+        self.assertAlmostEqual(
+            report["morphology_counts"]["val"]["percent"],
+            100.0 / 3.0,
+        )
+        self.assertEqual(report["valid_band_counts"]["train"]["u"]["n_gal"], 3)
+        self.assertEqual(report["valid_band_counts"]["val"]["u_star"]["n_gal"], 2)
+
+        formatted = format_morphology_population_report(report)
+        self.assertIn("train: n_gal=5 (50.00%)", formatted)
+        self.assertIn("train usable matched morphology: n_gal=3 (60.00%)", formatted)
+        self.assertIn("validation valid u*: n_gal=2 (66.67%)", formatted)
+        self.assertNotIn("valid H:", formatted)
 
     def test_seeded_random_sampling_is_deterministic(self) -> None:
         first = select_catalogue_row_indices(
