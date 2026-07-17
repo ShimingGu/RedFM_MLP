@@ -11,9 +11,24 @@ else
     PIXI_MANIFEST="${PIXI_MANIFEST:-$DEFAULT_PIXI_MANIFEST}"
     if [[ -f "$PIXI_MANIFEST" ]]; then
         PYTHON_CMD=(pixi run --manifest-path "$PIXI_MANIFEST" python)
+    elif [[ -x "$REPO_ROOT/.venv/bin/python" ]]; then
+        PYTHON_CMD=("$REPO_ROOT/.venv/bin/python")
     else
-        PYTHON_CMD=(pixi run python)
+        echo "No project Python environment found." >&2
+        echo "Expected $PIXI_MANIFEST or $REPO_ROOT/.venv/bin/python." >&2
+        exit 1
     fi
+fi
+
+if ! "${PYTHON_CMD[@]}" -c 'import numpy, torch, astropy, matplotlib, safetensors, aion, transformers, accelerate, bitsandbytes' >/dev/null; then
+    echo "The selected Python environment is missing Qwen/AION dependencies." >&2
+    echo "Install the qwen-cuda extra with: .venv/bin/pip install -e \".[qwen-cuda]\"" >&2
+    exit 1
+fi
+
+if ! "${PYTHON_CMD[@]}" -c 'import torch; raise SystemExit(0 if torch.cuda.is_available() else 1)' >/dev/null; then
+    echo "CUDA is not available in the selected Python environment." >&2
+    exit 1
 fi
 
 AION_CATALOGUE="${AION_CATALOGUE:-$REPO_ROOT/data/clauds/catalogs/COSMOS-HSCpipe-Phosphoros.fits}"

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+import os
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
@@ -25,9 +26,15 @@ except ImportError as exc:
     TRANSFORMERS_IMPORT_ERROR = exc
 
 
+QWEN_MODEL_ROOT = Path(
+    os.environ.get(
+        "AION_QWEN_MODEL_ROOT",
+        Path.home() / "hf_models",
+    )
+).expanduser()
 QWEN_DEFAULT_MODELS = {
-    "qwen3_8b_base": "/scratch/.tmp-gsm/hf_models/Qwen3-8B-Base",
-    "qwen2_5_math_7b": "/scratch/.tmp-gsm/hf_models/Qwen2.5-Math-7B",
+    "qwen3_8b_base": QWEN_MODEL_ROOT / "Qwen3-8B-Base",
+    "qwen2_5_math_7b": QWEN_MODEL_ROOT / "Qwen2.5-Math-7B",
 }
 QWEN_POOLING_MODES = ("mean", "last", "mean_last")
 
