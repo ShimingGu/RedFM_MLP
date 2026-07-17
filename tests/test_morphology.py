@@ -19,6 +19,7 @@ from aion_magnitude.morphology import (
     format_morphology_population_report,
     make_magnitude_config,
     resolve_morphology_paths,
+    scale_product_features_from_training_split,
 )
 
 
@@ -131,6 +132,43 @@ class MorphologyModuleTest(unittest.TestCase):
         self.assertIn("train usable matched morphology: n_gal=3 (60.00%)", formatted)
         self.assertIn("validation valid u*: n_gal=2 (66.67%)", formatted)
         self.assertNotIn("valid H:", formatted)
+
+    def test_minmax_scaling_fits_training_rows_only(self) -> None:
+        product = {
+            "extra_features": torch.tensor([[0.0, 5.0], [2.0, 5.0], [4.0, 9.0]]),
+            "split_labels": ["train", "train", "val"],
+            "metadata": {},
+        }
+        scaled = scale_product_features_from_training_split(
+            product,
+            feature_key="extra_features",
+            mode="minmax",
+        )
+
+        torch.testing.assert_close(
+            scaled["extra_features"],
+            torch.tensor([[0.0, 0.0], [1.0, 0.0], [2.0, 4.0]]),
+        )
+        self.assertEqual(scaled["metadata"]["feature_scaling"]["fit_split"], "train")
+        self.assertFalse(scaled["metadata"]["feature_scaling"]["minmax_validation_test_clipped"])
+
+    def test_zscore_scaling_fits_training_rows_only(self) -> None:
+        product = {
+            "aion_embedding": torch.tensor([[1.0], [3.0], [7.0]]),
+            "split_labels": ["train", "train", "test"],
+            "metadata": {},
+        }
+        scaled = scale_product_features_from_training_split(
+            product,
+            feature_key="aion_embedding",
+            mode="zscore",
+        )
+
+        torch.testing.assert_close(
+            scaled["aion_embedding"],
+            torch.tensor([[-1.0], [1.0], [5.0]]),
+        )
+        self.assertEqual(scaled["metadata"]["feature_scaling"]["mode"], "zscore")
 
     def test_seeded_random_sampling_is_deterministic(self) -> None:
         first = select_catalogue_row_indices(

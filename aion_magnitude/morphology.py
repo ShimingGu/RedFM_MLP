@@ -70,6 +70,7 @@ AION_IMAGE_INPUT_SIZE = 96
 AION_IMAGE_GRID_SIZE = 24
 DEFAULT_AION_IMAGE_QUANTIZER_LEVELS = (7, 5, 5, 5, 5)
 MORPHOLOGY_REPORT_BANDS = ("u", "u_star", "Y", "J", "Ks")
+FEATURE_SCALING_MODES = ("none", "minmax", "zscore")
 
 
 def _as_path_or_none(value: str | Path | None) -> Path | None:
@@ -157,6 +158,7 @@ class AIONMorphologyConfig:
     image_embedding_dim: int = 128
     photometry_hidden_dim: int = 128
     head_hidden_dim: int = 256
+    feature_scaling: str = "none"
     epochs: int = 20
     learning_rate: float = 1e-3
     weight_decay: float = 1e-4
@@ -192,6 +194,12 @@ class AIONMorphologyConfig:
         background_mode = str(self.image_background_mode).lower()
         if background_mode not in {"none", "median"}:
             raise ValueError("image_background_mode must be 'none' or 'median'.")
+        feature_scaling = str(self.feature_scaling).lower()
+        if feature_scaling not in FEATURE_SCALING_MODES:
+            raise ValueError(
+                f"feature_scaling must be one of {FEATURE_SCALING_MODES}, "
+                f"got {self.feature_scaling!r}."
+            )
         model_kinds = tuple(str(kind) for kind in self.model_kinds)
         unknown = set(model_kinds).difference(
             {
@@ -1295,6 +1303,58 @@ class AIONMagnitudeMorphologyResidualPhotoZModel(nn.Module):
         return base_logits + delta_logits
 
 
+def scale_product_features_from_training_split(
+    product: Mapping[str, Any],
+    *,
+    feature_key: str,
+    mode: str = "none",
+) -> dict[str, Any]:
+    """Scale one feature matrix using statistics fitted on training rows only."""
+    mode = str(mode).lower()
+    if mode not in FEATURE_SCALING_MODES:
+        raise ValueError(f"mode must be one of {FEATURE_SCALING_MODES}, got {mode!r}.")
+
+    output = dict(product)
+    metadata = dict(product.get("metadata", {}))
+    if mode == "none":
+        metadata["feature_scaling"] = {"mode": "none", "feature_key": feature_key}
+        output["metadata"] = metadata
+        return output
+
+    values = torch.as_tensor(product[feature_key], dtype=torch.float32)
+    if values.ndim != 2 or values.shape[1] == 0:
+        raise ValueError(f"{feature_key} must be a non-empty 2D feature matrix.")
+    if not bool(torch.isfinite(values).all()):
+        raise ValueError(f"{feature_key} contains non-finite values before {mode} scaling.")
+    split_labels = np.asarray(product["split_labels"], dtype=object)
+    train_mask = torch.as_tensor(split_labels == "train", dtype=torch.bool)
+    if not bool(train_mask.any()):
+        raise ValueError("Cannot fit feature scaling without training rows.")
+    train_values = values[train_mask]
+
+    if mode == "minmax":
+        offset = train_values.amin(dim=0)
+        raw_scale = train_values.amax(dim=0) - offset
+    else:
+        offset = train_values.mean(dim=0)
+        raw_scale = train_values.std(dim=0, unbiased=False)
+    constant_mask = (~torch.isfinite(raw_scale)) | (raw_scale.abs() <= 1e-12)
+    scale = torch.where(constant_mask, torch.ones_like(raw_scale), raw_scale)
+    output[feature_key] = (values - offset) / scale
+    metadata["feature_scaling"] = {
+        "mode": mode,
+        "feature_key": feature_key,
+        "fit_split": "train",
+        "offset": offset.cpu(),
+        "scale": scale.cpu(),
+        "constant_feature_mask": constant_mask.cpu(),
+        "n_fit_rows": int(train_mask.sum().item()),
+        "minmax_validation_test_clipped": False if mode == "minmax" else None,
+    }
+    output["metadata"] = metadata
+    return output
+
+
 @dataclass
 class MorphologyTokenBatch:
     object_id: list[Any]
@@ -1440,7 +1500,7 @@ def _build_morphology_model(
             n_z_bins=n_z_bins,
             head_hidden_dim=config.head_hidden_dim,
         )
-    if model_kind in {"aion_morphology", "shuffled_aion_morphology"}:
+    if model_kind in {"aion_morphology", "shuffled_aion_morphology", "qwen_morphology"}:
         return AIONMagnitudeMorphologyResidualPhotoZModel(
             aion_dim=aion_dim,
             n_z_bins=n_z_bins,
@@ -1551,6 +1611,14 @@ def train_single_morphology_model(
 ) -> dict[str, Any]:
     config = config.normalized()
     device = resolve_torch_device(device)
+    embedding_kinds = {
+        "aion",
+        "aion_morphology",
+        "shuffled_aion_morphology",
+        "qwen_morphology",
+    }
+    feature_key = "aion_embedding" if model_kind in embedding_kinds else "extra_features"
+    product = scale_product_features_from_training_split(product, feature_key=feature_key, mode=config.feature_scaling)
     redshift_edges, redshift_centers = make_redshift_grid(config.z_min, config.z_max, config.n_z_bins)
     train_product, val_product, test_product = split_morphology_product(product)
     if len(train_product["object_id"]) == 0:
@@ -1580,9 +1648,9 @@ def train_single_morphology_model(
     quantizer_levels = metadata.get("aion_image_quantizer_levels", DEFAULT_AION_IMAGE_QUANTIZER_LEVELS)
     aion_dim = int(torch.as_tensor(product["aion_embedding"]).shape[1])
     extra_feature_dim = int(torch.as_tensor(product["extra_features"]).shape[1])
-    if model_kind.startswith("aion") or model_kind == "shuffled_aion_morphology":
+    if model_kind in embedding_kinds:
         if aion_dim == 0:
-            raise ValueError(f"model_kind={model_kind!r} requires grizy AION embeddings.")
+            raise ValueError(f"model_kind={model_kind!r} requires frozen magnitude embeddings.")
     elif extra_feature_dim == 0:
         raise ValueError(f"model_kind={model_kind!r} requires MLP photometry features.")
     model = _build_morphology_model(
@@ -1725,6 +1793,7 @@ _MORPHOLOGY_COMPARISON_LABELS = {
     "morphology": "grizy-MLP+tokenized-u-image",
     "aion": "grizy-aion-only",
     "aion_morphology": "grizy-aion+tokenized-u-image",
+    "qwen_morphology": "all-magnitude-Qwen+tokenized-u-image",
 }
 
 
@@ -1771,6 +1840,7 @@ def save_morphology_comparison_artifacts(
     output_dir: str | Path,
     tomographic_samples: int,
     comparison_labels: tuple[str, str] | None = None,
+    comparison_prefix: str | Path | None = None,
 ) -> dict[str, str]:
     """Save the same paired diagnostics produced by standard_comparison.sh."""
     if len(model_kinds) != 2:
@@ -1786,7 +1856,11 @@ def save_morphology_comparison_artifacts(
     )
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
-    prefix = morphology_comparison_prefix(output_dir, model_kinds)
+    prefix = (
+        Path(comparison_prefix)
+        if comparison_prefix is not None
+        else morphology_comparison_prefix(output_dir, model_kinds)
+    )
     assert prefix is not None
     artifacts = {
         "loss": str(Path(f"{prefix}_loss.jpeg")),
@@ -1926,6 +2000,11 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
         help="Keep each selected galaxy original photometry train/validation/test assignment.",
     )
     parser.add_argument("--model-kinds", type=_parse_model_kinds, default=AIONMorphologyConfig.model_kinds)
+    parser.add_argument(
+        "--feature-scaling",
+        choices=FEATURE_SCALING_MODES,
+        default=AIONMorphologyConfig.feature_scaling,
+    )
     parser.add_argument("--epochs", type=int, default=AIONMorphologyConfig.epochs)
     parser.add_argument("--train-batch-size", type=int, default=AIONMorphologyConfig.train_batch_size)
     parser.add_argument("--eval-batch-size", type=int, default=AIONMorphologyConfig.eval_batch_size)
@@ -1969,6 +2048,7 @@ def main(argv: Sequence[str] | None = None) -> None:
         force_rebuild_photometry=bool(args.force_rebuild_photometry),
         preserve_photometry_splits=bool(args.preserve_photometry_splits),
         model_kinds=args.model_kinds,
+        feature_scaling=args.feature_scaling,
         epochs=args.epochs,
         train_batch_size=args.train_batch_size,
         eval_batch_size=args.eval_batch_size,
