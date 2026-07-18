@@ -209,6 +209,7 @@ class AIONMorphologyConfig:
                 "aion",
                 "aion_morphology",
                 "shuffled_aion_morphology",
+                "qwen_morphology",
             }
         )
         if unknown:

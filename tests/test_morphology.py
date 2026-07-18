@@ -24,6 +24,14 @@ from aion_magnitude.morphology import (
 
 
 class MorphologyModuleTest(unittest.TestCase):
+    def test_qwen_morphology_is_a_valid_external_embedding_model_kind(self) -> None:
+        config = AIONMorphologyConfig(
+            use_aion_magnitude_embedding=False,
+            model_kinds=("qwen_morphology", "morphology"),
+        ).normalized()
+
+        self.assertEqual(config.model_kinds, ("qwen_morphology", "morphology"))
+
     def test_morphology_config_preserves_sampling_and_open_max(self) -> None:
         config = AIONMorphologyConfig(
             max_rows=100,
