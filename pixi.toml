@@ -1,0 +1,25 @@
+[workspace]
+name = "redfm-mlp"
+version = "0.3.0"
+description = "CUDA-enabled environment for AION magnitude and Qwen experiments"
+channels = ["conda-forge"]
+platforms = [{ platform = "linux-64", cuda = "13.2" }]
+
+[activation.env]
+PYTHONNOUSERSITE = "1"
+HF_HOME = "/scratch/.tmp-gsm/huggingface"
+
+[dependencies]
+python = ">=3.13,<3.14"
+numpy = "*"
+astropy = "*"
+matplotlib = "*"
+pytorch = "2.9.1.*"
+pytorch-gpu = "2.9.1.*"
+cuda-version = "12.9.*"
+bitsandbytes = ">=0.49.2,<0.50"
+transformers = ">=5.13.0,<6"
+accelerate = ">=1.14.0,<2"
+safetensors = ">=0.8.0,<0.9"
+pip = ">=26.1.2,<27"
+pytest = "*"

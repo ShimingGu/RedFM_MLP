@@ -6,12 +6,12 @@ REPO_ROOT="$(cd -- "$SCRIPT_DIR/.." && pwd)"
 
 if [[ -n "${PYTHON_BIN:-}" ]]; then
     PYTHON_CMD=("$PYTHON_BIN")
-elif [[ -f "${PIXI_MANIFEST:-$REPO_ROOT/../RedFM_original/pixi.toml}" ]]; then
-    PYTHON_CMD=(pixi run --manifest-path "${PIXI_MANIFEST:-$REPO_ROOT/../RedFM_original/pixi.toml}" python)
+elif [[ -f "${PIXI_MANIFEST:-$REPO_ROOT/pixi.toml}" ]]; then
+    PYTHON_CMD=(pixi run --manifest-path "${PIXI_MANIFEST:-$REPO_ROOT/pixi.toml}" python)
 elif [[ -x "$REPO_ROOT/.venv/bin/python" ]]; then
     PYTHON_CMD=("$REPO_ROOT/.venv/bin/python")
 else
-    echo "No project Python environment found." >&2
+    echo "No project Python environment found. Expected $REPO_ROOT/pixi.toml or $REPO_ROOT/.venv/bin/python." >&2
     exit 1
 fi
 

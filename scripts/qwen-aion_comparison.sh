@@ -7,7 +7,7 @@ REPO_ROOT="$(cd -- "$SCRIPT_DIR/.." && pwd)"
 if [[ -n "${PYTHON_BIN:-}" ]]; then
     PYTHON_CMD=("$PYTHON_BIN")
 else
-    DEFAULT_PIXI_MANIFEST="$REPO_ROOT/../RedFM_original/pixi.toml"
+    DEFAULT_PIXI_MANIFEST="$REPO_ROOT/pixi.toml"
     PIXI_MANIFEST="${PIXI_MANIFEST:-$DEFAULT_PIXI_MANIFEST}"
     if [[ -f "$PIXI_MANIFEST" ]]; then
         PYTHON_CMD=(pixi run --manifest-path "$PIXI_MANIFEST" python)
@@ -20,7 +20,7 @@ else
     fi
 fi
 
-if ! "${PYTHON_CMD[@]}" -c 'import numpy, torch, astropy, matplotlib, safetensors, aion, transformers, accelerate, bitsandbytes' >/dev/null; then
+if ! "${PYTHON_CMD[@]}" -c 'import numpy, torch, astropy, matplotlib, safetensors, aion_magnitude, transformers, accelerate, bitsandbytes' >/dev/null; then
     echo "The selected Python environment is missing Qwen/AION dependencies." >&2
     echo "Install the qwen-cuda extra with: .venv/bin/pip install -e \".[qwen-cuda]\"" >&2
     exit 1
