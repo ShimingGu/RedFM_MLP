@@ -27,5 +27,5 @@ exec "${PYTHON_CMD[@]}" "$REPO_ROOT/notebooks/qwen_qwen_comparison.py" \
     --train-batch-size "${AION_TRAIN_BATCH_SIZE:-256}" --eval-batch-size "${AION_EVAL_BATCH_SIZE:-512}" \
     --device "${AION_DEVICE:-auto}" --n-z-bins "${AION_N_Z_BINS:-300}" \
     --tomographic-samples "${AION_TOMOGRAPHIC_SAMPLES:-100}" --feature-scaling minmax \
-    --qwen-model "${QWEN_MODEL:-qwen3_8b_base}" --qwen-max-length "${QWEN_MAX_LENGTH:-2048}" \
+    --qwen-model "${QWEN_MODEL:-Qwen3-8B-Base}" --qwen-max-length "${QWEN_MAX_LENGTH:-2048}" \
     --qwen-pooling "${QWEN_POOLING:-mean}" "${FLAGS[@]}" "$@"

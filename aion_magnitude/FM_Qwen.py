@@ -33,7 +33,17 @@ QWEN_MODEL_ROOT = Path(
     )
 ).expanduser()
 QWEN_DEFAULT_MODELS = {
+    "Qwen3-4B-Base": QWEN_MODEL_ROOT / "Qwen3-4B-Base",
+    "Qwen3-8B-Base": QWEN_MODEL_ROOT / "Qwen3-8B-Base",
+    "Qwen3.5-0.8B-Base": QWEN_MODEL_ROOT / "Qwen3.5-0.8B-Base",
+    "Qwen3.5-4B-Base": QWEN_MODEL_ROOT / "Qwen3.5-4B-Base",
+    "Qwen3.5-4B": QWEN_MODEL_ROOT / "Qwen3.5-4B",
+    # Backward-compatible aliases for existing commands and cached metadata.
     "qwen3_8b_base": QWEN_MODEL_ROOT / "Qwen3-8B-Base",
+    "qwen3_4b_base": QWEN_MODEL_ROOT / "Qwen3-4B-Base",
+    "qwen3_5_0_8b_base": QWEN_MODEL_ROOT / "Qwen3.5-0.8B-Base",
+    "qwen3_5_4b_base": QWEN_MODEL_ROOT / "Qwen3.5-4B-Base",
+    "qwen3_5_4b": QWEN_MODEL_ROOT / "Qwen3.5-4B",
     "qwen2_5_math_7b": QWEN_MODEL_ROOT / "Qwen2.5-Math-7B",
 }
 QWEN_POOLING_MODES = ("mean", "last", "mean_last")
@@ -56,7 +66,7 @@ class QwenSerializationConfig:
 class QwenEmbeddingConfig:
     """Runtime options for frozen Qwen embedding extraction."""
 
-    model_path: str | Path = QWEN_DEFAULT_MODELS["qwen3_8b_base"]
+    model_path: str | Path = QWEN_DEFAULT_MODELS["Qwen3-8B-Base"]
     device: str | torch.device | None = None
     load_in_4bit: bool = True
     torch_dtype: str | torch.dtype | None = "auto"
@@ -99,7 +109,7 @@ def resolve_qwen_dtype(dtype: str | torch.dtype | None, device: torch.device) ->
 
 
 def load_frozen_qwen(
-    model_path: str | Path = QWEN_DEFAULT_MODELS["qwen3_8b_base"],
+    model_path: str | Path = QWEN_DEFAULT_MODELS["Qwen3-8B-Base"],
     *,
     device: torch.device | str | None = None,
     load_in_4bit: bool = True,

@@ -36,7 +36,7 @@ from aion_magnitude.FM_Qwen import (
 DEFAULT_CATALOGUE = Path("data/clauds/catalogs/COSMOS-HSCpipe-Phosphoros.fits")
 DEFAULT_OUTPUT_DIR = Path("/arc/home/gsm/aion_output/figures")
 DEFAULT_CACHE_ROOT = Path("/scratch/.tmp-gsm/aion_output/cache")
-DEFAULT_QWEN_MODEL = "qwen3_8b_base"
+DEFAULT_QWEN_MODEL = "Qwen3-8B-Base"
 
 
 def parse_max_rows(value: str) -> int | None:

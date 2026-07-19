@@ -112,7 +112,7 @@ class Qwen3SerializationConfig:
 class Qwen3EmbeddingConfig(QwenEmbeddingConfig):
     """Qwen3 defaults sized for magnitude descriptions plus a 24x24 token grid."""
 
-    model_path: str = "qwen3_8b_base"
+    model_path: str = "Qwen3-8B-Base"
     max_length: int = 2048
 
 

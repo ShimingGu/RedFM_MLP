@@ -39,6 +39,6 @@ exec "${PYTHON_CMD[@]}" "$REPO_ROOT/notebooks/qwen_mlp_full_image_comparison.py"
     --tomographic-samples "${AION_TOMOGRAPHIC_SAMPLES:-100}" \
     --image-flux-scale "${AION_IMAGE_FLUX_SCALE:-1.0}" \
     --min-cutout-weight-coverage "${AION_MIN_CUTOUT_WEIGHT_COVERAGE:-0.90}" \
-    --feature-scaling minmax --qwen-model "${QWEN_MODEL:-qwen3_8b_base}" \
+    --feature-scaling minmax --qwen-model "${QWEN_MODEL:-Qwen3-8B-Base}" \
     --qwen-max-length "${QWEN_MAX_LENGTH:-2048}" --qwen-pooling "${QWEN_POOLING:-mean}" \
     "${FLAGS[@]}" "$@"

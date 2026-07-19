@@ -34,7 +34,7 @@ fi
 AION_CATALOGUE="${AION_CATALOGUE:-$REPO_ROOT/data/clauds/catalogs/COSMOS-HSCpipe-Phosphoros.fits}"
 AION_OUTPUT_DIR="${AION_OUTPUT_DIR:-/arc/home/gsm/aion_output/figures}"
 AION_CACHE_ROOT="${AION_CACHE_ROOT:-/scratch/.tmp-gsm/aion_output/cache}"
-QWEN_MODEL="${QWEN_MODEL:-qwen3_8b_base}"
+QWEN_MODEL="${QWEN_MODEL:-Qwen3-8B-Base}"
 
 QWEN_FLAGS=()
 if [[ "${QWEN_LOAD_IN_4BIT:-1}" == "0" ]]; then

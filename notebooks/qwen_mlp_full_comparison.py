@@ -46,7 +46,7 @@ DEFAULT_CATALOGUE = Path("data/clauds/catalogs/COSMOS-HSCpipe-Phosphoros.fits")
 DEFAULT_MORPHOLOGY_DIR = Path("data/clauds/images/tilesv5/")
 DEFAULT_OUTPUT_DIR = Path("/arc/home/gsm/aion_output/figures/qwen-mlp_full_comparison")
 DEFAULT_CACHE_ROOT = Path("/scratch/.tmp-gsm/aion_output/cache")
-DEFAULT_QWEN_MODEL = "qwen3_8b_base"
+DEFAULT_QWEN_MODEL = "Qwen3-8B-Base"
 COMPARISON_NAME = "qwen_mlp_full_comparison"
 
 
