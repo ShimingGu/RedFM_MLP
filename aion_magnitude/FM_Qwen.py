@@ -15,11 +15,11 @@ from .dataset import CLAUDSPhotoZDataset, collate_clauds_photoz
 from .utils import resolve_torch_device
 
 try:
-    from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
+    from transformers import AutoModel, AutoTokenizer, BitsAndBytesConfig
     TRANSFORMERS_AVAILABLE = True
     TRANSFORMERS_IMPORT_ERROR = None
 except ImportError as exc:
-    AutoModelForCausalLM = None
+    AutoModel = None
     AutoTokenizer = None
     BitsAndBytesConfig = None
     TRANSFORMERS_AVAILABLE = False
@@ -107,7 +107,7 @@ def load_frozen_qwen(
     local_files_only: bool = True,
     trust_remote_code: bool = True,
 ):
-    """Load a Qwen causal LM and tokenizer for frozen catalogue embeddings.
+    """Load a Qwen base transformer and tokenizer for frozen catalogue embeddings.
 
     The returned model is eval-only with gradients disabled. On the current
     11 GiB MIG slice, `load_in_4bit=True` is the practical default.
@@ -147,7 +147,7 @@ def load_frozen_qwen(
     else:
         model_kwargs["device_map"] = None
 
-    model = AutoModelForCausalLM.from_pretrained(model_path, **model_kwargs)
+    model = AutoModel.from_pretrained(model_path, **model_kwargs)
     if not load_in_4bit:
         model = model.to(device)
     model.eval()
@@ -289,9 +289,9 @@ def extract_qwen_embeddings_from_texts(
             return_tensors="pt",
         )
         encoded = {key: value.to(device) for key, value in encoded.items()}
-        output = model(**encoded, output_hidden_states=True, use_cache=False, return_dict=True)
+        output = model(**encoded, use_cache=False, return_dict=True)
         embedding = pool_qwen_hidden_states(
-            output.hidden_states[-1],
+            output.last_hidden_state,
             encoded["attention_mask"],
             pooling=pooling,
         )

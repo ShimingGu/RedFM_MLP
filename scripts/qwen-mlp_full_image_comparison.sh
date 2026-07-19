@@ -33,7 +33,7 @@ exec "${PYTHON_CMD[@]}" "$REPO_ROOT/notebooks/qwen_mlp_full_image_comparison.py"
     --output-dir "$AION_OUTPUT_DIR" --cache-root "$AION_CACHE_ROOT" \
     --max-rows "${AION_MAX_ROWS:-none}" --epochs "${AION_EPOCHS:-10}" \
     --token-batch-size "${AION_TOKEN_BATCH_SIZE:-64}" \
-    --qwen-embedding-batch-size "${QWEN_EMBEDDING_BATCH_SIZE:-8}" \
+    --qwen-embedding-batch-size "${QWEN_EMBEDDING_BATCH_SIZE:-1}" \
     --train-batch-size "${AION_TRAIN_BATCH_SIZE:-256}" --eval-batch-size "${AION_EVAL_BATCH_SIZE:-512}" \
     --device "${AION_DEVICE:-auto}" --n-z-bins "${AION_N_Z_BINS:-300}" \
     --tomographic-samples "${AION_TOMOGRAPHIC_SAMPLES:-100}" \
