@@ -31,7 +31,7 @@ cd -- "$REPO_ROOT"
 exec "${PYTHON_CMD[@]}" "$REPO_ROOT/notebooks/qwen_mlp_full_image_comparison.py" \
     --catalogue "$AION_CATALOGUE" --morphology-dir "$AION_MORPHOLOGY_DIR" \
     --output-dir "$AION_OUTPUT_DIR" --cache-root "$AION_CACHE_ROOT" \
-    --max-rows "${AION_MAX_ROWS:-none}" --epochs "${AION_EPOCHS:-10}" \
+    --max-rows "${AION_MAX_ROWS:-200000}" --epochs "${AION_EPOCHS:-10}" \
     --token-batch-size "${AION_TOKEN_BATCH_SIZE:-64}" \
     --qwen-embedding-batch-size "${QWEN_EMBEDDING_BATCH_SIZE:-1}" \
     --train-batch-size "${AION_TRAIN_BATCH_SIZE:-256}" --eval-batch-size "${AION_EVAL_BATCH_SIZE:-512}" \
