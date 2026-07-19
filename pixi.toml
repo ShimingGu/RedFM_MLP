@@ -23,3 +23,6 @@ accelerate = ">=1.14.0,<2"
 safetensors = ">=0.8.0,<0.9"
 pip = ">=26.1.2,<27"
 pytest = "*"
+
+[pypi-dependencies]
+polymathic-aion = "==0.0.2"
