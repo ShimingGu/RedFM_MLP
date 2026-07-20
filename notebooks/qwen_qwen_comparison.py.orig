@@ -88,12 +88,6 @@ def extract_text_embeddings(args, product, config, serialization, cache_path, de
                 batch_size=args.qwen_embedding_batch_size, pooling=config.pooling,
                 normalize=config.normalize,
             ))
-            completed = min(start + len(batch), len(values))
-            if completed == len(values) or completed % max(1000, args.qwen_embedding_batch_size) == 0:
-                print(
-                    f"{schema} Qwen embeddings: {completed:,}/{len(values):,}",
-                    flush=True,
-                )
         if not parts:
             raise ValueError(f"{schema} Qwen extraction received zero rows.")
         result = torch.cat(parts)
