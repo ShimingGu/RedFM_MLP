@@ -1,0 +1,80 @@
+import unittest
+
+import torch
+
+from aion_magnitude.FM_Qwen import QwenEmbeddingConfig
+from aion_magnitude.FM_Qwen3 import (
+    Qwen3SerializationConfig,
+    qwen3_embedding_metadata,
+    serialize_qwen3_observation,
+    serialize_tokenized_galaxy_image,
+)
+
+
+class TestQwen3ImageCompactification(unittest.TestCase):
+    def test_center_crop_is_spatial_center_not_flat_prefix(self):
+        grid = torch.arange(24 * 24).reshape(24, 24)
+        config = Qwen3SerializationConfig(
+            image_input_mode="center_crop",
+            image_crop_size=16,
+            include_image_context=False,
+        )
+        text = serialize_tokenized_galaxy_image(grid, config=config)
+        expected_first_row = ",".join(str(value) for value in grid[4, 4:20].tolist())
+        expected_last_row = ",".join(str(value) for value in grid[19, 4:20].tolist())
+        self.assertIn("source_grid_shape=24x24", text)
+        self.assertIn("serialized_grid_shape=16x16", text)
+        self.assertIn(f"ordered_token_rows=[{expected_first_row};", text)
+        self.assertIn(f";{expected_last_row}]", text)
+        self.assertNotIn("ordered_token_rows=[0,1,2", text)
+
+    def test_full_grid_remains_available(self):
+        grid = torch.arange(24 * 24).reshape(24, 24)
+        config = Qwen3SerializationConfig(
+            image_input_mode="full_grid",
+            include_image_context=False,
+        )
+        text = serialize_tokenized_galaxy_image(grid, config=config)
+        self.assertIn("serialized_grid_shape=24x24", text)
+        self.assertIn("ordered_token_rows=[0,1,2", text)
+        self.assertIn(",575]", text)
+
+    def test_final_marker_follows_image(self):
+        config = Qwen3SerializationConfig(
+            image_input_mode="center_crop",
+            image_crop_size=16,
+            include_physical_context=False,
+            include_image_context=False,
+            final_marker="Combined galaxy representation:",
+        )
+        text = serialize_qwen3_observation(
+            {"g_mag": 24.0}, torch.zeros((24, 24), dtype=torch.long), config=config
+        )
+        self.assertTrue(text.endswith("Combined galaxy representation:"))
+
+    def test_metadata_disambiguates_crop_and_full_grid(self):
+        embedding = QwenEmbeddingConfig(model_path="test-model", pooling="last")
+        cropped = qwen3_embedding_metadata(
+            embedding,
+            Qwen3SerializationConfig(image_input_mode="center_crop", image_crop_size=16),
+        )
+        full = qwen3_embedding_metadata(
+            embedding, Qwen3SerializationConfig(image_input_mode="full_grid")
+        )
+        self.assertEqual(cropped["qwen_serialized_image_grid_size"], 16)
+        self.assertEqual(full["qwen_serialized_image_grid_size"], 24)
+        self.assertNotEqual(cropped["qwen_image_input_mode"], full["qwen_image_input_mode"])
+
+    def test_invalid_center_crop_is_rejected(self):
+        grid = torch.zeros((24, 24), dtype=torch.long)
+        with self.assertRaises(ValueError):
+            serialize_tokenized_galaxy_image(
+                grid,
+                config=Qwen3SerializationConfig(
+                    image_input_mode="center_crop", image_crop_size=15
+                ),
+            )
+
+
+if __name__ == "__main__":
+    unittest.main()

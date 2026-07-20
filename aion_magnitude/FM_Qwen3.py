@@ -91,6 +91,8 @@ TOKEN_IMAGE_CONTEXT = (
     "of individual tokens is supplied."
 )
 
+QWEN_IMAGE_INPUT_MODES = ("full_grid", "center_crop")
+
 
 @dataclass(frozen=True)
 class Qwen3SerializationConfig:
@@ -98,11 +100,14 @@ class Qwen3SerializationConfig:
     decimals: int = 5
     missing_token: str = "NA"
     image_grid_size: int = AION_IMAGE_GRID_SIZE
+    image_input_mode: str = "full_grid"
+    image_crop_size: int = 16
     include_physical_context: bool = True
     include_image_context: bool = True
     include_unrecognized_features: bool = True
     image_label: str = "tokenized galaxy image"
     prefix: str = "Galaxy observation"
+    final_marker: str | None = None
     band_descriptions: Sequence[CLAUDBandDescription] = field(
         default_factory=lambda: CLAUDS_BAND_DESCRIPTIONS
     )
@@ -161,10 +166,26 @@ def serialize_tokenized_galaxy_image(
         )
     if tokens.is_floating_point() and not bool(torch.equal(tokens, tokens.round())):
         raise ValueError("AION image token IDs must be integers.")
+    if config.image_input_mode not in QWEN_IMAGE_INPUT_MODES:
+        raise ValueError(f"image_input_mode must be one of {QWEN_IMAGE_INPUT_MODES}.")
+    serialized_grid_size = grid_size
+    if config.image_input_mode == "center_crop":
+        crop_size = int(config.image_crop_size)
+        if crop_size <= 0 or crop_size > grid_size:
+            raise ValueError("image_crop_size must be positive and no larger than image_grid_size.")
+        if (grid_size - crop_size) % 2:
+            raise ValueError(
+                "A centered crop requires image_grid_size - image_crop_size to be even."
+            )
+        offset = (grid_size - crop_size) // 2
+        grid = grid[offset : offset + crop_size, offset : offset + crop_size]
+        serialized_grid_size = crop_size
     rows = [",".join(str(int(value)) for value in row.tolist()) for row in grid]
     context = f" {TOKEN_IMAGE_CONTEXT}" if config.include_image_context else ""
     return (
-        f"{config.image_label}: grid_shape={grid_size}x{grid_size};"
+        f"{config.image_label}: source_grid_shape={grid_size}x{grid_size};"
+        f" serialized_grid_shape={serialized_grid_size}x{serialized_grid_size};"
+        f" image_input_mode={config.image_input_mode};"
         f"{context} ordered_token_rows=[" + ";".join(rows) + "]"
     )
 
@@ -202,6 +223,8 @@ def serialize_qwen3_observation(
 
     if image_token_ids is not None:
         sections.append(serialize_tokenized_galaxy_image(image_token_ids, config=config))
+    if config.final_marker:
+        sections.append(config.final_marker)
     return "\n".join(sections)
 
 
@@ -237,9 +260,21 @@ def qwen3_embedding_metadata(
     return {
         **qwen_embedding_metadata(embedding_config),
         "qwen_serialization_schema": serialization_config.schema_name,
-        "qwen_physical_band_context": True,
+        "qwen_physical_band_context": bool(serialization_config.include_physical_context),
         "qwen_image_input": serialization_config.image_label,
+        "qwen_image_context": bool(serialization_config.include_image_context),
         "qwen_image_grid_size": int(serialization_config.image_grid_size),
+        "qwen_image_input_mode": serialization_config.image_input_mode,
+        "qwen_image_crop_size": (
+            int(serialization_config.image_crop_size)
+            if serialization_config.image_input_mode == "center_crop" else None
+        ),
+        "qwen_serialized_image_grid_size": (
+            int(serialization_config.image_crop_size)
+            if serialization_config.image_input_mode == "center_crop"
+            else int(serialization_config.image_grid_size)
+        ),
+        "qwen_final_marker": serialization_config.final_marker,
         "qwen_image_token_interpretation": "not predefined",
         "qwen_band_order": [band.canonical_name for band in serialization_config.band_descriptions],
     }
@@ -248,6 +283,7 @@ def qwen3_embedding_metadata(
 __all__ = [
     "CLAUDBandDescription",
     "CLAUDS_BAND_DESCRIPTIONS",
+    "QWEN_IMAGE_INPUT_MODES",
     "PHYSICAL_CONTEXT",
     "TOKEN_IMAGE_CONTEXT",
     "Qwen3SerializationConfig",

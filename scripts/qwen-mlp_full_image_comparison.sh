@@ -24,6 +24,7 @@ FLAGS=()
 [[ "${QWEN_LOAD_IN_4BIT:-1}" == 0 ]] && FLAGS+=(--no-qwen-4bit)
 [[ "${QWEN_ALLOW_DOWNLOAD:-0}" == 1 ]] && FLAGS+=(--allow-qwen-download)
 [[ "${QWEN_NORMALIZE:-0}" == 1 ]] && FLAGS+=(--qwen-normalize)
+[[ "${QWEN_ALLOW_TRUNCATION:-0}" == 1 ]] && FLAGS+=(--allow-qwen-truncation)
 [[ "${AION_FORCE_REBUILD_TOKENS:-0}" == 1 ]] && FLAGS+=(--force-rebuild-tokens)
 [[ "${AION_FORCE_RECOMPUTE_EMBEDDINGS:-0}" == 1 ]] && FLAGS+=(--force-rebuild-photometry --force-recompute-qwen)
 
@@ -40,5 +41,7 @@ exec "${PYTHON_CMD[@]}" "$REPO_ROOT/notebooks/qwen_mlp_full_image_comparison.py"
     --image-flux-scale "${AION_IMAGE_FLUX_SCALE:-1.0}" \
     --min-cutout-weight-coverage "${AION_MIN_CUTOUT_WEIGHT_COVERAGE:-0.90}" \
     --feature-scaling minmax --qwen-model "${QWEN_MODEL:-Qwen3-8B-Base}" \
-    --qwen-max-length "${QWEN_MAX_LENGTH:-2048}" --qwen-pooling "${QWEN_POOLING:-mean}" \
+    --qwen-max-length "${QWEN_MAX_LENGTH:-2048}" --qwen-pooling "${QWEN_POOLING:-last}" \
+    --qwen-image-input-mode "${QWEN_IMAGE_INPUT_MODE:-center_crop}" \
+    --qwen-image-crop-size "${QWEN_IMAGE_CROP_SIZE:-16}" \
     "${FLAGS[@]}" "$@"
