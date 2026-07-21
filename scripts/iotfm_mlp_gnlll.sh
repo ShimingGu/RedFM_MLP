@@ -5,6 +5,12 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd -- "$SCRIPT_DIR/.." && pwd)"
+FEATURE_SCALING="${GNLLL_FEATURE_SCALING:-none}"
+case "$FEATURE_SCALING" in
+    none) EXPERIMENT_SUFFIX="" ;;
+    physical_robust) EXPERIMENT_SUFFIX="_scaling" ;;
+    *) echo "Unknown GNLLL_FEATURE_SCALING: $FEATURE_SCALING" >&2; exit 2 ;;
+esac
 
 if [[ -n "${PYTHON_BIN:-}" ]]; then
     PYTHON_CMD=("$PYTHON_BIN")
@@ -23,6 +29,7 @@ if ! "${PYTHON_CMD[@]}" -c 'import numpy, torch, astropy, transformers, aion_mag
 fi
 
 FLAGS=()
+[[ "${GNLLL_FORCE_RECOMPUTE_INPUT_CACHE:-0}" == 1 ]] && FLAGS+=(--force-recompute-input-cache)
 [[ "${IOTFM_LOAD_IN_4BIT:-0}" == 1 ]] && FLAGS+=(--load-in-4bit)
 [[ "${IOTFM_ALLOW_DOWNLOAD:-0}" == 1 ]] && FLAGS+=(--allow-download)
 [[ "${IOTFM_NORMALIZE:-0}" == 1 ]] && FLAGS+=(--normalize)
@@ -31,11 +38,13 @@ FLAGS=()
 cd -- "$REPO_ROOT"
 exec "${PYTHON_CMD[@]}" "$REPO_ROOT/notebooks/iotfm_mlp_gnlll.py" \
   --catalogue "${AION_CATALOGUE:-$REPO_ROOT/data/clauds/catalogs/COSMOS-HSCpipe-Phosphoros.fits}" \
-  --output-dir "${AION_OUTPUT_DIR:-/arc/home/gsm/aion_output/figures/iotfm_mlp_gnlll}" \
-  --cache-root "${AION_CACHE_ROOT:-/scratch/.tmp-gsm/aion_output/cache/iotfm_mlp_gnlll}" \
+  --output-dir "${AION_OUTPUT_DIR:-/arc/home/gsm/aion_output/figures/iotfm_mlp_gnlll${EXPERIMENT_SUFFIX}}" \
+  --cache-root "${AION_CACHE_ROOT:-/scratch/.tmp-gsm/aion_output/cache/iotfm_mlp_gnlll${EXPERIMENT_SUFFIX}}" \
+  --input-cache-root "${AION_INPUT_CACHE_ROOT:-/scratch/.tmp-gsm/aion_output/cache/iotfm_mlp_gnlll_input}" \
   --max-rows "${AION_MAX_ROWS:-200000}" --model "${IOTFM_MODEL:-GLM-5.2-0.8B-A0.8B}" \
   --embedding-batch-size "${IOTFM_EMBEDDING_BATCH_SIZE:-8}" \
   --max-length "${IOTFM_MAX_LENGTH:-2048}" --pooling "${IOTFM_POOLING:-mean}" \
+  --feature-scaling "$FEATURE_SCALING" \
   --mean-warmup-epochs "${GNLLL_MEAN_WARMUP_EPOCHS:-10}" \
   --gnlll-epochs "${GNLLL_EPOCHS:-20}" \
   --learning-rate "${GNLLL_LEARNING_RATE:-0.001}" \

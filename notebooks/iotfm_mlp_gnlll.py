@@ -16,8 +16,10 @@ from __future__ import annotations
 
 import argparse
 import copy
+import hashlib
 import json
 import math
+import os
 import sys
 from pathlib import Path
 from typing import Any, Sequence
@@ -27,6 +29,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
+from astropy.io import fits
 from torch import nn
 from torch.nn import functional as F
 from torch.utils.data import DataLoader, TensorDataset
@@ -39,6 +42,7 @@ for path in (ROOT, HERE):
 
 import iotfm_mlp as base
 from aion_magnitude.Inference_Opt_TFM import CatalogueSerializationConfig
+from aion_magnitude.clauds_bands import select_catalogue_row_indices
 from aion_magnitude.metrics import point_photoz_metrics
 from aion_magnitude.plotting import (
     compare_config_loss,
@@ -56,6 +60,11 @@ FLUX_ERROR_PREFIXES = (
     "FLUXERR_KRON_", "FLUXERR_CMODEL_",
 )
 KRON_RADIUS_PREFIX = "RADIUS_KRON_"
+FEATURE_SCALING_MODES = ("none", "physical_robust")
+MISSING_SENTINEL = -99.0
+ROBUST_NORMAL_IQR = 1.349
+ROBUST_CLIP = 8.0
+FULL_COLUMN_CACHE_VERSION = 1
 
 
 def parser() -> argparse.ArgumentParser:
@@ -66,6 +75,8 @@ def parser() -> argparse.ArgumentParser:
                    default=Path("/arc/home/gsm/aion_output/figures/iotfm_mlp_gnlll"))
     p.add_argument("--cache-root", type=Path,
                    default=Path("/scratch/.tmp-gsm/aion_output/cache/iotfm_mlp_gnlll"))
+    p.add_argument("--input-cache-root", type=Path,
+                   default=Path("/scratch/.tmp-gsm/aion_output/cache/iotfm_mlp_gnlll_input"))
     p.add_argument("--max-rows", type=base.max_rows_arg, default=200000)
     p.add_argument("--model", default="GLM-5.2-0.8B-A0.8B")
     p.add_argument("--embedding-batch-size", type=int, default=8)
@@ -75,6 +86,9 @@ def parser() -> argparse.ArgumentParser:
     p.add_argument("--load-in-4bit", action="store_true")
     p.add_argument("--allow-download", action="store_true")
     p.add_argument("--force-recompute-embeddings", action="store_true")
+    p.add_argument("--force-recompute-input-cache", action="store_true")
+    p.add_argument("--feature-scaling", choices=FEATURE_SCALING_MODES, default="none",
+                   help="physical_robust applies the transform in logs/cosmos_scaling.md")
     p.add_argument("--mean-warmup-epochs", type=int, default=10,
                    help="mean-only SmoothL1 epochs before joint GNLLL training")
     p.add_argument("--gnlll-epochs", type=int, default=20,
@@ -110,6 +124,183 @@ def select_gnlll_columns(names: Sequence[str]) -> tuple[list[str], list[str], li
             f"columns; found {actual}."
         )
     return flux, radii, errors
+
+def load_full_gnlll_catalogue(catalogue: Path, cache_root: Path, *,
+                              max_rows: int | None, seed: int,
+                              force_recompute: bool = False):
+    """Load a random-row cache preserving all 121 GNLLL FITS inputs.
+
+    The general CLAUDS split cache intentionally keeps only one cModel flux
+    and error per band. This dedicated cache preserves the five estimators.
+    """
+    catalogue = catalogue.expanduser().resolve()
+    cache_root = cache_root.expanduser()
+    row_tag = "all" if max_rows is None else f"n{max_rows}"
+    stem = f"cosmos_gnlll_full121_v{FULL_COLUMN_CACHE_VERSION}_{row_tag}_seed{seed}"
+    cache_path = cache_root / "full_input" / f"{stem}.npy"
+    metadata_path = cache_path.with_suffix(".json")
+    source_stat = catalogue.stat()
+    expected_source = {
+        "cache_version": FULL_COLUMN_CACHE_VERSION,
+        "catalogue": str(catalogue),
+        "catalogue_size": source_stat.st_size,
+        "catalogue_mtime_ns": source_stat.st_mtime_ns,
+        "max_rows": max_rows,
+        "sample_mode": "random",
+        "sample_seed": seed,
+    }
+    if cache_path.exists() and metadata_path.exists() and not force_recompute:
+        metadata = json.loads(metadata_path.read_text())
+        if any(metadata.get(key) != value for key, value in expected_source.items()):
+            raise RuntimeError(
+                f"Full-column input cache does not match this run: {cache_path}. "
+                "Use --force-recompute-input-cache or a different cache root."
+            )
+        table = np.load(cache_path, mmap_mode="r")
+        select_gnlll_columns(table.dtype.names or ())
+        return table, cache_path, metadata
+
+    cache_path.parent.mkdir(parents=True, exist_ok=True)
+    partial_path = cache_path.with_suffix(".partial.npy")
+    with fits.open(catalogue, memmap=True) as hdul:
+        source = hdul[1].data
+        flux_columns, radius_columns, error_columns = select_gnlll_columns(source.names)
+        input_columns = flux_columns + radius_columns + error_columns
+        required = [base.OBJECT_ID_COLUMN, base.REDSHIFT_COLUMNS["zphot"], *input_columns]
+        missing = [name for name in required if name not in source.names]
+        if missing:
+            raise KeyError(f"COSMOS FITS catalogue is missing GNLLL columns: {missing}")
+        selected_rows = select_catalogue_row_indices(
+            len(source), max_rows=max_rows, sample_mode="random", seed=seed,
+        )
+        dtype = np.dtype(
+            [("SOURCE_ROW", np.int64), (base.OBJECT_ID_COLUMN, np.int64),
+             (base.REDSHIFT_COLUMNS["zphot"], np.float64)]
+            + [(name, np.float64) for name in input_columns]
+        )
+        cached = np.lib.format.open_memmap(
+            partial_path, mode="w+", dtype=dtype, shape=(len(selected_rows),),
+        )
+        for start in range(0, len(selected_rows), 50_000):
+            stop = min(start + 50_000, len(selected_rows))
+            source_rows = selected_rows[start:stop]
+            cached["SOURCE_ROW"][start:stop] = source_rows
+            for name in required:
+                cached[name][start:stop] = source[name][source_rows]
+            print(f"GNLLL full-column cache: {stop:,}/{len(selected_rows):,}")
+        cached.flush()
+        del cached
+    os.replace(partial_path, cache_path)
+    metadata = {
+        **expected_source,
+        "n_rows": len(selected_rows),
+        "input_columns": input_columns,
+        "column_groups": {"flux": flux_columns, "radius": radius_columns,
+                          "flux_error": error_columns},
+    }
+    metadata_path.write_text(json.dumps(metadata, indent=2) + "\n")
+    return np.load(cache_path, mmap_mode="r"), cache_path, metadata
+
+
+def clean_column(table, rows: np.ndarray, column: str, kind: str):
+    """Return numeric values and the valid mask under the COSMOS sentinel policy."""
+    raw = np.ma.asarray(table[column])[rows]
+    values = np.asarray(np.ma.getdata(raw), dtype=np.float64)
+    valid = ~np.ma.getmaskarray(raw) & np.isfinite(values) & (values != MISSING_SENTINEL)
+    if kind == "error":
+        valid &= values > 0
+    elif kind == "radius":
+        valid &= values >= 0
+    elif kind != "flux":
+        raise ValueError(f"Unknown GNLLL feature kind: {kind}")
+    return values, valid
+
+
+def robust_scale_parameters(values: np.ndarray) -> tuple[float, float]:
+    center = float(np.median(values))
+    q25, q75 = np.percentile(values, [25.0, 75.0])
+    scale = float((q75 - q25) / ROBUST_NORMAL_IQR)
+    if not np.isfinite(scale) or scale <= 1e-12:
+        scale = float(np.std(values))
+    if not np.isfinite(scale) or scale <= 1e-12:
+        scale = 1.0
+    return center, scale
+
+
+def build_gnlll_features(table, rows: np.ndarray, columns: Sequence[str],
+                         kinds: Sequence[str], splits: np.ndarray, *,
+                         mode: str) -> tuple[torch.Tensor, list[dict[str, Any]]]:
+    """Sanitize/impute inputs and optionally apply physical robust scaling."""
+    if mode not in FEATURE_SCALING_MODES:
+        raise ValueError(f"mode must be one of {FEATURE_SCALING_MODES}, got {mode!r}")
+    if len(columns) != len(kinds):
+        raise ValueError("columns and kinds must have the same length")
+    train = splits == "train"
+    arrays, metadata = [], []
+    for column, kind in zip(columns, kinds):
+        values, valid = clean_column(table, rows, column, kind)
+        fit = train & valid
+        if not fit.any():
+            raise ValueError(f"No valid training values for {column}")
+        transformed = np.full(len(values), np.nan, dtype=np.float64)
+        if mode == "none":
+            transformed[valid] = values[valid]
+            fill = float(np.median(values[fit]))
+            output = np.where(valid, transformed, fill)
+            transform_metadata = {"transform": "identity", "imputation_value": fill}
+        else:
+            if kind == "flux":
+                error_column = column.replace("FLUX_", "FLUXERR_", 1)
+                error_values, error_valid = clean_column(table, rows, error_column, "error")
+                error_fit = train & error_valid
+                if not error_fit.any():
+                    raise ValueError(f"No valid training values for matching {error_column}")
+                softening = float(np.median(error_values[error_fit]))
+                transformed[valid] = np.arcsinh(values[valid] / softening)
+                transform_metadata = {
+                    "transform": "asinh", "softening_scale": softening,
+                    "matching_error_column": error_column,
+                }
+            elif kind == "error":
+                transformed[valid] = np.log(values[valid])
+                transform_metadata = {"transform": "log"}
+            else:
+                positive_fit = fit & (values > 0)
+                radius_scale = float(np.median(values[positive_fit])) if positive_fit.any() else 1.0
+                transformed[valid] = np.log1p(values[valid] / radius_scale)
+                transform_metadata = {"transform": "log1p", "radius_scale": radius_scale}
+            center, scale = robust_scale_parameters(transformed[fit])
+            output = np.zeros(len(values), dtype=np.float64)
+            output[valid] = np.clip(
+                (transformed[valid] - center) / scale, -ROBUST_CLIP, ROBUST_CLIP,
+            )
+            transform_metadata.update(
+                center=center, scale=scale, robust_normal_iqr=ROBUST_NORMAL_IQR,
+                clip=[-ROBUST_CLIP, ROBUST_CLIP], imputation_value=0.0,
+            )
+        arrays.append(output.astype(np.float32))
+        metadata.append({
+            "column": column, "kind": kind, "mode": mode,
+            "n_missing": int((~valid).sum()), "fit_split": "train",
+            **transform_metadata,
+        })
+    return torch.from_numpy(np.stack(arrays, axis=1)), metadata
+
+
+def scale_target_from_train(target: torch.Tensor, splits: np.ndarray, *, mode: str):
+    """Affinely standardize ZPHOT only for the physical-robust experiment."""
+    if mode == "none":
+        metadata = {"mode": "none", "offset": 0.0, "scale": 1.0, "fit_split": "train"}
+        return target.clone(), metadata
+    train = torch.from_numpy(splits == "train")
+    offset = float(target[train].mean())
+    scale = float(target[train].std(unbiased=False))
+    if not np.isfinite(scale) or scale <= 1e-12:
+        raise ValueError("Training ZPHOT has no usable standard deviation")
+    metadata = {"mode": "standard", "offset": offset, "scale": scale,
+                "fit_split": "train"}
+    return (target - offset) / scale, metadata
+
 
 
 def standardize_from_train(features: torch.Tensor, split_labels: np.ndarray):
@@ -166,22 +357,31 @@ def make_loader(mean_features: torch.Tensor, error_features: torch.Tensor,
 
 @torch.no_grad()
 def evaluate(model: HeteroscedasticPhotoZRegressor, loader: DataLoader,
-             device: torch.device) -> dict[str, Any]:
+             device: torch.device, target_transform: dict[str, Any]) -> dict[str, Any]:
     model.eval()
     means, variances, targets = [], [], []
     for mean_x, error_x, target in loader:
         mean, variance = model(mean_x.to(device), error_x.to(device))
         means.append(mean.cpu()); variances.append(variance.cpu()); targets.append(target.cpu())
-    mean = torch.cat(means)
-    variance = torch.cat(variances)
-    target = torch.cat(targets)
+    model_mean = torch.cat(means)
+    model_variance = torch.cat(variances)
+    model_target = torch.cat(targets)
+    model_residual = model_target - model_mean
+    nll = .5 * (model_variance.log() + model_residual.square() / model_variance)
+
+    offset = float(target_transform["offset"])
+    target_scale = float(target_transform["scale"])
+    mean = offset + target_scale * model_mean
+    variance = target_scale ** 2 * model_variance
+    target = offset + target_scale * model_target
     sigma = variance.sqrt()
     residual = target - mean
-    nll = .5 * (variance.log() + residual.square() / variance)
+    physical_nll = .5 * (variance.log() + residual.square() / variance)
     point = point_photoz_metrics(mean, target)
     metrics = {
         **point,
-        "gaussian_nll": float(nll.mean()),
+        "gaussian_nll": float(physical_nll.mean()),
+        "gaussian_nll_model_space": float(nll.mean()),
         "mae": float(residual.abs().mean()),
         "rmse": float(residual.square().mean().sqrt()),
         "coverage_68": float((residual.abs() <= sigma).float().mean()),
@@ -212,7 +412,9 @@ def initialize_variance_head(model: HeteroscedasticPhotoZRegressor,
 
 def train_branch(name: str, mean_features: torch.Tensor, error_features: torch.Tensor,
                  target: torch.Tensor, split_labels: np.ndarray, args,
-                 output_dir: Path) -> tuple[HeteroscedasticPhotoZRegressor, dict[str, Any]]:
+                 output_dir: Path, target_transform: dict[str, Any],
+                 preprocessing_metadata: dict[str, Any],
+                 ) -> tuple[HeteroscedasticPhotoZRegressor, dict[str, Any]]:
     """Warm up the mean, then jointly optimize mean and variance with GNLLL."""
     torch.manual_seed(args.seed)
     if torch.cuda.is_available():
@@ -240,9 +442,9 @@ def train_branch(name: str, mean_features: torch.Tensor, error_features: torch.T
             loss = F.smooth_l1_loss(model.predict_mean(mean_x), batch_target)
             loss.backward(); warm_optimizer.step()
             total += float(loss.detach()) * len(batch_target); count += len(batch_target)
-        val = evaluate(model, val_loader, device)
+        val = evaluate(model, val_loader, device, target_transform)
         row = {"epoch": epoch + 1, "stage": "mean_warmup", "train_loss": total / count,
-               "val_gaussian_nll": val["metrics"]["gaussian_nll"],
+               "val_gaussian_nll": val["metrics"]["gaussian_nll_model_space"],
                "val_nmad": val["metrics"]["nmad"]}
         history.append(row)
         print(f"{name} mean warm-up {epoch + 1:02d}/{args.mean_warmup_epochs}: "
@@ -264,8 +466,8 @@ def train_branch(name: str, mean_features: torch.Tensor, error_features: torch.T
             loss = criterion(mean, batch_target, variance)
             loss.backward(); optimizer.step()
             total += float(loss.detach()) * len(batch_target); count += len(batch_target)
-        val = evaluate(model, val_loader, device)
-        val_loss = val["metrics"]["gaussian_nll"]
+        val = evaluate(model, val_loader, device, target_transform)
+        val_loss = val["metrics"]["gaussian_nll_model_space"]
         row = {"epoch": args.mean_warmup_epochs + joint_epoch + 1, "stage": "joint_gnlll",
                "train_loss": total / count, "val_gaussian_nll": val_loss,
                "val_nmad": val["metrics"]["nmad"],
@@ -282,6 +484,8 @@ def train_branch(name: str, mean_features: torch.Tensor, error_features: torch.T
     output_dir.mkdir(parents=True, exist_ok=True)
     checkpoint = output_dir / "best_gnlll.pt"
     result = {
+        "target_transform": target_transform,
+        "preprocessing": preprocessing_metadata,
         "model_kind": name,
         "gnlll_expansion": GNLLL_EXPANSION,
         "history": history,
@@ -376,25 +580,27 @@ def validate_args(args) -> None:
 def main(argv=None) -> int:
     args = parser().parse_args(argv)
     validate_args(args)
-    # These fixed attributes let us reuse the well-tested IoTFM cache/extraction
-    # routine while keeping identity, location, flags, and classifications out.
+    # Fixed attributes let the existing frozen-transformer extractor serialize
+    # the already sanitized/scaled 66-column signal table.
     args.include_id = False; args.include_location = False
     args.magnitudes_only = False; args.ignore_missingness = True
     args.exclude_flags = False; args.no_classification = False
 
     catalogue = args.catalogue.expanduser().resolve()
     output = args.output_dir.expanduser()
-    split_dir = args.cache_root.expanduser() / (
-        "all" if args.max_rows is None else f"n{args.max_rows}"
-    ) / "clauds_split"
-    table = base.load_clauds_catalogue_from_fits(
-        catalogue, split_dir, max_rows=args.max_rows, sample_mode="random",
-        sample_seed=args.seed, sample_require_valid_bands=(),
+    table, input_cache, input_cache_metadata = load_full_gnlll_catalogue(
+        catalogue, args.input_cache_root, max_rows=args.max_rows, seed=args.seed,
+        force_recompute=args.force_recompute_input_cache,
     )
-    rows, target_np, _ = base.select_training_rows(table, no_classification=False)
+    target_all = np.asarray(table[base.REDSHIFT_COLUMNS["zphot"]], dtype=np.float64)
+    rows = np.flatnonzero(np.isfinite(target_all) & (target_all != MISSING_SENTINEL))
     if not len(rows):
-        raise ValueError("No finite ZPHOT targets")
-    flux_columns, radius_columns, error_columns = select_gnlll_columns(list(table.keys()))
+        raise ValueError("No finite, non-sentinel ZPHOT targets")
+    target_original = torch.from_numpy(target_all[rows].astype(np.float32))
+
+    flux_columns, radius_columns, error_columns = select_gnlll_columns(
+        table.dtype.names or (),
+    )
     signal_columns = flux_columns + radius_columns
     ids = np.asarray(table[base.OBJECT_ID_COLUMN])[rows].astype(np.int64).tolist()
     splits = base.make_random_split(
@@ -403,50 +609,94 @@ def main(argv=None) -> int:
     )
     split_counts = {name: int(np.count_nonzero(splits == name))
                     for name in ("train", "val", "test")}
-    target = torch.from_numpy(target_np.astype(np.float32))
 
-    signal_x, signal_feature_names = base.build_mlp_features(
-        table, rows, signal_columns, splits, encode_missingness=False,
+    signal_x, signal_scaling = build_gnlll_features(
+        table, rows, signal_columns,
+        ["flux"] * len(flux_columns) + ["radius"] * len(radius_columns),
+        splits, mode=args.feature_scaling,
     )
-    error_x, error_feature_names = base.build_mlp_features(
-        table, rows, error_columns, splits, encode_missingness=False,
+    error_x, error_scaling = build_gnlll_features(
+        table, rows, error_columns, ["error"] * len(error_columns),
+        splits, mode=args.feature_scaling,
+    )
+    target, target_transform = scale_target_from_train(
+        target_original, splits, mode=args.feature_scaling,
     )
     if signal_x.shape[1] != 66 or error_x.shape[1] != 55:
-        raise RuntimeError(f"Expected 66 signal and 55 error dimensions; got "
-                           f"{signal_x.shape[1]} and {error_x.shape[1]}")
+        raise RuntimeError(
+            f"Expected 66 signal and 55 error dimensions; got "
+            f"{signal_x.shape[1]} and {error_x.shape[1]}"
+        )
+    signal_preprocessing_signature = hashlib.sha256(
+        json.dumps(signal_scaling, sort_keys=True).encode("utf-8")
+    ).hexdigest()[:16]
+    args.cache_root = args.cache_root.expanduser() / (
+        f"signal_preprocessing_{signal_preprocessing_signature}"
+    )
+
+    # IoTFM and MLP see exactly the same sanitized/scaled 66 signal values.
+    embedding_table = {
+        column: signal_x[:, index].numpy()
+        for index, column in enumerate(signal_columns)
+    }
+    embedding_rows = np.arange(len(rows), dtype=np.int64)
     serialization = CatalogueSerializationConfig(
-        schema_name="clauds_gnlll_signal_v1", decimals=6,
-        prefix="CLAUDS galaxy redshift-signal record",
+        schema_name=f"clauds_gnlll_signal_{args.feature_scaling}_v2", decimals=6,
+        prefix=f"CLAUDS galaxy redshift-signal record ({args.feature_scaling})",
     )
     embeddings, embedding_cache, embedding_metadata = base.get_embeddings(
-        args, table, rows, ids, signal_columns, serialization,
+        args, embedding_table, embedding_rows, ids, signal_columns, serialization,
     )
     embeddings, embedding_mean, embedding_scale = standardize_from_train(embeddings, splits)
+    embedding_standardization = {
+        "mean": embedding_mean.tolist(), "scale": embedding_scale.tolist(),
+        "fit_split": "train",
+    }
+    shared_preprocessing = {
+        "feature_scaling": args.feature_scaling,
+        "error_scaling": error_scaling,
+        "target_transform": target_transform,
+        "missing_value_policy": "sentinel_and_nonfinite_train_median_no_indicator",
+    }
+    iotfm_preprocessing = {
+        **shared_preprocessing, "signal_scaling": signal_scaling,
+        "embedding_standardization": embedding_standardization,
+    }
+    mlp_preprocessing = {**shared_preprocessing, "signal_scaling": signal_scaling}
 
     print("\nExperiment: matched IoTFM vs MLP heteroscedastic photo-z regression")
     print(f"GNLLL: {GNLLL_EXPANSION}; target: ZPHOT; rows: {len(rows):,}; splits: {split_counts}")
     print("Mean signal: 55 flux estimators + 11 Kron radii")
     print("Variance signal: 55 flux errors + detached inferred redshift mean")
-    print("Missing numeric values: training-median imputation; no missingness indicators")
+    print(f"Feature/target scaling: {args.feature_scaling}")
+    print("Missing policy: -99/non-finite sanitized, train-median imputation, no indicators")
 
     print("\nTraining 1/2: frozen IoTFM signal embedding + Gaussian NLL head")
     iotfm_model, iotfm_result = train_branch(
         "iotfm_gnlll", embeddings, error_x, target, splits, args, output / "iotfm",
+        target_transform,
+        iotfm_preprocessing,
     )
     print("\nTraining 2/2: matched tabular MLP + Gaussian NLL head")
     mlp_model, mlp_result = train_branch(
         "mlp_gnlll", signal_x, error_x, target, splits, args, output / "mlp",
+        target_transform,
+        mlp_preprocessing,
     )
 
     device = base.resolve_torch_device(args.device)
     comparison_split = "test" if split_counts["test"] else "val"
-    test_iotfm_loader = make_loader(embeddings, error_x, target, splits, comparison_split,
-                                    batch_size=args.eval_batch_size, shuffle=False)
-    test_mlp_loader = make_loader(signal_x, error_x, target, splits, comparison_split,
-                                  batch_size=args.eval_batch_size, shuffle=False)
-    iotfm_raw = evaluate(iotfm_model.to(device), test_iotfm_loader, device)
-    mlp_raw = evaluate(mlp_model.to(device), test_mlp_loader, device)
-    z_min, z_max = float(target.min()), float(target.max())
+    test_iotfm_loader = make_loader(
+        embeddings, error_x, target, splits, comparison_split,
+        batch_size=args.eval_batch_size, shuffle=False,
+    )
+    test_mlp_loader = make_loader(
+        signal_x, error_x, target, splits, comparison_split,
+        batch_size=args.eval_batch_size, shuffle=False,
+    )
+    iotfm_raw = evaluate(iotfm_model.to(device), test_iotfm_loader, device, target_transform)
+    mlp_raw = evaluate(mlp_model.to(device), test_mlp_loader, device, target_transform)
+    z_min, z_max = float(target_original.min()), float(target_original.max())
     edges = torch.linspace(z_min, z_max, args.n_z_bins + 1)
     centers = (edges[:-1] + edges[1:]) / 2
     iotfm_eval = gaussian_evaluation(iotfm_raw, edges, centers)
@@ -461,7 +711,7 @@ def main(argv=None) -> int:
     summary = output / "iotfm_mlp_gnlll_results.pt"
     torch.save({"iotfm": iotfm_result, "mlp": mlp_result}, summary)
     manifest = {
-        "experiment": "iotfm_mlp_gnlll",
+        "experiment": f"iotfm_mlp_gnlll_{args.feature_scaling}",
         "gnlll_expansion": GNLLL_EXPANSION,
         "gnlll_formula": "0.5 * (log(variance) + (target - mean)^2 / variance)",
         "catalogue": str(catalogue), "target": "ZPHOT", "model": args.model,
@@ -470,11 +720,14 @@ def main(argv=None) -> int:
         "variance_signal": "55 flux errors + detached inferred redshift mean",
         "flux_columns": flux_columns, "radius_columns": radius_columns,
         "flux_error_columns": error_columns,
-        "signal_feature_names": signal_feature_names,
-        "error_feature_names": error_feature_names,
-        "missing_value_policy": "train_median_impute_no_indicator",
+        "feature_scaling": args.feature_scaling,
+        "signal_preprocessing_signature": signal_preprocessing_signature,
+        "signal_scaling": signal_scaling, "error_scaling": error_scaling,
+        "target_transform": target_transform,
+        "missing_value_policy": "sentinel_and_nonfinite_train_median_no_indicator",
         "mean_warmup_epochs": args.mean_warmup_epochs,
         "gnlll_epochs": args.gnlll_epochs, "variance_floor": args.variance_floor,
+        "input_cache": str(input_cache), "input_cache_metadata": input_cache_metadata,
         "embedding_cache": str(embedding_cache),
         "embedding_metadata": embedding_metadata,
         "embedding_standardization": {
