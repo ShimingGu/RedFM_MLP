@@ -51,6 +51,37 @@ class TestColumns(unittest.TestCase):
                          ["RA", "tract", "FLUX", "isNoData_HSC-G", "notObserved_HSC-G"])
         self.assertEqual(module.select_input_columns(names, ignore_missingness=True)[0], ["FLUX"])
 
+    def test_no_flags_excludes_only_documented_flag_groups(self):
+        flags = [f"{prefix}HSC-G" for prefix in module.PER_BAND_FLAG_PREFIXES]
+        flags += ["FLAG_FIELD_BINARY", "isOutsideMask"]
+        retained = ["FLUX_CMODEL_HSC-G", "FLUXERR_CMODEL_HSC-G", "RADIUS_KRON_HSC-G",
+                    "isCompact", "isCompact_HSC-G", "Likelihood-Log_star", "isStarTemp", "isStar"]
+
+        included, excluded = module.select_input_columns(flags + retained, exclude_flags=True)
+
+        self.assertEqual(included, retained)
+        self.assertEqual(excluded, flags)
+        self.assertTrue(module.parser().parse_args(["--exclude-flags"]).exclude_flags)
+
+    def test_no_classification_keeps_photometry_and_filters_stars(self):
+        photometry = ["FLUX_CMODEL_HSC-G", "FLUXERR_CMODEL_HSC-G", "RADIUS_KRON_HSC-G"]
+        included, excluded = module.select_input_columns(
+            list(module.CLASSIFICATION_COLUMNS) + photometry,
+            exclude_flags=True, exclude_classification=True,
+        )
+        self.assertEqual(included, photometry)
+        self.assertEqual(set(excluded), module.CLASSIFICATION_COLUMNS)
+
+        table = {
+            module.REDSHIFT_COLUMNS["zphot"]: np.array([0.2, np.nan, 0.8, 1.1]),
+            "isStar": np.array([False, False, True, False]),
+        }
+        rows, target, n_stars = module.select_training_rows(table, no_classification=True)
+        np.testing.assert_array_equal(rows, [0, 3])
+        np.testing.assert_allclose(target, [0.2, 1.1])
+        self.assertEqual(n_stars, 1)
+        self.assertTrue(module.parser().parse_args(["--no-classification"]).no_classification)
+
     def test_ignore_missingness_omits_text_fields_and_mlp_indicators(self):
         table = {"flux": np.ma.array([0.0, 2.0, 999.0], mask=[False, False, True])}
         splits = np.array(["train", "train", "test"])

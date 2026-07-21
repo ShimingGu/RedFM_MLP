@@ -35,6 +35,16 @@ PHOTOZ_PREFIXES = ("ZPHOT", "Z_LOW68", "Z_HIGH68", "Z_CHI", "Z_PEAK", "Posterior
 ID_COLUMNS = frozenset({"ID"})
 LOCATION_COLUMNS = frozenset({"RA", "DEC", "tract", "patch"})
 MISSINGNESS_COLUMN_PREFIXES = ("isNoData_", "notObserved_")
+PER_BAND_FLAG_PREFIXES = (
+    "hasBadPhotometry_", "isDuplicated_", "isNoData_", "isSky_",
+    "isParent_", "notObserved_", "isClean_",
+)
+CROSS_BAND_FLAG_COLUMNS = frozenset({"FLAG_FIELD_BINARY", "isOutsideMask"})
+CLASSIFICATION_COLUMNS = frozenset({
+    "isCompact", "isCompact_HSC-G", "isCompact_HSC-R", "isCompact_HSC-I",
+    "isCompact_HSC-Z", "isCompact_HSC-Y", "Likelihood-Log_star",
+    "isStarTemp", "isStar",
+})
 MAGNITUDE_ONLY_BANDS = ("u", "u_star", "g", "r", "i", "z", "y", "Y", "J", "H", "Ks")
 MAG_ZERO_POINT = 23.0
 
@@ -50,14 +60,22 @@ def is_photoz_column(name: str) -> bool:
     return name != "Likelihood-Log_star" and name.startswith(PHOTOZ_PREFIXES)
 
 
+def is_flag_column(name: str) -> bool:
+    """Match the flag groups defined in column_types.md."""
+    return name.startswith(PER_BAND_FLAG_PREFIXES) or name in CROSS_BAND_FLAG_COLUMNS
+
+
 def select_input_columns(names: Sequence[str], *, include_id=False, include_location=False,
-                         ignore_missingness=False):
+                         ignore_missingness=False, exclude_flags=False,
+                         exclude_classification=False):
     included, excluded = [], []
     for name in names:
         reject = (is_photoz_column(name) or
                   (name in ID_COLUMNS and not include_id) or
                   (name in LOCATION_COLUMNS and not include_location) or
-                  (ignore_missingness and name.startswith(MISSINGNESS_COLUMN_PREFIXES)))
+                  (ignore_missingness and name.startswith(MISSINGNESS_COLUMN_PREFIXES)) or
+                  (exclude_flags and is_flag_column(name)) or
+                  (exclude_classification and name in CLASSIFICATION_COLUMNS))
         (excluded if reject else included).append(name)
     return included, excluded
 
@@ -81,6 +99,10 @@ def parser():
     p.add_argument("--magnitudes-only", action="store_true")
     p.add_argument("--ignore-missingness", action="store_true",
                    help="omit missing fields from transformer text and median-impute the MLP without missing flags")
+    p.add_argument("--exclude-flags", action="store_true",
+                   help="exclude all detection, quality, mask, and field flags classified in column_types.md")
+    p.add_argument("--no-classification", action="store_true",
+                   help="keep only the 121 photometric inputs and exclude rows where isStar is true")
     p.add_argument("--epochs", type=int, default=10)
     p.add_argument("--train-batch-size", type=int, default=256)
     p.add_argument("--eval-batch-size", type=int, default=512)
@@ -118,6 +140,23 @@ def row_text(table, row, columns, config, *, omit_missing=False):
     if omit_missing:
         values = {name: value for name, value in values.items() if not is_missing(value)}
     return serialize_catalogue_row(values, config=config)
+
+
+def select_training_rows(table, *, no_classification=False):
+    """Select finite-target rows, optionally rejecting catalogue-classified stars."""
+    target_all = np.asarray(table[REDSHIFT_COLUMNS["zphot"]], dtype=np.float64)
+    usable = np.isfinite(target_all)
+    n_stars_excluded = 0
+    if no_classification:
+        if "isStar" not in table.keys():
+            raise KeyError("--no-classification requires the isStar catalogue column")
+        star = np.ma.asarray(table["isStar"])
+        star_is_true = (~np.ma.getmaskarray(star) &
+                        np.asarray(np.ma.getdata(star), dtype=bool))
+        n_stars_excluded = int(np.count_nonzero(usable & star_is_true))
+        usable &= ~star_is_true
+    rows = np.flatnonzero(usable)
+    return rows, target_all[rows], n_stars_excluded
 
 
 def build_magnitude_input_table(table):
@@ -185,8 +224,14 @@ def get_embeddings(args, table, rows, ids, columns, serialization):
         metadata["input_mode"] = "magnitudes_only"
     if args.ignore_missingness:
         metadata["missing_value_policy"] = "omit_from_text_train_median_impute_no_indicator"
+    if args.exclude_flags:
+        metadata["exclude_flags"] = True
+    if args.no_classification:
+        metadata["no_classification"] = True
     tag = Path(args.model).name.replace("-", "_")
     mode_tag = (("_magonly" if args.magnitudes_only else "") +
+                ("_noflags" if args.exclude_flags else "") +
+                ("_noclassification" if args.no_classification else "") +
                 ("_missnormal" if args.ignore_missingness else ""))
     path = args.cache_root.expanduser() / f"{tag}{mode_tag}_id{int(args.include_id)}_location{int(args.include_location)}_n{len(rows)}_{args.pooling}_len{args.max_length}.pt"
     if path.exists() and not args.force_recompute_embeddings:
@@ -271,6 +316,10 @@ def save_comparison_artifacts(results, iotfm_product, mlp_product, split, args, 
 
 def main(argv=None):
     args = parser().parse_args(argv)
+    if args.no_classification and args.magnitudes_only:
+        raise ValueError("--no-classification and --magnitudes-only are mutually exclusive")
+    if args.no_classification:
+        args.exclude_flags = True
     if min(args.embedding_batch_size, args.train_batch_size, args.eval_batch_size,
            args.tomographic_samples, args.epochs) <= 0:
         raise ValueError("batch sizes and epochs must be positive")
@@ -278,8 +327,9 @@ def main(argv=None):
     split_dir = args.cache_root.expanduser() / ("all" if args.max_rows is None else f"n{args.max_rows}") / "clauds_split"
     table = load_clauds_catalogue_from_fits(catalogue, split_dir, max_rows=args.max_rows,
         sample_mode="random", sample_seed=args.seed, sample_require_valid_bands=())
-    target_all = np.asarray(table[REDSHIFT_COLUMNS["zphot"]], dtype=np.float64)
-    rows = np.flatnonzero(np.isfinite(target_all)); target = target_all[rows]
+    rows, target, n_stars_excluded = select_training_rows(
+        table, no_classification=args.no_classification
+    )
     if not len(rows): raise ValueError("No finite photo-z targets")
     ids = np.asarray(table[OBJECT_ID_COLUMN])[rows].astype(np.int64).tolist()
     splits = make_random_split(len(rows), train_fraction=args.train_fraction,
@@ -295,7 +345,8 @@ def main(argv=None):
         input_table = table
         columns, excluded = select_input_columns(list(table.keys()),
             include_id=args.include_id, include_location=args.include_location,
-            ignore_missingness=args.ignore_missingness)
+            ignore_missingness=args.ignore_missingness, exclude_flags=args.exclude_flags,
+            exclude_classification=args.no_classification)
         source_columns = columns
         serialization = CatalogueSerializationConfig(schema_name="clauds_whole_catalogue_v1",
             decimals=6, prefix="CLAUDS galaxy catalogue record")
@@ -307,8 +358,17 @@ def main(argv=None):
     split_counts = {name: int(np.count_nonzero(splits == name)) for name in ("train", "val", "test")}
     print("\nExperiment: frozen inference-optimized transformer vs tabular MLP")
     print(f"AION model/codec: not used; target: ZPHOT; rows: {len(rows):,}; splits: {split_counts}")
-    input_mode = "11 AB magnitudes: " + ", ".join(MAGNITUDE_ONLY_BANDS) if args.magnitudes_only else "catalogue columns"
+    if args.magnitudes_only:
+        input_mode = "11 AB magnitudes: " + ", ".join(MAGNITUDE_ONLY_BANDS)
+    elif args.no_classification:
+        input_mode = "121 photometric flux, uncertainty, and Kron-radius columns"
+    elif args.exclude_flags:
+        input_mode = "catalogue columns excluding column_types.md flag groups"
+    else:
+        input_mode = "catalogue columns"
     print(f"Inputs: {input_mode}; {len(columns)} included, {len(excluded)} excluded")
+    if args.no_classification:
+        print(f"Classification filter: excluded {n_stars_excluded:,} rows where isStar=True")
     missing_policy = ("missing fields omitted from transformer text; MLP train-median imputation without indicators"
                       if args.ignore_missingness else "missing values explicitly represented")
     print(f"Missing-value policy: {missing_policy}")
@@ -338,7 +398,11 @@ def main(argv=None):
     manifest = dict(catalogue=str(catalogue), model=args.model, n_rows=len(rows), input_columns=columns,
         excluded_columns=excluded, include_id=args.include_id, include_location=args.include_location,
         aion_model_used=False, target="ZPHOT", split_counts=split_counts,
-        input_mode="magnitudes_only" if args.magnitudes_only else "catalogue_columns",
+        input_mode=("magnitudes_only" if args.magnitudes_only else
+                    "photometry_121_no_classification" if args.no_classification else
+                    "catalogue_columns_no_flags" if args.exclude_flags else "catalogue_columns"),
+        exclude_flags=args.exclude_flags, no_classification=args.no_classification,
+        star_true_rows_excluded=n_stars_excluded,
         missing_value_policy=("omit_from_text_train_median_impute_no_indicator"
                               if args.ignore_missingness else "explicit"),
         magnitude_bands=list(MAGNITUDE_ONLY_BANDS) if args.magnitudes_only else [],
