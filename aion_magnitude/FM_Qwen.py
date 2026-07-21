@@ -71,7 +71,7 @@ class QwenEmbeddingConfig:
     load_in_4bit: bool = True
     torch_dtype: str | torch.dtype | None = "auto"
     max_length: int = 256
-    pooling: str = "mean"
+    pooling: str = "last"
     normalize: bool = False
     local_files_only: bool = True
     trust_remote_code: bool = True
@@ -253,7 +253,7 @@ def pool_qwen_hidden_states(
     last_hidden_state: torch.Tensor,
     attention_mask: torch.Tensor,
     *,
-    pooling: str = "mean",
+    pooling: str = "last",
 ) -> torch.Tensor:
     """Pool Qwen hidden states into one vector per row."""
     if pooling not in QWEN_POOLING_MODES:
@@ -281,7 +281,7 @@ def extract_qwen_embeddings_from_texts(
     device: torch.device | str | None = None,
     max_length: int = 256,
     batch_size: int = 8,
-    pooling: str = "mean",
+    pooling: str = "last",
     normalize: bool = False,
 ) -> torch.Tensor:
     """Extract frozen Qwen embeddings from already serialized catalogue rows."""
@@ -325,7 +325,7 @@ def extract_qwen_embeddings_to_memory(
     num_workers: int = 0,
     device: torch.device | str | None = None,
     max_length: int = 256,
-    pooling: str = "mean",
+    pooling: str = "last",
     normalize: bool = False,
 ) -> torch.Tensor:
     """Extract Qwen embeddings for a CLAUDSPhotoZDataset.

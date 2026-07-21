@@ -65,6 +65,6 @@ exec "${PYTHON_CMD[@]}" "$REPO_ROOT/notebooks/qwen_aion_comparison.py" \
     --tomographic-samples "${AION_TOMOGRAPHIC_SAMPLES:-100}" \
     --qwen-model "$QWEN_MODEL" \
     --qwen-max-length "${QWEN_MAX_LENGTH:-256}" \
-    --qwen-pooling "${QWEN_POOLING:-mean}" \
+    --qwen-pooling "${QWEN_POOLING:-last}" \
     "${QWEN_FLAGS[@]}" \
     "$@"

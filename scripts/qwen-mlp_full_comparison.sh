@@ -77,7 +77,6 @@ exec "${PYTHON_CMD[@]}" "$REPO_ROOT/notebooks/qwen_mlp_full_comparison.py" \
     --feature-scaling minmax \
     --qwen-model "$QWEN_MODEL" \
     --qwen-max-length "${QWEN_MAX_LENGTH:-256}" \
-    --qwen-pooling "${QWEN_POOLING:-mean}" \
+    --qwen-pooling "${QWEN_POOLING:-last}" \
     "${QWEN_FLAGS[@]}" \
     "$@"
-

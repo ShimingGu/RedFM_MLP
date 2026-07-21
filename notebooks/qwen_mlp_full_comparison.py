@@ -93,7 +93,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--qwen-model", default=DEFAULT_QWEN_MODEL)
     parser.add_argument("--qwen-cache-path", type=Path)
     parser.add_argument("--qwen-max-length", type=int, default=256)
-    parser.add_argument("--qwen-pooling", choices=QWEN_POOLING_MODES, default="mean")
+    parser.add_argument("--qwen-pooling", choices=QWEN_POOLING_MODES, default="last")
     parser.add_argument("--qwen-normalize", action="store_true")
     parser.add_argument("--no-qwen-4bit", action="store_true")
     parser.add_argument("--allow-qwen-download", action="store_true")
@@ -497,4 +497,3 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

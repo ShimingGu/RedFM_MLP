@@ -28,4 +28,4 @@ exec "${PYTHON_CMD[@]}" "$REPO_ROOT/notebooks/qwen_qwen_comparison.py" \
     --device "${AION_DEVICE:-auto}" --n-z-bins "${AION_N_Z_BINS:-300}" \
     --tomographic-samples "${AION_TOMOGRAPHIC_SAMPLES:-100}" --feature-scaling minmax \
     --qwen-model "${QWEN_MODEL:-Qwen3-8B-Base}" --qwen-max-length "${QWEN_MAX_LENGTH:-2048}" \
-    --qwen-pooling "${QWEN_POOLING:-mean}" "${FLAGS[@]}" "$@"
+    --qwen-pooling "${QWEN_POOLING:-last}" "${FLAGS[@]}" "$@"

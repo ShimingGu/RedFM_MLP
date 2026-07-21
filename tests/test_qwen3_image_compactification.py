@@ -12,6 +12,9 @@ from aion_magnitude.FM_Qwen3 import (
 
 
 class TestQwen3ImageCompactification(unittest.TestCase):
+    def test_qwen_embedding_defaults_to_last_pooling(self):
+        self.assertEqual(QwenEmbeddingConfig().pooling, "last")
+
     def test_center_crop_is_spatial_center_not_flat_prefix(self):
         grid = torch.arange(24 * 24).reshape(24, 24)
         config = Qwen3SerializationConfig(
