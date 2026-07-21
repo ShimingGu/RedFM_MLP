@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Compare IoTFM embeddings with an MLP using non-photo-z CLAUDS columns."""
+"""Compare IoTFM embeddings with an MLP using non-photo-z CLAUDS columns.
+
+IoTFM means inference-optimized transformer feature mapping.
+"""
 
 from __future__ import annotations
 import argparse, gc, json, sys

@@ -1,4 +1,8 @@
-"""Embeddings from small architecture-test transformer checkpoints.
+"""IoTFM embeddings from small architecture-test transformer checkpoints.
+
+``IoTFM`` means **inference-optimized transformer feature mapping**: a frozen
+transformer maps each serialized catalogue record to a fixed feature vector for
+a separately trained downstream task head.
 
 This module deliberately treats models from ``inference-optimization`` as
 generic transformer feature extractors.  It does not assume that a reduced
