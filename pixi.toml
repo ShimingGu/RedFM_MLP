@@ -1,6 +1,6 @@
 [workspace]
 name = "redfm-mlp"
-version = "0.3.0"
+version = "0.5.0"
 description = "CUDA-enabled environment for AION magnitude and Qwen experiments"
 channels = ["conda-forge"]
 platforms = ["linux-64"]

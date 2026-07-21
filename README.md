@@ -1,6 +1,6 @@
-# aion-magnitude v0.2.1
+# aion-magnitude v0.5.0
 
-Updated: 2026-07-13
+Updated: 2026-07-21
 
 This directory is a lightweight code/documentation snapshot for the current
 AION + all-magnitude fusion workflow after the M-adapter feasibility round and

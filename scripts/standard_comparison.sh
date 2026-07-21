@@ -11,6 +11,8 @@ else
     PIXI_MANIFEST="${PIXI_MANIFEST:-$DEFAULT_PIXI_MANIFEST}"
     if [[ -f "$PIXI_MANIFEST" ]]; then
         PYTHON_CMD=(pixi run --manifest-path "$PIXI_MANIFEST" python)
+    elif [[ -x "$REPO_ROOT/.venv/bin/python" ]]; then
+        PYTHON_CMD=("$REPO_ROOT/.venv/bin/python")
     else
         PYTHON_CMD=(pixi run python)
     fi
