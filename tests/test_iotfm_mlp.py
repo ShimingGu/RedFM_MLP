@@ -44,9 +44,38 @@ class TestColumns(unittest.TestCase):
         self.assertEqual(excluded, ["ID", "RA", "DEC", "tract", "patch", "ZPHOT", "ZPHOT_NIR", "Likelihood-Log"])
 
     def test_independent_switches(self):
-        names = ["ID", "RA", "tract", "FLUX"]
-        self.assertEqual(module.select_input_columns(names, include_id=True)[0], ["ID", "FLUX"])
-        self.assertEqual(module.select_input_columns(names, include_location=True)[0], ["RA", "tract", "FLUX"])
+        names = ["ID", "RA", "tract", "FLUX", "isNoData_HSC-G", "notObserved_HSC-G"]
+        self.assertEqual(module.select_input_columns(names, include_id=True)[0],
+                         ["ID", "FLUX", "isNoData_HSC-G", "notObserved_HSC-G"])
+        self.assertEqual(module.select_input_columns(names, include_location=True)[0],
+                         ["RA", "tract", "FLUX", "isNoData_HSC-G", "notObserved_HSC-G"])
+        self.assertEqual(module.select_input_columns(names, ignore_missingness=True)[0], ["FLUX"])
+
+    def test_ignore_missingness_omits_text_fields_and_mlp_indicators(self):
+        table = {"flux": np.ma.array([0.0, 2.0, 999.0], mask=[False, False, True])}
+        splits = np.array(["train", "train", "test"])
+
+        text = module.row_text(table, 2, ["flux"],
+                               module.CatalogueSerializationConfig(), omit_missing=True)
+        features, names = module.build_mlp_features(
+            table, np.arange(3), ["flux"], splits, encode_missingness=False
+        )
+
+        self.assertNotIn("flux=", text)
+        self.assertEqual(names, ["flux"])
+        self.assertEqual(tuple(features.shape), (3, 1))
+        self.assertAlmostEqual(float(features[2, 0]), 0.5)
+
+        category_table = {
+            "kind": np.ma.array(["galaxy", "galaxy", "hidden"],
+                                mask=[False, False, True])
+        }
+        category_features, category_names = module.build_mlp_features(
+            category_table, np.arange(3), ["kind"], splits, encode_missingness=False
+        )
+        self.assertEqual(category_names, ["kind=galaxy", "kind=UNKNOWN"])
+        torch.testing.assert_close(category_features[2], torch.zeros(2))
+        self.assertTrue(module.parser().parse_args(["--ignore-missingness"]).ignore_missingness)
 
 
 class TestComparisonArtifacts(unittest.TestCase):

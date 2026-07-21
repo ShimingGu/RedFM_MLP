@@ -34,6 +34,7 @@ from aion_magnitude.utils import flux_to_ab_mag, resolve_torch_device
 PHOTOZ_PREFIXES = ("ZPHOT", "Z_LOW68", "Z_HIGH68", "Z_CHI", "Z_PEAK", "Posterior-Log", "Likelihood-Log")
 ID_COLUMNS = frozenset({"ID"})
 LOCATION_COLUMNS = frozenset({"RA", "DEC", "tract", "patch"})
+MISSINGNESS_COLUMN_PREFIXES = ("isNoData_", "notObserved_")
 MAGNITUDE_ONLY_BANDS = ("u", "u_star", "g", "r", "i", "z", "y", "Y", "J", "H", "Ks")
 MAG_ZERO_POINT = 23.0
 
@@ -49,12 +50,14 @@ def is_photoz_column(name: str) -> bool:
     return name != "Likelihood-Log_star" and name.startswith(PHOTOZ_PREFIXES)
 
 
-def select_input_columns(names: Sequence[str], *, include_id=False, include_location=False):
+def select_input_columns(names: Sequence[str], *, include_id=False, include_location=False,
+                         ignore_missingness=False):
     included, excluded = [], []
     for name in names:
         reject = (is_photoz_column(name) or
                   (name in ID_COLUMNS and not include_id) or
-                  (name in LOCATION_COLUMNS and not include_location))
+                  (name in LOCATION_COLUMNS and not include_location) or
+                  (ignore_missingness and name.startswith(MISSINGNESS_COLUMN_PREFIXES)))
         (excluded if reject else included).append(name)
     return included, excluded
 
@@ -76,6 +79,8 @@ def parser():
     p.add_argument("--include-id", action="store_true")
     p.add_argument("--include-location", action="store_true")
     p.add_argument("--magnitudes-only", action="store_true")
+    p.add_argument("--ignore-missingness", action="store_true",
+                   help="omit missing fields from transformer text and median-impute the MLP without missing flags")
     p.add_argument("--epochs", type=int, default=10)
     p.add_argument("--train-batch-size", type=int, default=256)
     p.add_argument("--eval-batch-size", type=int, default=512)
@@ -97,8 +102,22 @@ def serializable(value: Any) -> Any:
     return value
 
 
-def row_text(table, row, columns, config):
-    return serialize_catalogue_row({name: serializable(table[name][row]) for name in columns}, config=config)
+def is_missing(value: Any) -> bool:
+    """Return whether a catalogue value contains no usable observation."""
+    if np.ma.is_masked(value) or value is None:
+        return True
+    if isinstance(value, np.ndarray):
+        return any(is_missing(item) for item in value.reshape(-1))
+    if isinstance(value, np.generic):
+        return is_missing(value.item())
+    return isinstance(value, (float, complex)) and not np.isfinite(value)
+
+
+def row_text(table, row, columns, config, *, omit_missing=False):
+    values = {name: serializable(table[name][row]) for name in columns}
+    if omit_missing:
+        values = {name: value for name, value in values.items() if not is_missing(value)}
+    return serialize_catalogue_row(values, config=config)
 
 
 def build_magnitude_input_table(table):
@@ -112,28 +131,46 @@ def build_magnitude_input_table(table):
     return inputs
 
 
-def build_mlp_features(table, rows, columns, splits):
-    """Train-scaled numeric inputs plus a missing flag for every numeric field."""
+def build_mlp_features(table, rows, columns, splits, *, encode_missingness=True):
+    """Build train-scaled inputs, optionally exposing explicit missing flags."""
     arrays, names, train = [], [], splits == "train"
     for column in columns:
-        raw = np.asarray(table[column])[rows]
-        if raw.dtype.kind not in "biufc":
+        raw = np.ma.asarray(table[column])[rows]
+        raw_values = np.asarray(np.ma.getdata(raw))
+        if raw_values.dtype.kind not in "biufc":
             text = np.asarray([serializable(v) for v in raw], dtype=str)
-            categories = sorted(set(text[train].tolist()))
+            if encode_missingness:
+                categories = sorted(set(text[train].tolist()))
+                observed = np.ones(len(text), dtype=bool)
+            else:
+                mask = np.ma.getmaskarray(raw).reshape(len(raw), -1).any(axis=1)
+                missing = mask | np.asarray([is_missing(v) for v in raw])
+                categories = sorted(set(text[train & ~missing].tolist()))
+                observed = ~missing
             for category in categories:
-                arrays.append((text == category).astype(np.float32)); names.append(f"{column}={category}")
-            arrays.append((~np.isin(text, categories)).astype(np.float32)); names.append(f"{column}=UNKNOWN")
+                arrays.append((observed & (text == category)).astype(np.float32))
+                names.append(f"{column}={category}")
+            arrays.append((observed & ~np.isin(text, categories)).astype(np.float32))
+            names.append(f"{column}=UNKNOWN")
             continue
-        matrix = raw.reshape(len(raw), -1)
+        matrix = raw_values.reshape(len(raw), -1)
+        masked = np.ma.getmaskarray(raw).reshape(len(raw), -1)
         for index in range(matrix.shape[1]):
             values = np.asarray(matrix[:, index], dtype=np.float64)
-            finite = np.isfinite(values); fitted = values[train & finite]
+            finite = np.isfinite(values) & ~masked[:, index]
+            fitted = values[train & finite]
             low = float(fitted.min()) if fitted.size else 0.; high = float(fitted.max()) if fitted.size else low
             clean = np.zeros(len(values), dtype=np.float32)
-            if high > low: clean[finite] = ((values[finite] - low) / (high - low)).astype(np.float32)
+            if high > low:
+                clean[finite] = ((values[finite] - low) / (high - low)).astype(np.float32)
+                if not encode_missingness:
+                    median = float(np.median(fitted))
+                    clean[~finite] = np.float32((median - low) / (high - low))
             suffix = "" if matrix.shape[1] == 1 else f"[{index}]"
-            arrays += [clean, (~finite).astype(np.float32)]
-            names += [column + suffix, column + suffix + "_missing"]
+            arrays.append(clean); names.append(column + suffix)
+            if encode_missingness:
+                arrays.append((~finite).astype(np.float32))
+                names.append(column + suffix + "_missing")
     return torch.from_numpy(np.stack(arrays, axis=1)), names
 
 
@@ -146,8 +183,11 @@ def get_embeddings(args, table, rows, ids, columns, serialization):
         include_location=args.include_location)
     if args.magnitudes_only:
         metadata["input_mode"] = "magnitudes_only"
+    if args.ignore_missingness:
+        metadata["missing_value_policy"] = "omit_from_text_train_median_impute_no_indicator"
     tag = Path(args.model).name.replace("-", "_")
-    mode_tag = "_magonly" if args.magnitudes_only else ""
+    mode_tag = (("_magonly" if args.magnitudes_only else "") +
+                ("_missnormal" if args.ignore_missingness else ""))
     path = args.cache_root.expanduser() / f"{tag}{mode_tag}_id{int(args.include_id)}_location{int(args.include_location)}_n{len(rows)}_{args.pooling}_len{args.max_length}.pt"
     if path.exists() and not args.force_recompute_embeddings:
         print(f"Frozen transformer embeddings: loading cache {path}")
@@ -163,7 +203,9 @@ def get_embeddings(args, table, rows, ids, columns, serialization):
     try:
         for start in range(0, len(rows), args.embedding_batch_size):
             batch_rows = rows[start:start + args.embedding_batch_size]
-            texts = [row_text(table, int(row), columns, serialization) for row in batch_rows]
+            texts = [row_text(table, int(row), columns, serialization,
+                              omit_missing=args.ignore_missingness)
+                     for row in batch_rows]
             parts.append(extract_text_embeddings(texts, tokenizer, model, device,
                 batch_size=args.embedding_batch_size, max_length=args.max_length,
                 pooling=args.pooling, normalize=args.normalize))
@@ -252,11 +294,13 @@ def main(argv=None):
     else:
         input_table = table
         columns, excluded = select_input_columns(list(table.keys()),
-            include_id=args.include_id, include_location=args.include_location)
+            include_id=args.include_id, include_location=args.include_location,
+            ignore_missingness=args.ignore_missingness)
         source_columns = columns
         serialization = CatalogueSerializationConfig(schema_name="clauds_whole_catalogue_v1",
             decimals=6, prefix="CLAUDS galaxy catalogue record")
-    mlp_x, mlp_names = build_mlp_features(input_table, rows, columns, splits)
+    mlp_x, mlp_names = build_mlp_features(input_table, rows, columns, splits,
+        encode_missingness=not args.ignore_missingness)
     embeddings, cache_path, metadata = get_embeddings(
         args, input_table, rows, ids, columns, serialization
     )
@@ -265,6 +309,9 @@ def main(argv=None):
     print(f"AION model/codec: not used; target: ZPHOT; rows: {len(rows):,}; splits: {split_counts}")
     input_mode = "11 AB magnitudes: " + ", ".join(MAGNITUDE_ONLY_BANDS) if args.magnitudes_only else "catalogue columns"
     print(f"Inputs: {input_mode}; {len(columns)} included, {len(excluded)} excluded")
+    missing_policy = ("missing fields omitted from transformer text; MLP train-median imputation without indicators"
+                      if args.ignore_missingness else "missing values explicitly represented")
+    print(f"Missing-value policy: {missing_policy}")
     common = dict(object_id=ids, field=["catalogue"] * len(rows),
         z_spec=torch.from_numpy(target.astype(np.float32)),
         redshift_reference={"zphot": torch.from_numpy(target.astype(np.float32))},
@@ -292,6 +339,8 @@ def main(argv=None):
         excluded_columns=excluded, include_id=args.include_id, include_location=args.include_location,
         aion_model_used=False, target="ZPHOT", split_counts=split_counts,
         input_mode="magnitudes_only" if args.magnitudes_only else "catalogue_columns",
+        missing_value_policy=("omit_from_text_train_median_impute_no_indicator"
+                              if args.ignore_missingness else "explicit"),
         magnitude_bands=list(MAGNITUDE_ONLY_BANDS) if args.magnitudes_only else [],
         magnitude_zero_point=MAG_ZERO_POINT if args.magnitudes_only else None,
         source_columns=source_columns,
