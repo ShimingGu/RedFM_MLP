@@ -175,7 +175,7 @@ def build_baseline_model(
 ) -> nn.Module:
     if model_kind == "tabular":
         return TabularPhotoZModel(extra_feature_dim=extra_feature_dim, n_z_bins=n_z_bins)
-    if model_kind in {"aion", "qwen"}:
+    if model_kind in {"aion", "qwen", "iotfm"}:
         return AIONOnlyPhotoZModel(aion_dim=aion_dim, n_z_bins=n_z_bins)
     if model_kind == "fusion":
         return CLAUDSPhotoZModel(aion_dim=aion_dim, extra_feature_dim=extra_feature_dim, n_z_bins=n_z_bins)

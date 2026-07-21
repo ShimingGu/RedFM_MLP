@@ -29,6 +29,7 @@ exec "${PYTHON_CMD[@]}" "$REPO_ROOT/notebooks/iotfm_mlp.py" \
   --max-rows "${AION_MAX_ROWS:-200000}" --model "${IOTFM_MODEL:-GLM-5.2-0.8B-A0.8B}" \
   --embedding-batch-size "${IOTFM_EMBEDDING_BATCH_SIZE:-8}" --max-length "${IOTFM_MAX_LENGTH:-2048}" \
   --pooling "${IOTFM_POOLING:-mean}" --epochs "${AION_EPOCHS:-10}" \
+  --tomographic-samples "${AION_TOMOGRAPHIC_SAMPLES:-100}" \
   --train-batch-size "${AION_TRAIN_BATCH_SIZE:-256}" --eval-batch-size "${AION_EVAL_BATCH_SIZE:-512}" \
   --n-z-bins "${AION_N_Z_BINS:-300}" --train-fraction "${AION_TRAIN_FRACTION:-0.63}" \
   --test-fraction "${AION_TEST_FRACTION:-0.32}" --val-fraction "${AION_VAL_FRACTION:-0.05}" \

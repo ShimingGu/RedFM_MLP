@@ -43,7 +43,7 @@ def logits_from_cached_batch(
 
     if model_kind == "fusion":
         return model(aion_embedding, extra_features)
-    if model_kind in {"aion", "qwen"}:
+    if model_kind in {"aion", "qwen", "iotfm"}:
         return model(aion_embedding)
     if model_kind == "tabular":
         return model(extra_features)
@@ -278,7 +278,7 @@ def train_single_baseline(
             f"model_kind={model_kind!r} requires at least one MLP feature. "
             "Set use_mlp_features=True with grizy and/or extra bands, or use model_kind='aion'."
         )
-    if model_kind in {"aion", "qwen", "fusion"} and aion_dim == 0:
+    if model_kind in {"aion", "qwen", "iotfm", "fusion"} and aion_dim == 0:
         raise ValueError(
             f"model_kind={model_kind!r} requires frozen embeddings. "
             "Populate the cached embedding tensor before training."

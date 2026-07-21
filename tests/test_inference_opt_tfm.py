@@ -1,14 +1,17 @@
 import unittest
 from types import SimpleNamespace
+from unittest.mock import MagicMock, patch
 
 import torch
 
+import aion_magnitude.Inference_Opt_TFM as inference_opt_tfm
 from aion_magnitude.Inference_Opt_TFM import (
     CatalogueSerializationConfig,
     InferenceOptimizedEmbeddingConfig,
     build_embedding_metadata,
     extract_text_embeddings,
     get_model_spec,
+    load_inference_optimized_transformer,
     pool_hidden_states,
     serialize_catalogue_batch,
     serialize_catalogue_row,
@@ -16,6 +19,33 @@ from aion_magnitude.Inference_Opt_TFM import (
 
 
 class TestInferenceOptimizedTransformer(unittest.TestCase):
+    def test_loader_resolves_auto_device(self):
+        tokenizer = object()
+        model = MagicMock()
+        auto_tokenizer = MagicMock()
+        auto_tokenizer.from_pretrained.return_value = tokenizer
+        auto_model = MagicMock()
+        auto_model.from_pretrained.return_value = model
+
+        with (
+            patch.object(inference_opt_tfm, "AutoTokenizer", auto_tokenizer),
+            patch.object(inference_opt_tfm, "AutoModel", auto_model),
+            patch.object(
+                inference_opt_tfm,
+                "resolve_torch_device",
+                return_value=torch.device("cuda"),
+            ) as resolve_device,
+        ):
+            loaded_tokenizer, loaded_model, device = load_inference_optimized_transformer(
+                InferenceOptimizedEmbeddingConfig(model_path="local-model", device="auto")
+            )
+
+        resolve_device.assert_called_once_with("auto")
+        self.assertIs(loaded_tokenizer, tokenizer)
+        self.assertIs(loaded_model, model)
+        self.assertEqual(device, torch.device("cuda"))
+        model.to.assert_called_once_with(torch.device("cuda"))
+
     def test_registered_model_and_alias(self):
         canonical = get_model_spec("GLM-5.2-0.8B-A0.8B")
         alias = get_model_spec("glm_5_2_0_8b_a0_8b")

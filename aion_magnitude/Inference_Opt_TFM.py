@@ -18,6 +18,8 @@ from typing import Any, Mapping, Sequence
 import torch
 import torch.nn.functional as F
 
+from .utils import resolve_torch_device
+
 try:
     from transformers import AutoModel, AutoTokenizer, BitsAndBytesConfig
 except ImportError:  # Keep serialization utilities usable without transformers.
@@ -196,7 +198,7 @@ def load_inference_optimized_transformer(
     if AutoModel is None:
         raise ImportError("transformers is required to load inference-optimized models.")
     config = config or InferenceOptimizedEmbeddingConfig()
-    device = torch.device(config.device or ("cuda" if torch.cuda.is_available() else "cpu"))
+    device = resolve_torch_device(config.device)
     model_path = resolve_model_path(config.model_path)
     common = {
         "local_files_only": config.local_files_only,
