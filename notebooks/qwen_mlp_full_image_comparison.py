@@ -28,6 +28,7 @@ base.COMPARISON_NAME = "qwen_mlp_full_image_comparison"
 base.DEFAULT_OUTPUT_DIR = Path("/arc/home/gsm/aion_output/figures/qwen-mlp_full_image_comparison")
 
 _run_tag = "center16"
+_physical_context = True
 _original_build_parser = base.build_parser
 
 
@@ -37,16 +38,19 @@ def build_parser():
         "--qwen-image-input-mode", choices=QWEN_IMAGE_INPUT_MODES, default="center_crop"
     )
     parser.add_argument("--qwen-image-crop-size", type=int, default=16)
+    parser.add_argument("--no-qwen-physical-context", action="store_true")
     parser.add_argument("--allow-qwen-truncation", action="store_true")
     return parser
 
 
 def physical_settings(args):
-    global _run_tag
-    _run_tag = (
+    global _run_tag, _physical_context
+    _physical_context = not args.no_qwen_physical_context
+    image_tag = (
         f"center{args.qwen_image_crop_size}"
         if args.qwen_image_input_mode == "center_crop" else "full24_raw"
     )
+    _run_tag = image_tag if _physical_context else f"raw_{image_tag}"
     return (
         QwenEmbeddingConfig(
             model_path=args.qwen_model,
@@ -60,9 +64,13 @@ def physical_settings(args):
             trust_remote_code=True,
         ),
         Qwen3SerializationConfig(
-            schema_name="clauds_physical_magnitudes_aion_image_v2",
+            schema_name=(
+                "clauds_physical_magnitudes_aion_image_v2"
+                if _physical_context else "clauds_raw_magnitudes_aion_image_v2"
+            ),
             image_input_mode=args.qwen_image_input_mode,
             image_crop_size=args.qwen_image_crop_size,
+            include_physical_context=_physical_context,
             include_image_context=False,
             final_marker="Combined galaxy representation:",
         ),
@@ -70,10 +78,14 @@ def physical_settings(args):
 
 
 def expected_metadata(config, serialization, feature_names):
+    physical = bool(serialization.include_physical_context)
     return {
         **qwen3_embedding_metadata(config, serialization),
         "input_feature_names": feature_names,
-        "input_scope": "physically described all magnitudes plus tokenized galaxy image",
+        "input_scope": (
+            "physically described all magnitudes plus tokenized galaxy image"
+            if physical else "raw all-magnitude columns plus tokenized galaxy image"
+        ),
         "aion_image_embedding_used": False,
         "aion_image_tokens_read_by_qwen": True,
     }
@@ -152,7 +164,9 @@ def extract_physical_image_embeddings(args, product, config, serialization, cach
                 pooling=config.pooling, normalize=config.normalize,
             ))
             if stop == len(features) or stop % max(1000, args.qwen_embedding_batch_size) == 0:
-                print(f"physical magnitude+image Qwen embeddings: {stop:,}/{len(features):,}", flush=True)
+                label = ("physical magnitude+image" if serialization.include_physical_context
+                         else "raw magnitude+image")
+                print(f"{label} Qwen embeddings: {stop:,}/{len(features):,}", flush=True)
         if not parts:
             raise ValueError("Qwen3 extraction received zero morphology-matched rows.")
         embeddings = torch.cat(parts)
@@ -180,7 +194,10 @@ def train_without_second_image_input(product, model_kind, **kwargs):
 
 def save_artifacts(results, **kwargs):
     kwargs["comparison_labels"] = (
-        "physical-all-magnitude-Qwen+tokenized-galaxy-image",
+        (
+            "physical-all-magnitude-Qwen+tokenized-galaxy-image"
+            if _physical_context else "raw-all-magnitude-Qwen+tokenized-galaxy-image"
+        ),
         "all-magnitude-MLP+tokenized-galaxy-image",
     )
     return _original_artifacts(results, **kwargs)

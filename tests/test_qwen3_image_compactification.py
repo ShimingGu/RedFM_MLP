@@ -52,6 +52,18 @@ class TestQwen3ImageCompactification(unittest.TestCase):
         )
         self.assertTrue(text.endswith("Combined galaxy representation:"))
 
+    def test_disabling_physical_context_emits_only_raw_magnitude_columns(self):
+        config = Qwen3SerializationConfig(
+            include_physical_context=False,
+            include_image_context=False,
+        )
+        text = serialize_qwen3_observation({"g_mag": 24.0}, config=config)
+        self.assertIn("Magnitude columns: g_mag=24.00000", text)
+        self.assertNotIn("instrument=", text)
+        self.assertNotIn("passband=", text)
+        self.assertNotIn("region=", text)
+        self.assertNotIn("observed-frame spectral energy distribution", text)
+
     def test_metadata_disambiguates_crop_and_full_grid(self):
         embedding = QwenEmbeddingConfig(model_path="test-model", pooling="last")
         cropped = qwen3_embedding_metadata(

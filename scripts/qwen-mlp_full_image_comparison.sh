@@ -25,6 +25,7 @@ FLAGS=()
 [[ "${QWEN_ALLOW_DOWNLOAD:-0}" == 1 ]] && FLAGS+=(--allow-qwen-download)
 [[ "${QWEN_NORMALIZE:-0}" == 1 ]] && FLAGS+=(--qwen-normalize)
 [[ "${QWEN_ALLOW_TRUNCATION:-0}" == 1 ]] && FLAGS+=(--allow-qwen-truncation)
+[[ "${QWEN_PHYSICAL_CONTEXT:-1}" == 0 ]] && FLAGS+=(--no-qwen-physical-context)
 [[ "${AION_FORCE_REBUILD_TOKENS:-0}" == 1 ]] && FLAGS+=(--force-rebuild-tokens)
 [[ "${AION_FORCE_RECOMPUTE_EMBEDDINGS:-0}" == 1 ]] && FLAGS+=(--force-rebuild-photometry --force-recompute-qwen)
 

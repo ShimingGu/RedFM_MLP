@@ -138,11 +138,11 @@ def _format_value(value: Any, config: Qwen3SerializationConfig) -> str:
     return f"{number:.{config.decimals}f}"
 
 
-def _pop_alias(features: dict[str, Any], aliases: Sequence[str]) -> tuple[bool, Any]:
+def _pop_alias(features: dict[str, Any], aliases: Sequence[str]) -> tuple[bool, str, Any]:
     for alias in aliases:
         if alias in features:
-            return True, features.pop(alias)
-    return False, None
+            return True, alias, features.pop(alias)
+    return False, "", None
 
 
 def serialize_tokenized_galaxy_image(
@@ -205,21 +205,28 @@ def serialize_qwen3_observation(
 
     magnitude_lines: list[str] = []
     for band in config.band_descriptions:
-        found, raw_value = _pop_alias(remaining, band.aliases)
+        found, input_name, raw_value = _pop_alias(remaining, band.aliases)
         if not found:
             continue
         value = _format_value(raw_value, config)
-        line = (
-            f"{band.canonical_name} AB magnitude={value}; instrument={band.facility_instrument}; "
-            f"passband={band.wavelength_text}; region={band.spectral_region}."
-        )
-        if band.note:
-            line += f" {band.note}"
+        if config.include_physical_context:
+            line = (
+                f"{band.canonical_name} AB magnitude={value}; instrument={band.facility_instrument}; "
+                f"passband={band.wavelength_text}; region={band.spectral_region}."
+            )
+            if band.note:
+                line += f" {band.note}"
+        else:
+            line = f"{input_name}={value}"
         magnitude_lines.append(line)
     if config.include_unrecognized_features:
         for name, raw_value in remaining.items():
             magnitude_lines.append(f"additional measured feature {name}={_format_value(raw_value, config)}.")
-    sections.append("Photometric magnitudes, ordered by wavelength: " + " ".join(magnitude_lines))
+    magnitude_label = (
+        "Photometric magnitudes, ordered by wavelength: "
+        if config.include_physical_context else "Magnitude columns: "
+    )
+    sections.append(magnitude_label + " ".join(magnitude_lines))
 
     if image_token_ids is not None:
         sections.append(serialize_tokenized_galaxy_image(image_token_ids, config=config))
