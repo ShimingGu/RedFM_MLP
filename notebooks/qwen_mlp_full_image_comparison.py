@@ -64,10 +64,7 @@ def physical_settings(args):
             trust_remote_code=True,
         ),
         Qwen3SerializationConfig(
-            schema_name=(
-                "clauds_physical_magnitudes_aion_image_v2"
-                if _physical_context else "clauds_raw_magnitudes_aion_image_v2"
-            ),
+            schema_name="clauds_physical_magnitudes_aion_image_v2",
             image_input_mode=args.qwen_image_input_mode,
             image_crop_size=args.qwen_image_crop_size,
             include_physical_context=_physical_context,
