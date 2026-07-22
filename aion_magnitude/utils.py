@@ -45,7 +45,27 @@ def resolve_torch_device(device_or_choice: torch.device | str | None = None) -> 
         return select_torch_device()
     if isinstance(device_or_choice, torch.device):
         return device_or_choice
-    return select_torch_device(device_or_choice)
+    if device_or_choice in {"auto", "mps", "cuda", "cpu"}:
+        return select_torch_device(device_or_choice)
+    try:
+        device = torch.device(device_or_choice)
+    except (RuntimeError, ValueError) as exc:
+        raise ValueError(f"Unknown device choice: {device_or_choice}") from exc
+    if device.type == "cuda":
+        if not torch.cuda.is_available():
+            raise RuntimeError("Requested CUDA device is not available.")
+        if device.index is not None and device.index >= torch.cuda.device_count():
+            raise RuntimeError(
+                f"Requested CUDA device index {device.index}, but only "
+                f"{torch.cuda.device_count()} CUDA device(s) are visible."
+            )
+    elif device.type == "mps":
+        mps_backend = getattr(torch.backends, "mps", None)
+        if mps_backend is None or not mps_backend.is_available():
+            raise RuntimeError("Requested MPS device is not available.")
+    elif device.type != "cpu":
+        raise ValueError(f"Unsupported torch device type: {device.type!r}.")
+    return device
 
 
 def make_redshift_grid(

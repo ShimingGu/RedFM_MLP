@@ -92,6 +92,7 @@ TOKEN_IMAGE_CONTEXT = (
 )
 
 QWEN_IMAGE_INPUT_MODES = ("full_grid", "center_crop")
+QWEN_PHYSICAL_CONTEXT_MODES = ("none", "global", "compact", "full")
 
 
 @dataclass(frozen=True)
@@ -103,6 +104,7 @@ class Qwen3SerializationConfig:
     image_input_mode: str = "full_grid"
     image_crop_size: int = 16
     include_physical_context: bool = True
+    physical_context_mode: str = "full"
     include_image_context: bool = True
     include_unrecognized_features: bool = True
     image_label: str = "tokenized galaxy image"
@@ -119,6 +121,19 @@ class Qwen3EmbeddingConfig(QwenEmbeddingConfig):
 
     model_path: str = "Qwen3-8B-Base"
     max_length: int = 2048
+
+
+def _physical_context_mode(config: Qwen3SerializationConfig) -> str:
+    """Resolve the context ablation while preserving the old boolean switch."""
+    if not config.include_physical_context:
+        return "none"
+    mode = str(config.physical_context_mode).strip().lower()
+    if mode not in QWEN_PHYSICAL_CONTEXT_MODES:
+        raise ValueError(
+            "physical_context_mode must be one of "
+            f"{QWEN_PHYSICAL_CONTEXT_MODES}; received {config.physical_context_mode!r}."
+        )
+    return mode
 
 
 def _format_value(value: Any, config: Qwen3SerializationConfig) -> str:
@@ -198,9 +213,10 @@ def serialize_qwen3_observation(
 ) -> str:
     """Serialize physical CLAUDS magnitudes first and optional image tokens second."""
     config = config or Qwen3SerializationConfig()
+    physical_mode = _physical_context_mode(config)
     remaining = {str(name): value for name, value in magnitude_features.items()}
     sections = [f"{config.prefix}; schema={config.schema_name}."]
-    if config.include_physical_context:
+    if physical_mode != "none":
         sections.append(PHYSICAL_CONTEXT)
 
     magnitude_lines: list[str] = []
@@ -209,13 +225,20 @@ def serialize_qwen3_observation(
         if not found:
             continue
         value = _format_value(raw_value, config)
-        if config.include_physical_context:
+        if physical_mode == "full":
             line = (
                 f"{band.canonical_name} AB magnitude={value}; instrument={band.facility_instrument}; "
                 f"passband={band.wavelength_text}; region={band.spectral_region}."
             )
             if band.note:
                 line += f" {band.note}"
+        elif physical_mode == "compact":
+            line = (
+                f"{band.canonical_name} AB magnitude={value}; "
+                f"passband={band.wavelength_text}; region={band.spectral_region}."
+            )
+        elif physical_mode == "global":
+            line = f"{band.canonical_name} AB magnitude={value}."
         else:
             line = f"{input_name}={value}"
         magnitude_lines.append(line)
@@ -224,7 +247,7 @@ def serialize_qwen3_observation(
             magnitude_lines.append(f"additional measured feature {name}={_format_value(raw_value, config)}.")
     magnitude_label = (
         "Photometric magnitudes, ordered by wavelength: "
-        if config.include_physical_context else "Magnitude columns: "
+        if physical_mode != "none" else "Magnitude columns: "
     )
     sections.append(magnitude_label + " ".join(magnitude_lines))
 
@@ -264,10 +287,12 @@ def qwen3_embedding_metadata(
     serialization_config: Qwen3SerializationConfig | None = None,
 ) -> dict[str, Any]:
     serialization_config = serialization_config or Qwen3SerializationConfig()
+    physical_mode = _physical_context_mode(serialization_config)
     return {
         **qwen_embedding_metadata(embedding_config),
         "qwen_serialization_schema": serialization_config.schema_name,
-        "qwen_physical_band_context": bool(serialization_config.include_physical_context),
+        "qwen_physical_band_context": physical_mode != "none",
+        "qwen_physical_context_mode": physical_mode,
         "qwen_image_input": serialization_config.image_label,
         "qwen_image_context": bool(serialization_config.include_image_context),
         "qwen_image_grid_size": int(serialization_config.image_grid_size),
@@ -291,6 +316,7 @@ __all__ = [
     "CLAUDBandDescription",
     "CLAUDS_BAND_DESCRIPTIONS",
     "QWEN_IMAGE_INPUT_MODES",
+    "QWEN_PHYSICAL_CONTEXT_MODES",
     "PHYSICAL_CONTEXT",
     "TOKEN_IMAGE_CONTEXT",
     "Qwen3SerializationConfig",

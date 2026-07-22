@@ -19,12 +19,31 @@ from aion_magnitude.FM_Qwen import (
     qwen_embedding_metadata, serialize_qwen_feature_row,
 )
 from aion_magnitude.FM_Qwen3 import (
-    Qwen3SerializationConfig, qwen3_embedding_metadata, serialize_qwen3_batch,
+    QWEN_PHYSICAL_CONTEXT_MODES, Qwen3SerializationConfig,
+    qwen3_embedding_metadata, serialize_qwen3_batch,
 )
 
 base.COMPARISON_NAME = "qwen_qwen_comparison"
 base.DEFAULT_OUTPUT_DIR = Path("/arc/home/gsm/aion_output/figures/qwen-qwen_comparison")
 _context = {}
+_base_build_parser = base.build_parser
+_base_qwen_run_tag = base.qwen_run_tag
+
+
+def build_parser():
+    parser = _base_build_parser()
+    parser.add_argument(
+        "--qwen-physical-context-mode",
+        choices=QWEN_PHYSICAL_CONTEXT_MODES,
+        default="full",
+        help="Ablate the amount of physical meaning added to the magnitude prompt.",
+    )
+    parser.add_argument(
+        "--qwen-summary-marker",
+        action="store_true",
+        help="End the physical prompt with an explicit representation marker.",
+    )
+    return parser
 
 
 def settings(args):
@@ -35,13 +54,26 @@ def settings(args):
         normalize=args.qwen_normalize, local_files_only=not args.allow_qwen_download,
         trust_remote_code=True,
     )
-    return config, Qwen3SerializationConfig()
+    mode = args.qwen_physical_context_mode
+    _context["physical_context_mode"] = mode
+    _context["summary_marker"] = bool(args.qwen_summary_marker)
+    serialization = Qwen3SerializationConfig(
+        include_physical_context=mode != "none",
+        physical_context_mode=mode,
+        final_marker=(
+            "Combined galaxy representation:" if args.qwen_summary_marker else None
+        ),
+    )
+    return config, serialization
 
 
 def physical_metadata(config, serialization, names):
     return {
         **qwen3_embedding_metadata(config, serialization),
-        "input_feature_names": names, "input_scope": "physically described all magnitudes",
+        "input_feature_names": names,
+        "input_scope": (
+            f"all magnitudes with {serialization.physical_context_mode} physical context"
+        ),
         "aion_image_tokens_read_by_qwen": False,
     }
 
@@ -141,8 +173,13 @@ def artifacts(results, **kwargs):
 
 
 def main(argv=None):
-    original_run_tag = base.qwen_run_tag
-    base.qwen_run_tag = lambda config: "physical_magnitude_" + original_run_tag(config)
+    base.qwen_run_tag = lambda config: (
+        "physical_magnitude_"
+        f"{_context.get('physical_context_mode', 'full')}_"
+        f"marker{int(_context.get('summary_marker', False))}_"
+        + _base_qwen_run_tag(config)
+    )
+    base.build_parser = build_parser
     base.qwen_settings = settings
     base.expected_qwen_metadata = physical_metadata
     base.extract_or_load_qwen_embeddings = extract_physical

@@ -1,0 +1,50 @@
+{
+  "name": "qwen_physical_context",
+  "metadata": {
+    "purpose": "Locate where physical prompt context changes Qwen representation and photo-z post-training",
+    "task": "aion_magnitude.evaluation.qwen_tasks:run_qwen_qwen_case",
+    "controlled_variables": {
+      "pooling": "last",
+      "normalize": false,
+      "terse_baseline": "repeated independently inside every case"
+    }
+  },
+  "cases": [
+    {
+      "name": "physical_global",
+      "inputs": {
+        "physical_context_mode": "global",
+        "summary_marker": false,
+        "pooling": "last",
+        "normalize": false
+      }
+    },
+    {
+      "name": "physical_compact",
+      "inputs": {
+        "physical_context_mode": "compact",
+        "summary_marker": false,
+        "pooling": "last",
+        "normalize": false
+      }
+    },
+    {
+      "name": "physical_full",
+      "inputs": {
+        "physical_context_mode": "full",
+        "summary_marker": false,
+        "pooling": "last",
+        "normalize": false
+      }
+    },
+    {
+      "name": "physical_full_summary",
+      "inputs": {
+        "physical_context_mode": "full",
+        "summary_marker": true,
+        "pooling": "last",
+        "normalize": false
+      }
+    }
+  ]
+}

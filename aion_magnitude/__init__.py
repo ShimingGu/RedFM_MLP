@@ -184,6 +184,25 @@ from .training import (
     run_training_and_evaluation,
 )
 
+# Export cluster-aware experiment execution. Pydantic Evals itself remains an
+# optional dependency and is imported lazily by the adapter.
+from .evaluation import (
+    EXECUTION_STRATEGIES,
+    CaseAssignment,
+    CaseExecutionContext,
+    ExecutionPlan,
+    WorkerRuntime,
+    build_execution_plan,
+    detect_worker_runtime,
+    shard_bounds,
+    ExperimentCase,
+    ExperimentManifest,
+    collect_case_artifacts,
+    load_experiment_manifest,
+    run_worker_cases,
+    evaluate_case_artifacts,
+)
+
 # Export plotting
 from .plotting import (
     plot_zpred_vs_zphot,

@@ -4,6 +4,7 @@ import torch
 
 from aion_magnitude.FM_Qwen import QwenEmbeddingConfig
 from aion_magnitude.FM_Qwen3 import (
+    QWEN_PHYSICAL_CONTEXT_MODES,
     Qwen3SerializationConfig,
     qwen3_embedding_metadata,
     serialize_qwen3_observation,
@@ -67,6 +68,36 @@ class TestQwen3ImageCompactification(unittest.TestCase):
         self.assertNotIn("region=", text)
         self.assertNotIn("observed-frame spectral energy distribution", text)
 
+    def test_global_context_explains_physics_without_band_details(self):
+        text = serialize_qwen3_observation(
+            {"g_mag": 24.0},
+            config=Qwen3SerializationConfig(physical_context_mode="global"),
+        )
+        self.assertIn("observed-frame spectral energy distribution", text)
+        self.assertIn("g AB magnitude=24.00000", text)
+        self.assertNotIn("instrument=", text)
+        self.assertNotIn("passband=", text)
+        self.assertNotIn("region=", text)
+
+    def test_compact_context_keeps_passband_but_omits_instrument_and_notes(self):
+        text = serialize_qwen3_observation(
+            {"u_star": 25.0},
+            config=Qwen3SerializationConfig(physical_context_mode="compact"),
+        )
+        self.assertIn("u_star AB magnitude=25.00000", text)
+        self.assertIn("passband=", text)
+        self.assertIn("region=", text)
+        self.assertNotIn("instrument=", text)
+        self.assertNotIn("red leak", text)
+
+    def test_invalid_physical_context_mode_is_rejected(self):
+        self.assertEqual(QWEN_PHYSICAL_CONTEXT_MODES, ("none", "global", "compact", "full"))
+        with self.assertRaisesRegex(ValueError, "physical_context_mode"):
+            serialize_qwen3_observation(
+                {"g": 24.0},
+                config=Qwen3SerializationConfig(physical_context_mode="unknown"),
+            )
+
     def test_metadata_disambiguates_crop_and_full_grid(self):
         embedding = QwenEmbeddingConfig(model_path="test-model", pooling="last")
         cropped = qwen3_embedding_metadata(
@@ -79,6 +110,7 @@ class TestQwen3ImageCompactification(unittest.TestCase):
         self.assertEqual(cropped["qwen_serialized_image_grid_size"], 16)
         self.assertEqual(full["qwen_serialized_image_grid_size"], 24)
         self.assertNotEqual(cropped["qwen_image_input_mode"], full["qwen_image_input_mode"])
+        self.assertEqual(full["qwen_physical_context_mode"], "full")
 
     def test_invalid_center_crop_is_rejected(self):
         grid = torch.zeros((24, 24), dtype=torch.long)

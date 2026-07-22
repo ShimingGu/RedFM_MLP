@@ -153,7 +153,10 @@ def load_frozen_qwen(
             bnb_4bit_compute_dtype=torch.bfloat16 if device.type == "cuda" else torch.float32,
             bnb_4bit_use_double_quant=True,
         )
-        model_kwargs["device_map"] = {"": 0}
+        device_index = device.index
+        if device_index is None:
+            device_index = torch.cuda.current_device()
+        model_kwargs["device_map"] = {"": int(device_index)}
     else:
         model_kwargs["device_map"] = None
 
