@@ -4,6 +4,12 @@ set -euo pipefail
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd -- "$SCRIPT_DIR/.." && pwd)"
 
+# Raw mode uses terse magnitude-only Qwen embeddings fused with the learned
+# AION FSQ-token image encoder; it must not serialize image IDs as Qwen text.
+if [[ "${QWEN_PHYSICAL_CONTEXT:-1}" == 0 ]]; then
+    exec "$SCRIPT_DIR/qwen-mlp_full_raw_comparison.sh" "$@"
+fi
+
 if [[ -n "${PYTHON_BIN:-}" ]]; then
     PYTHON_CMD=("$PYTHON_BIN")
 elif [[ -f "${PIXI_MANIFEST:-$REPO_ROOT/pixi.toml}" ]]; then
@@ -25,7 +31,6 @@ FLAGS=()
 [[ "${QWEN_ALLOW_DOWNLOAD:-0}" == 1 ]] && FLAGS+=(--allow-qwen-download)
 [[ "${QWEN_NORMALIZE:-0}" == 1 ]] && FLAGS+=(--qwen-normalize)
 [[ "${QWEN_ALLOW_TRUNCATION:-0}" == 1 ]] && FLAGS+=(--allow-qwen-truncation)
-[[ "${QWEN_PHYSICAL_CONTEXT:-1}" == 0 ]] && FLAGS+=(--no-qwen-physical-context)
 [[ "${AION_FORCE_REBUILD_TOKENS:-0}" == 1 ]] && FLAGS+=(--force-rebuild-tokens)
 [[ "${AION_FORCE_RECOMPUTE_EMBEDDINGS:-0}" == 1 ]] && FLAGS+=(--force-rebuild-photometry --force-recompute-qwen)
 
