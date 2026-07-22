@@ -30,6 +30,15 @@ _base_build_parser = base.build_parser
 _base_qwen_run_tag = base.qwen_run_tag
 
 
+class _QwenPrecomputeComplete(Exception):
+    """Stop the comparison after one requested cache-preparation phase."""
+
+    def __init__(self, branch: str, cache_path: Path | None = None):
+        self.branch = branch
+        self.cache_path = cache_path
+        super().__init__(branch)
+
+
 def build_parser():
     parser = _base_build_parser()
     parser.add_argument(
@@ -42,6 +51,14 @@ def build_parser():
         "--qwen-summary-marker",
         action="store_true",
         help="End the physical prompt with an explicit representation marker.",
+    )
+    parser.add_argument(
+        "--precompute-qwen-branch",
+        choices=("prepare", "physical", "terse"),
+        help=(
+            "Prepare only the shared cohort, physical Qwen cache, or terse Qwen "
+            "cache, then exit. Used by the two-GPU launcher."
+        ),
     )
     return parser
 
@@ -141,7 +158,19 @@ def extract_text_embeddings(args, product, config, serialization, cache_path, de
 
 def extract_physical(args, product, config, serialization, cache_path, device):
     _context.update(args=args, product=product, config=config, device=device, cache_path=cache_path)
-    return extract_text_embeddings(args, product, config, serialization, cache_path, device, physical=True)
+    branch = args.precompute_qwen_branch
+    if branch == "prepare":
+        raise _QwenPrecomputeComplete("shared cohort")
+    if branch == "terse":
+        # The terse-only worker reaches its cache through train_two_qwens().
+        # This placeholder is never trained or saved.
+        return torch.empty((len(product["object_id"]), 1), dtype=torch.float32)
+    embedding = extract_text_embeddings(
+        args, product, config, serialization, cache_path, device, physical=True
+    )
+    if branch == "physical":
+        raise _QwenPrecomputeComplete("physical", Path(cache_path))
+    return embedding
 
 
 _train = base.train_single_morphology_model
@@ -150,6 +179,8 @@ _artifacts = base.save_morphology_comparison_artifacts
 
 def train_two_qwens(product, model_kind, **kwargs):
     if model_kind == "qwen_morphology":
+        if _context["args"].precompute_qwen_branch == "terse":
+            return {"precompute_only": True}
         kwargs = dict(kwargs)
         kwargs["output_dir"] = Path(kwargs["output_dir"]) / "physical_qwen"
         base.am.set_random_seed(kwargs["config"].seed)
@@ -159,6 +190,8 @@ def train_two_qwens(product, model_kind, **kwargs):
     terse_embedding = extract_text_embeddings(
         args, source, config, QwenSerializationConfig(), terse_path, device, physical=False
     )
+    if args.precompute_qwen_branch == "terse":
+        raise _QwenPrecomputeComplete("terse", terse_path)
     terse_product = dict(source)
     terse_product["aion_embedding"] = terse_embedding
     kwargs = dict(kwargs)
@@ -185,7 +218,12 @@ def main(argv=None):
     base.extract_or_load_qwen_embeddings = extract_physical
     base.train_single_morphology_model = train_two_qwens
     base.save_morphology_comparison_artifacts = artifacts
-    return base.main(argv)
+    try:
+        return base.main(argv)
+    except _QwenPrecomputeComplete as complete:
+        location = "" if complete.cache_path is None else f": {complete.cache_path}"
+        print(f"precompute complete for {complete.branch}{location}", flush=True)
+        return 0
 
 
 if __name__ == "__main__":
