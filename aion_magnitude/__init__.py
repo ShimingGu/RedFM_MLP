@@ -269,6 +269,7 @@ _MORPHOLOGY_EXPORTS = {
     "PhotometryOnlyPhotoZModel",
     "MorphologyResidualPhotoZModel",
     "AIONMagnitudeMorphologyResidualPhotoZModel",
+    "FrozenImageEmbeddingResidualPhotoZModel",
     "MorphologyTokenBatch",
     "MorphologyTokenDataset",
     "collate_morphology_token_batch",
@@ -287,15 +288,28 @@ _MORPHOLOGY_EXPORTS = {
     "run_morphology_experiment",
 }
 
+_TIMM_MORPHOLOGY_EXPORTS = {
+    "DEFAULT_TIMM_MORPHOLOGY_MODEL",
+    "TIMM_CUTOUT_NORMALIZATIONS",
+    "TimmMorphologyConfig",
+    "create_timm_image_encoder",
+    "preprocess_timm_cutouts",
+    "validate_timm_embedding_cache",
+    "extract_or_load_timm_embeddings",
+}
+
 
 def __getattr__(name: str):
-    if name not in _MORPHOLOGY_EXPORTS:
+    if name in _MORPHOLOGY_EXPORTS:
+        module = import_module(".morphology", __name__)
+    elif name in _TIMM_MORPHOLOGY_EXPORTS:
+        module = import_module(".timm_morphology", __name__)
+    else:
         raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
-    module = import_module(".morphology", __name__)
     value = getattr(module, name)
     globals()[name] = value
     return value
 
 
 def __dir__() -> list[str]:
-    return sorted(set(globals()) | _MORPHOLOGY_EXPORTS)
+    return sorted(set(globals()) | _MORPHOLOGY_EXPORTS | _TIMM_MORPHOLOGY_EXPORTS)

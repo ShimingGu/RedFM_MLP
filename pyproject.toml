@@ -30,6 +30,9 @@ qwen-cuda = [
 evals = [
     "pydantic-evals>=2,<3",
 ]
+vision = [
+    "timm>=1.0.28,<2",
+]
 
 [project.scripts]
 aion-morphology = "aion_magnitude.morphology:main"

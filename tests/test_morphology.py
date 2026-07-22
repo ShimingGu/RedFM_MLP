@@ -13,6 +13,7 @@ from aion_magnitude.morphology import (
     AIONMagnitudeMorphologyResidualPhotoZModel,
     AIONMorphologyConfig,
     FSQTokenDecoder,
+    FrozenImageEmbeddingResidualPhotoZModel,
     MorphologyResidualPhotoZModel,
     build_morphology_population_report,
     discover_morphology_image_paths,
@@ -20,6 +21,10 @@ from aion_magnitude.morphology import (
     make_magnitude_config,
     resolve_morphology_paths,
     scale_product_features_from_training_split,
+)
+from aion_magnitude.timm_morphology import (
+    TimmMorphologyConfig,
+    preprocess_timm_cutouts,
 )
 
 
@@ -251,6 +256,41 @@ class MorphologyModuleTest(unittest.TestCase):
             torch.randn(2, 12),
             torch.randint(0, 4375, (2, 24 * 24)),
         )
+        self.assertEqual(tuple(logits.shape), (2, 100))
+
+
+    def test_timm_backend_preprocessing_and_frozen_embedding_fusion(self) -> None:
+        config = AIONMorphologyConfig(
+            use_aion_magnitude_embedding=False,
+            model_kinds=("qwen_morphology", "frozen_image_morphology"),
+        ).normalized()
+        self.assertEqual(
+            config.model_kinds,
+            ("qwen_morphology", "frozen_image_morphology"),
+        )
+        self.assertEqual(TimmMorphologyConfig().normalized().in_chans, 1)
+
+        cutouts = np.zeros((2, 96, 96), dtype=np.float32)
+        cutouts[0, 40:56, 40:56] = 3.0
+        cutouts[1, 44:52, 44:52] = -2.0
+        inputs = preprocess_timm_cutouts(
+            cutouts,
+            input_size=64,
+            percentile=99.0,
+            input_mean=0.5,
+            input_std=0.25,
+        )
+        self.assertEqual(tuple(inputs.shape), (2, 1, 64, 64))
+        self.assertTrue(torch.isfinite(inputs).all())
+
+        model = FrozenImageEmbeddingResidualPhotoZModel(
+            magnitude_dim=32,
+            frozen_image_dim=48,
+            n_z_bins=100,
+            image_embedding_dim=16,
+            head_hidden_dim=24,
+        )
+        logits = model(torch.randn(2, 32), torch.randn(2, 48))
         self.assertEqual(tuple(logits.shape), (2, 100))
 
 

@@ -210,6 +210,7 @@ class AIONMorphologyConfig:
                 "aion_morphology",
                 "shuffled_aion_morphology",
                 "qwen_morphology",
+                "frozen_image_morphology",
             }
         )
         if unknown:
@@ -1304,6 +1305,48 @@ class AIONMagnitudeMorphologyResidualPhotoZModel(nn.Module):
         return base_logits + delta_logits
 
 
+class FrozenImageEmbeddingResidualPhotoZModel(nn.Module):
+    """Add a projected frozen image embedding to a frozen magnitude embedding."""
+
+    def __init__(
+        self,
+        *,
+        magnitude_dim: int,
+        frozen_image_dim: int,
+        n_z_bins: int,
+        image_embedding_dim: int = 128,
+        head_hidden_dim: int = 256,
+    ):
+        super().__init__()
+        self.photometry_head = PhotoZHead(magnitude_dim, n_z_bins, head_hidden_dim)
+        self.image_encoder = nn.Sequential(
+            nn.LayerNorm(frozen_image_dim),
+            nn.Linear(frozen_image_dim, image_embedding_dim),
+            nn.GELU(),
+        )
+        self.image_delta_head = nn.Sequential(
+            nn.Linear(magnitude_dim + image_embedding_dim, head_hidden_dim),
+            nn.LayerNorm(head_hidden_dim),
+            nn.GELU(),
+            nn.Dropout(0.1),
+            nn.Linear(head_hidden_dim, head_hidden_dim),
+            nn.GELU(),
+            nn.Linear(head_hidden_dim, n_z_bins),
+        )
+
+    def forward(
+        self,
+        magnitude_embedding: torch.Tensor,
+        frozen_image_embedding: torch.Tensor,
+    ) -> torch.Tensor:
+        base_logits = self.photometry_head(magnitude_embedding)
+        h_image = self.image_encoder(frozen_image_embedding)
+        delta_logits = self.image_delta_head(
+            torch.cat([magnitude_embedding, h_image], dim=-1)
+        )
+        return base_logits + delta_logits
+
+
 def scale_product_features_from_training_split(
     product: Mapping[str, Any],
     *,
@@ -1510,6 +1553,14 @@ def _build_morphology_model(
             image_embedding_dim=config.image_embedding_dim,
             head_hidden_dim=config.head_hidden_dim,
         )
+    if model_kind == "frozen_image_morphology":
+        return FrozenImageEmbeddingResidualPhotoZModel(
+            magnitude_dim=aion_dim,
+            frozen_image_dim=extra_feature_dim,
+            n_z_bins=n_z_bins,
+            image_embedding_dim=config.image_embedding_dim,
+            head_hidden_dim=config.head_hidden_dim,
+        )
     raise ValueError(f"Unknown model_kind: {model_kind}")
 
 
@@ -1521,6 +1572,11 @@ def _logits_from_morphology_batch(
 ) -> torch.Tensor:
     if isinstance(model, AIONOnlyPhotoZModel):
         return model(batch.aion_embedding.to(device))
+    if isinstance(model, FrozenImageEmbeddingResidualPhotoZModel):
+        return model(
+            batch.aion_embedding.to(device),
+            batch.extra_features.to(device),
+        )
     token_ids = batch.token_ids.to(device)
     if isinstance(model, AIONMagnitudeMorphologyResidualPhotoZModel):
         return model(batch.aion_embedding.to(device), token_ids)
@@ -1617,6 +1673,7 @@ def train_single_morphology_model(
         "aion_morphology",
         "shuffled_aion_morphology",
         "qwen_morphology",
+        "frozen_image_morphology",
     }
     feature_key = "aion_embedding" if model_kind in embedding_kinds else "extra_features"
     product = scale_product_features_from_training_split(product, feature_key=feature_key, mode=config.feature_scaling)
