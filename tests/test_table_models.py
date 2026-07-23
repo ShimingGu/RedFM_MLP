@@ -111,17 +111,40 @@ def test_table_arm_fills_only_held_out_redshifts_and_saves_truth_separately():
         assert (Path(directory) / "model_input_table.npz").exists()
 
 
-def test_image_tokens_become_one_named_column_per_grid_position():
+def test_image_tokens_are_decoded_into_named_fsq_factor_columns():
     with TemporaryDirectory() as directory:
         token_path = Path(directory) / "tokens.npy"
-        tokens = np.arange(3 * 16, dtype=np.uint16).reshape(3, 16)
+        tokens = np.array([
+            [0, 1, 2, 3],
+            [4, 5, 0, 1],
+            [2, 3, 4, 5],
+        ], dtype=np.uint16)
         np.save(token_path, tokens)
         product = {
             "image_token_ids_path": str(token_path),
             "image_token_row_indices": np.array([2, 0], dtype=np.int64),
+            "metadata": {"aion_image_quantizer_levels": [3, 2]},
         }
         values, names = tm._image_token_matrix(product)
-        assert values.shape == (2, 16)
-        assert names[0] == "aion_token_r00_c00"
-        assert names[-1] == "aion_token_r03_c03"
-        np.testing.assert_array_equal(values[0], tokens[2])
+        assert values.shape == (2, 8)
+        assert names[0] == "aion_fsq_f00_r00_c00"
+        assert names[-1] == "aion_fsq_f01_r01_c01"
+        np.testing.assert_array_equal(values[0, :4], [1.0, -1.0, 0.0, 1.0])
+        np.testing.assert_array_equal(values[0, 4:], [-1.0, 0.0, 0.0, 0.0])
+
+
+def test_image_token_decoder_rejects_ids_outside_fsq_vocabulary():
+    with TemporaryDirectory() as directory:
+        token_path = Path(directory) / "tokens.npy"
+        np.save(token_path, np.array([[0, 1, 2, 6]], dtype=np.uint16))
+        product = {
+            "image_token_ids_path": str(token_path),
+            "image_token_row_indices": np.array([0], dtype=np.int64),
+            "metadata": {"aion_image_quantizer_levels": [3, 2]},
+        }
+        try:
+            tm._image_token_matrix(product)
+        except RuntimeError as error:
+            assert "must be in [0, 6)" in str(error)
+        else:
+            raise AssertionError("out-of-vocabulary AION token ID was accepted")

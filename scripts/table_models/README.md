@@ -12,14 +12,15 @@ result directory begins with the selected backend, for example:
 The five launchers are:
 
 - `tabxx_noimage-aion_comparison.sh`: magnitude-only table without images
-  versus the same table plus 576 AION FSQ token-ID columns.
-- `tabxx_aion-timm_comparison.sh`: magnitude-only table plus AION token IDs
-  versus the same magnitudes plus a frozen timm image embedding.
+  versus the same table plus 2,880 normalized AION FSQ-factor columns
+  (five decoded factors at each position of the 24x24 token grid).
+- `tabxx_aion-timm_comparison.sh`: magnitude-only table plus decoded AION FSQ
+  factors versus the same magnitudes plus a frozen timm image embedding.
 - `tabxx-mlp_noimage_comparison.sh`: magnitude-only table model versus the
   repository's standard magnitude-only PDF MLP.
-- `tabxx-mlp_aionimage_comparison.sh`: magnitude-only table model with AION
-  token columns versus the standard magnitude MLP with its trainable decoded
-  AION-token image path.
+- `tabxx-mlp_aionimage_comparison.sh`: magnitude-only table model with decoded
+  AION FSQ-factor columns versus the standard magnitude MLP with its trainable
+  decoded AION-token image path.
 - `tabxx_magonly-fulltable.sh`: 11 AB magnitudes versus exactly 55 fluxes,
   55 flux errors, and 11 Kron radii, without images.
 
@@ -42,6 +43,11 @@ Each table arm writes `redshift_completion.npz`,
 compressed completion table contains the original masked target, inferred
 held-out redshift, filled target, and evaluation-only truth. Add
 `--save-input-table` to persist the potentially large feature matrix.
+
+After both arms finish, every comparison—including
+`tabxx_aion-timm_comparison.sh`—writes the side-by-side redshift image
+`test_redshift_comparison.png` and its metrics/artifact index
+`comparison_results.json` in the comparison output directory.
 
 Model checkpoints download on first use unless `--no-allow-model-download` and
 `--model-path=...` are supplied. TabICL code and weights are BSD-3-Clause.

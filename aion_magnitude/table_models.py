@@ -329,11 +329,49 @@ def build_masked_target(target: np.ndarray, split_labels: np.ndarray) -> np.ndar
 def _image_token_matrix(product: Mapping[str, Any]) -> tuple[np.ndarray, list[str]]:
     token_ids = np.load(product["image_token_ids_path"], mmap_mode="r")
     rows = np.asarray(product["image_token_row_indices"], dtype=np.int64)
-    values = np.asarray(token_ids[rows], dtype=np.float32)
-    grid = int(round(math.sqrt(values.shape[1])))
-    if grid * grid != values.shape[1]:
-        raise RuntimeError(f"AION token count {values.shape[1]} is not a square grid.")
-    names = [f"aion_token_r{row:02d}_c{column:02d}" for row in range(grid) for column in range(grid)]
+    ids = np.asarray(token_ids[rows])
+    grid = int(round(math.sqrt(ids.shape[1])))
+    if grid * grid != ids.shape[1]:
+        raise RuntimeError(f"AION token count {ids.shape[1]} is not a square grid.")
+
+    from .morphology import DEFAULT_AION_IMAGE_QUANTIZER_LEVELS
+
+    metadata = dict(product.get("metadata", {}))
+    levels = np.asarray(
+        metadata.get(
+            "aion_image_quantizer_levels",
+            DEFAULT_AION_IMAGE_QUANTIZER_LEVELS,
+        ),
+        dtype=np.int64,
+    )
+    if levels.ndim != 1 or not len(levels) or np.any(levels <= 1):
+        raise RuntimeError(f"Invalid AION FSQ quantizer levels: {levels.tolist()}")
+    vocab_size = int(np.prod(levels, dtype=np.int64))
+    if ids.size and (int(ids.min()) < 0 or int(ids.max()) >= vocab_size):
+        raise RuntimeError(
+            f"AION token IDs must be in [0, {vocab_size}); "
+            f"observed [{int(ids.min())}, {int(ids.max())}]."
+        )
+
+    # A token ID is a mixed-radix packing of independent FSQ factors. Its
+    # integer value is not an ordinal measurement, so expose the normalized
+    # factors instead of presenting raw codebook IDs as continuous features.
+    n_tokens = ids.shape[1]
+    values = np.empty((ids.shape[0], len(levels) * n_tokens), dtype=np.float32)
+    names: list[str] = []
+    basis = 1
+    for factor, level in enumerate(levels.tolist()):
+        component = (ids // basis) % level
+        half_width = level // 2
+        values[:, factor * n_tokens : (factor + 1) * n_tokens] = (
+            component.astype(np.float32) - half_width
+        ) / float(half_width)
+        names.extend(
+            f"aion_fsq_f{factor:02d}_r{row:02d}_c{column:02d}"
+            for row in range(grid)
+            for column in range(grid)
+        )
+        basis *= level
     return values, names
 
 
