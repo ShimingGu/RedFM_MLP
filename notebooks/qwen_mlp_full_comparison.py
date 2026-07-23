@@ -320,7 +320,7 @@ def save_run_manifest(
         "redshift_bin_bounds_from_selected_catalogue": list(redshift_bounds),
         "artifacts": artifacts,
     }
-    path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\\n")
+    path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n")
 
 
 def main(argv: list[str] | None = None) -> int:
