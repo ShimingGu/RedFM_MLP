@@ -1,0 +1,8 @@
+  CUDA_VISIBLE_DEVICES=2 \
+  ./scripts/table_models/tabxx_noimage-aion_comparison.sh \
+    --model=tabicl \
+    --max-rows=300000 \
+    --device=cuda
+     
+  AION_QWEN_GPU_DEVICES=0,1 \
+  ./scripts/qwen-qwen_posttraining_comparison_multigpu.sh
