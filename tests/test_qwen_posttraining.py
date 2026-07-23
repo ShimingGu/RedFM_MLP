@@ -8,6 +8,7 @@ from aion_magnitude.qwen_posttraining import (
     QwenPhotoZModel,
     QwenPosttrainingConfig,
     TextRedshiftDataset,
+    _cpu_byte_rng_state,
     trainable_parameter_summary,
 )
 
@@ -53,6 +54,14 @@ class QwenPosttrainingTest(unittest.TestCase):
         self.assertEqual(dataset[1]["text"], "second")
         self.assertEqual(dataset[1]["object_id"], "b")
         self.assertAlmostEqual(float(dataset[1]["z_spec"]), 0.8, places=6)
+
+    def test_checkpoint_rng_state_is_a_cpu_byte_tensor(self) -> None:
+        state = torch.get_rng_state()
+        restored = _cpu_byte_rng_state(state, name="torch_rng_state")
+        self.assertEqual(restored.device.type, "cpu")
+        self.assertEqual(restored.dtype, torch.uint8)
+        with self.assertRaisesRegex(TypeError, "torch.uint8"):
+            _cpu_byte_rng_state(state.float(), name="torch_rng_state")
 
 
 if __name__ == "__main__":

@@ -366,6 +366,29 @@ def _save_training_checkpoint(checkpoint_dir: Path, **state: Any) -> Path:
     return path
 
 
+def _cpu_byte_rng_state(state: torch.Tensor, *, name: str) -> torch.Tensor:
+    """Return an RNG state in the representation required by PyTorch."""
+    if not isinstance(state, torch.Tensor):
+        raise TypeError(f"{name} must be a torch.Tensor, got {type(state).__name__}.")
+    if state.dtype != torch.uint8:
+        raise TypeError(f"{name} must have dtype torch.uint8, got {state.dtype}.")
+    return state.detach().cpu()
+
+
+def _restore_rng_state(saved: dict[str, Any]) -> None:
+    """Restore checkpoint RNG state without passing CUDA tensors as RNG bytes."""
+    random.setstate(saved["python_rng_state"])
+    np.random.set_state(saved["numpy_rng_state"])
+    torch.set_rng_state(
+        _cpu_byte_rng_state(saved["torch_rng_state"], name="torch_rng_state")
+    )
+    cuda_rng_states = [
+        _cpu_byte_rng_state(state, name=f"cuda_rng_state[{index}]")
+        for index, state in enumerate(saved["cuda_rng_state"])
+    ]
+    torch.cuda.set_rng_state_all(cuda_rng_states)
+
+
 def train_qlora_photoz(
     *,
     train_dataset: TextRedshiftDataset,
@@ -436,7 +459,9 @@ def train_qlora_photoz(
     if resume and checkpoint_path is not None:
         candidates = _checkpoint_files(checkpoint_path)
         if candidates:
-            saved = torch.load(candidates[-1], map_location=device, weights_only=False)
+            # RNG states must remain CPU ByteTensors. Optimizer.load_state_dict
+            # moves its tensors to the parameter devices after this CPU load.
+            saved = torch.load(candidates[-1], map_location="cpu", weights_only=False)
             if saved.get("config") != asdict(config):
                 raise ValueError(f"QLoRA checkpoint configuration does not match: {candidates[-1]}")
             expected_sizes = (len(train_dataset), len(val_dataset), len(test_dataset))
@@ -453,10 +478,7 @@ def train_qlora_photoz(
             best_trainable_state = saved["best_trainable_state"]
             resumed_total_loss = float(saved["epoch_total_loss"])
             resumed_total_count = int(saved["epoch_total_count"])
-            random.setstate(saved["python_rng_state"])
-            np.random.set_state(saved["numpy_rng_state"])
-            torch.set_rng_state(saved["torch_rng_state"].cpu())
-            torch.cuda.set_rng_state_all(saved["cuda_rng_state"])
+            _restore_rng_state(saved)
             print(f"resuming QLoRA from {candidates[-1]} at update {global_update:,}/{total_updates:,}", flush=True)
 
     for epoch in range(start_epoch, config.epochs):
