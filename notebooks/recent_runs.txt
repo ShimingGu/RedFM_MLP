@@ -1,5 +1,5 @@
   CUDA_VISIBLE_DEVICES=2 \
-  ./scripts/table_models/tabxx_noimage-aion_comparison.sh \
+  ./scripts/table_models/tabxx_magonly-fulltable.sh \
     --model=tabicl \
     --max-rows=300000 \
     --device=cuda
