@@ -28,7 +28,8 @@ exec "${PYTHON_CMD[@]}" "$REPO_ROOT/notebooks/iotfm_mlp.py" \
   --output-dir "${AION_OUTPUT_DIR:-/arc/home/gsm/aion_output/figures/iotfm_mlp}" \
   --cache-root "${AION_CACHE_ROOT:-/scratch/.tmp-gsm/aion_output/cache/iotfm_mlp}" \
   --max-rows "${AION_MAX_ROWS:-200000}" --model "${IOTFM_MODEL:-GLM-5.2-0.8B-A0.8B}" \
-  --embedding-batch-size "${IOTFM_EMBEDDING_BATCH_SIZE:-8}" --max-length "${IOTFM_MAX_LENGTH:-2048}" \
+  --embedding-batch-size "${IOTFM_EMBEDDING_BATCH_SIZE:-8}" \
+  --torch-dtype "${IOTFM_TORCH_DTYPE:-float32}" --max-length "${IOTFM_MAX_LENGTH:-2048}" \
   --pooling "${IOTFM_POOLING:-mean}" --epochs "${AION_EPOCHS:-10}" \
   --tomographic-samples "${AION_TOMOGRAPHIC_SAMPLES:-100}" \
   --train-batch-size "${AION_TRAIN_BATCH_SIZE:-256}" --eval-batch-size "${AION_EVAL_BATCH_SIZE:-512}" \

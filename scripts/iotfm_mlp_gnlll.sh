@@ -43,6 +43,7 @@ exec "${PYTHON_CMD[@]}" "$REPO_ROOT/notebooks/iotfm_mlp_gnlll.py" \
   --input-cache-root "${AION_INPUT_CACHE_ROOT:-/scratch/.tmp-gsm/aion_output/cache/iotfm_mlp_gnlll_input}" \
   --max-rows "${AION_MAX_ROWS:-200000}" --model "${IOTFM_MODEL:-GLM-5.2-0.8B-A0.8B}" \
   --embedding-batch-size "${IOTFM_EMBEDDING_BATCH_SIZE:-8}" \
+  --torch-dtype "${IOTFM_TORCH_DTYPE:-float32}" \
   --max-length "${IOTFM_MAX_LENGTH:-2048}" --pooling "${IOTFM_POOLING:-mean}" \
   --feature-scaling "$FEATURE_SCALING" \
   --mean-warmup-epochs "${GNLLL_MEAN_WARMUP_EPOCHS:-10}" \

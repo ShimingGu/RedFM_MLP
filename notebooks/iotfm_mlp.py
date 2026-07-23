@@ -90,6 +90,12 @@ def parser():
     p.add_argument("--embedding-batch-size", type=int, default=8)
     p.add_argument("--max-length", type=int, default=2048)
     p.add_argument("--pooling", choices=("mean", "last", "mean_last"), default="mean")
+    p.add_argument(
+        "--torch-dtype",
+        choices=("auto", "float32", "float16", "bfloat16"),
+        default="float32",
+        help="Transformer inference dtype (float32 avoids mixed-dtype custom checkpoints).",
+    )
     p.add_argument("--normalize", action="store_true")
     p.add_argument("--load-in-4bit", action="store_true")
     p.add_argument("--allow-download", action="store_true")
@@ -215,6 +221,7 @@ def build_mlp_features(table, rows, columns, splits, *, encode_missingness=True)
 
 def get_embeddings(args, table, rows, ids, columns, serialization):
     config = InferenceOptimizedEmbeddingConfig(model_path=args.model, device=args.device,
+        torch_dtype=args.torch_dtype,
         max_length=args.max_length, pooling=args.pooling, normalize=args.normalize,
         local_files_only=not args.allow_download, load_in_4bit=args.load_in_4bit)
     metadata = build_embedding_metadata(config, serialization)
