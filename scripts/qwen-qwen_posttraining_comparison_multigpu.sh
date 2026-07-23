@@ -72,6 +72,8 @@ COMMON_ARGS=(
     --lora-rank "${QLORA_RANK:-8}"
     --lora-alpha "${QLORA_ALPHA:-16}"
     --lora-dropout "${QLORA_DROPOUT:-0.05}"
+    --qlora-checkpoint-dir "${QLORA_CHECKPOINT_DIR:-/arc/projects/ots/Cosmic_Imprint_of_Time/qlora_checkpoints/qwen-qwen_posttraining_comparison}"
+    --qlora-checkpoint-steps "${QLORA_CHECKPOINT_STEPS:-100}"
     "${FLAGS[@]}"
 )
 

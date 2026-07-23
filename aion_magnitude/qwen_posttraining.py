@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass, replace
 from pathlib import Path
+import random
 from typing import Any, Sequence
 
 import numpy as np
@@ -333,6 +334,38 @@ def _linear_warmup_decay_lambda(
     return float(remaining) / float(decay_steps)
 
 
+def _trainable_state(model: nn.Module) -> dict[str, torch.Tensor]:
+    return {
+        name: parameter.detach().cpu().clone()
+        for name, parameter in model.named_parameters()
+        if parameter.requires_grad
+    }
+
+
+def _load_trainable_state(model: nn.Module, state: dict[str, torch.Tensor]) -> None:
+    parameters = dict(model.named_parameters())
+    missing = sorted(set(state) - set(parameters))
+    if missing:
+        raise ValueError(f"Checkpoint contains unknown trainable parameters: {missing}")
+    for name, value in state.items():
+        parameter = parameters[name]
+        parameter.data.copy_(value.to(device=parameter.device, dtype=parameter.dtype))
+
+
+def _checkpoint_files(checkpoint_dir: Path) -> list[Path]:
+    return sorted(checkpoint_dir.glob("checkpoint-update-*.pt"))
+
+
+def _save_training_checkpoint(checkpoint_dir: Path, **state: Any) -> Path:
+    checkpoint_dir.mkdir(parents=True, exist_ok=True)
+    path = checkpoint_dir / f"checkpoint-update-{state['global_update']:07d}.pt"
+    temporary = path.with_suffix(".pt.tmp")
+    torch.save({"format_version": 1, **state}, temporary)
+    temporary.replace(path)
+    print(f"saved QLoRA checkpoint {path}", flush=True)
+    return path
+
+
 def train_qlora_photoz(
     *,
     train_dataset: TextRedshiftDataset,
@@ -340,18 +373,15 @@ def train_qlora_photoz(
     test_dataset: TextRedshiftDataset,
     output_dir: str | Path,
     config: QwenPosttrainingConfig,
+    checkpoint_dir: str | Path | None = None,
+    checkpoint_interval: int = 100,
+    resume: bool = True,
 ) -> dict[str, Any]:
     """Jointly train QLoRA adapters and the photo-z head with binned CE."""
     config = config.normalized()
     set_random_seed(config.seed)
     model, tokenizer, device = create_qlora_photoz_model(config)
     collate = make_text_collator(tokenizer, max_length=config.max_length)
-    train_loader = DataLoader(
-        train_dataset,
-        batch_size=config.batch_size,
-        shuffle=True,
-        collate_fn=collate,
-    )
     val_loader = DataLoader(
         val_dataset,
         batch_size=config.eval_batch_size,
@@ -376,8 +406,9 @@ def train_qlora_photoz(
         lr=config.learning_rate,
         weight_decay=config.weight_decay,
     )
+    batches_per_epoch = int(np.ceil(len(train_dataset) / config.batch_size))
     updates_per_epoch = int(
-        np.ceil(len(train_loader) / config.gradient_accumulation_steps)
+        np.ceil(batches_per_epoch / config.gradient_accumulation_steps)
     )
     total_updates = max(updates_per_epoch * config.epochs, 1)
     warmup_steps = int(total_updates * config.warmup_fraction)
@@ -395,11 +426,51 @@ def train_qlora_photoz(
     best_trainable_state: dict[str, torch.Tensor] | None = None
     optimizer.zero_grad(set_to_none=True)
     global_update = 0
-    for epoch in range(config.epochs):
+    start_epoch = 0
+    start_batch_index = 0
+    resumed_total_loss = 0.0
+    resumed_total_count = 0
+    checkpoint_path = Path(checkpoint_dir).expanduser() if checkpoint_dir else None
+    if checkpoint_interval < 1:
+        raise ValueError("checkpoint_interval must be positive.")
+    if resume and checkpoint_path is not None:
+        candidates = _checkpoint_files(checkpoint_path)
+        if candidates:
+            saved = torch.load(candidates[-1], map_location=device, weights_only=False)
+            if saved.get("config") != asdict(config):
+                raise ValueError(f"QLoRA checkpoint configuration does not match: {candidates[-1]}")
+            expected_sizes = (len(train_dataset), len(val_dataset), len(test_dataset))
+            if tuple(saved.get("dataset_sizes", ())) != expected_sizes:
+                raise ValueError(f"QLoRA checkpoint dataset sizes do not match: {candidates[-1]}")
+            _load_trainable_state(model, saved["trainable_state"])
+            optimizer.load_state_dict(saved["optimizer"])
+            scheduler.load_state_dict(saved["scheduler"])
+            start_epoch = int(saved["epoch"])
+            start_batch_index = int(saved["next_batch_index"])
+            global_update = int(saved["global_update"])
+            history = list(saved["history"])
+            best_val_loss = float(saved["best_val_loss"])
+            best_trainable_state = saved["best_trainable_state"]
+            resumed_total_loss = float(saved["epoch_total_loss"])
+            resumed_total_count = int(saved["epoch_total_count"])
+            random.setstate(saved["python_rng_state"])
+            np.random.set_state(saved["numpy_rng_state"])
+            torch.set_rng_state(saved["torch_rng_state"].cpu())
+            torch.cuda.set_rng_state_all(saved["cuda_rng_state"])
+            print(f"resuming QLoRA from {candidates[-1]} at update {global_update:,}/{total_updates:,}", flush=True)
+
+    for epoch in range(start_epoch, config.epochs):
+        generator = torch.Generator().manual_seed(config.seed + epoch)
+        train_loader = DataLoader(
+            train_dataset, batch_size=config.batch_size, shuffle=True,
+            generator=generator, collate_fn=collate,
+        )
         model.train()
-        total_loss = 0.0
-        total_count = 0
+        total_loss = resumed_total_loss if epoch == start_epoch else 0.0
+        total_count = resumed_total_count if epoch == start_epoch else 0
         for batch_index, batch in enumerate(train_loader):
+            if epoch == start_epoch and batch_index < start_batch_index:
+                continue
             z_spec = batch.pop("z_spec").to(device)
             batch.pop("object_id")
             inputs = {key: value.to(device) for key, value in batch.items()}
@@ -429,6 +500,27 @@ def train_qlora_photoz(
                         f"epoch={epoch + 1}/{config.epochs} loss={float(loss):.4f}",
                         flush=True,
                     )
+                if checkpoint_path is not None and global_update % checkpoint_interval == 0:
+                    _save_training_checkpoint(
+                        checkpoint_path,
+                        config=asdict(config),
+                        dataset_sizes=(len(train_dataset), len(val_dataset), len(test_dataset)),
+                        epoch=epoch,
+                        next_batch_index=batch_index + 1,
+                        global_update=global_update,
+                        history=history,
+                        best_val_loss=best_val_loss,
+                        best_trainable_state=best_trainable_state,
+                        trainable_state=_trainable_state(model),
+                        optimizer=optimizer.state_dict(),
+                        scheduler=scheduler.state_dict(),
+                        epoch_total_loss=total_loss,
+                        epoch_total_count=total_count,
+                        python_rng_state=random.getstate(),
+                        numpy_rng_state=np.random.get_state(),
+                        torch_rng_state=torch.get_rng_state(),
+                        cuda_rng_state=torch.cuda.get_rng_state_all(),
+                    )
         val_evaluation = evaluate_text_photoz_model(
             model,
             val_loader,
@@ -452,11 +544,10 @@ def train_qlora_photoz(
         )
         if val_metrics["cross_entropy"] < best_val_loss:
             best_val_loss = val_metrics["cross_entropy"]
-            best_trainable_state = {
-                name: parameter.detach().cpu().clone()
-                for name, parameter in model.named_parameters()
-                if parameter.requires_grad
-            }
+            best_trainable_state = _trainable_state(model)
+        start_batch_index = 0
+        resumed_total_loss = 0.0
+        resumed_total_count = 0
 
     if best_trainable_state is not None:
         for name, parameter in model.named_parameters():

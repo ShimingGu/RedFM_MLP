@@ -87,6 +87,9 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--lora-rank", type=int, default=8)
     parser.add_argument("--lora-alpha", type=int, default=16)
     parser.add_argument("--lora-dropout", type=float, default=0.05)
+    parser.add_argument("--qlora-checkpoint-dir", type=Path)
+    parser.add_argument("--qlora-checkpoint-steps", type=int, default=100)
+    parser.add_argument("--qlora-resume", action=argparse.BooleanOptionalAction, default=True)
     return parser
 
 
@@ -104,6 +107,7 @@ def _validate_args(args: argparse.Namespace) -> None:
         "gradient_accumulation_steps": args.gradient_accumulation_steps,
         "lora_rank": args.lora_rank,
         "lora_alpha": args.lora_alpha,
+        "qlora_checkpoint_steps": args.qlora_checkpoint_steps,
     }
     invalid = [name for name, value in positive.items() if int(value) < 1]
     if invalid:
@@ -316,6 +320,9 @@ def stage_qlora(args: argparse.Namespace) -> int:
         test_dataset=dataset("test"),
         output_dir=output_dir,
         config=config,
+        checkpoint_dir=args.qlora_checkpoint_dir,
+        checkpoint_interval=args.qlora_checkpoint_steps,
+        resume=args.qlora_resume,
     )
     print(f"saved {output_dir / 'result.pt'}", flush=True)
     return 0
