@@ -1,6 +1,6 @@
 # aion-magnitude v0.5.0
 
-Updated: 2026-07-21
+Updated: 2026-07-23
 
 This directory is a lightweight code/documentation snapshot for the current
 AION + all-magnitude fusion workflow after the M-adapter feasibility round and
@@ -54,6 +54,38 @@ aion-morphology cache --max-rows 20000 --sample-mode random --image-flux-scale 3
 `aion` itself is required when image tokens are generated, but it is imported
 lazily so catalogue utilities and token-factor models can be used without
 loading AION weights.
+
+### Persistent morphology catalogue
+
+`aion_magnitude.morphology_catalogue` builds a reusable FITS catalogue rather
+than a photo-z experiment cache. It trains the documented two-layer probe on
+the exact `astronolan/galaxy10-aion` benchmark split, calibrates its softmax,
+and writes:
+
+- `p_spiral`, `p_bar`, and `p_elliptical_type` from the frozen AION encoder;
+- `axis_ellipticity`, `concentration_C`, and `asymmetry_A` from the raw 96x96
+  CLAUDS pixels;
+- `possible_morphological_mismatch` and `morphology_available` quality flags.
+
+The target AION input is a five-band HSC proxy. Each object's CLAUDS u/uS
+cutout supplies the shared spatial morphology, while its catalogue HSC grizy
+cmodel fluxes supply the five relative band amplitudes and the ZP 23 to ZP 27
+normalization expected by AION's HSC codec. This is more informative than the
+single-band tokenizer experiment above, but it is still a proxy rather than
+true five-band imaging; the output FITS records that limitation in `HISTORY`.
+
+Run the resumable complete workflow with:
+
+```bash
+pixi run python -m aion_magnitude.morphology_catalogue all --device cuda
+```
+
+Intermediate embeddings, the trained probe, tile assignments, and per-column
+memmaps live under `cache/aion_morphology_catalogue/`. Rows without adequate
+image coverage, pixel S/N, or at least three valid HSC fluxes retain NaN
+probabilities. The mismatch flag is diagnostic: it marks
+`abs(p_elliptical_type - (1 - axis_ellipticity)) >= 0.5`; it does not declare
+elongated ellipticals or round face-on spirals erroneous.
 
 Intentionally excluded:
 

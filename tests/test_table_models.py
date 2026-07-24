@@ -67,11 +67,20 @@ def test_masking_and_imputation_use_training_rows_only():
     assert np.isnan(masked[2:]).all()
 
 
-def test_comparison_matrix_uses_requested_aionimage_filename_semantics():
+def test_comparison_matrix_uses_explicit_image_representations():
     first, second = tm.COMPARISONS["mlp_aionimage_comparison"]
-    assert first.runner == "table" and first.image_mode == "aion"
-    assert second.runner == "mlp" and second.image_mode == "aion"
+    assert first.runner == "table" and first.image_mode == "aion_fsq_unpooled"
+    assert second.runner == "mlp" and second.image_mode == "aion_mlp"
     assert second.feature_mode == "magonly"
+
+    broad = tm.COMPARISONS["aion-original-compact_comparison"]
+    assert [arm.image_mode for arm in broad] == [
+        "none", "aion_raw", "aion_compact", "aion_compact_shuffled",
+    ]
+    shuffle = tm.COMPARISONS["image_shuffle-or-not_comparison"]
+    assert [arm.image_mode for arm in shuffle] == [
+        "aion_compact", "aion_compact_shuffled",
+    ]
 
 
 class MeanRegressor:
@@ -131,6 +140,53 @@ def test_image_tokens_are_decoded_into_named_fsq_factor_columns():
         assert names[-1] == "aion_fsq_f01_r01_c01"
         np.testing.assert_array_equal(values[0, :4], [1.0, -1.0, 0.0, 1.0])
         np.testing.assert_array_equal(values[0, 4:], [-1.0, 0.0, 0.0, 0.0])
+
+
+def test_legacy_compact_and_splitwise_shuffled_features_coexist():
+    with TemporaryDirectory() as directory:
+        token_path = Path(directory) / "tokens.npy"
+        tokens = np.arange(6 * 16, dtype=np.uint16).reshape(6, 16)
+        np.save(token_path, tokens)
+        product = {
+            "image_token_ids_path": str(token_path),
+            "image_token_row_indices": np.arange(5, -1, -1, dtype=np.int64),
+            "metadata": {"aion_image_quantizer_levels": [3, 3, 3, 3, 3]},
+        }
+        split = np.array(["train"] * 3 + ["test"] * 3, dtype=object)
+        modes = ("aion_raw", "aion_compact", "aion_compact_shuffled")
+        features = tm.build_aion_table_features(product, modes, split, seed=17)
+
+        raw, raw_names, raw_metadata = features["aion_raw"]
+        np.testing.assert_array_equal(raw, tokens[::-1].astype(np.float32))
+        assert raw.shape == (6, 16)
+        assert raw_names[0] == "aion_token_r00_c00"
+        assert raw_metadata["source_commit"] == "c4ed1f0"
+
+        compact, compact_names, compact_metadata = features["aion_compact"]
+        shuffled, shuffled_names, shuffled_metadata = features[
+            "aion_compact_shuffled"
+        ]
+        assert compact.shape == (6, 50)
+        assert compact_names[0] == "aion_fsq_f00_global_mean"
+        assert compact_names[-1] == "aion_fsq_f04_region_r1_c1_std"
+        assert shuffled_names == compact_names
+        assert compact_metadata["n_image_features"] == 50
+        assert shuffled_metadata["shuffle_scope"] == "within_split"
+        assert shuffled_metadata["shuffle_method"] == "single_cycle_derangement"
+
+        for label in ("train", "test"):
+            indices = np.flatnonzero(split == label)
+            assert {
+                tuple(row) for row in compact[indices]
+            } == {
+                tuple(row) for row in shuffled[indices]
+            }
+            assert not np.any(np.all(compact[indices] == shuffled[indices], axis=1))
+
+        repeated = tm.build_aion_table_features(
+            product, ("aion_compact_shuffled",), split, seed=17,
+        )["aion_compact_shuffled"][0]
+        np.testing.assert_array_equal(shuffled, repeated)
 
 
 def test_image_token_decoder_rejects_ids_outside_fsq_vocabulary():

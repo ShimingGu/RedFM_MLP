@@ -34,9 +34,16 @@ evals = [
 vision = [
     "timm>=1.0.28,<2",
 ]
+morphology-catalogue = [
+    "fitsio>=1.4,<2",
+    "huggingface-hub>=1.0,<2",
+    "polymathic-aion==0.0.2",
+    "pyarrow>=16",
+]
 
 [project.scripts]
 aion-morphology = "aion_magnitude.morphology:main"
+aion-morphology-catalogue = "aion_magnitude.morphology_catalogue:main"
 aion-eval = "aion_magnitude.evaluation.runner:main"
 aion-qwen-eval-report = "aion_magnitude.evaluation.qwen_report:main"
 

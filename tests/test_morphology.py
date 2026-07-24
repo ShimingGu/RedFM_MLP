@@ -10,15 +10,20 @@ import torch
 from aion_magnitude.clauds_bands import select_catalogue_row_indices
 from aion_magnitude.dataset import clauds_redshift_filter_mask
 from aion_magnitude.morphology import (
+    AIONGalaxy10MorphologyHead,
     AIONMagnitudeMorphologyResidualPhotoZModel,
     AIONMorphologyConfig,
     FSQTokenDecoder,
     FrozenImageEmbeddingResidualPhotoZModel,
     MorphologyResidualPhotoZModel,
     build_morphology_population_report,
+    collapse_galaxy10_morphology_probabilities,
+    compute_pixel_morphology,
+    compute_pixel_morphology_batch,
     discover_morphology_image_paths,
     format_morphology_population_report,
     make_magnitude_config,
+    possible_morphological_mismatch,
     resolve_morphology_paths,
     scale_product_features_from_training_split,
 )
@@ -29,6 +34,63 @@ from aion_magnitude.timm_morphology import (
 
 
 class MorphologyModuleTest(unittest.TestCase):
+    def test_pixel_morphology_recovers_shape_and_asymmetry(self) -> None:
+        yy, xx = np.mgrid[:96, :96]
+        centre = 47.5
+        round_image = np.exp(
+            -((xx - centre) ** 2 + (yy - centre) ** 2) / (2.0 * 7.0**2)
+        ).astype(np.float32)
+        elongated_image = np.exp(
+            -(
+                (xx - centre) ** 2 / (2.0 * 14.0**2)
+                + (yy - centre) ** 2 / (2.0 * 4.0**2)
+            )
+        ).astype(np.float32)
+        asymmetric_image = round_image.copy()
+        asymmetric_image[25:31, 65:72] += 3.0
+
+        measured = compute_pixel_morphology_batch(
+            np.stack([round_image, elongated_image, asymmetric_image])
+        )
+        self.assertTrue(measured["morphology_pixel_valid"].all())
+        self.assertLess(measured["axis_ellipticity"][0], 0.05)
+        self.assertGreater(measured["axis_ellipticity"][1], 0.60)
+        self.assertTrue(np.isfinite(measured["concentration_C"]).all())
+        self.assertLess(measured["asymmetry_A"][0], 1.0e-5)
+        self.assertGreater(
+            measured["asymmetry_A"][2], measured["asymmetry_A"][0] + 0.1
+        )
+
+        scalar = compute_pixel_morphology(round_image)
+        self.assertIsInstance(scalar["morphology_pixel_valid"], bool)
+        self.assertAlmostEqual(scalar["axis_ellipticity"], 0.0, places=4)
+
+    def test_aion_galaxy10_probability_collapse_and_mismatch(self) -> None:
+        probabilities = np.zeros((2, 10), dtype=np.float32)
+        probabilities[0, 2] = 0.7
+        probabilities[0, 5] = 0.2
+        probabilities[0, 0] = 0.1
+        probabilities[1, 5] = 0.4
+        probabilities[1, 6] = 0.3
+        probabilities[1, 8] = 0.2
+        probabilities[1, 1] = 0.1
+        collapsed = collapse_galaxy10_morphology_probabilities(probabilities)
+        np.testing.assert_allclose(collapsed["p_elliptical_type"], [0.7, 0.0])
+        np.testing.assert_allclose(collapsed["p_bar"], [0.2, 0.4])
+        np.testing.assert_allclose(collapsed["p_spiral"], [0.2, 0.9])
+
+        mismatch = possible_morphological_mismatch(
+            np.asarray([0.9, 0.1, np.nan]),
+            np.asarray([0.8, 0.1, 0.3]),
+            threshold=0.5,
+        )
+        np.testing.assert_array_equal(mismatch, [True, True, False])
+
+        head = AIONGalaxy10MorphologyHead(input_dim=12, hidden_dim=8)
+        predicted = head.predict_proba(torch.randn(3, 12))
+        self.assertEqual(tuple(predicted.shape), (3, 10))
+        torch.testing.assert_close(predicted.sum(dim=1), torch.ones(3))
+
     def test_qwen_morphology_is_a_valid_external_embedding_model_kind(self) -> None:
         config = AIONMorphologyConfig(
             use_aion_magnitude_embedding=False,

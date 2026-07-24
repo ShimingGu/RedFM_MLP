@@ -28,6 +28,7 @@ pip = ">=26.1.2,<27"
 pytest = "*"
 timm = ">=1.0.28,<2"
 peft = ">=0.19.1,<0.20"
+fitsio = ">=1.4.2,<2"
 
 [pypi-dependencies]
 polymathic-aion = "==0.0.2"

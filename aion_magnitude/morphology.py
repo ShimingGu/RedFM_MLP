@@ -71,6 +71,256 @@ AION_IMAGE_GRID_SIZE = 24
 DEFAULT_AION_IMAGE_QUANTIZER_LEVELS = (7, 5, 5, 5, 5)
 MORPHOLOGY_REPORT_BANDS = ("u", "u_star", "Y", "J", "Ks")
 FEATURE_SCALING_MODES = ("none", "minmax", "zscore")
+GALAXY10_AION_CLASS_NAMES = (
+    "Disturbed Galaxies",
+    "Merging Galaxies",
+    "Round Smooth Galaxies",
+    "In-between Round Smooth Galaxies",
+    "Cigar Shaped Smooth Galaxies",
+    "Barred Spiral Galaxies",
+    "Unbarred Tight Spiral Galaxies",
+    "Unbarred Loose Spiral Galaxies",
+    "Edge-on Galaxies without Bulge",
+    "Edge-on Galaxies with Bulge",
+)
+GALAXY10_ELLIPTICAL_TYPE_INDICES = (2, 3, 4)
+GALAXY10_BAR_INDICES = (5,)
+GALAXY10_SPIRAL_INDICES = (5, 6, 7, 8, 9)
+DEFAULT_MORPHOLOGICAL_MISMATCH_THRESHOLD = 0.5
+
+
+def _pixel_coordinate_grids(size: int) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Return y/x grids and a stable centre-radius ordering for square cutouts."""
+    coords = np.arange(size, dtype=np.float32)
+    yy, xx = np.meshgrid(coords, coords, indexing="ij")
+    centre = (size - 1.0) / 2.0
+    radius = np.hypot(xx - centre, yy - centre)
+    return yy, xx, np.argsort(radius.reshape(-1), kind="stable")
+
+
+def compute_pixel_morphology_batch(
+    cutouts: np.ndarray,
+    *,
+    min_positive_flux: float = 0.0,
+    min_signal_to_noise: float = 0.0,
+) -> dict[str, np.ndarray]:
+    """Measure inexpensive morphology statistics directly from image pixels.
+
+    The input is expected to be background-subtracted. Negative pixels are
+    retained for asymmetry but clipped to zero for centroids, moments, and
+    enclosed-light radii. Concentration is ``5 log10(r80 / r20)`` about the
+    catalogue-centred cutout centre. Ellipticity is ``1 - b/a`` from
+    flux-weighted second moments. Asymmetry uses a 180-degree rotation about
+    the cutout centre and a robust border-noise correction.
+    """
+    images = np.asarray(cutouts, dtype=np.float32)
+    if images.ndim == 2:
+        images = images[None, ...]
+    if images.ndim != 3 or images.shape[1] != images.shape[2]:
+        raise ValueError("cutouts must have shape (n, size, size) or (size, size).")
+
+    finite = np.isfinite(images)
+    cleaned = np.where(finite, images, 0.0).astype(np.float32, copy=False)
+    n_rows, size, _ = cleaned.shape
+    yy, xx, radial_order = _pixel_coordinate_grids(size)
+    centre = (size - 1.0) / 2.0
+    radius = np.hypot(xx - centre, yy - centre)
+    signal_mask = radius <= (size / 4.0)
+    border_mask = radius >= (size / 2.0 - 6.0)
+    aperture_flux = cleaned[:, signal_mask].sum(axis=1, dtype=np.float64)
+    border_pixels = cleaned[:, border_mask]
+    border_median = np.median(border_pixels, axis=1)
+    background_sigma = 1.4826 * np.median(
+        np.abs(border_pixels - border_median[:, None]), axis=1
+    )
+    positive = np.maximum(
+        cleaned - (1.5 * background_sigma)[:, None, None], 0.0
+    )
+    flat_positive = positive.reshape(n_rows, -1)
+    total_positive = flat_positive.sum(axis=1, dtype=np.float64)
+    signal_to_noise = np.divide(
+        aperture_flux,
+        background_sigma * np.sqrt(float(np.count_nonzero(signal_mask))),
+        out=np.full(n_rows, np.finfo(np.float32).max, dtype=np.float64),
+        where=background_sigma > 0.0,
+    )
+    valid = (
+        np.isfinite(total_positive)
+        & (total_positive > float(min_positive_flux))
+        & np.isfinite(signal_to_noise)
+        & (signal_to_noise >= float(min_signal_to_noise))
+    )
+    safe_total = np.where(valid, total_positive, 1.0)
+
+    x_centroid = np.sum(
+        positive * xx[None, :, :], axis=(1, 2), dtype=np.float64
+    ) / safe_total
+    y_centroid = np.sum(
+        positive * yy[None, :, :], axis=(1, 2), dtype=np.float64
+    ) / safe_total
+    dx = xx[None, :, :] - x_centroid[:, None, None]
+    dy = yy[None, :, :] - y_centroid[:, None, None]
+    moment_xx = np.sum(positive * dx * dx, axis=(1, 2), dtype=np.float64) / safe_total
+    moment_yy = np.sum(positive * dy * dy, axis=(1, 2), dtype=np.float64) / safe_total
+    moment_xy = np.sum(positive * dx * dy, axis=(1, 2), dtype=np.float64) / safe_total
+    trace = moment_xx + moment_yy
+    discriminant = np.sqrt(
+        np.maximum((moment_xx - moment_yy) ** 2 + 4.0 * moment_xy**2, 0.0)
+    )
+    lambda_major = 0.5 * (trace + discriminant)
+    lambda_minor = np.maximum(0.5 * (trace - discriminant), 0.0)
+    axis_ratio = np.sqrt(
+        np.divide(
+            lambda_minor,
+            lambda_major,
+            out=np.ones_like(lambda_minor),
+            where=lambda_major > 0.0,
+        )
+    )
+    axis_ellipticity = np.clip(1.0 - axis_ratio, 0.0, 1.0)
+
+    ordered_flux = flat_positive[:, radial_order]
+    cumulative_flux = np.cumsum(ordered_flux, axis=1, dtype=np.float64)
+    ordered_radius = np.hypot(
+        xx.reshape(-1)[radial_order] - centre,
+        yy.reshape(-1)[radial_order] - centre,
+    )
+    index_20 = np.argmax(cumulative_flux >= (0.2 * safe_total)[:, None], axis=1)
+    index_80 = np.argmax(cumulative_flux >= (0.8 * safe_total)[:, None], axis=1)
+    r20 = ordered_radius[index_20].astype(np.float64)
+    r80 = ordered_radius[index_80].astype(np.float64)
+    concentration = np.full(n_rows, np.nan, dtype=np.float64)
+    concentration_valid = valid & (r20 > 0.0) & (r80 >= r20)
+    concentration[concentration_valid] = 5.0 * np.log10(
+        r80[concentration_valid] / r20[concentration_valid]
+    )
+
+    rotated = cleaned[:, ::-1, ::-1]
+    residual = np.abs(cleaned - rotated)
+    source_mask = radius <= (size / 2.0 - 2.0)
+    source_residual = residual[:, source_mask].sum(axis=1, dtype=np.float64)
+    border_level = np.median(residual[:, border_mask], axis=1)
+    corrected_residual = np.maximum(
+        source_residual - border_level * float(np.count_nonzero(source_mask)), 0.0
+    )
+    absolute_flux = np.abs(cleaned[:, source_mask]).sum(axis=1, dtype=np.float64)
+    asymmetry = np.divide(
+        corrected_residual,
+        absolute_flux,
+        out=np.full(n_rows, np.nan, dtype=np.float64),
+        where=absolute_flux > 0.0,
+    )
+
+    for values in (x_centroid, y_centroid, axis_ellipticity, concentration, asymmetry):
+        values[~valid] = np.nan
+    return {
+        "axis_ellipticity": axis_ellipticity.astype(np.float32),
+        "concentration_C": concentration.astype(np.float32),
+        "asymmetry_A": asymmetry.astype(np.float32),
+        "morphology_pixel_valid": valid.astype(bool),
+        "x_centroid": x_centroid.astype(np.float32),
+        "y_centroid": y_centroid.astype(np.float32),
+        "positive_flux": total_positive.astype(np.float32),
+        "aperture_flux": aperture_flux.astype(np.float32),
+        "signal_to_noise": signal_to_noise.astype(np.float32),
+    }
+
+
+def compute_pixel_morphology(
+    cutout: np.ndarray,
+    *,
+    min_positive_flux: float = 0.0,
+    min_signal_to_noise: float = 0.0,
+) -> dict[str, float | bool]:
+    """Scalar wrapper around :func:`compute_pixel_morphology_batch`."""
+    measured = compute_pixel_morphology_batch(
+        np.asarray(cutout, dtype=np.float32)[None, ...],
+        min_positive_flux=min_positive_flux,
+        min_signal_to_noise=min_signal_to_noise,
+    )
+    return {
+        name: bool(values[0]) if values.dtype == np.bool_ else float(values[0])
+        for name, values in measured.items()
+    }
+
+
+class AIONGalaxy10MorphologyHead(nn.Module):
+    """Two-layer frozen-AION probe used for Galaxy10 morphology classes."""
+
+    def __init__(
+        self,
+        *,
+        input_dim: int = 768,
+        hidden_dim: int = 256,
+        n_classes: int = len(GALAXY10_AION_CLASS_NAMES),
+        dropout: float = 0.1,
+        temperature: float = 1.0,
+    ):
+        super().__init__()
+        self.classifier = nn.Sequential(
+            nn.Linear(input_dim, hidden_dim),
+            nn.GELU(),
+            nn.Dropout(dropout),
+            nn.Linear(hidden_dim, n_classes),
+        )
+        self.register_buffer(
+            "temperature",
+            torch.tensor(max(float(temperature), 1.0e-6), dtype=torch.float32),
+        )
+
+    def forward(self, embeddings: torch.Tensor) -> torch.Tensor:
+        return self.classifier(embeddings)
+
+    def predict_proba(self, embeddings: torch.Tensor) -> torch.Tensor:
+        return torch.softmax(
+            self(embeddings) / self.temperature.clamp_min(1.0e-6), dim=-1
+        )
+
+
+def collapse_galaxy10_morphology_probabilities(
+    class_probabilities: np.ndarray | torch.Tensor,
+) -> dict[str, np.ndarray | torch.Tensor]:
+    """Collapse ten Galaxy10 probabilities into the requested semantic scores."""
+    if class_probabilities.shape[-1] != len(GALAXY10_AION_CLASS_NAMES):
+        raise ValueError(
+            f"Expected {len(GALAXY10_AION_CLASS_NAMES)} Galaxy10 probabilities, "
+            f"got shape {tuple(class_probabilities.shape)}."
+        )
+
+    def sum_indices(indices: Sequence[int]):
+        if isinstance(class_probabilities, torch.Tensor):
+            index = torch.as_tensor(
+                indices, dtype=torch.long, device=class_probabilities.device
+            )
+            return class_probabilities.index_select(-1, index).sum(dim=-1)
+        return np.asarray(class_probabilities)[..., list(indices)].sum(axis=-1)
+
+    return {
+        "p_spiral": sum_indices(GALAXY10_SPIRAL_INDICES),
+        "p_bar": sum_indices(GALAXY10_BAR_INDICES),
+        "p_elliptical_type": sum_indices(GALAXY10_ELLIPTICAL_TYPE_INDICES),
+    }
+
+
+def possible_morphological_mismatch(
+    p_elliptical_type: np.ndarray | float,
+    axis_ellipticity: np.ndarray | float,
+    *,
+    threshold: float = DEFAULT_MORPHOLOGICAL_MISMATCH_THRESHOLD,
+) -> np.ndarray:
+    """Flag strong disagreement between semantic elliptical type and roundness.
+
+    This is a diagnostic rather than an error label: elongated ellipticals and
+    round face-on spirals are both physically possible.
+    """
+    probability = np.asarray(p_elliptical_type, dtype=np.float64)
+    ellipticity = np.asarray(axis_ellipticity, dtype=np.float64)
+    roundness = 1.0 - ellipticity
+    return (
+        np.isfinite(probability)
+        & np.isfinite(ellipticity)
+        & (np.abs(probability - roundness) >= float(threshold))
+    )
 
 
 def _as_path_or_none(value: str | Path | None) -> Path | None:

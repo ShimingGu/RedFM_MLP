@@ -67,13 +67,13 @@ class ArmSpec:
     runner: str = "table"
 
 
-COMPARISONS: dict[str, tuple[ArmSpec, ArmSpec]] = {
+COMPARISONS: dict[str, tuple[ArmSpec, ...]] = {
     "noimage-aion_comparison": (
         ArmSpec("noimage", "magonly"),
-        ArmSpec("aion_image", "magonly", "aion"),
+        ArmSpec("aion_image", "magonly", "aion_fsq_unpooled"),
     ),
     "aion-timm_comparison": (
-        ArmSpec("aion_image", "magonly", "aion"),
+        ArmSpec("aion_image", "magonly", "aion_fsq_unpooled"),
         ArmSpec("timm_image", "magonly", "timm"),
     ),
     "mlp_noimage_comparison": (
@@ -81,14 +81,31 @@ COMPARISONS: dict[str, tuple[ArmSpec, ArmSpec]] = {
         ArmSpec("standard_mlp_noimage", "magonly", runner="mlp"),
     ),
     "mlp_aionimage_comparison": (
-        ArmSpec("table_aion_image", "magonly", "aion"),
-        ArmSpec("standard_mlp_aion_image", "magonly", "aion", "mlp"),
+        ArmSpec("table_aion_image", "magonly", "aion_fsq_unpooled"),
+        ArmSpec("standard_mlp_aion_image", "magonly", "aion_mlp", "mlp"),
     ),
     "magonly-fulltable": (
         ArmSpec("magnitude_only", "magonly"),
         ArmSpec("full_121", "full121"),
     ),
+    "aion-original-compact_comparison": (
+        ArmSpec("noimage", "magonly"),
+        ArmSpec("aion_raw_original", "magonly", "aion_raw"),
+        ArmSpec("aion_compact", "magonly", "aion_compact"),
+        ArmSpec("aion_compact_shuffled", "magonly", "aion_compact_shuffled"),
+    ),
+    "image_shuffle-or-not_comparison": (
+        ArmSpec("aion_compact", "magonly", "aion_compact"),
+        ArmSpec("aion_compact_shuffled", "magonly", "aion_compact_shuffled"),
+    ),
 }
+
+AION_TABLE_IMAGE_MODES = frozenset({
+    "aion_raw",
+    "aion_fsq_unpooled",
+    "aion_compact",
+    "aion_compact_shuffled",
+})
 
 
 @dataclass
@@ -120,6 +137,7 @@ class PreparedArm:
     spec: ArmSpec
     features: pd.DataFrame
     imputation: dict[str, Any]
+    image_metadata: dict[str, Any] | None = None
 
 
 @dataclass
@@ -326,13 +344,24 @@ def build_masked_target(target: np.ndarray, split_labels: np.ndarray) -> np.ndar
     return masked
 
 
-def _image_token_matrix(product: Mapping[str, Any]) -> tuple[np.ndarray, list[str]]:
+def _load_image_token_grid(product: Mapping[str, Any]) -> tuple[np.ndarray, int]:
     token_ids = np.load(product["image_token_ids_path"], mmap_mode="r")
     rows = np.asarray(product["image_token_row_indices"], dtype=np.int64)
     ids = np.asarray(token_ids[rows])
+    if ids.ndim != 2:
+        raise RuntimeError(f"AION token IDs must be a matrix; found shape {ids.shape}.")
     grid = int(round(math.sqrt(ids.shape[1])))
     if grid * grid != ids.shape[1]:
         raise RuntimeError(f"AION token count {ids.shape[1]} is not a square grid.")
+    return ids, grid
+
+
+def _decode_fsq_token_grid(
+    ids: np.ndarray,
+    grid: int,
+    product: Mapping[str, Any],
+) -> tuple[np.ndarray, np.ndarray]:
+    """Decode packed IDs into normalized row × factor × y × x values."""
 
     from .morphology import DEFAULT_AION_IMAGE_QUANTIZER_LEVELS
 
@@ -353,26 +382,175 @@ def _image_token_matrix(product: Mapping[str, Any]) -> tuple[np.ndarray, list[st
             f"observed [{int(ids.min())}, {int(ids.max())}]."
         )
 
-    # A token ID is a mixed-radix packing of independent FSQ factors. Its
-    # integer value is not an ordinal measurement, so expose the normalized
-    # factors instead of presenting raw codebook IDs as continuous features.
-    n_tokens = ids.shape[1]
-    values = np.empty((ids.shape[0], len(levels) * n_tokens), dtype=np.float32)
-    names: list[str] = []
+    factors = np.empty((ids.shape[0], len(levels), grid, grid), dtype=np.float32)
     basis = 1
     for factor, level in enumerate(levels.tolist()):
         component = (ids // basis) % level
         half_width = level // 2
-        values[:, factor * n_tokens : (factor + 1) * n_tokens] = (
+        factors[:, factor] = (
             component.astype(np.float32) - half_width
-        ) / float(half_width)
-        names.extend(
-            f"aion_fsq_f{factor:02d}_r{row:02d}_c{column:02d}"
+        ).reshape(ids.shape[0], grid, grid) / float(half_width)
+        basis *= level
+    return factors, levels
+
+
+def _unpooled_fsq_matrix(factors: np.ndarray) -> tuple[np.ndarray, list[str]]:
+    n_rows, n_factors, grid, _ = factors.shape
+    values = factors.reshape(n_rows, n_factors * grid * grid)
+    names = [
+        f"aion_fsq_f{factor:02d}_r{row:02d}_c{column:02d}"
+        for factor in range(n_factors)
+        for row in range(grid)
+        for column in range(grid)
+    ]
+    return values, names
+
+
+def _compact_fsq_matrix(factors: np.ndarray) -> tuple[np.ndarray, list[str]]:
+    """Summarize each FSQ factor with global and 2×2 regional moments."""
+    if factors.ndim != 4 or factors.shape[2] != factors.shape[3]:
+        raise ValueError(f"Expected square FSQ factor grids; found {factors.shape}.")
+    grid = factors.shape[2]
+    if grid % 2:
+        raise ValueError(f"Compact 2x2 pooling requires an even grid size; found {grid}.")
+
+    columns: list[np.ndarray] = []
+    names: list[str] = []
+    block = grid // 2
+    for factor in range(factors.shape[1]):
+        factor_grid = factors[:, factor]
+        columns.extend((
+            factor_grid.mean(axis=(1, 2), dtype=np.float32),
+            factor_grid.std(axis=(1, 2), dtype=np.float32),
+        ))
+        names.extend((
+            f"aion_fsq_f{factor:02d}_global_mean",
+            f"aion_fsq_f{factor:02d}_global_std",
+        ))
+        for region_row in range(2):
+            for region_column in range(2):
+                region = factor_grid[
+                    :,
+                    region_row * block : (region_row + 1) * block,
+                    region_column * block : (region_column + 1) * block,
+                ]
+                columns.extend((
+                    region.mean(axis=(1, 2), dtype=np.float32),
+                    region.std(axis=(1, 2), dtype=np.float32),
+                ))
+                names.extend((
+                    f"aion_fsq_f{factor:02d}_region_r{region_row}_c{region_column}_mean",
+                    f"aion_fsq_f{factor:02d}_region_r{region_row}_c{region_column}_std",
+                ))
+    return np.column_stack(columns).astype(np.float32, copy=False), names
+
+
+def _shuffle_features_within_split(
+    values: np.ndarray,
+    split_labels: np.ndarray,
+    *,
+    seed: int,
+) -> np.ndarray:
+    """Break row/image matching with a deterministic derangement per split."""
+    split_labels = np.asarray(split_labels, dtype=object)
+    if len(values) != len(split_labels):
+        raise ValueError("Feature rows and split labels must have equal length.")
+    shuffled = np.empty_like(values)
+    rng = np.random.default_rng(seed)
+    for label in np.unique(split_labels):
+        indices = np.flatnonzero(split_labels == label)
+        if len(indices) <= 1:
+            shuffled[indices] = values[indices]
+            continue
+        cycle = indices[rng.permutation(len(indices))]
+        shuffled[cycle] = values[np.roll(cycle, 1)]
+    return shuffled
+
+
+def build_aion_table_features(
+    product: Mapping[str, Any],
+    modes: Sequence[str],
+    split_labels: np.ndarray,
+    *,
+    seed: int,
+) -> dict[str, tuple[np.ndarray, list[str], dict[str, Any]]]:
+    """Build only the requested legacy/corrected AION table representations."""
+    requested = set(modes)
+    unknown = requested - AION_TABLE_IMAGE_MODES
+    if unknown:
+        raise ValueError(f"Unknown AION table image modes: {sorted(unknown)}")
+    if not requested:
+        return {}
+
+    ids, grid = _load_image_token_grid(product)
+    output: dict[str, tuple[np.ndarray, list[str], dict[str, Any]]] = {}
+    if "aion_raw" in requested:
+        raw_names = [
+            f"aion_token_r{row:02d}_c{column:02d}"
             for row in range(grid)
             for column in range(grid)
+        ]
+        output["aion_raw"] = (
+            ids.astype(np.float32),
+            raw_names,
+            {
+                "representation": "raw_packed_token_ids",
+                "source_commit": "c4ed1f0",
+                "n_image_features": int(ids.shape[1]),
+            },
         )
-        basis *= level
-    return values, names
+
+    decoded_modes = requested - {"aion_raw"}
+    if decoded_modes:
+        factors, levels = _decode_fsq_token_grid(ids, grid, product)
+        if "aion_fsq_unpooled" in decoded_modes:
+            values, names = _unpooled_fsq_matrix(factors)
+            output["aion_fsq_unpooled"] = (
+                values,
+                names,
+                {
+                    "representation": "decoded_fsq_unpooled",
+                    "quantizer_levels": levels.tolist(),
+                    "n_image_features": int(values.shape[1]),
+                },
+            )
+        if decoded_modes & {"aion_compact", "aion_compact_shuffled"}:
+            compact, compact_names = _compact_fsq_matrix(factors)
+            compact_metadata = {
+                "representation": "decoded_fsq_compact",
+                "quantizer_levels": levels.tolist(),
+                "pooling": "per-factor global mean/std and 2x2 regional mean/std",
+                "n_image_features": int(compact.shape[1]),
+            }
+            if "aion_compact" in decoded_modes:
+                output["aion_compact"] = (
+                    compact,
+                    compact_names,
+                    dict(compact_metadata),
+                )
+            if "aion_compact_shuffled" in decoded_modes:
+                shuffled = _shuffle_features_within_split(
+                    compact, split_labels, seed=seed,
+                )
+                output["aion_compact_shuffled"] = (
+                    shuffled,
+                    compact_names,
+                    {
+                        **compact_metadata,
+                        "control": "shuffled_image",
+                        "shuffle_scope": "within_split",
+                        "shuffle_method": "single_cycle_derangement",
+                        "shuffle_seed": int(seed),
+                    },
+                )
+    return output
+
+
+def _image_token_matrix(product: Mapping[str, Any]) -> tuple[np.ndarray, list[str]]:
+    """Return the unpooled FSQ representation introduced by commit 38f324a."""
+    ids, grid = _load_image_token_grid(product)
+    factors, _ = _decode_fsq_token_grid(ids, grid, product)
+    return _unpooled_fsq_matrix(factors)
 
 
 def build_morphology_product(args: argparse.Namespace) -> tuple[dict[str, Any], Any]:
@@ -463,7 +641,9 @@ def prepare_arm(
     data: CatalogueData,
     split_labels: np.ndarray,
     *,
-    aion_features: tuple[np.ndarray, list[str]] | None,
+    aion_features: Mapping[
+        str, tuple[np.ndarray, list[str], dict[str, Any]]
+    ] | None,
     timm_features: tuple[np.ndarray, list[str]] | None,
 ) -> PreparedArm:
     if spec.feature_mode == "magonly":
@@ -475,21 +655,33 @@ def prepare_arm(
     else:
         raise ValueError(f"Unknown feature mode: {spec.feature_mode}")
 
-    if spec.image_mode == "aion":
-        if aion_features is None:
-            raise RuntimeError("AION image features were not prepared.")
-        values, names = aion_features
+    image_metadata: dict[str, Any] | None = None
+    if spec.image_mode in AION_TABLE_IMAGE_MODES:
+        if aion_features is None or spec.image_mode not in aion_features:
+            raise RuntimeError(f"AION image features were not prepared for {spec.image_mode}.")
+        values, names, image_metadata = aion_features[spec.image_mode]
         base = pd.concat([base, pd.DataFrame(values, columns=names, copy=False)], axis=1)
     elif spec.image_mode == "timm":
         if timm_features is None:
             raise RuntimeError("timm image features were not prepared.")
         values, names = timm_features
         base = pd.concat([base, pd.DataFrame(values, columns=names, copy=False)], axis=1)
+        image_metadata = {
+            "representation": "frozen_timm_embedding",
+            "n_image_features": int(values.shape[1]),
+        }
+    elif spec.image_mode == "aion_mlp" and spec.runner == "mlp":
+        image_metadata = {"representation": "trainable_aion_image_mlp"}
     elif spec.image_mode != "none":
         raise ValueError(f"Unknown image mode: {spec.image_mode}")
 
     prepared, imputation = impute_from_training(base, split_labels)
-    return PreparedArm(spec=spec, features=prepared, imputation=imputation)
+    return PreparedArm(
+        spec=spec,
+        features=prepared,
+        imputation=imputation,
+        image_metadata=image_metadata,
+    )
 
 
 def resolved_device_name(requested: str) -> str:
@@ -756,6 +948,7 @@ def run_table_arm(
         "redshift_feature_columns": [],
         "masked_target_column": REDSHIFT_COLUMNS["zphot"],
         "imputation": arm.imputation,
+        "image_features": arm.image_metadata,
     })
     artifacts["metrics"] = str(metrics_path)
     artifacts["schema"] = str(schema_path)
@@ -1072,7 +1265,6 @@ def main(argv: Sequence[str] | None = None) -> int:
         args.morphology_dir = morphology_dir
         morphology_product, morphology_config = build_morphology_product(args)
         data = align_catalogue_to_object_ids(data, morphology_product["object_id"])
-        aion_features = _image_token_matrix(morphology_product)
         if needs_timm:
             values, names, timm_cache = build_timm_features(morphology_product, args)
             timm_features = (values, names)
@@ -1084,6 +1276,19 @@ def main(argv: Sequence[str] | None = None) -> int:
         val_fraction=args.val_fraction,
         seed=args.seed,
     )
+    aion_table_modes = sorted({
+        spec.image_mode for spec in specs
+        if spec.image_mode in AION_TABLE_IMAGE_MODES
+    })
+    if aion_table_modes:
+        if morphology_product is None:
+            raise RuntimeError("AION table features require a morphology product.")
+        aion_features = build_aion_table_features(
+            morphology_product,
+            aion_table_modes,
+            split_labels,
+            seed=args.seed,
+        )
     split_counts = {
         split: int(np.count_nonzero(split_labels == split))
         for split in ("train", "val", "test")
@@ -1116,6 +1321,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                 "n_features": arm.features.shape[1],
                 "feature_columns": list(arm.features.columns),
                 "imputation": arm.imputation,
+                "image_features": arm.image_metadata,
             }
             for arm in prepared
         ],
@@ -1131,6 +1337,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             "n_rows": len(arm.features),
             "n_features": arm.features.shape[1],
             "columns": list(arm.features.columns),
+            "image_features": arm.image_metadata,
             "redshift_features": [],
             "masked_target_counts": {
                 "visible_train": split_counts["train"],
