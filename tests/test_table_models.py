@@ -21,6 +21,7 @@ def make_catalogue_data(n_rows: int = 10) -> tm.CatalogueData:
         target=np.linspace(0.1, 1.0, n_rows, dtype=np.float32),
         magnitude_features=magnitudes,
         full_features=None,
+        morphology_features=None,
         detected_redshift_columns=["ZPHOT", "Z_LOW68"],
     )
 
@@ -68,6 +69,13 @@ def test_masking_and_imputation_use_training_rows_only():
 
 
 def test_comparison_matrix_uses_explicit_image_representations():
+    current = tm.COMPARISONS["noimage-aion_comparison"]
+    assert [arm.feature_mode for arm in current] == ["magonly", "morphology"]
+    assert [arm.image_mode for arm in current] == ["none", "none"]
+
+    legacy = tm.COMPARISONS["noimage-aion_comparison_old1"]
+    assert [arm.image_mode for arm in legacy] == ["none", "aion_fsq_unpooled"]
+
     first, second = tm.COMPARISONS["mlp_aionimage_comparison"]
     assert first.runner == "table" and first.image_mode == "aion_fsq_unpooled"
     assert second.runner == "mlp" and second.image_mode == "aion_mlp"
@@ -81,6 +89,30 @@ def test_comparison_matrix_uses_explicit_image_representations():
     assert [arm.image_mode for arm in shuffle] == [
         "aion_compact", "aion_compact_shuffled",
     ]
+
+
+def test_morphology_arm_adds_catalogue_summaries_without_raw_tokens():
+    data = make_catalogue_data(4)
+    data.morphology_features = pd.DataFrame({
+        name: np.linspace(0.1, 0.4, 4, dtype=np.float32)
+        for name in tm.MORPHOLOGY_FEATURE_COLUMNS
+    })
+    split = np.array(["train", "train", "val", "test"], dtype=object)
+    arm = tm.prepare_arm(
+        tm.ArmSpec("aion_morphology", "morphology"),
+        data,
+        split,
+        aion_features=None,
+        timm_features=None,
+    )
+    assert list(arm.features.columns) == [
+        *(f"{band}_mag" for band in tm.MAGNITUDE_BANDS),
+        *tm.MORPHOLOGY_FEATURE_COLUMNS,
+    ]
+    assert arm.image_metadata["representation"] == "catalogue_morphology_summary"
+    assert arm.image_metadata["n_image_features"] == len(
+        tm.MORPHOLOGY_FEATURE_COLUMNS
+    )
 
 
 class MeanRegressor:

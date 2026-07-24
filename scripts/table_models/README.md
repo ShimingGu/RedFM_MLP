@@ -11,9 +11,11 @@ result directory begins with the selected backend, for example:
 
 The seven launchers are:
 
-- `tabxx_noimage-aion_comparison.sh`: magnitude-only table without images
-  versus the same table plus 2,880 normalized, unpooled AION FSQ-factor
-  columns.
+- `tabxx_noimage-aion_comparison.sh`: 11-magnitude table versus the same
+  magnitudes plus the seven morphology catalogue fields (`p_spiral`, `p_bar`,
+  `p_elliptical_type`, axis ellipticity, concentration, asymmetry, and the
+  possible-mismatch flag). Both arms use the identical subset selected by
+  `morphology_available`; raw AION tokens are not loaded.
 - `tabxx_aion-timm_comparison.sh`: magnitude-only table plus the 2,880
   unpooled AION FSQ factors versus the same magnitudes plus a frozen timm image
   embedding.
@@ -31,6 +33,9 @@ The seven launchers are:
 - `tabxx_image_shuffle-or-not_comparison.sh`: a focused two-arm comparison of
   matched compact image features versus the same compact features shuffled
   within each train/validation/test split.
+
+`tabxx_noimage-aion_comparison_old1.sh` preserves the former magnitude-only
+versus unpooled-AION-token comparison.
 
 The compact representation decodes the five FSQ factors, then records global
 mean and standard deviation plus mean and standard deviation in each cell of a

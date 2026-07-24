@@ -57,6 +57,16 @@ DEFAULT_CATALOGUE = Path("data/clauds/catalogs/COSMOS-HSCpipe-Phosphoros.fits")
 DEFAULT_MORPHOLOGY_DIR = Path("data/clauds/images/tilesv5")
 DEFAULT_OUTPUT_ROOT = Path("/arc/home/gsm/aion_output/figures/table_models")
 DEFAULT_CACHE_ROOT = Path("/scratch/.tmp-gsm/aion_output/cache")
+MORPHOLOGY_FEATURE_COLUMNS = (
+    "p_spiral",
+    "p_bar",
+    "p_elliptical_type",
+    "axis_ellipticity",
+    "concentration_C",
+    "asymmetry_A",
+    "possible_morphological_mismatch",
+)
+MORPHOLOGY_AVAILABILITY_COLUMN = "morphology_available"
 
 
 @dataclass(frozen=True)
@@ -69,6 +79,10 @@ class ArmSpec:
 
 COMPARISONS: dict[str, tuple[ArmSpec, ...]] = {
     "noimage-aion_comparison": (
+        ArmSpec("noimage", "magonly"),
+        ArmSpec("aion_morphology", "morphology"),
+    ),
+    "noimage-aion_comparison_old1": (
         ArmSpec("noimage", "magonly"),
         ArmSpec("aion_image", "magonly", "aion_fsq_unpooled"),
     ),
@@ -115,6 +129,7 @@ class CatalogueData:
     target: np.ndarray
     magnitude_features: pd.DataFrame
     full_features: pd.DataFrame | None
+    morphology_features: pd.DataFrame | None
     detected_redshift_columns: list[str]
 
     def subset(self, indices: np.ndarray) -> "CatalogueData":
@@ -127,6 +142,10 @@ class CatalogueData:
             full_features=(
                 None if self.full_features is None
                 else self.full_features.iloc[indices].reset_index(drop=True)
+            ),
+            morphology_features=(
+                None if self.morphology_features is None
+                else self.morphology_features.iloc[indices].reset_index(drop=True)
             ),
             detected_redshift_columns=list(self.detected_redshift_columns),
         )
@@ -211,6 +230,7 @@ def load_catalogue_data(
     include_full121: bool,
     z_min: float,
     z_max: float,
+    include_morphology: bool = False,
     target_column: str = REDSHIFT_COLUMNS["zphot"],
 ) -> CatalogueData:
     """Read a seeded random catalogue sample into named feature tables."""
@@ -220,6 +240,8 @@ def load_catalogue_data(
         names = list(source.names)
         required = [OBJECT_ID_COLUMN, target_column]
         required.extend(ALL_BAND_FLUX_COLUMNS[band] for band in MAGNITUDE_BANDS)
+        if include_morphology:
+            required.extend((*MORPHOLOGY_FEATURE_COLUMNS, MORPHOLOGY_AVAILABILITY_COLUMN))
         missing = [name for name in required if name not in names]
         if missing:
             raise KeyError(f"Catalogue is missing required columns: {missing}")
@@ -230,6 +252,12 @@ def load_catalogue_data(
         usable = np.isfinite(target) & (target != MISSING_SENTINEL)
         usable &= target >= float(z_min)
         usable &= target <= float(z_max)
+        if include_morphology:
+            morphology_available = _numeric_column(
+                source, MORPHOLOGY_AVAILABILITY_COLUMN, source_rows,
+            )
+            usable &= np.isfinite(morphology_available)
+            usable &= morphology_available.astype(bool)
         source_rows = source_rows[usable]
         target = target[usable].astype(np.float32)
         object_id = np.asarray(source[OBJECT_ID_COLUMN][source_rows], dtype=np.int64)
@@ -258,12 +286,23 @@ def load_catalogue_data(
                 full[name] = np.where(valid, values, np.nan).astype(np.float32)
             full_table = pd.DataFrame(full, copy=False)
 
+        morphology_table: pd.DataFrame | None = None
+        if include_morphology:
+            morphology: dict[str, np.ndarray] = {}
+            for name in MORPHOLOGY_FEATURE_COLUMNS:
+                values = _numeric_column(source, name, source_rows)
+                valid = np.isfinite(values) & (values != MISSING_SENTINEL)
+                morphology[name] = np.where(valid, values, np.nan).astype(np.float32)
+            morphology_table = pd.DataFrame(morphology, copy=False)
+
         redshift_columns = [name for name in names if is_redshift_related_column(name)]
 
     magnitude_table = pd.DataFrame(magnitude, copy=False)
     assert_no_redshift_features(magnitude_table.columns)
     if full_table is not None:
         assert_no_redshift_features(full_table.columns)
+    if morphology_table is not None:
+        assert_no_redshift_features(morphology_table.columns)
     if len(np.unique(object_id)) != len(object_id):
         raise ValueError("Selected catalogue rows contain duplicate object IDs.")
     if len(object_id) < 3:
@@ -274,6 +313,7 @@ def load_catalogue_data(
         target=target,
         magnitude_features=magnitude_table,
         full_features=full_table,
+        morphology_features=morphology_table,
         detected_redshift_columns=redshift_columns,
     )
 
@@ -646,16 +686,29 @@ def prepare_arm(
     ] | None,
     timm_features: tuple[np.ndarray, list[str]] | None,
 ) -> PreparedArm:
+    image_metadata: dict[str, Any] | None = None
     if spec.feature_mode == "magonly":
         base = data.magnitude_features.copy()
     elif spec.feature_mode == "full121":
         if data.full_features is None:
             raise RuntimeError("The full 121-column table was not loaded.")
         base = data.full_features.copy()
+    elif spec.feature_mode == "morphology":
+        if data.morphology_features is None:
+            raise RuntimeError("The morphology catalogue columns were not loaded.")
+        base = pd.concat(
+            [data.magnitude_features, data.morphology_features],
+            axis=1,
+        )
+        image_metadata = {
+            "representation": "catalogue_morphology_summary",
+            "n_image_features": len(MORPHOLOGY_FEATURE_COLUMNS),
+            "feature_columns": list(MORPHOLOGY_FEATURE_COLUMNS),
+            "availability_selection": MORPHOLOGY_AVAILABILITY_COLUMN,
+        }
     else:
         raise ValueError(f"Unknown feature mode: {spec.feature_mode}")
 
-    image_metadata: dict[str, Any] | None = None
     if spec.image_mode in AION_TABLE_IMAGE_MODES:
         if aion_features is None or spec.image_mode not in aion_features:
             raise RuntimeError(f"AION image features were not prepared for {spec.image_mode}.")
@@ -1238,6 +1291,7 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     specs = COMPARISONS[args.comparison]
     needs_full = any(spec.feature_mode == "full121" for spec in specs)
+    needs_morphology = any(spec.feature_mode == "morphology" for spec in specs)
     needs_images = any(spec.image_mode != "none" for spec in specs)
     needs_timm = any(spec.image_mode == "timm" for spec in specs)
     print(f"comparison: {args.comparison}")
@@ -1250,6 +1304,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         max_rows=args.max_rows,
         seed=args.seed,
         include_full121=needs_full,
+        include_morphology=needs_morphology,
         z_min=args.z_min,
         z_max=args.z_max,
     )
