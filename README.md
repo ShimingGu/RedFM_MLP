@@ -87,6 +87,80 @@ probabilities. The mismatch flag is diagnostic: it marks
 `abs(p_elliptical_type - (1 - axis_ellipticity)) >= 0.5`; it does not declare
 elongated ellipticals or round face-on spirals erroneous.
 
+### Band-resolved multiband morphology catalogue
+
+`aion_magnitude.multiband_morphology_catalogue` creates a separate catalogue
+from the original Phosphoros table, preserving its object IDs and row order.
+It reads CLAUDS `u` tiles locally and HSC PDR3 `grizy` patches directly from
+`/arc/projects/ots/pdr3_dud/`; it does not copy those HSC images to scratch.
+The output is
+`data/clauds/catalogs/COSMOS-HSCpipe-Phosphoros_morphological_multiband.fits`.
+
+For each suffix `x` in `u`, `g`, `r`, `i`, `z`, and `y`, it adds these 12
+columns (72 columns total):
+
+| Column | Definition |
+|---|---|
+| `p_spiral_x` | Sum of the calibrated Galaxy10 probabilities for barred, tight/loose unbarred, and both edge-on spiral classes. |
+| `p_bar_x` | Calibrated probability of the Galaxy10 barred-spiral class. |
+| `p_elliptical_type_x` | Sum of the calibrated Galaxy10 probabilities for the three elliptical classes. |
+| `axis_ellipticity_x` | `1 - sqrt(lambda_minor/lambda_major)` from positive, background-subtracted 96x96 flux-weighted second moments. |
+| `concentration_C_x` | `5 log10(r80/r20)` from positive, background-subtracted 96x96 pixels. |
+| `asymmetry_A_x` | Noise-corrected absolute residual from a 180-degree rotation, divided by absolute source flux; signed background-subtracted pixels are retained. |
+| `possible_morphological_mismatch_x` | Diagnostic flag for `abs(p_elliptical_type_x - (1 - axis_ellipticity_x)) >= 0.5`; this is not a physical error label. |
+| `surface_brightness_24_x` | Signed sum of `raw - local_background` over valid central 24x24 pixels. Despite its historical name, this is integrated aperture flux. |
+| `surface_brightness_96_x` | Signed sum of `raw - local_background` over valid full 96x96 pixels; also integrated cutout flux. |
+| `mean_per_sqarcsec_12_x` | Unsubtracted raw mean over valid central 12x12 pixels, divided by the WCS pixel area in square arcseconds. |
+| `mean_per_sqarcsec_24_x` | Unsubtracted raw mean over valid central 24x24 pixels, divided by the WCS pixel area in square arcseconds. |
+| `morphology_available_x` | True only when the band has adequate usable coverage and all probability, pixel-morphology, and brightness values are valid. |
+
+The local background is a sigma-clipped median of valid border pixels. HSC
+validity uses the science, mask, and variance planes; negative residuals are
+not clipped for integrated brightness or asymmetry. Pixel area is the absolute
+WCS projected-plane determinant converted to arcsec2. `mean_per_sqarcsec_*`
+intentionally includes the local sky, while `surface_brightness_*` subtracts
+it.
+
+The probability probe is trained and temperature-calibrated on Galaxy10 with
+one DES band exposed to AION at a time. At catalogue inference, `g`, `r`, `i`,
+`z`, and `y` use the corresponding AION HSC channel; the CLAUDS `u` image uses
+AION `HSC-G` as the agreed codec proxy. No other image band or catalogue flux
+ratio is mixed into a band's probabilities. This remains a cross-survey
+transfer: Galaxy10 has no matching `u` or HSC-Y training channel, and the first
+catalogue version does not PSF-match bands.
+
+Image values are multiplied by the corresponding `--u-flux-scale` through
+`--y-flux-scale` option before measurement (all default to 1). FITS headers
+inspected here do not declare `BUNIT`, so the default brightness columns are in
+scaled native image units, not a guaranteed common physical unit. Set the six
+scale options from an external photometric calibration before quantitative
+cross-band brightness comparisons; each selected scale and this warning are
+retained in run metadata.
+
+The full workflow is resumable. It stores only a compact WCS manifest,
+assignments, the single-band probe, and per-column memmaps under
+`cache/aion_multiband_morphology_catalogue/`. It refuses to write the final
+FITS file until every assigned row has a terminal status in all six bands, and
+writes through an atomic `.partial` file.
+
+Run it later with:
+
+```bash
+./scripts/create_multiband_morphology_catalogue.sh all --device cuda
+```
+
+Useful staged or development commands include:
+
+```bash
+./scripts/create_multiband_morphology_catalogue.sh manifest
+./scripts/create_multiband_morphology_catalogue.sh train-head --device cuda
+./scripts/create_multiband_morphology_catalogue.sh features --bands u,g --max-target-rows 100 --stop-after-processed-rows 10
+./scripts/create_multiband_morphology_catalogue.sh catalogue
+```
+
+The row-limited command is only a smoke test and cannot be used to write the
+final catalogue.
+
 Intentionally excluded:
 
 - catalogue/data files: `data/`, `provabgs_desi_ls.hdf5`, etc.

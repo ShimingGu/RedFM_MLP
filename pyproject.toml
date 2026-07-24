@@ -44,6 +44,7 @@ morphology-catalogue = [
 [project.scripts]
 aion-morphology = "aion_magnitude.morphology:main"
 aion-morphology-catalogue = "aion_magnitude.morphology_catalogue:main"
+aion-multiband-morphology-catalogue = "aion_magnitude.multiband_morphology_catalogue:main"
 aion-eval = "aion_magnitude.evaluation.runner:main"
 aion-qwen-eval-report = "aion_magnitude.evaluation.qwen_report:main"
 
