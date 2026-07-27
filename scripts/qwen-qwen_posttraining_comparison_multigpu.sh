@@ -46,8 +46,8 @@ FLAGS=()
 [[ "${QWEN_FORCE_RECOMPUTE:-0}" == 1 ]] && FLAGS+=(--force-recompute-qwen)
 
 COMMON_ARGS=(
-    --catalogue "${AION_CATALOGUE:-$REPO_ROOT/data/clauds/catalogs/COSMOS-HSCpipe-Phosphoros.fits}"
-    --morphology-dir "${AION_MORPHOLOGY_DIR:-$REPO_ROOT/data/clauds/images/tilesv5}"
+    --catalogue "${AION_CATALOGUE:-/arc/projects/ots/Cosmic_Imprint_of_Time/clauds/catalogs/COSMOS-HSCpipe-Phosphoros.fits}"
+    --morphology-dir "${AION_MORPHOLOGY_DIR:-/arc/projects/ots/Cosmic_Imprint_of_Time/clauds/images/tilesv5}"
     --output-dir "$OUTPUT_DIR"
     --cache-root "${AION_CACHE_ROOT:-/scratch/.tmp-gsm/aion_output/cache}"
     --max-rows "${AION_MAX_ROWS:-300000}"

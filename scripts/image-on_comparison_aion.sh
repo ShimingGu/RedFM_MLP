@@ -26,8 +26,8 @@ if ! "${PYTHON_CMD[@]}" -c 'import numpy, torch, astropy, matplotlib, safetensor
     exit 1
 fi
 
-AION_CATALOGUE="${AION_CATALOGUE:-$REPO_ROOT/data/clauds/catalogs/COSMOS-HSCpipe-Phosphoros.fits}"
-AION_MORPHOLOGY_DIR="${AION_MORPHOLOGY_DIR:-$REPO_ROOT/data/clauds/images/tilesv5/}"
+AION_CATALOGUE="${AION_CATALOGUE:-/arc/projects/ots/Cosmic_Imprint_of_Time/clauds/catalogs/COSMOS-HSCpipe-Phosphoros.fits}"
+AION_MORPHOLOGY_DIR="${AION_MORPHOLOGY_DIR:-/arc/projects/ots/Cosmic_Imprint_of_Time/clauds/images/tilesv5/}"
 AION_OUTPUT_DIR="${AION_OUTPUT_DIR:-/arc/home/gsm/aion_output/figures/image-on_comparison_aion}"
 AION_CACHE_ROOT="${AION_CACHE_ROOT:-/scratch/.tmp-gsm/aion_output/cache}"
 

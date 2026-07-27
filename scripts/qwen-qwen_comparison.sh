@@ -18,8 +18,8 @@ FLAGS=()
 
 cd -- "$REPO_ROOT"
 exec "${PYTHON_CMD[@]}" "$REPO_ROOT/notebooks/qwen_qwen_comparison.py" \
-    --catalogue "${AION_CATALOGUE:-$REPO_ROOT/data/clauds/catalogs/COSMOS-HSCpipe-Phosphoros.fits}" \
-    --morphology-dir "${AION_MORPHOLOGY_DIR:-$REPO_ROOT/data/clauds/images/tilesv5/}" \
+    --catalogue "${AION_CATALOGUE:-/arc/projects/ots/Cosmic_Imprint_of_Time/clauds/catalogs/COSMOS-HSCpipe-Phosphoros.fits}" \
+    --morphology-dir "${AION_MORPHOLOGY_DIR:-/arc/projects/ots/Cosmic_Imprint_of_Time/clauds/images/tilesv5/}" \
     --output-dir "${AION_OUTPUT_DIR:-/arc/home/gsm/aion_output/figures/qwen-qwen_comparison}" \
     --cache-root "${AION_CACHE_ROOT:-/scratch/.tmp-gsm/aion_output/cache}" \
     --max-rows "${AION_MAX_ROWS:-none}" --epochs "${AION_EPOCHS:-10}" \

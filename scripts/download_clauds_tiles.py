@@ -69,7 +69,7 @@ def download_one(name: str, output_dir: pathlib.Path, overwrite: bool) -> pathli
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--output-dir", default="data/clauds/images/tilesv5")
+    parser.add_argument("--output-dir", default="/arc/projects/ots/Cosmic_Imprint_of_Time/clauds/images/tilesv5")
     parser.add_argument("--limit", type=int, default=None)
     parser.add_argument("--start-after", default=None)
     parser.add_argument("--include-weights", action="store_true")

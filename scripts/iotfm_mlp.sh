@@ -24,7 +24,7 @@ FLAGS=()
 [[ "${IOTFM_FORCE_RECOMPUTE_EMBEDDINGS:-0}" == 1 ]] && FLAGS+=(--force-recompute-embeddings)
 cd -- "$REPO_ROOT"
 exec "${PYTHON_CMD[@]}" "$REPO_ROOT/notebooks/iotfm_mlp.py" \
-  --catalogue "${AION_CATALOGUE:-$REPO_ROOT/data/clauds/catalogs/COSMOS-HSCpipe-Phosphoros.fits}" \
+  --catalogue "${AION_CATALOGUE:-/arc/projects/ots/Cosmic_Imprint_of_Time/clauds/catalogs/COSMOS-HSCpipe-Phosphoros.fits}" \
   --output-dir "${AION_OUTPUT_DIR:-/arc/home/gsm/aion_output/figures/iotfm_mlp}" \
   --cache-root "${AION_CACHE_ROOT:-/scratch/.tmp-gsm/aion_output/cache/iotfm_mlp}" \
   --max-rows "${AION_MAX_ROWS:-200000}" --model "${IOTFM_MODEL:-GLM-5.2-0.8B-A0.8B}" \

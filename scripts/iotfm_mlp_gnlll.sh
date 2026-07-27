@@ -37,7 +37,7 @@ FLAGS=()
 
 cd -- "$REPO_ROOT"
 exec "${PYTHON_CMD[@]}" "$REPO_ROOT/notebooks/iotfm_mlp_gnlll.py" \
-  --catalogue "${AION_CATALOGUE:-$REPO_ROOT/data/clauds/catalogs/COSMOS-HSCpipe-Phosphoros.fits}" \
+  --catalogue "${AION_CATALOGUE:-/arc/projects/ots/Cosmic_Imprint_of_Time/clauds/catalogs/COSMOS-HSCpipe-Phosphoros.fits}" \
   --output-dir "${AION_OUTPUT_DIR:-/arc/home/gsm/aion_output/figures/iotfm_mlp_gnlll${EXPERIMENT_SUFFIX}}" \
   --cache-root "${AION_CACHE_ROOT:-/scratch/.tmp-gsm/aion_output/cache/iotfm_mlp_gnlll${EXPERIMENT_SUFFIX}}" \
   --input-cache-root "${AION_INPUT_CACHE_ROOT:-/scratch/.tmp-gsm/aion_output/cache/iotfm_mlp_gnlll_input}" \
