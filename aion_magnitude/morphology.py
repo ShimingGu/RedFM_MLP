@@ -1,13 +1,11 @@
 from __future__ import annotations
 
-"""CLAUDS u-image morphology experiments through the AION image tokenizer.
+"""Image-morphology measurements, AION probes, and morphology-aware models.
 
-This module intentionally does not use the AION redshift model or AION encoder
-embeddings for images.  It only uses the pretrained AION image codec to turn
-CLAUDS u-band cutouts into image token IDs, decodes those IDs into their FSQ
-factors, and trains a CLAUDS-supervised photo-z MLP.  The optional AION
-magnitude mode uses the frozen grizy AION embedding as the photometric input;
-it never uses AION's internal image-to-redshift representation.
+The direct pixel statistics in this module operate on explicitly supplied
+cutouts and validity/noise maps.  AION morphology probabilities are produced
+by separately trained Galaxy10 probes and must retain their stated training
+and target-domain calibration provenance.
 """
 
 import argparse
@@ -101,8 +99,11 @@ def _pixel_coordinate_grids(size: int) -> tuple[np.ndarray, np.ndarray, np.ndarr
 def compute_pixel_morphology_batch(
     cutouts: np.ndarray,
     *,
+    valid_masks: np.ndarray | None = None,
+    variance_cutouts: np.ndarray | None = None,
     min_positive_flux: float = 0.0,
     min_signal_to_noise: float = 0.0,
+    min_valid_fraction: float = 0.90,
 ) -> dict[str, np.ndarray]:
     """Measure inexpensive morphology statistics directly from image pixels.
 
@@ -120,35 +121,74 @@ def compute_pixel_morphology_batch(
         raise ValueError("cutouts must have shape (n, size, size) or (size, size).")
 
     finite = np.isfinite(images)
-    cleaned = np.where(finite, images, 0.0).astype(np.float32, copy=False)
+    valid_pixels = (
+        finite if valid_masks is None else finite & np.asarray(valid_masks, dtype=bool)
+    )
+    if valid_pixels.shape != images.shape:
+        raise ValueError("valid_masks must have the same shape as cutouts.")
+    variances = None
+    if variance_cutouts is not None:
+        variances = np.asarray(variance_cutouts, dtype=np.float64)
+        if variances.shape != images.shape:
+            raise ValueError("variance_cutouts must have the same shape as cutouts.")
+        valid_pixels &= np.isfinite(variances) & (variances > 0.0)
+    cleaned = np.where(valid_pixels, images, 0.0).astype(np.float32, copy=False)
     n_rows, size, _ = cleaned.shape
     yy, xx, radial_order = _pixel_coordinate_grids(size)
     centre = (size - 1.0) / 2.0
     radius = np.hypot(xx - centre, yy - centre)
     signal_mask = radius <= (size / 4.0)
     border_mask = radius >= (size / 2.0 - 6.0)
-    aperture_flux = cleaned[:, signal_mask].sum(axis=1, dtype=np.float64)
-    border_pixels = cleaned[:, border_mask]
-    border_median = np.median(border_pixels, axis=1)
-    background_sigma = 1.4826 * np.median(
-        np.abs(border_pixels - border_median[:, None]), axis=1
+    signal_valid = valid_pixels & signal_mask[None, :, :]
+    border_valid = valid_pixels & border_mask[None, :, :]
+    aperture_flux = np.where(signal_valid, cleaned, 0.0).sum(
+        axis=(1, 2), dtype=np.float64
     )
-    positive = np.maximum(
-        cleaned - (1.5 * background_sigma)[:, None, None], 0.0
+    signal_counts = signal_valid.sum(axis=(1, 2))
+    signal_coverage = signal_counts / float(np.count_nonzero(signal_mask))
+    background_sigma = np.full(n_rows, np.nan, dtype=np.float64)
+    for row in range(n_rows):
+        border_pixels = cleaned[row][border_valid[row]]
+        if border_pixels.size:
+            border_median = np.median(border_pixels)
+            background_sigma[row] = 1.4826 * np.median(
+                np.abs(border_pixels - border_median)
+            )
+    if variances is None:
+        noise_variance = background_sigma**2 * np.maximum(signal_counts, 1)
+    else:
+        noise_variance = np.where(signal_valid, variances, 0.0).sum(
+            axis=(1, 2), dtype=np.float64
+        )
+        border_variance = np.full(n_rows, np.nan, dtype=np.float64)
+        for row in range(n_rows):
+            values = variances[row][border_valid[row]]
+            if values.size:
+                border_variance[row] = np.median(values)
+        propagated_sigma = np.sqrt(border_variance)
+        background_sigma = np.where(
+            np.isfinite(propagated_sigma), propagated_sigma, background_sigma
+        )
+    morphology_valid = valid_pixels & valid_pixels[:, ::-1, ::-1]
+    positive = np.where(
+        morphology_valid,
+        np.maximum(cleaned - (1.5 * background_sigma)[:, None, None], 0.0),
+        0.0,
     )
     flat_positive = positive.reshape(n_rows, -1)
     total_positive = flat_positive.sum(axis=1, dtype=np.float64)
     signal_to_noise = np.divide(
         aperture_flux,
-        background_sigma * np.sqrt(float(np.count_nonzero(signal_mask))),
-        out=np.full(n_rows, np.finfo(np.float32).max, dtype=np.float64),
-        where=background_sigma > 0.0,
+        np.sqrt(noise_variance),
+        out=np.full(n_rows, np.nan, dtype=np.float64),
+        where=np.isfinite(noise_variance) & (noise_variance > 0.0),
     )
     valid = (
         np.isfinite(total_positive)
         & (total_positive > float(min_positive_flux))
         & np.isfinite(signal_to_noise)
         & (signal_to_noise >= float(min_signal_to_noise))
+        & (signal_coverage >= float(min_valid_fraction))
     )
     safe_total = np.where(valid, total_positive, 1.0)
 
@@ -196,20 +236,41 @@ def compute_pixel_morphology_batch(
     )
 
     rotated = cleaned[:, ::-1, ::-1]
+    rotated_valid = valid_pixels[:, ::-1, ::-1]
     residual = np.abs(cleaned - rotated)
     source_mask = radius <= (size / 2.0 - 2.0)
-    source_residual = residual[:, source_mask].sum(axis=1, dtype=np.float64)
-    border_level = np.median(residual[:, border_mask], axis=1)
-    corrected_residual = np.maximum(
-        source_residual - border_level * float(np.count_nonzero(source_mask)), 0.0
+    paired_valid = valid_pixels & rotated_valid & source_mask[None, :, :]
+    paired_counts = paired_valid.sum(axis=(1, 2))
+    paired_coverage = paired_counts / float(np.count_nonzero(source_mask))
+    source_residual = np.where(paired_valid, residual, 0.0).sum(
+        axis=(1, 2), dtype=np.float64
     )
-    absolute_flux = np.abs(cleaned[:, source_mask]).sum(axis=1, dtype=np.float64)
+    if variances is not None:
+        rotated_variances = variances[:, ::-1, ::-1]
+        expected_noise_residual = np.where(
+            paired_valid,
+            np.sqrt(2.0 / np.pi)
+            * np.sqrt(np.maximum(variances + rotated_variances, 0.0)),
+            0.0,
+        ).sum(axis=(1, 2), dtype=np.float64)
+    else:
+        border_pairs = valid_pixels & rotated_valid & border_mask[None, :, :]
+        expected_noise_residual = np.zeros(n_rows, dtype=np.float64)
+        for row in range(n_rows):
+            values = residual[row][border_pairs[row]]
+            if values.size:
+                expected_noise_residual[row] = np.median(values) * paired_counts[row]
+    corrected_residual = np.maximum(source_residual - expected_noise_residual, 0.0)
+    absolute_flux = np.where(paired_valid, np.abs(cleaned), 0.0).sum(
+        axis=(1, 2), dtype=np.float64
+    )
     asymmetry = np.divide(
         corrected_residual,
         absolute_flux,
         out=np.full(n_rows, np.nan, dtype=np.float64),
         where=absolute_flux > 0.0,
     )
+    valid &= paired_coverage >= float(min_valid_fraction)
 
     for values in (x_centroid, y_centroid, axis_ellipticity, concentration, asymmetry):
         values[~valid] = np.nan
@@ -223,20 +284,34 @@ def compute_pixel_morphology_batch(
         "positive_flux": total_positive.astype(np.float32),
         "aperture_flux": aperture_flux.astype(np.float32),
         "signal_to_noise": signal_to_noise.astype(np.float32),
+        "signal_coverage": signal_coverage.astype(np.float32),
+        "asymmetry_pair_coverage": paired_coverage.astype(np.float32),
     }
 
 
 def compute_pixel_morphology(
     cutout: np.ndarray,
     *,
+    valid_mask: np.ndarray | None = None,
+    variance_cutout: np.ndarray | None = None,
     min_positive_flux: float = 0.0,
     min_signal_to_noise: float = 0.0,
+    min_valid_fraction: float = 0.90,
 ) -> dict[str, float | bool]:
     """Scalar wrapper around :func:`compute_pixel_morphology_batch`."""
     measured = compute_pixel_morphology_batch(
         np.asarray(cutout, dtype=np.float32)[None, ...],
+        valid_masks=(
+            None if valid_mask is None else np.asarray(valid_mask, dtype=bool)[None, ...]
+        ),
+        variance_cutouts=(
+            None
+            if variance_cutout is None
+            else np.asarray(variance_cutout, dtype=np.float64)[None, ...]
+        ),
         min_positive_flux=min_positive_flux,
         min_signal_to_noise=min_signal_to_noise,
+        min_valid_fraction=min_valid_fraction,
     )
     return {
         name: bool(values[0]) if values.dtype == np.bool_ else float(values[0])

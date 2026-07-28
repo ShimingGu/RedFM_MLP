@@ -72,6 +72,12 @@ FLOAT_FEATURE_STEMS = tuple(
     for name in MULTIBAND_FEATURE_STEMS
     if name not in {"possible_morphological_mismatch", "morphology_available"}
 )
+FITS_BACKENDS = ("auto", "torchfits", "astropy")
+STATUS_PENDING = np.uint8(0)
+STATUS_SUCCESS = np.uint8(1)
+STATUS_QUALITY_REJECTED = np.uint8(2)
+UPDATED_CATALOGUE_ROOT = Path("/arc/projects/ots/Cosmic_Imprint_of_Time/clauds")
+
 DEFAULT_INVALID_HSC_MASK_PLANES = (
     "BAD",
     "SAT",
@@ -111,17 +117,18 @@ def parse_bands(value: str | Sequence[str]) -> tuple[str, ...]:
 
 @dataclass
 class MultibandMorphologyConfig:
-    catalogue_path: Path = Path("data/clauds/catalogs/COSMOS-HSCpipe-Phosphoros.fits")
-    output_catalogue_path: Path = Path(
-        "data/clauds/catalogs/COSMOS-HSCpipe-Phosphoros_morphological_multiband.fits"
+    catalogue_path: Path = UPDATED_CATALOGUE_ROOT / "catalogs/COSMOS-HSCpipe-Phosphoros.fits"
+    output_catalogue_path: Path = UPDATED_CATALOGUE_ROOT / (
+        "catalogs/COSMOS-HSCpipe-Phosphoros_morphological_multiband_updated.fits"
     )
-    u_image_dir: Path = Path("data/clauds/images/tilesv5")
+    u_image_dir: Path = UPDATED_CATALOGUE_ROOT / "images/tilesv5"
     hsc_image_dir: Path = Path("/arc/projects/ots/pdr3_dud")
-    cache_dir: Path = Path("cache/aion_multiband_morphology_catalogue")
+    cache_dir: Path = Path("cache/aion_multiband_morphology_catalogue_updated")
     bands: tuple[str, ...] = MULTIBAND_MORPHOLOGY_BANDS
     benchmark_repo: str = DEFAULT_BENCHMARK_REPO
     aion_model: str = DEFAULT_AION_MODEL
     device: str = "auto"
+    fits_backend: str = "auto"
     benchmark_batch_size: int = 32
     target_batch_size: int = 256
     head_epochs: int = 100
@@ -130,6 +137,7 @@ class MultibandMorphologyConfig:
     head_patience: int = 30
     min_cutout_coverage: float = 0.90
     min_aperture_coverage: float = 0.90
+    min_morphology_coverage: float = 0.98
     min_signal_to_noise: float = 5.0
     mismatch_threshold: float = DEFAULT_MORPHOLOGICAL_MISMATCH_THRESHOLD
     u_flux_scale: float = 1.0
@@ -159,11 +167,18 @@ class MultibandMorphologyConfig:
         ):
             values[key] = Path(values[key])
         values["bands"] = parse_bands(values["bands"])
+        values["fits_backend"] = str(values["fits_backend"]).lower()
+        if values["fits_backend"] not in FITS_BACKENDS:
+            raise ValueError(f"fits_backend must be one of {FITS_BACKENDS}.")
         if min(values["benchmark_batch_size"], values["target_batch_size"]) < 1:
             raise ValueError("Batch sizes must be positive.")
         if min(values["head_epochs"], values["head_patience"]) < 1:
             raise ValueError("Head epochs and patience must be positive.")
-        for key in ("min_cutout_coverage", "min_aperture_coverage"):
+        for key in (
+            "min_cutout_coverage",
+            "min_aperture_coverage",
+            "min_morphology_coverage",
+        ):
             if not 0.0 <= float(values[key]) <= 1.0:
                 raise ValueError(f"{key} must lie in [0, 1].")
         if float(values["min_signal_to_noise"]) < 0.0:
@@ -215,6 +230,73 @@ class ImageManifest:
 
     def select(self, band: str) -> np.ndarray:
         return np.flatnonzero(self.band == band)
+
+
+def _json_digest(payload: Mapping[str, Any]) -> str:
+    encoded = json.dumps(payload, sort_keys=True, separators=(",", ":"), default=str)
+    return hashlib.sha256(encoded.encode()).hexdigest()
+
+
+def _path_signature(path: str | Path) -> dict[str, Any]:
+    resolved = Path(path).resolve()
+    stat = resolved.stat()
+    return {
+        "path": str(resolved),
+        "size": int(stat.st_size),
+        "mtime_ns": int(stat.st_mtime_ns),
+    }
+
+
+def _file_sha256(path: str | Path) -> str:
+    digest = hashlib.sha256()
+    with Path(path).open("rb") as stream:
+        for block in iter(lambda: stream.read(8 * 1024 * 1024), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def _code_fingerprint() -> str:
+    digest = hashlib.sha256()
+    for source in (Path(__file__), Path(__file__).with_name("morphology.py")):
+        digest.update(source.name.encode())
+        digest.update(source.read_bytes())
+    return digest.hexdigest()
+
+
+def _manifest_fingerprint(
+    paths: Sequence[str], bands: Sequence[str], kinds: Sequence[str]
+) -> str:
+    digest = hashlib.sha256()
+    for image_path, band, kind in zip(paths, bands, kinds):
+        signature = _path_signature(image_path)
+        digest.update(
+            json.dumps(
+                {"band": band, "kind": kind, **signature},
+                sort_keys=True,
+                separators=(",", ":"),
+            ).encode()
+        )
+    return digest.hexdigest()
+
+
+def _science_config_payload(config: "MultibandMorphologyConfig") -> dict[str, Any]:
+    return {
+        "catalogue": _path_signature(config.catalogue_path),
+        "u_image_dir": str(config.u_image_dir.resolve()),
+        "hsc_image_dir": str(config.hsc_image_dir.resolve()),
+        "bands": list(config.bands),
+        "benchmark_repo": config.benchmark_repo,
+        "aion_model": config.aion_model,
+        "min_cutout_coverage": config.min_cutout_coverage,
+        "min_aperture_coverage": config.min_aperture_coverage,
+        "min_morphology_coverage": config.min_morphology_coverage,
+        "min_signal_to_noise": config.min_signal_to_noise,
+        "mismatch_threshold": config.mismatch_threshold,
+        "flux_scales": {
+            band: config.flux_scale(band) for band in MULTIBAND_MORPHOLOGY_BANDS
+        },
+        "code_fingerprint": _code_fingerprint(),
+    }
 
 
 def _wcs_bounds(wcs: WCS, shape: tuple[int, int]) -> tuple[float, float, float, float]:
@@ -275,6 +357,15 @@ def build_or_load_image_manifest(
     config = config.normalized()
     if config.manifest_path.exists() and not config.force_manifest:
         with np.load(config.manifest_path) as cached:
+            required_provenance = {"u_image_dir", "hsc_image_dir"}
+            missing_provenance = required_provenance.difference(cached.files)
+            if missing_provenance:
+                missing_text = ", ".join(sorted(missing_provenance))
+                raise RuntimeError(
+                    "Cached image manifest predates updated provenance "
+                    f"({missing_text} missing); rerun with --force-manifest "
+                    "and --force-assignments --force-target-features."
+                )
             cached_manifest = ImageManifest(
                 path=np.asarray(cached["path"]).astype(str),
                 band=np.asarray(cached["band"]).astype(str),
@@ -287,9 +378,25 @@ def build_or_load_image_manifest(
                 ),
                 fingerprint=str(np.asarray(cached["fingerprint"]).item()),
             )
-        if set(config.bands).issubset(set(cached_manifest.band)):
+            cached_u_root = str(np.asarray(cached["u_image_dir"]).item())
+            cached_hsc_root = str(np.asarray(cached["hsc_image_dir"]).item())
+        roots_match = (
+            cached_u_root == str(config.u_image_dir.resolve())
+            and cached_hsc_root == str(config.hsc_image_dir.resolve())
+        )
+        current_fingerprint = _manifest_fingerprint(
+            cached_manifest.path, cached_manifest.band, cached_manifest.kind
+        )
+        if (
+            roots_match
+            and current_fingerprint == cached_manifest.fingerprint
+            and set(config.bands).issubset(set(cached_manifest.band))
+        ):
             return cached_manifest
-        print("Cached image manifest lacks requested bands; rebuilding it.")
+        raise RuntimeError(
+            "Cached image manifest provenance changed; rerun with --force-manifest "
+            "and --force-assignments --force-target-features."
+        )
 
     records = _discover_image_records(config)
     paths: list[str] = []
@@ -312,10 +419,7 @@ def build_or_load_image_manifest(
             pixel_areas.append(_pixel_area_arcsec2(wcs))
             if (index + 1) % 500 == 0 or index + 1 == len(records):
                 print(f"Indexed image headers: {index + 1:,}/{len(records):,}")
-    digest = hashlib.sha256()
-    for path, band, kind in zip(paths, bands, kinds):
-        digest.update(f"{kind}\0{band}\0{path}\n".encode())
-    fingerprint = digest.hexdigest()
+    fingerprint = _manifest_fingerprint(paths, bands, kinds)
     config.manifest_path.parent.mkdir(parents=True, exist_ok=True)
     np.savez(
         config.manifest_path,
@@ -327,6 +431,8 @@ def build_or_load_image_manifest(
         width=np.asarray(widths, dtype=np.int32),
         pixel_area_arcsec2=np.asarray(pixel_areas, dtype=np.float64),
         fingerprint=np.asarray(fingerprint),
+        u_image_dir=np.asarray(str(config.u_image_dir.resolve())),
+        hsc_image_dir=np.asarray(str(config.hsc_image_dir.resolve())),
     )
     return build_or_load_image_manifest(
         MultibandMorphologyConfig(**{**asdict(config), "force_manifest": False})
@@ -430,14 +536,25 @@ def hsc_invalid_mask_bits(
 
 
 class BandImageTile:
-    """Lazy per-patch access to CLAUDS or HSC science and quality planes."""
+    """Per-patch CLAUDS/HSC science and quality access with subset I/O."""
 
-    def __init__(self, path: str | Path, kind: str, *, flux_scale: float = 1.0):
+    def __init__(
+        self,
+        path: str | Path,
+        kind: str,
+        *,
+        flux_scale: float = 1.0,
+        fits_backend: str = "auto",
+    ):
         self.path = Path(path)
         self.kind = str(kind)
         self.flux_scale = float(flux_scale)
+        self.requested_fits_backend = str(fits_backend).lower()
+        self.fits_backend = self._resolve_backend(self.requested_fits_backend)
         self._science_hdul = None
         self._weight_hdul = None
+        self._subset_managers: list[Any] = []
+        self._subset_readers: list[Any] = []
         if self.kind == "clauds_u":
             self.weight_path = self.path.with_name(f"{self.path.stem}.weight.fits")
             if not self.weight_path.exists():
@@ -457,26 +574,67 @@ class BandImageTile:
         self.wcs = WCS(self.header)
         self.pixel_area_arcsec2 = _pixel_area_arcsec2(self.wcs)
 
+    @staticmethod
+    def _resolve_backend(requested: str) -> str:
+        if requested == "astropy":
+            return "astropy"
+        try:
+            import torchfits  # noqa: F401
+        except (ImportError, OSError) as error:
+            if requested == "torchfits":
+                raise RuntimeError(
+                    "--fits-backend torchfits was requested but torchfits could not load."
+                ) from error
+            return "astropy"
+        return "torchfits"
+
     def _open(self) -> None:
+        if self.fits_backend == "torchfits":
+            if self._subset_readers:
+                return
+            import torchfits
+
+            targets = (
+                ((self.path, 0), (self.weight_path, 0))
+                if self.kind == "clauds_u"
+                else ((self.path, 1), (self.path, 2), (self.path, 3))
+            )
+            try:
+                for image_path, hdu in targets:
+                    manager = torchfits.open_subset_reader(
+                        str(image_path), hdu=hdu, device="cpu"
+                    )
+                    self._subset_managers.append(manager)
+                    self._subset_readers.append(manager.__enter__())
+            except BaseException:
+                self.close()
+                raise
+            return
         if self._science_hdul is None:
             self._science_hdul = fits.open(self.path, memmap=True)
         if self.kind == "clauds_u" and self._weight_hdul is None:
             self._weight_hdul = fits.open(self.weight_path, memmap=True)
 
-    def _planes(
-        self,
-    ) -> tuple[np.ndarray, np.ndarray, np.ndarray | None]:
+    def _read_subset(
+        self, plane: int, x0: int, y0: int, x1: int, y1: int
+    ) -> np.ndarray:
         self._open()
+        if self.fits_backend == "torchfits":
+            tensor = self._subset_readers[plane](x0, y0, x1, y1)
+            return tensor.detach().cpu().numpy()
         if self.kind == "clauds_u":
-            return self._science_hdul[0].data, self._weight_hdul[0].data, None
-        return (
-            self._science_hdul[1].data,
-            self._science_hdul[2].data,
-            self._science_hdul[3].data,
-        )
+            data = (
+                self._science_hdul[0].data
+                if plane == 0
+                else self._weight_hdul[0].data
+            )
+        else:
+            data = self._science_hdul[plane + 1].data
+        return np.asarray(data[y0:y1, x0:x1])
 
-    def extract(self, x: float, y: float, size: int = AION_IMAGE_INPUT_SIZE) -> dict[str, Any]:
-        image, quality, variance = self._planes()
+    def extract(
+        self, x: float, y: float, size: int = AION_IMAGE_INPUT_SIZE
+    ) -> dict[str, Any]:
         height, width = self.shape
         half = size // 2
         cx, cy = int(np.rint(x)), int(np.rint(y))
@@ -484,19 +642,32 @@ class BandImageTile:
         x1, y1 = x0 + size, y0 + size
         raw = np.zeros((size, size), dtype=np.float32)
         valid = np.zeros((size, size), dtype=bool)
+        noise_variance = np.full((size, size), np.nan, dtype=np.float64)
         sx0, sy0 = max(0, x0), max(0, y0)
         sx1, sy1 = min(width, x1), min(height, y1)
         if sx1 > sx0 and sy1 > sy0:
             dx0, dy0 = sx0 - x0, sy0 - y0
             dx1, dy1 = dx0 + sx1 - sx0, dy0 + sy1 - sy0
-            source = np.asarray(image[sy0:sy1, sx0:sx1], dtype=np.float32)
+            source = np.asarray(
+                self._read_subset(0, sx0, sy0, sx1, sy1), dtype=np.float32
+            )
             if self.kind == "clauds_u":
-                weight = np.asarray(quality[sy0:sy1, sx0:sx1], dtype=np.float32)
+                weight = np.asarray(
+                    self._read_subset(1, sx0, sy0, sx1, sy1), dtype=np.float64
+                )
                 source_valid = np.isfinite(source) & np.isfinite(weight) & (weight > 0.0)
+                source_variance = np.divide(
+                    self.flux_scale**2,
+                    weight,
+                    out=np.full_like(weight, np.nan, dtype=np.float64),
+                    where=source_valid,
+                )
             else:
-                mask = np.asarray(quality[sy0:sy1, sx0:sx1], dtype=np.int64)
+                mask = np.asarray(
+                    self._read_subset(1, sx0, sy0, sx1, sy1), dtype=np.int64
+                )
                 variance_cutout = np.asarray(
-                    variance[sy0:sy1, sx0:sx1], dtype=np.float32
+                    self._read_subset(2, sx0, sy0, sx1, sy1), dtype=np.float64
                 )
                 source_valid = (
                     np.isfinite(source)
@@ -504,9 +675,12 @@ class BandImageTile:
                     & (variance_cutout > 0.0)
                     & ((mask & self.invalid_mask_bits) == 0)
                 )
+                source_variance = variance_cutout * self.flux_scale**2
             raw_view = raw[dy0:dy1, dx0:dx1]
             raw_view[source_valid] = source[source_valid] * self.flux_scale
             valid[dy0:dy1, dx0:dx1] = source_valid
+            variance_view = noise_variance[dy0:dy1, dx0:dx1]
+            variance_view[source_valid] = source_variance[source_valid]
         yy, xx = np.mgrid[:size, :size]
         radius = np.hypot(xx - (size - 1) / 2.0, yy - (size - 1) / 2.0)
         border = valid & (radius >= size / 2.0 - 6.0)
@@ -517,14 +691,20 @@ class BandImageTile:
         return {
             "raw": raw,
             "valid": valid,
+            "variance": noise_variance,
             "background": background,
             "background_sigma": sigma,
             "background_subtracted": background_subtracted,
             "coverage": float(valid.mean()),
             "pixel_area_arcsec2": self.pixel_area_arcsec2,
+            "fits_backend": self.fits_backend,
         }
 
     def close(self) -> None:
+        while self._subset_managers:
+            manager = self._subset_managers.pop()
+            manager.__exit__(None, None, None)
+        self._subset_readers.clear()
         if self._science_hdul is not None:
             self._science_hdul.close()
             self._science_hdul = None
@@ -533,6 +713,30 @@ class BandImageTile:
             self._weight_hdul = None
 
 
+
+def _embedding_fingerprint(config: MultibandMorphologyConfig) -> str:
+    return _json_digest(
+        {
+            "benchmark_repo": config.benchmark_repo,
+            "aion_model": config.aion_model,
+            "training_bands": GALAXY10_DES_BANDS,
+            "code_fingerprint": _code_fingerprint(),
+        }
+    )
+
+
+def _head_training_fingerprint(config: MultibandMorphologyConfig) -> str:
+    return _json_digest(
+        {
+            "embedding_fingerprint": _embedding_fingerprint(config),
+            "epochs": config.head_epochs,
+            "learning_rate": config.head_learning_rate,
+            "weight_decay": config.head_weight_decay,
+            "patience": config.head_patience,
+            "seed": config.seed,
+            "split": "grouped-fit-80-selection-10-calibration-10",
+        }
+    )
 
 
 class SingleBandAIONEncoder(FrozenAIONImageEncoder):
@@ -570,9 +774,21 @@ def cache_single_band_benchmark_embeddings(
 ) -> dict[str, np.ndarray]:
     """Cache Galaxy10 embeddings with exactly one DES channel present at a time."""
     config = config.normalized()
+    expected_fingerprint = _embedding_fingerprint(config)
     if config.embedding_cache_path.exists() and not config.force_benchmark_embeddings:
         with np.load(config.embedding_cache_path) as cached:
-            return {name: np.asarray(cached[name]) for name in cached.files}
+            stored_fingerprint = str(np.asarray(cached["_provenance"]).item())
+            if stored_fingerprint != expected_fingerprint:
+                raise RuntimeError(
+                    "Cached benchmark embeddings have stale provenance; rerun with "
+                    "--force-benchmark-embeddings --force-head-training "
+                    "--force-target-features."
+                )
+            return {
+                name: np.asarray(cached[name])
+                for name in cached.files
+                if not name.startswith("_")
+            }
 
     snapshot = download_galaxy10_aion_benchmark(config)  # type: ignore[arg-type]
     split_paths = {
@@ -613,7 +829,12 @@ def cache_single_band_benchmark_embeddings(
         product[f"{split}_band_index"] = np.concatenate(band_indices).astype(np.uint8)
 
     config.embedding_cache_path.parent.mkdir(parents=True, exist_ok=True)
-    np.savez(config.embedding_cache_path, **product)
+    np.savez(
+        config.embedding_cache_path,
+        **product,
+        _provenance=np.asarray(expected_fingerprint),
+        _snapshot_revision=np.asarray(snapshot.name),
+    )
     return product
 
 
@@ -675,20 +896,35 @@ def train_single_band_morphology_head(
 ) -> dict[str, Any]:
     """Train and calibrate a Galaxy10 head on band-isolated AION embeddings."""
     config = config.normalized()
+    expected_fingerprint = _head_training_fingerprint(config)
     if config.head_path.exists() and not config.force_head_training:
-        return torch.load(config.head_path, map_location="cpu", weights_only=False)
+        checkpoint = torch.load(config.head_path, map_location="cpu", weights_only=False)
+        if checkpoint.get("training_fingerprint") != expected_fingerprint:
+            raise RuntimeError(
+                "Cached morphology head has stale provenance; rerun with "
+                "--force-head-training --force-target-features."
+            )
+        return checkpoint
     set_random_seed(config.seed)
     product = embedding_product or cache_single_band_benchmark_embeddings(config)
     train_x = torch.from_numpy(product["train_embeddings"]).float()
     train_y = torch.from_numpy(product["train_labels"]).long()
     test_x = torch.from_numpy(product["test_embeddings"]).float()
     test_y = torch.from_numpy(product["test_labels"]).long()
-    train_indices, validation_indices = _group_stratified_indices(
+    fit_indices, holdout_indices = _group_stratified_indices(
         product["train_labels"],
         product["train_group"],
-        validation_fraction=0.1,
+        validation_fraction=0.2,
         seed=config.seed,
     )
+    selection_local, calibration_local = _group_stratified_indices(
+        product["train_labels"][holdout_indices],
+        product["train_group"][holdout_indices],
+        validation_fraction=0.5,
+        seed=config.seed + 1,
+    )
+    selection_indices = holdout_indices[selection_local]
+    calibration_indices = holdout_indices[calibration_local]
     device = resolve_torch_device(config.device)
     head = AIONGalaxy10MorphologyHead(input_dim=train_x.shape[1]).to(device)
     optimizer = torch.optim.AdamW(
@@ -697,13 +933,15 @@ def train_single_band_morphology_head(
         weight_decay=config.head_weight_decay,
     )
     loader = torch.utils.data.DataLoader(
-        torch.utils.data.TensorDataset(train_x[train_indices], train_y[train_indices]),
+        torch.utils.data.TensorDataset(train_x[fit_indices], train_y[fit_indices]),
         batch_size=256,
         shuffle=True,
         generator=torch.Generator().manual_seed(config.seed),
     )
-    validation_x = train_x[validation_indices].to(device)
-    validation_y = train_y[validation_indices].to(device)
+    validation_x = train_x[selection_indices].to(device)
+    validation_y = train_y[selection_indices].to(device)
+    calibration_x = train_x[calibration_indices].to(device)
+    calibration_y = train_y[calibration_indices].to(device)
     best_loss = float("inf")
     best_state: dict[str, torch.Tensor] | None = None
     best_epoch = 0
@@ -742,15 +980,8 @@ def train_single_band_morphology_head(
     head.load_state_dict(best_state)
     head.eval()
     with torch.inference_mode():
-        validation_logits = head(validation_x)
-    temperature = _fit_temperature(validation_logits, validation_y)
-
-    set_random_seed(config.seed)
-    head = AIONGalaxy10MorphologyHead(input_dim=train_x.shape[1]).to(device)
-    _fit_head_epochs(
-        head, train_x, train_y, epochs=best_epoch, config=config, device=device
-    )
-    head.eval()
+        calibration_logits = head(calibration_x)
+    temperature = _fit_temperature(calibration_logits, calibration_y)
     head.temperature.fill_(temperature)
     with torch.inference_mode():
         test_logits = head(test_x.to(device))
@@ -783,6 +1014,11 @@ def train_single_band_morphology_head(
         "test_nll": test_nll,
         "test_band_accuracy": test_band_accuracy,
         "seed": config.seed,
+        "training_fingerprint": expected_fingerprint,
+        "calibration_scope": "held-out DES Galaxy10 only; target CLAUDS/HSC uncalibrated",
+        "n_fit": int(len(fit_indices)),
+        "n_selection": int(len(selection_indices)),
+        "n_calibration": int(len(calibration_indices)),
     }
     config.head_path.parent.mkdir(parents=True, exist_ok=True)
     torch.save(checkpoint, config.head_path)
@@ -794,11 +1030,19 @@ def train_single_band_morphology_head(
 
 
 def load_single_band_morphology_head(
-    path: str | Path, *, device: torch.device
+    path: str | Path,
+    *,
+    device: torch.device,
+    expected_fingerprint: str | None = None,
 ) -> tuple[AIONGalaxy10MorphologyHead, dict[str, Any]]:
     checkpoint = torch.load(path, map_location="cpu", weights_only=False)
     if not checkpoint.get("single_band_training", False):
         raise RuntimeError("Checkpoint was not trained on band-isolated AION inputs.")
+    if (
+        expected_fingerprint is not None
+        and checkpoint.get("training_fingerprint") != expected_fingerprint
+    ):
+        raise RuntimeError("Morphology-head provenance does not match this run.")
     head = AIONGalaxy10MorphologyHead(
         input_dim=int(checkpoint["input_dim"]),
         hidden_dim=int(checkpoint.get("hidden_dim", 256)),
@@ -815,13 +1059,23 @@ def _read_catalogue(config: MultibandMorphologyConfig) -> dict[str, np.ndarray]:
         config.catalogue_path, ext=1, columns=("ID", "RA", "DEC", "isStar")
     )
     stop = len(values) if config.max_target_rows is None else config.max_target_rows
-    return {
+    catalogue = {
         "id": np.asarray(values["ID"][:stop]),
         "ra": np.asarray(values["RA"][:stop], dtype=np.float64),
         "dec": np.asarray(values["DEC"][:stop], dtype=np.float64),
         "is_star": np.asarray(values["isStar"][:stop], dtype=bool),
         "catalogue_n_rows": np.asarray([len(values)], dtype=np.int64),
     }
+    digest = hashlib.sha256(
+        json.dumps(_path_signature(config.catalogue_path), sort_keys=True).encode()
+    )
+    for name in ("id", "ra", "dec", "is_star"):
+        array = np.ascontiguousarray(catalogue[name])
+        digest.update(name.encode())
+        digest.update(array.dtype.str.encode())
+        digest.update(array.view(np.uint8))
+    catalogue["fingerprint"] = np.asarray(digest.hexdigest())
+    return catalogue
 
 
 def _assign_band_to_catalogue(
@@ -893,6 +1147,8 @@ def build_or_load_band_assignment(
         with np.load(path) as cached:
             compatible = (
                 str(np.asarray(cached["manifest_fingerprint"]).item()) == manifest.fingerprint
+                and str(np.asarray(cached["catalogue_fingerprint"]).item())
+                == str(np.asarray(catalogue["fingerprint"]).item())
                 and np.array_equal(cached["object_id"], catalogue["id"])
             )
             if compatible:
@@ -908,12 +1164,54 @@ def build_or_load_band_assignment(
         path,
         object_id=np.asarray(catalogue["id"]),
         manifest_fingerprint=np.asarray(manifest.fingerprint),
+        catalogue_fingerprint=np.asarray(catalogue["fingerprint"]),
         tile_index=assigned[0],
         x_image=assigned[1],
         y_image=assigned[2],
     )
     return assigned
 
+
+
+def _prepare_feature_cache(
+    config: MultibandMorphologyConfig,
+    *,
+    catalogue_fingerprint: str,
+    manifest_fingerprint: str,
+) -> str:
+    payload = {
+        **_science_config_payload(config),
+        "catalogue_fingerprint": catalogue_fingerprint,
+        "manifest_fingerprint": manifest_fingerprint,
+        "head_fingerprint": _file_sha256(config.head_path),
+        "head_training_fingerprint": _head_training_fingerprint(config),
+        "fits_backend": BandImageTile._resolve_backend(config.fits_backend),
+        "status_schema": {
+            "pending": int(STATUS_PENDING),
+            "success": int(STATUS_SUCCESS),
+            "quality_rejected": int(STATUS_QUALITY_REJECTED),
+        },
+    }
+    fingerprint = _json_digest(payload)
+    provenance_path = config.feature_dir / "provenance.json"
+    existing_arrays = list(config.feature_dir.glob("*/*.npy"))
+    if provenance_path.exists() and not config.force_target_features:
+        stored = json.loads(provenance_path.read_text())
+        if stored.get("fingerprint") != fingerprint:
+            raise RuntimeError(
+                "Feature cache provenance changed; use a new cache directory or "
+                "rerun with --force-target-features."
+            )
+    elif existing_arrays and not config.force_target_features:
+        raise RuntimeError(
+            "Feature arrays exist without provenance; use a new cache directory or "
+            "rerun with --force-target-features."
+        )
+    config.feature_dir.mkdir(parents=True, exist_ok=True)
+    provenance_path.write_text(
+        json.dumps({"fingerprint": fingerprint, "payload": payload}, indent=2) + "\n"
+    )
+    return fingerprint
 
 
 def open_band_feature_arrays(
@@ -939,14 +1237,19 @@ def open_band_feature_arrays(
             fill=False,
             force=config.force_target_features,
         )
-    arrays["cutout_coverage"] = _open_feature_array(
-        directory / "cutout_coverage.npy",
-        dtype=np.float32,
-        n_rows=n_rows,
-        fill=np.nan,
-        force=config.force_target_features,
-    )
-    for diagnostic in ("pixel_valid", "brightness_valid"):
+    for diagnostic in (
+        "cutout_coverage",
+        "signal_coverage",
+        "asymmetry_pair_coverage",
+    ):
+        arrays[diagnostic] = _open_feature_array(
+            directory / f"{diagnostic}.npy",
+            dtype=np.float32,
+            n_rows=n_rows,
+            fill=np.nan,
+            force=config.force_target_features,
+        )
+    for diagnostic in ("pixel_valid", "brightness_valid", "probability_valid"):
         arrays[diagnostic] = _open_feature_array(
             directory / f"{diagnostic}.npy",
             dtype=np.bool_,
@@ -958,7 +1261,7 @@ def open_band_feature_arrays(
         directory / "status.npy",
         dtype=np.uint8,
         n_rows=n_rows,
-        fill=0,
+        fill=STATUS_PENDING,
         force=config.force_target_features,
     )
     return arrays
@@ -983,8 +1286,18 @@ def _store_cutout_batch(
     if not rows:
         return 0
     row_array = np.asarray(rows, dtype=np.int64)
+    for stem in FLOAT_FEATURE_STEMS:
+        arrays[stem][row_array] = np.nan
+    arrays["possible_morphological_mismatch"][row_array] = False
+    arrays["morphology_available"][row_array] = False
+    arrays["probability_valid"][row_array] = False
+    arrays["status"][row_array] = STATUS_PENDING
+
     raw = np.stack([item["raw"] for item in cutouts]).astype(np.float32, copy=False)
     valid = np.stack([item["valid"] for item in cutouts]).astype(bool, copy=False)
+    variance = np.stack([item["variance"] for item in cutouts]).astype(
+        np.float64, copy=False
+    )
     background = np.asarray([item["background"] for item in cutouts], dtype=np.float64)
     pixel_area = np.asarray(
         [item["pixel_area_arcsec2"] for item in cutouts], dtype=np.float64
@@ -1003,7 +1316,10 @@ def _store_cutout_batch(
     )
     measured = compute_pixel_morphology_batch(
         background_subtracted,
+        valid_masks=valid,
+        variance_cutouts=variance,
         min_signal_to_noise=config.min_signal_to_noise,
+        min_valid_fraction=config.min_morphology_coverage,
     )
     pixel_valid = measured["morphology_pixel_valid"]
     output_valid = (
@@ -1012,38 +1328,69 @@ def _store_cutout_batch(
         & pixel_valid
     )
     arrays["cutout_coverage"][row_array] = coverage
+    arrays["signal_coverage"][row_array] = measured["signal_coverage"]
+    arrays["asymmetry_pair_coverage"][row_array] = measured[
+        "asymmetry_pair_coverage"
+    ]
     arrays["pixel_valid"][row_array] = pixel_valid
     arrays["brightness_valid"][row_array] = brightness["brightness_valid"]
-    for stem in (
-        "surface_brightness_24",
-        "surface_brightness_96",
-        "mean_per_sqarcsec_12",
-        "mean_per_sqarcsec_24",
-    ):
-        arrays[stem][row_array[output_valid]] = brightness[stem][output_valid]
-    for stem in ("axis_ellipticity", "concentration_C", "asymmetry_A"):
-        arrays[stem][row_array[output_valid]] = measured[stem][output_valid]
 
-    arrays["status"][row_array] = 1
-    aion_valid = output_valid
-    if aion_valid.any():
-        valid_rows = row_array[aion_valid]
+    success_local = np.zeros(len(row_array), dtype=bool)
+    collapsed_numpy: dict[str, np.ndarray] = {}
+    if output_valid.any():
+        candidate_local = np.flatnonzero(output_valid)
         embeddings = encoder.encode_hsc_band(
-            background_subtracted[aion_valid], AION_HSC_BAND_BY_TARGET[band]
+            background_subtracted[output_valid], AION_HSC_BAND_BY_TARGET[band]
         )
-        probabilities = head.predict_proba(embeddings)
+        probabilities = head.predict_proba(embeddings).float().cpu().numpy()
+        probability_sums = probabilities.sum(axis=1, dtype=np.float64)
+        probability_valid = (
+            np.isfinite(probabilities).all(axis=1)
+            & (probabilities >= -1.0e-7).all(axis=1)
+            & (probabilities <= 1.0 + 1.0e-7).all(axis=1)
+            & np.isclose(probability_sums, 1.0, rtol=1.0e-5, atol=1.0e-6)
+        )
         collapsed = collapse_galaxy10_morphology_probabilities(probabilities)
+        collapsed_numpy = {
+            stem: np.asarray(collapsed[stem], dtype=np.float32)
+            for stem in ("p_spiral", "p_bar", "p_elliptical_type")
+        }
+        probability_valid &= np.logical_and.reduce(
+            [
+                np.isfinite(collapsed_numpy[stem])
+                & (collapsed_numpy[stem] >= 0.0)
+                & (collapsed_numpy[stem] <= 1.0)
+                for stem in collapsed_numpy
+            ]
+        )
+        success_local[candidate_local[probability_valid]] = True
+        arrays["probability_valid"][row_array[candidate_local]] = probability_valid
+
+        successful_candidates = np.flatnonzero(probability_valid)
+        successful_local = candidate_local[successful_candidates]
+        successful_rows = row_array[successful_local]
+        for stem in (
+            "surface_brightness_24",
+            "surface_brightness_96",
+            "mean_per_sqarcsec_12",
+            "mean_per_sqarcsec_24",
+        ):
+            arrays[stem][successful_rows] = brightness[stem][successful_local]
+        for stem in ("axis_ellipticity", "concentration_C", "asymmetry_A"):
+            arrays[stem][successful_rows] = measured[stem][successful_local]
         for stem in ("p_spiral", "p_bar", "p_elliptical_type"):
-            arrays[stem][valid_rows] = collapsed[stem].float().cpu().numpy()
-        arrays["possible_morphological_mismatch"][valid_rows] = (
+            arrays[stem][successful_rows] = collapsed_numpy[stem][successful_candidates]
+        arrays["possible_morphological_mismatch"][successful_rows] = (
             possible_morphological_mismatch(
-                arrays["p_elliptical_type"][valid_rows],
-                arrays["axis_ellipticity"][valid_rows],
+                arrays["p_elliptical_type"][successful_rows],
+                arrays["axis_ellipticity"][successful_rows],
                 threshold=config.mismatch_threshold,
             )
         )
-        arrays["morphology_available"][valid_rows] = True
-        arrays["status"][valid_rows] = 2
+        arrays["morphology_available"][successful_rows] = True
+
+    arrays["status"][row_array] = STATUS_QUALITY_REJECTED
+    arrays["status"][row_array[success_local]] = STATUS_SUCCESS
     rows.clear()
     cutouts.clear()
     return len(row_array)
@@ -1060,7 +1407,17 @@ def compute_multiband_morphology_features(
     manifest = build_or_load_image_manifest(config)
     device = resolve_torch_device(config.device)
     encoder = encoder or SingleBandAIONEncoder(config.aion_model, device)
-    head, checkpoint = load_single_band_morphology_head(config.head_path, device=device)
+    head, checkpoint = load_single_band_morphology_head(
+        config.head_path,
+        device=device,
+        expected_fingerprint=_head_training_fingerprint(config),
+    )
+    resolved_fits_backend = BandImageTile._resolve_backend(config.fits_backend)
+    feature_fingerprint = _prepare_feature_cache(
+        config,
+        catalogue_fingerprint=str(np.asarray(catalogue["fingerprint"]).item()),
+        manifest_fingerprint=manifest.fingerprint,
+    )
     arrays_by_band: dict[str, dict[str, np.memmap]] = {}
     band_metadata: dict[str, dict[str, Any]] = {}
     remaining_budget = config.stop_after_processed_rows
@@ -1078,7 +1435,8 @@ def compute_multiband_morphology_features(
             if remaining_budget is not None and remaining_budget <= 0:
                 break
             rows = np.flatnonzero(
-                (tile_index == current_tile) & (np.asarray(arrays["status"]) == 0)
+                (tile_index == current_tile)
+                & (np.asarray(arrays["status"]) == STATUS_PENDING)
             )
             if remaining_budget is not None:
                 rows = rows[:remaining_budget]
@@ -1086,7 +1444,10 @@ def compute_multiband_morphology_features(
                 continue
             flux_scale = config.flux_scale(band)
             tile = BandImageTile(
-                manifest.path[current_tile], manifest.kind[current_tile], flux_scale=flux_scale
+                manifest.path[current_tile],
+                manifest.kind[current_tile],
+                flux_scale=flux_scale,
+                fits_backend=resolved_fits_backend,
             )
             batch_rows: list[int] = []
             batch_cutouts: list[dict[str, Any]] = []
@@ -1155,13 +1516,21 @@ def compute_multiband_morphology_features(
             "n_valid_pixel_morphology": int(
                 np.count_nonzero(arrays["pixel_valid"])
             ),
-            "n_valid_aion_probabilities": int(np.count_nonzero(available)),
+            "n_valid_aion_probabilities": int(
+                np.count_nonzero(arrays["probability_valid"])
+            ),
             "n_complete_output_features": int(np.count_nonzero(available)),
             "n_available": int(np.count_nonzero(available)),
             "n_possible_mismatch": int(
                 np.count_nonzero(arrays["possible_morphological_mismatch"])
             ),
-            "processing_complete": bool(np.all(arrays["status"][assigned] != 0)),
+            "processing_complete": bool(
+                np.all(arrays["status"][assigned] != STATUS_PENDING)
+            ),
+            "n_quality_rejected": int(
+                np.count_nonzero(arrays["status"] == STATUS_QUALITY_REJECTED)
+            ),
+            "fits_backend": resolved_fits_backend,
             "flux_scale": config.flux_scale(band),
             "n_previously_processed": completed_before,
         }
@@ -1181,12 +1550,21 @@ def compute_multiband_morphology_features(
         "aion_head_test_band_accuracy": checkpoint.get("test_band_accuracy", {}),
         "aion_head_temperature": float(checkpoint["temperature"]),
         "aion_training_input": "one Galaxy10 DES band per AION input",
+        "aion_calibration_scope": (
+            "temperature calibrated on held-out DES Galaxy10 only; "
+            "CLAUDS/HSC target scores are uncalibrated cross-survey transfers"
+        ),
         "aion_target_channels": AION_HSC_BAND_BY_TARGET,
         "domain_warning": (
             "The single-band head is trained on DES Galaxy10 images and transferred "
             "to HSC/CLAUDS images; u uses HSC-G and HSC-Y lacks a matching training band."
         ),
         "psf_matching": False,
+        "fits_backend": resolved_fits_backend,
+        "clauds_weight_interpretation": "inverse variance; empirically verified on real tiles",
+        "feature_fingerprint": feature_fingerprint,
+        "code_fingerprint": _code_fingerprint(),
+        "catalogue_fingerprint": str(np.asarray(catalogue["fingerprint"]).item()),
         "surface_brightness_definition": (
             "signed sum(raw - sigma-clipped local-border background) over valid pixels"
         ),
@@ -1195,6 +1573,7 @@ def compute_multiband_morphology_features(
         ),
         "min_cutout_coverage": config.min_cutout_coverage,
         "min_aperture_coverage": config.min_aperture_coverage,
+        "min_morphology_coverage": config.min_morphology_coverage,
         "min_signal_to_noise": config.min_signal_to_noise,
         "mismatch_definition": (
             "abs(p_elliptical_type_x - (1 - axis_ellipticity_x)) >= "
@@ -1231,8 +1610,14 @@ def write_multiband_morphological_catalogue(
         raise ValueError("A final catalogue requires max_target_rows=None.")
     if config.bands != MULTIBAND_MORPHOLOGY_BANDS:
         raise ValueError("A final catalogue requires all ugrizy bands.")
-    with fitsio.FITS(config.catalogue_path) as source_fits:
-        source_rows = int(source_fits[1].get_nrows())
+    catalogue = _read_catalogue(config)
+    source_rows = int(catalogue["catalogue_n_rows"][0])
+    manifest = build_or_load_image_manifest(config)
+    feature_fingerprint = _prepare_feature_cache(
+        config,
+        catalogue_fingerprint=str(np.asarray(catalogue["fingerprint"]).item()),
+        manifest_fingerprint=manifest.fingerprint,
+    )
     arrays_by_band = (
         feature_product["arrays"]
         if feature_product is not None
@@ -1246,8 +1631,17 @@ def write_multiband_morphological_catalogue(
         if not assignment_path.exists():
             raise FileNotFoundError(f"Missing assignment cache: {assignment_path}")
         with np.load(assignment_path) as assignment:
+            if (
+                str(np.asarray(assignment["catalogue_fingerprint"]).item())
+                != str(np.asarray(catalogue["fingerprint"]).item())
+                or str(np.asarray(assignment["manifest_fingerprint"]).item())
+                != manifest.fingerprint
+            ):
+                raise RuntimeError(f"Stale {band}-band assignment provenance.")
             assigned = np.asarray(assignment["tile_index"]) >= 0
-        if np.any(np.asarray(arrays["status"])[assigned] == 0):
+        if np.any(
+            np.asarray(arrays["status"])[assigned] == STATUS_PENDING
+        ):
             raise RuntimeError(
                 f"Refusing to write while assigned {band}-band rows remain unprocessed."
             )
@@ -1256,9 +1650,15 @@ def write_multiband_morphological_catalogue(
     required = set(multiband_column_names())
     if output.exists() and not config.overwrite_output:
         with fitsio.FITS(output) as output_fits:
-            if required.issubset(output_fits[1].get_colnames()):
+            header = output_fits[1].read_header()
+            if (
+                required.issubset(output_fits[1].get_colnames())
+                and header.get("MORPHCFG") == feature_fingerprint
+            ):
                 return output
-        raise FileExistsError(f"Output exists without every multiband column: {output}")
+        raise FileExistsError(
+            f"Output exists with missing columns or different provenance: {output}"
+        )
     output.parent.mkdir(parents=True, exist_ok=True)
     temporary = output.with_suffix(output.suffix + ".partial")
     if temporary.exists():
@@ -1277,8 +1677,20 @@ def write_multiband_morphological_catalogue(
                     name = f"{stem}_{band}"
                     print(f"Inserting FITS column: {name}")
                     table.insert_column(name, np.asarray(arrays_by_band[band][stem]))
+            table.write_key("MORPHVER", 2, comment="Updated morphology pipeline version")
+            table.write_key("MORPHCFG", feature_fingerprint, comment="Feature provenance hash")
+            table.write_key("MORPHCOD", _code_fingerprint(), comment="Measurement code hash")
+            table.write_key("MORPHIMG", manifest.fingerprint, comment="Image manifest hash")
+            table.write_key(
+                "MORPHCAT",
+                str(np.asarray(catalogue["fingerprint"]).item()),
+                comment="Input catalogue hash",
+            )
             table.write_key("MORPHMOD", config.aion_model, comment="AION morphology encoder")
             table.write_key("MORPHDS", config.benchmark_repo, comment="Probe dataset")
+            table.write_key("MORPHCAL", "DES-only", comment="Temperature calibration domain")
+            table.write_key("MORPHTGT", False, comment="Target-domain calibrated")
+            table.write_key("MORPHIO", config.fits_backend, comment="Requested FITS backend")
             table.write_key("MORPHSNR", config.min_signal_to_noise, comment="Minimum pixel S/N")
             table.write_key("MORPHMIS", config.mismatch_threshold, comment="Mismatch threshold")
             table.write_key("MORPHNBD", 6, comment="Number of morphology bands")
@@ -1296,14 +1708,29 @@ def write_multiband_morphological_catalogue(
                 "u is encoded through AION HSC-G and grizy through matching HSC channels."
             )
             table.write_history(
-                "AION probabilities use a Galaxy10 probe trained on isolated DES bands; "
-                "this is a cross-survey transfer and images were not PSF-matched."
+                "AION scores are temperature-calibrated on held-out DES Galaxy10 only; "
+                "CLAUDS/HSC values are uncalibrated cross-survey transfers."
+            )
+            table.write_history(
+                "Bands were not PSF-matched; u uses the HSC-G codec proxy and HSC-Y "
+                "has no matching Galaxy10 training band."
             )
             table.write_history(
                 "surface_brightness_* is a background-subtracted signed aperture sum; "
                 "mean_per_sqarcsec_* is an unsubtracted mean divided by WCS pixel area."
             )
         os.replace(temporary, output)
+        output_provenance = output.with_suffix(output.suffix + ".provenance.json")
+        provenance_payload = json.loads(
+            (config.feature_dir / "provenance.json").read_text()
+        )
+        provenance_payload["output"] = _path_signature(output)
+        provenance_payload["feature_metadata"] = (
+            feature_product.get("metadata") if feature_product is not None else None
+        )
+        output_provenance.write_text(
+            json.dumps(provenance_payload, indent=2, default=str) + "\n"
+        )
     except BaseException:
         if temporary.exists():
             temporary.unlink()
@@ -1312,15 +1739,30 @@ def write_multiband_morphological_catalogue(
 
 
 def verify_multiband_morphological_catalogue(
-    path: str | Path, *, source_path: str | Path | None = None
+    path: str | Path,
+    *,
+    source_path: str | Path | None = None,
+    expected_feature_fingerprint: str | None = None,
 ) -> dict[str, Any]:
     import fitsio
 
     path = Path(path)
     inconsistent_rows = 0
+    unavailable_finite_rows = 0
     probability_range_errors = 0
+    probability_subset_errors = 0
+    unavailable_mismatch_errors = 0
+    constant_columns: list[str] = []
+    availability: dict[str, int] = {}
+    quantiles: dict[str, dict[str, list[float]]] = {}
     with fitsio.FITS(path) as fits_file:
         table = fits_file[1]
+        header = table.read_header()
+        if int(header.get("MORPHVER", 0)) < 2:
+            raise RuntimeError("Updated morphology provenance header is missing.")
+        feature_fingerprint = header.get("MORPHCFG")
+        if expected_feature_fingerprint is not None and feature_fingerprint != expected_feature_fingerprint:
+            raise RuntimeError("Output feature provenance does not match the requested run.")
         names = set(table.get_colnames())
         missing = set(multiband_column_names()).difference(names)
         if missing:
@@ -1332,22 +1774,59 @@ def verify_multiband_morphological_catalogue(
         sample = table.read(rows=sample_rows, columns=multiband_column_names())
         output_ids = np.asarray(table.read(columns=["ID"])["ID"])
         for band in MULTIBAND_MORPHOLOGY_BANDS:
-            columns = tuple(
-                f"{stem}_{band}" for stem in MULTIBAND_FEATURE_STEMS
-            )
+            columns = tuple(f"{stem}_{band}" for stem in MULTIBAND_FEATURE_STEMS)
             values = table.read(columns=columns)
-            complete = np.logical_and.reduce(
-                [np.isfinite(values[f"{stem}_{band}"]) for stem in FLOAT_FEATURE_STEMS]
-            )
+            finite_by_stem = {
+                stem: np.isfinite(values[f"{stem}_{band}"])
+                for stem in FLOAT_FEATURE_STEMS
+            }
+            complete = np.logical_and.reduce(list(finite_by_stem.values()))
+            any_finite = np.logical_or.reduce(list(finite_by_stem.values()))
             available = np.asarray(values[f"morphology_available_{band}"], dtype=bool)
+            mismatch = np.asarray(
+                values[f"possible_morphological_mismatch_{band}"], dtype=bool
+            )
+            availability[band] = int(np.count_nonzero(available))
+            if not availability[band]:
+                raise RuntimeError(f"No valid updated morphology rows exist in {band} band.")
             inconsistent_rows += int(np.count_nonzero(available != complete))
+            unavailable_finite_rows += int(np.count_nonzero((~available) & any_finite))
+            unavailable_mismatch_errors += int(np.count_nonzero((~available) & mismatch))
+            quantiles[band] = {}
+            for stem in FLOAT_FEATURE_STEMS:
+                column = np.asarray(values[f"{stem}_{band}"], dtype=np.float64)
+                selected = column[available]
+                if selected.size > 1 and float(np.nanmax(selected) - np.nanmin(selected)) <= 1.0e-12:
+                    constant_columns.append(f"{stem}_{band}")
+                quantiles[band][stem] = [
+                    float(value)
+                    for value in np.nanquantile(selected, (0.01, 0.5, 0.99))
+                ]
             for stem in ("p_spiral", "p_bar", "p_elliptical_type"):
-                probability = np.asarray(values[f"{stem}_{band}"], dtype=np.float32)
+                probability = np.asarray(values[f"{stem}_{band}"], dtype=np.float64)
                 probability_range_errors += int(
                     np.count_nonzero(
                         np.isfinite(probability)
                         & ((probability < 0.0) | (probability > 1.0))
                     )
+                )
+            p_spiral = np.asarray(values[f"p_spiral_{band}"], dtype=np.float64)
+            p_bar = np.asarray(values[f"p_bar_{band}"], dtype=np.float64)
+            probability_subset_errors += int(
+                np.count_nonzero(available & (p_bar > p_spiral + 1.0e-6))
+            )
+            ellipticity = np.asarray(
+                values[f"axis_ellipticity_{band}"], dtype=np.float64
+            )
+            probability_range_errors += int(
+                np.count_nonzero(
+                    available & ((ellipticity < 0.0) | (ellipticity > 1.0))
+                )
+            )
+            for stem in ("concentration_C", "asymmetry_A"):
+                measurement = np.asarray(values[f"{stem}_{band}"], dtype=np.float64)
+                probability_range_errors += int(
+                    np.count_nonzero(available & (measurement < 0.0))
                 )
         n_columns = len(table.get_colnames())
     ids_match_source = None
@@ -1356,14 +1835,21 @@ def verify_multiband_morphological_catalogue(
         ids_match_source = bool(np.array_equal(source_ids, output_ids))
         if not ids_match_source:
             raise RuntimeError("Output object IDs or row order differ from the source catalogue.")
-    if inconsistent_rows:
-        raise RuntimeError(
-            f"Found {inconsistent_rows:,} rows inconsistent with morphology_available flags."
-        )
-    if probability_range_errors:
-        raise RuntimeError(
-            f"Found {probability_range_errors:,} morphology probabilities outside [0, 1]."
-        )
+    errors = {
+        "availability_consistency_errors": inconsistent_rows,
+        "unavailable_finite_rows": unavailable_finite_rows,
+        "probability_or_morphology_range_errors": probability_range_errors,
+        "p_bar_not_subset_errors": probability_subset_errors,
+        "unavailable_mismatch_errors": unavailable_mismatch_errors,
+    }
+    nonzero_errors = {name: value for name, value in errors.items() if value}
+    if nonzero_errors:
+        raise RuntimeError(f"Updated morphology verification failed: {nonzero_errors}")
+    if constant_columns:
+        raise RuntimeError(f"Constant morphology outputs detected: {constant_columns}")
+    provenance_path = path.with_suffix(path.suffix + ".provenance.json")
+    if not provenance_path.exists():
+        raise RuntimeError(f"Output provenance sidecar is missing: {provenance_path}")
     return {
         "path": str(path),
         "n_rows": n_rows,
@@ -1371,8 +1857,11 @@ def verify_multiband_morphological_catalogue(
         "n_morphology_columns": len(multiband_column_names()),
         "size_bytes": path.stat().st_size,
         "ids_match_source": ids_match_source,
-        "availability_consistency_errors": inconsistent_rows,
-        "probability_range_errors": probability_range_errors,
+        "feature_fingerprint": feature_fingerprint,
+        "availability": availability,
+        "quantiles_01_50_99": quantiles,
+        "constant_columns": constant_columns,
+        **errors,
         "sample_dtype": sample.dtype.descr,
     }
 
@@ -1396,7 +1885,9 @@ def build_multiband_morphological_catalogue(
         "head_test_accuracy": checkpoint["test_accuracy"],
         "feature_metadata": features["metadata"],
         "verification": verify_multiband_morphological_catalogue(
-            output, source_path=config.catalogue_path
+            output,
+            source_path=config.catalogue_path,
+            expected_feature_fingerprint=features["metadata"]["feature_fingerprint"],
         ),
     }
 
@@ -1421,6 +1912,7 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--benchmark-repo", default=defaults.benchmark_repo)
     parser.add_argument("--aion-model", default=defaults.aion_model)
     parser.add_argument("--device", default=defaults.device)
+    parser.add_argument("--fits-backend", choices=FITS_BACKENDS, default=defaults.fits_backend)
     parser.add_argument(
         "--benchmark-batch-size", type=int, default=defaults.benchmark_batch_size
     )
@@ -1436,6 +1928,9 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     )
     parser.add_argument(
         "--min-aperture-coverage", type=float, default=defaults.min_aperture_coverage
+    )
+    parser.add_argument(
+        "--min-morphology-coverage", type=float, default=defaults.min_morphology_coverage
     )
     parser.add_argument("--min-signal-to-noise", type=float, default=defaults.min_signal_to_noise)
     parser.add_argument("--mismatch-threshold", type=float, default=defaults.mismatch_threshold)
@@ -1469,6 +1964,7 @@ def _config_from_args(args: argparse.Namespace) -> MultibandMorphologyConfig:
         benchmark_repo=args.benchmark_repo,
         aion_model=args.aion_model,
         device=args.device,
+        fits_backend=args.fits_backend,
         benchmark_batch_size=args.benchmark_batch_size,
         target_batch_size=args.target_batch_size,
         head_epochs=args.head_epochs,
@@ -1477,6 +1973,7 @@ def _config_from_args(args: argparse.Namespace) -> MultibandMorphologyConfig:
         head_patience=args.head_patience,
         min_cutout_coverage=args.min_cutout_coverage,
         min_aperture_coverage=args.min_aperture_coverage,
+        min_morphology_coverage=args.min_morphology_coverage,
         min_signal_to_noise=args.min_signal_to_noise,
         mismatch_threshold=args.mismatch_threshold,
         u_flux_scale=args.u_flux_scale,

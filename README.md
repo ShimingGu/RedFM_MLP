@@ -87,78 +87,79 @@ probabilities. The mismatch flag is diagnostic: it marks
 `abs(p_elliptical_type - (1 - axis_ellipticity)) >= 0.5`; it does not declare
 elongated ellipticals or round face-on spirals erroneous.
 
-### Band-resolved multiband morphology catalogue
+### Band-resolved updated multiband morphology catalogue
 
-`aion_magnitude.multiband_morphology_catalogue` creates a separate catalogue
-from the original Phosphoros table, preserving its object IDs and row order.
-It reads CLAUDS `u` tiles locally and HSC PDR3 `grizy` patches directly from
-`/arc/projects/ots/pdr3_dud/`; it does not copy those HSC images to scratch.
-The output is
-`data/clauds/catalogs/COSMOS-HSCpipe-Phosphoros_morphological_multiband.fits`.
+`aion_magnitude.multiband_morphology_catalogue` rebuilds a separate catalogue
+from the original 5,474,883-row Phosphoros table while preserving IDs and row
+order. Inputs are read in place from:
 
-For each suffix `x` in `u`, `g`, `r`, `i`, `z`, and `y`, it adds these 12
-columns (72 columns total):
+- `/arc/projects/ots/Cosmic_Imprint_of_Time/clauds/catalogs/COSMOS-HSCpipe-Phosphoros.fits`
+- `/arc/projects/ots/Cosmic_Imprint_of_Time/clauds/images/tilesv5/`
+- `/arc/projects/ots/pdr3_dud/`
+
+The corrected output is
+`/arc/projects/ots/Cosmic_Imprint_of_Time/clauds/catalogs/COSMOS-HSCpipe-Phosphoros_morphological_multiband_updated.fits`.
+The pre-existing file without `_updated` is preserved and is not reused as a
+source.
+
+For every suffix `x` in `u,g,r,i,z,y`, the output contains 12 columns (72
+total):
 
 | Column | Definition |
 |---|---|
-| `p_spiral_x` | Sum of the calibrated Galaxy10 probabilities for barred, tight/loose unbarred, and both edge-on spiral classes. |
-| `p_bar_x` | Calibrated probability of the Galaxy10 barred-spiral class. |
-| `p_elliptical_type_x` | Sum of the calibrated Galaxy10 probabilities for the three elliptical classes. |
-| `axis_ellipticity_x` | `1 - sqrt(lambda_minor/lambda_major)` from positive, background-subtracted 96x96 flux-weighted second moments. |
-| `concentration_C_x` | `5 log10(r80/r20)` from positive, background-subtracted 96x96 pixels. |
-| `asymmetry_A_x` | Noise-corrected absolute residual from a 180-degree rotation, divided by absolute source flux; signed background-subtracted pixels are retained. |
-| `possible_morphological_mismatch_x` | Diagnostic flag for `abs(p_elliptical_type_x - (1 - axis_ellipticity_x)) >= 0.5`; this is not a physical error label. |
-| `surface_brightness_24_x` | Signed sum of `raw - local_background` over valid central 24x24 pixels. Despite its historical name, this is integrated aperture flux. |
-| `surface_brightness_96_x` | Signed sum of `raw - local_background` over valid full 96x96 pixels; also integrated cutout flux. |
-| `mean_per_sqarcsec_12_x` | Unsubtracted raw mean over valid central 12x12 pixels, divided by the WCS pixel area in square arcseconds. |
-| `mean_per_sqarcsec_24_x` | Unsubtracted raw mean over valid central 24x24 pixels, divided by the WCS pixel area in square arcseconds. |
-| `morphology_available_x` | True only when the band has adequate usable coverage and all probability, pixel-morphology, and brightness values are valid. |
+| `p_spiral_x` | Galaxy10 spiral-class transfer score, temperature-calibrated on held-out DES Galaxy10 only. |
+| `p_bar_x` | Galaxy10 barred-spiral transfer score; a subset of `p_spiral_x`. |
+| `p_elliptical_type_x` | Sum of the three Galaxy10 smooth/elliptical transfer scores. |
+| `axis_ellipticity_x` | `1 - sqrt(lambda_minor/lambda_major)` from valid, rotation-paired, positive background-subtracted pixels. |
+| `concentration_C_x` | `5 log10(r80/r20)` from the same validity-aware positive pixels. |
+| `asymmetry_A_x` | Variance-corrected 180-degree residual over pixels valid in both original and rotated masks. |
+| `possible_morphological_mismatch_x` | Diagnostic `abs(p_elliptical_type_x - (1 - axis_ellipticity_x)) >= 0.5`. |
+| `surface_brightness_24_x` | Background-subtracted signed central 24x24 sum; integrated aperture flux despite its historical name. |
+| `surface_brightness_96_x` | Background-subtracted signed valid-pixel 96x96 sum. |
+| `mean_per_sqarcsec_12_x` | Unsubtracted valid-pixel 12x12 mean divided by WCS pixel area. |
+| `mean_per_sqarcsec_24_x` | Unsubtracted valid-pixel 24x24 mean divided by WCS pixel area. |
+| `morphology_available_x` | True only after all coverage, propagated-noise, pixel-statistic, and finite normalized model-output checks pass. |
 
-The local background is a sigma-clipped median of valid border pixels. HSC
-validity uses the science, mask, and variance planes; negative residuals are
-not clipped for integrated brightness or asymmetry. Pixel area is the absolute
-WCS projected-plane determinant converted to arcsec2. `mean_per_sqarcsec_*`
-intentionally includes the local sky, while `surface_brightness_*` subtracts
-it.
+HSC S/N uses the variance HDU. CLAUDS weight maps are treated as inverse
+variance; this interpretation was checked empirically on real tiles, where
+`background_sigma^2 * median(weight)` is approximately one. Direct morphology
+requires at least 98% rotation-paired valid coverage, while brightness
+apertures retain their separately configured coverage threshold. Rows are
+marked terminal only after the whole batch result is committed.
 
-The probability probe is trained and temperature-calibrated on Galaxy10 with
-one DES band exposed to AION at a time. At catalogue inference, `g`, `r`, `i`,
-`z`, and `y` use the corresponding AION HSC channel; the CLAUDS `u` image uses
-AION `HSC-G` as the agreed codec proxy. No other image band or catalogue flux
-ratio is mixed into a band's probabilities. This remains a cross-survey
-transfer: Galaxy10 has no matching `u` or HSC-Y training channel, and the first
-catalogue version does not PSF-match bands.
+The AION head uses grouped fit, model-selection, calibration, and untouched
+test partitions so no galaxy's four DES views cross a split. The selected
+head itself is temperature-calibrated; it is not discarded and retrained.
+CLAUDS/HSC values remain uncalibrated cross-survey transfer scores. In
+particular, `u` uses the HSC-G codec proxy and HSC-Y has no corresponding
+Galaxy10 training band. Bands are not PSF-matched.
 
-Image values are multiplied by the corresponding `--u-flux-scale` through
-`--y-flux-scale` option before measurement (all default to 1). FITS headers
-inspected here do not declare `BUNIT`, so the default brightness columns are in
-scaled native image units, not a guaranteed common physical unit. Set the six
-scale options from an external photometric calibration before quantitative
-cross-band brightness comparisons; each selected scale and this warning are
-retained in run metadata.
+Brightness values use scale factors `--u-flux-scale` through
+`--y-flux-scale`, all defaulting to one. They remain `scaled-native` image
+units and must not be compared as a common physical flux unit without external
+photometric calibration.
 
-The full workflow is resumable. It stores only a compact WCS manifest,
-assignments, the single-band probe, and per-column memmaps under
-`cache/aion_multiband_morphology_catalogue/`. It refuses to write the final
-FITS file until every assigned row has a terminal status in all six bands, and
-writes through an atomic `.partial` file.
+Every manifest, assignment, embedding cache, head, feature array, and output
+is bound to provenance fingerprints covering source files, catalogue values,
+configuration, model, checkpoint, and measurement code. Stale caches are
+rejected. The final verifier checks IDs/order, provenance, availability/NaN
+consistency, ranges, `p_bar <= p_spiral`, nonconstant outputs, and distribution
+quantiles.
 
-Run it later with:
+FITS cutouts use torchfits' reusable subset readers when available; Astropy
+remains the WCS/header backend and fitsio remains the atomic table writer.
+`--fits-backend auto|torchfits|astropy` controls this behavior. Real and
+synthetic compressed-image parity checks require exact masks and numerically
+identical science/variance cutouts before torchfits is used.
 
-```bash
-./scripts/create_multiband_morphology_catalogue.sh all --device cuda
-```
-
-Useful staged or development commands include:
+The launcher stores the updated resumable cache under
+`/arc/projects/ots/Cosmic_Imprint_of_Time/clauds/cache/aion_multiband_morphology_catalogue_updated/`.
 
 ```bash
-./scripts/create_multiband_morphology_catalogue.sh manifest
-./scripts/create_multiband_morphology_catalogue.sh train-head --device cuda
-./scripts/create_multiband_morphology_catalogue.sh features --bands u,g --max-target-rows 100 --stop-after-processed-rows 10
-./scripts/create_multiband_morphology_catalogue.sh catalogue
+./scripts/create_multiband_morphology_catalogue.sh all --device cuda --fits-backend torchfits
 ```
 
-The row-limited command is only a smoke test and cannot be used to write the
+A row-limited `features` command remains development-only and cannot write the
 final catalogue.
 
 Intentionally excluded:
