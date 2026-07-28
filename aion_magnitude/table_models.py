@@ -57,7 +57,8 @@ DEFAULT_CATALOGUE = Path("data/clauds/catalogs/COSMOS-HSCpipe-Phosphoros.fits")
 DEFAULT_MORPHOLOGY_DIR = Path("data/clauds/images/tilesv5")
 DEFAULT_OUTPUT_ROOT = Path("/arc/home/gsm/aion_output/figures/table_models")
 DEFAULT_CACHE_ROOT = Path("/scratch/.tmp-gsm/aion_output/cache")
-MORPHOLOGY_FEATURE_COLUMNS = (
+MORPHOLOGY_BANDS = ("u", "g", "r", "i", "z", "y")
+MORPHOLOGY_FEATURE_STEMS = (
     "p_spiral",
     "p_bar",
     "p_elliptical_type",
@@ -66,7 +67,14 @@ MORPHOLOGY_FEATURE_COLUMNS = (
     "asymmetry_A",
     "possible_morphological_mismatch",
 )
-MORPHOLOGY_AVAILABILITY_COLUMN = "morphology_available"
+MORPHOLOGY_FEATURE_COLUMNS = tuple(
+    f"{stem}_{band}"
+    for band in MORPHOLOGY_BANDS
+    for stem in MORPHOLOGY_FEATURE_STEMS
+)
+MORPHOLOGY_AVAILABILITY_COLUMNS = tuple(
+    f"morphology_available_{band}" for band in MORPHOLOGY_BANDS
+)
 
 
 @dataclass(frozen=True)
@@ -241,25 +249,40 @@ def load_catalogue_data(
         required = [OBJECT_ID_COLUMN, target_column]
         required.extend(ALL_BAND_FLUX_COLUMNS[band] for band in MAGNITUDE_BANDS)
         if include_morphology:
-            required.extend((*MORPHOLOGY_FEATURE_COLUMNS, MORPHOLOGY_AVAILABILITY_COLUMN))
+            required.extend(
+                (*MORPHOLOGY_FEATURE_COLUMNS, *MORPHOLOGY_AVAILABILITY_COLUMNS)
+            )
         missing = [name for name in required if name not in names]
         if missing:
             raise KeyError(f"Catalogue is missing required columns: {missing}")
-        source_rows = select_catalogue_row_indices(
-            len(source), max_rows=max_rows, sample_mode="random", seed=seed,
-        )
-        target = _numeric_column(source, target_column, source_rows)
-        usable = np.isfinite(target) & (target != MISSING_SENTINEL)
-        usable &= target >= float(z_min)
-        usable &= target <= float(z_max)
         if include_morphology:
-            morphology_available = _numeric_column(
-                source, MORPHOLOGY_AVAILABILITY_COLUMN, source_rows,
+            all_rows = np.arange(len(source), dtype=np.int64)
+            all_target = _numeric_column(source, target_column, all_rows)
+            eligible = np.isfinite(all_target) & (all_target != MISSING_SENTINEL)
+            eligible &= all_target >= float(z_min)
+            eligible &= all_target <= float(z_max)
+            for name in MORPHOLOGY_AVAILABILITY_COLUMNS:
+                available = _numeric_column(source, name, all_rows)
+                eligible &= np.isfinite(available) & available.astype(bool)
+            eligible_rows = all_rows[eligible]
+            selected = select_catalogue_row_indices(
+                len(eligible_rows),
+                max_rows=max_rows,
+                sample_mode="random",
+                seed=seed,
             )
-            usable &= np.isfinite(morphology_available)
-            usable &= morphology_available.astype(bool)
-        source_rows = source_rows[usable]
-        target = target[usable].astype(np.float32)
+            source_rows = eligible_rows[selected]
+            target = all_target[source_rows].astype(np.float32)
+        else:
+            source_rows = select_catalogue_row_indices(
+                len(source), max_rows=max_rows, sample_mode="random", seed=seed,
+            )
+            target = _numeric_column(source, target_column, source_rows)
+            usable = np.isfinite(target) & (target != MISSING_SENTINEL)
+            usable &= target >= float(z_min)
+            usable &= target <= float(z_max)
+            source_rows = source_rows[usable]
+            target = target[usable].astype(np.float32)
         object_id = np.asarray(source[OBJECT_ID_COLUMN][source_rows], dtype=np.int64)
 
         magnitude: dict[str, np.ndarray] = {}
@@ -334,33 +357,50 @@ def impute_from_training(
     frame: pd.DataFrame,
     split_labels: np.ndarray,
 ) -> tuple[pd.DataFrame, dict[str, Any]]:
-    """Median-impute non-finite values using training rows only."""
+    """Median-impute from training rows and drop training-empty columns."""
     split_labels = np.asarray(split_labels, dtype=object)
     train = split_labels == "train"
     if not train.any():
         raise ValueError("Cannot impute a table without training rows.")
     output = frame.copy()
     columns: dict[str, Any] = {}
-    for name in output.columns:
+    dropped: list[str] = []
+    for name in list(output.columns):
         values = pd.to_numeric(output[name], errors="coerce").to_numpy(
             dtype=np.float64, copy=True,
         )
         finite = np.isfinite(values)
         fit = train & finite
         if not fit.any():
-            raise ValueError(f"Feature {name!r} has no finite training values.")
+            dropped.append(str(name))
+            columns[str(name)] = {
+                "dropped": True,
+                "reason": "no_finite_training_values",
+                "n_missing": int((~finite).sum()),
+                "fit_split": "train",
+            }
+            output.drop(columns=[name], inplace=True)
+            continue
         fill = float(np.median(values[fit]))
         values[~finite] = fill
         output[name] = values.astype(np.float32)
         columns[str(name)] = {
+            "dropped": False,
             "fill": fill,
             "n_missing": int((~finite).sum()),
             "fit_split": "train",
         }
+    if output.shape[1] == 0:
+        raise ValueError("No feature has a finite value in the training split.")
     assert_no_redshift_features(output.columns)
     if not np.isfinite(output.to_numpy(dtype=np.float32)).all():
         raise RuntimeError("Prepared feature table still contains non-finite values.")
-    return output, {"method": "median", "fit_split": "train", "columns": columns}
+    return output, {
+        "method": "median",
+        "fit_split": "train",
+        "dropped_columns": dropped,
+        "columns": columns,
+    }
 
 
 def train_minmax_scale(frame: pd.DataFrame, split_labels: np.ndarray) -> tuple[np.ndarray, dict[str, Any]]:
@@ -701,10 +741,15 @@ def prepare_arm(
             axis=1,
         )
         image_metadata = {
-            "representation": "catalogue_morphology_summary",
+            "representation": "catalogue_multiband_morphology_summary",
             "n_image_features": len(MORPHOLOGY_FEATURE_COLUMNS),
             "feature_columns": list(MORPHOLOGY_FEATURE_COLUMNS),
-            "availability_selection": MORPHOLOGY_AVAILABILITY_COLUMN,
+            "bands": list(MORPHOLOGY_BANDS),
+            "availability_selection": {
+                "columns": list(MORPHOLOGY_AVAILABILITY_COLUMNS),
+                "rule": "all",
+                "included_as_features": False,
+            },
         }
     else:
         raise ValueError(f"Unknown feature mode: {spec.feature_mode}")

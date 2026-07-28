@@ -21,6 +21,9 @@ EXCLUDED_PATHS = (
     "data/clauds/images",
     "data/clauds/catalogs",
     "cache",
+    ".pixi",
+    ".pytest_cache",
+    "__pycache__",
 )
 
 
@@ -239,8 +242,9 @@ def maybe_pull(repo: Path, remote: str, current: str) -> None:
 
 
 def is_ignored(repo: Path, path: str) -> bool:
+    """Check one path without asking Git to traverse its contents."""
     proc = run(
-        ["git", "check-ignore", "-q", path],
+        ["git", "check-ignore", "-q", "--no-index", "--", path],
         cwd=repo,
         check=False,
         capture=False,
@@ -248,21 +252,73 @@ def is_ignored(repo: Path, path: str) -> bool:
     return proc.returncode == 0
 
 
+def stage_pathspecs(repo: Path) -> list[str]:
+    """Return explicit safe roots without traversing excluded directories."""
+    excluded = {Path(path).as_posix() for path in EXCLUDED_PATHS}
+    tracked = {
+        path
+        for path in git(["ls-files", "-z"], cwd=repo, check=False).split("\0")
+        if path
+    }
+    selected: list[str] = []
+
+    def visit(relative: str) -> None:
+        if relative in excluded:
+            return
+        prefix = f"{relative}/" if relative else ""
+        if relative and not any(path.startswith(prefix) for path in excluded):
+            if is_ignored(repo, relative):
+                selected.extend(
+                    f":(top,literal){path}"
+                    for path in sorted(tracked)
+                    if path == relative or path.startswith(prefix)
+                )
+            else:
+                selected.append(f":(top,literal){relative}")
+            return
+
+        child_names: set[str] = set()
+        directory = repo / relative
+        if directory.is_dir():
+            child_names.update(child.name for child in directory.iterdir())
+        for path in tracked:
+            if not path.startswith(prefix):
+                continue
+            remainder = path[len(prefix):]
+            if remainder:
+                child_names.add(remainder.split("/", 1)[0])
+
+        for name in sorted(child_names):
+            if not relative and name == ".git":
+                continue
+            child = f"{relative}/{name}" if relative else name
+            visit(child)
+
+    visit("")
+    return selected
+
+
 def stage_everything_except_large_data(repo: Path) -> None:
-    pathspecs = ["."]
-    for path in EXCLUDED_PATHS:
-        if is_ignored(repo, path):
-            continue
-        pathspecs.append(f":(exclude){path}")
-        pathspecs.append(f":(exclude){path}/**")
+    pathspecs = stage_pathspecs(repo)
 
     print("Staging all changes except generated data and cache paths:")
     for path in EXCLUDED_PATHS:
-        if is_ignored(repo, path):
-            print(f"  excluding {path}/ (via .gitignore)")
-        else:
-            print(f"  excluding {path}/")
-    git(["add", "-A", "--", *pathspecs], cwd=repo)
+        print(f"  excluding {path}/")
+    if not pathspecs:
+        print("No non-excluded paths found to stage.")
+        return
+
+    prefix = ":(top,literal)"
+    ignored_tracked = [
+        pathspec
+        for pathspec in pathspecs
+        if is_ignored(repo, pathspec.removeprefix(prefix))
+    ]
+    regular = [pathspec for pathspec in pathspecs if pathspec not in ignored_tracked]
+    if ignored_tracked:
+        git(["add", "-u", "--", *ignored_tracked], cwd=repo)
+    if regular:
+        git(["add", "-A", "--", *regular], cwd=repo)
 
 
 def has_staged_changes(repo: Path) -> bool:

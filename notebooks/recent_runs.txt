@@ -5,7 +5,7 @@
     --device=cuda
 
 CUDA_VISIBLE_DEVICES=0 \
-PYTORCH_CUDA_ALLOC_CONF=backend:cudaMallocAsync \
+PYTORCH_ALLOC_CONF=backend:cudaMallocAsync \
 ./scripts/table_models/tabxx_noimage-aion_comparison.sh \
 --model=tabicl \
 --max-rows=50000 \

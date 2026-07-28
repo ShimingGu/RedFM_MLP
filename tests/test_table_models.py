@@ -6,6 +6,7 @@ from tempfile import TemporaryDirectory
 
 import numpy as np
 import pandas as pd
+from astropy.table import Table
 
 from aion_magnitude import table_models as tm
 
@@ -55,12 +56,18 @@ def test_masking_and_imputation_use_training_rows_only():
     frame = pd.DataFrame({
         "u_mag": [20.0, 22.0, np.nan, 100.0],
         "g_mag": [1.0, 3.0, 9.0, np.nan],
+        "all_missing": [np.nan, np.nan, np.nan, np.nan],
     })
     split = np.array(["train", "train", "val", "test"], dtype=object)
     output, metadata = tm.impute_from_training(frame, split)
     assert output.loc[2, "u_mag"] == 21.0
     assert output.loc[3, "g_mag"] == 2.0
     assert metadata["columns"]["u_mag"]["fit_split"] == "train"
+    assert "all_missing" not in output.columns
+    assert metadata["dropped_columns"] == ["all_missing"]
+    assert metadata["columns"]["all_missing"]["reason"] == (
+        "no_finite_training_values"
+    )
 
     target = np.array([0.1, 0.2, 0.3, 0.4], dtype=np.float32)
     masked = tm.build_masked_target(target, split)
@@ -91,6 +98,42 @@ def test_comparison_matrix_uses_explicit_image_representations():
     ]
 
 
+def test_multiband_catalogue_requires_complete_six_band_morphology():
+    n_rows = 5
+    columns = {
+        "ID": np.arange(100, 100 + n_rows, dtype=np.int64),
+        "ZPHOT": np.linspace(0.1, 0.5, n_rows, dtype=np.float32),
+    }
+    for name in tm.ALL_BAND_FLUX_COLUMNS.values():
+        columns[name] = np.ones(n_rows, dtype=np.float32)
+    for name in tm.MORPHOLOGY_FEATURE_COLUMNS:
+        columns[name] = np.linspace(0.1, 0.5, n_rows, dtype=np.float32)
+    for name in tm.MORPHOLOGY_AVAILABILITY_COLUMNS:
+        columns[name] = np.ones(n_rows, dtype=bool)
+    columns[tm.MORPHOLOGY_AVAILABILITY_COLUMNS[0]][1] = False
+    columns[tm.MORPHOLOGY_AVAILABILITY_COLUMNS[-1]][3] = False
+
+    with TemporaryDirectory() as directory:
+        path = Path(directory) / "multiband.fits"
+        Table(columns).write(path)
+        data = tm.load_catalogue_data(
+            path,
+            max_rows=3,
+            seed=7,
+            include_full121=False,
+            include_morphology=True,
+            z_min=0.0,
+            z_max=6.0,
+        )
+
+    assert len(data.object_id) == 3
+    assert set(data.object_id).issubset({100, 102, 104})
+    assert list(data.morphology_features.columns) == list(
+        tm.MORPHOLOGY_FEATURE_COLUMNS
+    )
+    assert len(data.morphology_features.columns) == 42
+
+
 def test_morphology_arm_adds_catalogue_summaries_without_raw_tokens():
     data = make_catalogue_data(4)
     data.morphology_features = pd.DataFrame({
@@ -109,10 +152,16 @@ def test_morphology_arm_adds_catalogue_summaries_without_raw_tokens():
         *(f"{band}_mag" for band in tm.MAGNITUDE_BANDS),
         *tm.MORPHOLOGY_FEATURE_COLUMNS,
     ]
-    assert arm.image_metadata["representation"] == "catalogue_morphology_summary"
-    assert arm.image_metadata["n_image_features"] == len(
-        tm.MORPHOLOGY_FEATURE_COLUMNS
+    assert arm.image_metadata["representation"] == (
+        "catalogue_multiband_morphology_summary"
     )
+    assert arm.image_metadata["n_image_features"] == 42
+    assert arm.image_metadata["bands"] == list(tm.MORPHOLOGY_BANDS)
+    assert arm.image_metadata["availability_selection"] == {
+        "columns": list(tm.MORPHOLOGY_AVAILABILITY_COLUMNS),
+        "rule": "all",
+        "included_as_features": False,
+    }
 
 
 class MeanRegressor:

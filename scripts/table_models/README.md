@@ -11,11 +11,12 @@ result directory begins with the selected backend, for example:
 
 The seven launchers are:
 
-- `tabxx_noimage-aion_comparison.sh`: 11-magnitude table versus the same
-  magnitudes plus the seven morphology catalogue fields (`p_spiral`, `p_bar`,
-  `p_elliptical_type`, axis ellipticity, concentration, asymmetry, and the
-  possible-mismatch flag). Both arms use the identical subset selected by
-  `morphology_available`; raw AION tokens are not loaded.
+- `tabxx_noimage-aion_comparison.sh`: available catalogue magnitudes versus the
+  same magnitudes plus seven morphology fields for each of the six `u,g,r,i,z,y`
+  bands (42 fields total). Both arms use the identical subset with complete
+  morphology in all six bands. The six availability flags select the cohort
+  but are not model features; raw AION tokens are not loaded. Magnitude fields
+  with no finite training values are dropped identically from both arms.
 - `tabxx_aion-timm_comparison.sh`: magnitude-only table plus the 2,880
   unpooled AION FSQ factors versus the same magnitudes plus a frozen timm image
   embedding.
