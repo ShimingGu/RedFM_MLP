@@ -1,5 +1,9 @@
 # aion-magnitude v0.5.0
 
+<p align="center">
+  <img src="RedFM_logo.png" alt="RedFM logo" width="320">
+</p>
+
 Updated: 2026-07-23
 
 This directory is a lightweight code/documentation snapshot for the current
