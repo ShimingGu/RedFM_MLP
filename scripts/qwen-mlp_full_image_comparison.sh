@@ -4,12 +4,6 @@ set -euo pipefail
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd -- "$SCRIPT_DIR/.." && pwd)"
 
-# Raw mode uses terse magnitude-only Qwen embeddings fused with the learned
-# AION FSQ-token image encoder; it must not serialize image IDs as Qwen text.
-if [[ "${QWEN_PHYSICAL_CONTEXT:-1}" == 0 ]]; then
-    exec "$SCRIPT_DIR/qwen-mlp_full_raw_comparison.sh" "$@"
-fi
-
 if [[ -n "${PYTHON_BIN:-}" ]]; then
     PYTHON_CMD=("$PYTHON_BIN")
 elif [[ -f "${PIXI_MANIFEST:-$REPO_ROOT/pixi.toml}" ]]; then
@@ -21,8 +15,7 @@ else
     exit 1
 fi
 
-AION_CATALOGUE="${AION_CATALOGUE:-/arc/projects/ots/Cosmic_Imprint_of_Time/clauds/catalogs/COSMOS-HSCpipe-Phosphoros.fits}"
-AION_MORPHOLOGY_DIR="${AION_MORPHOLOGY_DIR:-/arc/projects/ots/Cosmic_Imprint_of_Time/clauds/images/tilesv5/}"
+AION_CATALOGUE="${AION_CATALOGUE:-/arc/projects/ots/Cosmic_Imprint_of_Time/clauds/catalogs/COSMOS-HSCpipe-Phosphoros_morphological_multiband.fits}"
 AION_OUTPUT_DIR="${AION_OUTPUT_DIR:-/arc/home/gsm/aion_output/figures/qwen-mlp_full_image_comparison}"
 AION_CACHE_ROOT="${AION_CACHE_ROOT:-/scratch/.tmp-gsm/aion_output/cache}"
 
@@ -31,23 +24,31 @@ FLAGS=()
 [[ "${QWEN_ALLOW_DOWNLOAD:-0}" == 1 ]] && FLAGS+=(--allow-qwen-download)
 [[ "${QWEN_NORMALIZE:-0}" == 1 ]] && FLAGS+=(--qwen-normalize)
 [[ "${QWEN_ALLOW_TRUNCATION:-0}" == 1 ]] && FLAGS+=(--allow-qwen-truncation)
-[[ "${AION_FORCE_REBUILD_TOKENS:-0}" == 1 ]] && FLAGS+=(--force-rebuild-tokens)
-[[ "${AION_FORCE_RECOMPUTE_EMBEDDINGS:-0}" == 1 ]] && FLAGS+=(--force-rebuild-photometry --force-recompute-qwen)
+[[ "${QWEN_PHYSICAL_CONTEXT:-1}" == 0 ]] && FLAGS+=(--no-qwen-physical-context)
+[[ "${AION_FORCE_RECOMPUTE_EMBEDDINGS:-0}" == 1 ]] && FLAGS+=(--force-recompute-qwen)
 
+# Frozen Qwen and the numerical MLP receive the same available magnitudes and
+# the same 42 u,g,r,i,z,y morphology-catalogue features. The cohort requires
+# morphology_available_* in all six bands. No image cutouts or tokens are read.
 cd -- "$REPO_ROOT"
 exec "${PYTHON_CMD[@]}" "$REPO_ROOT/notebooks/qwen_mlp_full_image_comparison.py" \
-    --catalogue "$AION_CATALOGUE" --morphology-dir "$AION_MORPHOLOGY_DIR" \
-    --output-dir "$AION_OUTPUT_DIR" --cache-root "$AION_CACHE_ROOT" \
-    --max-rows "${AION_MAX_ROWS:-200000}" --epochs "${AION_EPOCHS:-10}" \
-    --token-batch-size "${AION_TOKEN_BATCH_SIZE:-64}" \
+    --catalogue "$AION_CATALOGUE" \
+    --output-dir "$AION_OUTPUT_DIR" \
+    --cache-root "$AION_CACHE_ROOT" \
+    --max-rows "${AION_MAX_ROWS:-200000}" \
+    --epochs "${AION_EPOCHS:-10}" \
     --qwen-embedding-batch-size "${QWEN_EMBEDDING_BATCH_SIZE:-1}" \
-    --train-batch-size "${AION_TRAIN_BATCH_SIZE:-256}" --eval-batch-size "${AION_EVAL_BATCH_SIZE:-512}" \
-    --device "${AION_DEVICE:-auto}" --n-z-bins "${AION_N_Z_BINS:-300}" \
+    --train-batch-size "${AION_TRAIN_BATCH_SIZE:-256}" \
+    --eval-batch-size "${AION_EVAL_BATCH_SIZE:-512}" \
+    --train-fraction "${AION_TRAIN_FRACTION:-0.63}" \
+    --test-fraction "${AION_TEST_FRACTION:-0.32}" \
+    --val-fraction "${AION_VAL_FRACTION:-0.05}" \
+    --seed "${AION_SEED:-42}" \
+    --device "${AION_DEVICE:-auto}" \
+    --n-z-bins "${AION_N_Z_BINS:-300}" \
     --tomographic-samples "${AION_TOMOGRAPHIC_SAMPLES:-100}" \
-    --image-flux-scale "${AION_IMAGE_FLUX_SCALE:-1.0}" \
-    --min-cutout-weight-coverage "${AION_MIN_CUTOUT_WEIGHT_COVERAGE:-0.90}" \
-    --feature-scaling minmax --qwen-model "${QWEN_MODEL:-Qwen3-8B-Base}" \
-    --qwen-max-length "${QWEN_MAX_LENGTH:-2048}" --qwen-pooling "${QWEN_POOLING:-last}" \
-    --qwen-image-input-mode "${QWEN_IMAGE_INPUT_MODE:-center_crop}" \
-    --qwen-image-crop-size "${QWEN_IMAGE_CROP_SIZE:-16}" \
+    --feature-scaling "${AION_FEATURE_SCALING:-minmax}" \
+    --qwen-model "${QWEN_MODEL:-Qwen3-8B-Base}" \
+    --qwen-max-length "${QWEN_MAX_LENGTH:-2048}" \
+    --qwen-pooling "${QWEN_POOLING:-last}" \
     "${FLAGS[@]}" "$@"

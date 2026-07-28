@@ -14,8 +14,11 @@ target, redshift bins, training budget, evaluation code, and plotting code.
 The important distinctions are:
 
 - **What enters the frozen language model?** Magnitudes may be serialized as
-  terse values or as text with physical context. Image tokens normally bypass
-  Qwen; only one current launcher serializes them into Qwen's text input.
+  terse values or as text with physical context. Catalogue morphology values can
+  also be serialized as named measurements. Active launchers do not serialize
+  image-token grids into Qwen; that behavior is preserved only in an `_old1`
+  backup.
+
 - **What is frozen?** A frozen Qwen/IoTFM/AION/timm encoder is only a feature
   extractor. Training a photo-z head on its cached embeddings is not language
   model fine-tuning.
@@ -45,7 +48,7 @@ arguments are forwarded to the Python entry point by most launchers.
 | `qwen-aion_comparison.sh` | Frozen Qwen or frozen AION for grizy? | HSC grizy | None | No |
 | `qwen-mlp_full_comparison.sh` | Frozen Qwen or MLP for magnitudes, with the same image path? | All 11 bands, terse Qwen text | Same downstream AION FSQ image MLP in both arms | Image/heads only |
 | `qwen-mlp_full_raw_comparison.sh` | The preceding experiment with fixed run-size/context defaults | Same as preceding row | Same as preceding row | Same as preceding row |
-| `qwen-mlp_full_image_comparison.sh` | What happens when image token IDs and physical magnitude text enter Qwen? | All 11 bands, physical text | Inside Qwen in one arm; downstream image MLP in control | No Qwen updates |
+| `qwen-mlp_full_image_comparison.sh` | Frozen Qwen or MLP on matched magnitudes plus six-band catalogue morphology? | Available magnitudes + 42 u/g/r/i/z/y morphology fields | None | Qwen frozen; heads/MLP train |
 | `qwen-qwen_comparison.sh` | Does physical magnitude wording help frozen Qwen? | Physical text versus terse text | None | No |
 | `qwen_aion-timm_raw_comparison.sh` | AION tokens or a conventional timm image embedding downstream of the same Qwen magnitudes? | Same terse Qwen embedding | AION FSQ versus frozen timm | AION image MLP/heads only |
 | `qwen-qwen_posttraining_comparison_multigpu.sh` | Does QLoRA photo-z post-training beat a frozen Qwen representation? | Same terse text | None | QLoRA arm only |
@@ -60,15 +63,15 @@ These are easiest to understand as data-flow definitions:
 | --- | --- | --- | --- | --- |
 | `qwen-mlp_full_comparison.sh` | Terse/raw all-band magnitudes | Qwen magnitude embedding **plus a downstream AION-token image MLP** | All-band magnitude MLP **plus the same image MLP** | Qwen versus MLP magnitude representation; image path held constant |
 | `qwen-mlp_full_raw_comparison.sh` | The same terse/raw all-band magnitudes | Same | Same | A wrapper that fixes 200k rows, length 2048, batch size 1, and last pooling; it is not currently a different architecture |
-| `qwen-mlp_full_image_comparison.sh` | Physical all-band magnitude text **and serialized AION image token IDs** | Qwen embedding and photo-z head; no second image encoder | All-band magnitude MLP plus downstream AION-token image MLP | Moves image information inside Qwen and, by default, also changes raw magnitude text to physical-context text |
+| `qwen-mlp_full_image_comparison.sh` | Physical available-magnitude text **plus 42 named u/g/r/i/z/y catalogue morphology values** | Frozen Qwen embedding and photo-z head | The same numerical magnitudes + 42 morphology values in an MLP | Qwen versus MLP representation on one complete-six-band cohort; no images or image tokens |
 
 Consequently, the `raw` wrapper is presently a run preset for
 `qwen-mlp_full_comparison.sh`. It should not be interpreted as a clean raw-text
-ablation against the base launcher. Likewise, `full_image` is not just the base
-run with “more image”: it changes both where image information is processed and
-the default magnitude serialization. If `QWEN_PHYSICAL_CONTEXT=0` is supplied to
-`qwen-mlp_full_image_comparison.sh`, the shell delegates to the raw wrapper; it
-does not retain the image-inside-Qwen architecture with physical prose removed.
+ablation against the base launcher. The active `full_image` launcher is now an
+independent catalogue-morphology experiment despite its historical filename.
+The former image-token implementation is preserved as
+`scripts/qwen-mlp_full_image_comparison_old1.sh` with its corresponding
+`notebooks/qwen_mlp_full_image_comparison_old1.py` entry point.
 
 ## Standard magnitude baselines
 
@@ -170,22 +173,25 @@ model definition.
 
 ### `scripts/qwen-mlp_full_image_comparison.sh`
 
-**Question:** Can frozen Qwen use serialized AION morphology tokens together
-with physically explained magnitudes, relative to the established MLP plus
-downstream image-token control?
+**Question:** On the identical complete-six-band morphology cohort, is frozen
+Qwen or a trainable numerical MLP the better representation of available
+magnitudes plus catalogue morphology?
 
-- Qwen arm: all-band magnitudes are described with physical context; AION FSQ
-  token IDs from the u image are serialized into the same Qwen text record.
-  The resulting Qwen embedding feeds a photo-z head without a second image MLP.
-- Control arm: all-band magnitude MLP plus the standard downstream trainable
-  AION-token image encoder.
-- Default image serialization is a 16×16 center crop of the token grid. The
-  prompt code performs preflight/truncation checks against the 2048-token
-  context.
-- Defaults: 200,000 random rows, 10 epochs, `Qwen3-8B-Base`, 4-bit Qwen,
-  embedding batch size 1, maximum length 2048, last pooling.
-- This is not a single-variable test against the raw/base launcher because the
-  prompt semantics and image placement both change.
+- Catalogue: `COSMOS-HSCpipe-Phosphoros_morphological_multiband.fits`.
+- Selection requires `morphology_available_u/g/r/i/z/y` all to be true before
+  the optional seeded random row limit is applied.
+- Qwen arm: every retained available magnitude and all 42 named morphology values
+  (seven measurements in each of u/g/r/i/z/y) are serialized as physical and
+  additional measured features. Frozen Qwen embeddings feed the photo-z head.
+- MLP arm: the same imputed numerical magnitudes and the same 42 morphology
+  values feed a trainable tabular MLP. Imputation and min-max scaling are fit on
+  training rows only.
+- Neither arm reads image cutouts, image-token arrays, or image-token caches.
+- Defaults: 200,000 random eligible rows, train/test/validation fractions
+  0.63/0.32/0.05, 10 epochs, `Qwen3-8B-Base`, 4-bit Qwen, embedding batch size
+  1, maximum length 2048, and last pooling.
+- The legacy token-based run remains available as
+  `scripts/qwen-mlp_full_image_comparison_old1.sh`.
 
 ### `scripts/qwen-qwen_comparison.sh`
 

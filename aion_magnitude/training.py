@@ -350,6 +350,7 @@ def train_single_baseline(
         "val": save_calibration_artifacts(val_eval, output_dir, f"{model_kind}_val")
     }
 
+    test_eval = None
     if len(test_dataset) > 0:
         test_eval = evaluate_model_on_dataset(
             model,
@@ -402,6 +403,8 @@ def train_single_baseline(
         "history": history,
         "final_metrics": final_metrics,
         "calibration": calibration,
+        "val_evaluation": val_eval,
+        "test_evaluation": test_eval,
     }
 
 
