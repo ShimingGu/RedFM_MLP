@@ -11,11 +11,7 @@ PYTORCH_ALLOC_CONF=backend:cudaMallocAsync \
 --max-rows=50000 \
 --device=cuda
      
-AION_QWEN_GPU_DEVICES=0,1 \
-  QLORA_EPOCHS=10 \
-  AION_OUTPUT_DIR=/arc/home/gsm/aion_output/figures/qwen-qwen_posttraining_comparison-e10\
-  QLORA_CHECKPOINT_DIR=/arc/projects/ots/Cosmic_Imprint_of_Time/qlora_checkpoints/qwen-qwen_posttraining-comparison-e10 \
-  ./scripts/qwen-qwen_posttraining_comparison_multigpu.sh
+AION_QWEN_GPU_DEVICES=0,1   QLORA_EPOCHS=10   AION_OUTPUT_DIR=/arc/home/gsm/aion_output/figures/qwen-qwen_posttraining_comparison-e10  QLORA_CHECKPOINT_DIR=/arc/projects/ots/Cosmic_Imprint_of_Time/qlora_checkpoints/qwen-qwen_posttraining-comparison-e10 QWEN_USE_MORPHOLOGY=1 ./scripts/qwen-qwen_posttraining_comparison_multigpu.sh --no-qlora-resume
 
   pixi run python -u -m aion_magnitude.morphology_catalogue features \
     --target-batch-size 256 --device cuda
