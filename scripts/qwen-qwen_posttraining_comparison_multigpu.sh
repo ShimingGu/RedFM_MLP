@@ -41,20 +41,23 @@ mkdir -p -- "$LOG_DIR"
 
 FLAGS=()
 [[ "${QWEN_ALLOW_DOWNLOAD:-0}" == 1 ]] && FLAGS+=(--allow-qwen-download)
-[[ "${AION_FORCE_REBUILD_TOKENS:-0}" == 1 ]] && FLAGS+=(--force-rebuild-tokens)
-[[ "${AION_FORCE_REBUILD_PHOTOMETRY:-0}" == 1 ]] && FLAGS+=(--force-rebuild-photometry)
 [[ "${QWEN_FORCE_RECOMPUTE:-0}" == 1 ]] && FLAGS+=(--force-recompute-qwen)
+if [[ "${QWEN_USE_MORPHOLOGY:-0}" == 1 ]]; then
+    FLAGS+=(--use-morphology)
+    INPUT_TAG="multiband-morphology"
+else
+    INPUT_TAG="magnitudes"
+fi
 
 COMMON_ARGS=(
-    --catalogue "${AION_CATALOGUE:-/arc/projects/ots/Cosmic_Imprint_of_Time/clauds/catalogs/COSMOS-HSCpipe-Phosphoros.fits}"
-    --morphology-dir "${AION_MORPHOLOGY_DIR:-/arc/projects/ots/Cosmic_Imprint_of_Time/clauds/images/tilesv5}"
+    --catalogue "${AION_CATALOGUE:-/arc/projects/ots/Cosmic_Imprint_of_Time/clauds/catalogs/COSMOS-HSCpipe-Phosphoros_morphological_multiband_updated.fits}"
     --output-dir "$OUTPUT_DIR"
     --cache-root "${AION_CACHE_ROOT:-/scratch/.tmp-gsm/aion_output/cache}"
     --max-rows "${AION_MAX_ROWS:-300000}"
     --seed "${AION_SEED:-42}"
-    --token-batch-size "${AION_TOKEN_BATCH_SIZE:-64}"
-    --image-flux-scale "${AION_IMAGE_FLUX_SCALE:-1.0}"
-    --min-cutout-weight-coverage "${AION_MIN_CUTOUT_WEIGHT_COVERAGE:-0.90}"
+    --train-fraction "${AION_TRAIN_FRACTION:-0.20}"
+    --test-fraction "${AION_TEST_FRACTION:-0.75}"
+    --val-fraction "${AION_VAL_FRACTION:-0.05}"
     --n-z-bins "${AION_N_Z_BINS:-300}"
     --tomographic-samples "${AION_TOMOGRAPHIC_SAMPLES:-100}"
     --qwen-model "${QWEN_MODEL:-Qwen3.5-4B-Base}"
@@ -65,19 +68,22 @@ COMMON_ARGS=(
     --frozen-train-batch-size "${FROZEN_TRAIN_BATCH_SIZE:-256}"
     --eval-batch-size "${POSTTRAIN_EVAL_BATCH_SIZE:-8}"
     --head-learning-rate "${HEAD_LEARNING_RATE:-2e-4}"
-    --qlora-epochs "${QLORA_EPOCHS:-3}"
+    --qlora-epochs "${QLORA_EPOCHS:-10}"
     --qlora-batch-size "${QLORA_BATCH_SIZE:-1}"
     --gradient-accumulation-steps "${QLORA_GRADIENT_ACCUMULATION_STEPS:-16}"
-    --qlora-learning-rate "${QLORA_LEARNING_RATE:-2e-4}"
+    --qlora-learning-rate "${QLORA_LEARNING_RATE:-1e-5}"
+    --head-warmup-epochs "${QLORA_HEAD_WARMUP_EPOCHS:-3}"
+    --lora-max-grad-norm "${QLORA_MAX_GRAD_NORM:-0.1}"
     --lora-rank "${QLORA_RANK:-8}"
     --lora-alpha "${QLORA_ALPHA:-16}"
     --lora-dropout "${QLORA_DROPOUT:-0.05}"
-    --qlora-checkpoint-dir "${QLORA_CHECKPOINT_DIR:-/arc/projects/ots/Cosmic_Imprint_of_Time/qlora_checkpoints/qwen-qwen_posttraining_comparison}"
+    --qlora-checkpoint-dir "${QLORA_CHECKPOINT_DIR:-/arc/projects/ots/Cosmic_Imprint_of_Time/qlora_checkpoints/qwen-qwen_posttraining-comparison-staged-$INPUT_TAG}"
     --qlora-checkpoint-steps "${QLORA_CHECKPOINT_STEPS:-100}"
     "${FLAGS[@]}"
 )
 
 cd -- "$REPO_ROOT"
+echo "Input representation: $INPUT_TAG (no image cutouts or AION image tokens)."
 echo "Preparing the shared seeded-random cohort on GPU $FROZEN_GPU."
 env CUDA_VISIBLE_DEVICES="$FROZEN_GPU" PYTHONUNBUFFERED=1 \
     "${PYTHON_CMD[@]}" "$REPO_ROOT/notebooks/qwen_posttraining_comparison.py" \

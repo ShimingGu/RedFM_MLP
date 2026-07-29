@@ -46,20 +46,21 @@ class QwenPosttrainingConfig:
     z_min: float = 0.0
     z_max: float = 6.0
     head_hidden_dim: int = 256
-    epochs: int = 3
+    epochs: int = 10
     batch_size: int = 1
     eval_batch_size: int = 8
     gradient_accumulation_steps: int = 16
     learning_rate: float = 2.0e-4
+    lora_learning_rate: float = 1.0e-5
     weight_decay: float = 0.01
     warmup_fraction: float = 0.03
     max_grad_norm: float = 1.0
+    lora_max_grad_norm: float = 0.1
+    head_warmup_epochs: int = 3
     lora_rank: int = 8
     lora_alpha: int = 16
     lora_dropout: float = 0.05
-    lora_target_modules: str = (
-        "q_proj,k_proj,v_proj,o_proj,in_proj_qkv,in_proj_z,in_proj_b,in_proj_a,out_proj,gate_proj,up_proj,down_proj"
-    )
+    lora_target_modules: str = "q_proj,k_proj,v_proj,o_proj"
     seed: int = 42
     device: str | torch.device = "cuda"
     local_files_only: bool = True
@@ -88,8 +89,18 @@ class QwenPosttrainingConfig:
             raise ValueError("z_max must exceed z_min.")
         if float(self.learning_rate) <= 0.0:
             raise ValueError("learning_rate must be positive.")
+        if float(self.lora_learning_rate) <= 0.0:
+            raise ValueError("lora_learning_rate must be positive.")
+        if float(self.max_grad_norm) <= 0.0:
+            raise ValueError("max_grad_norm must be positive.")
+        if float(self.lora_max_grad_norm) <= 0.0:
+            raise ValueError("lora_max_grad_norm must be positive.")
         if not (0.0 <= float(self.warmup_fraction) < 1.0):
             raise ValueError("warmup_fraction must be in [0, 1).")
+        if int(self.head_warmup_epochs) < 0:
+            raise ValueError("head_warmup_epochs must be non-negative.")
+        if int(self.head_warmup_epochs) >= int(self.epochs):
+            raise ValueError("head_warmup_epochs must be smaller than epochs.")
         return replace(
             self,
             model_path=str(self.model_path),
@@ -103,9 +114,12 @@ class QwenPosttrainingConfig:
             eval_batch_size=int(self.eval_batch_size),
             gradient_accumulation_steps=int(self.gradient_accumulation_steps),
             learning_rate=float(self.learning_rate),
+            lora_learning_rate=float(self.lora_learning_rate),
             weight_decay=float(self.weight_decay),
             warmup_fraction=float(self.warmup_fraction),
             max_grad_norm=float(self.max_grad_norm),
+            lora_max_grad_norm=float(self.lora_max_grad_norm),
+            head_warmup_epochs=int(self.head_warmup_epochs),
             lora_rank=int(self.lora_rank),
             lora_alpha=int(self.lora_alpha),
             lora_dropout=float(self.lora_dropout),
@@ -188,6 +202,7 @@ class QwenPhotoZModel(nn.Module):
         self.qwen = qwen
         self.pooling = pooling
         self.photoz_head = PhotoZHead(hidden_size, n_z_bins, head_hidden_dim)
+        self.freeze_qwen_representation = False
 
     def forward(
         self,
@@ -207,6 +222,8 @@ class QwenPhotoZModel(nn.Module):
             attention_mask,
             pooling=self.pooling,
         ).float()
+        if self.freeze_qwen_representation:
+            embedding = embedding.detach()
         return self.photoz_head(embedding)
 
 
@@ -421,13 +438,29 @@ def train_qlora_photoz(
         config.z_min, config.z_max, config.n_z_bins
     )
     redshift_edges = redshift_edges.to(device)
-    trainable_parameters = [
-        parameter for parameter in model.parameters() if parameter.requires_grad
+    head_parameters = [
+        parameter for parameter in model.photoz_head.parameters()
+        if parameter.requires_grad
     ]
+    adapter_parameters = [
+        parameter for parameter in model.qwen.parameters()
+        if parameter.requires_grad
+    ]
+    if not adapter_parameters:
+        raise RuntimeError("QLoRA model has no trainable adapter parameters.")
     optimizer = torch.optim.AdamW(
-        trainable_parameters,
-        lr=config.learning_rate,
-        weight_decay=config.weight_decay,
+        [
+            {
+                "params": head_parameters,
+                "lr": config.learning_rate,
+                "weight_decay": config.weight_decay,
+            },
+            {
+                "params": adapter_parameters,
+                "lr": config.lora_learning_rate,
+                "weight_decay": 0.0,
+            },
+        ]
     )
     batches_per_epoch = int(np.ceil(len(train_dataset) / config.batch_size))
     updates_per_epoch = int(
@@ -435,16 +468,32 @@ def train_qlora_photoz(
     )
     total_updates = max(updates_per_epoch * config.epochs, 1)
     warmup_steps = int(total_updates * config.warmup_fraction)
+    adapter_start_update = updates_per_epoch * config.head_warmup_epochs
+    adapter_total_updates = max(total_updates - adapter_start_update, 1)
+    adapter_warmup_steps = int(adapter_total_updates * config.warmup_fraction)
+
+    def adapter_lr_lambda(step: int) -> float:
+        if step < adapter_start_update:
+            return 0.0
+        return _linear_warmup_decay_lambda(
+            step - adapter_start_update,
+            warmup_steps=adapter_warmup_steps,
+            total_steps=adapter_total_updates,
+        )
+
     scheduler = torch.optim.lr_scheduler.LambdaLR(
         optimizer,
-        lambda step: _linear_warmup_decay_lambda(
-            step,
-            warmup_steps=warmup_steps,
-            total_steps=total_updates,
-        ),
+        [
+            lambda step: _linear_warmup_decay_lambda(
+                step,
+                warmup_steps=warmup_steps,
+                total_steps=total_updates,
+            ),
+            adapter_lr_lambda,
+        ],
     )
 
-    history: list[dict[str, float | int]] = []
+    history: list[dict[str, float | int | str]] = []
     best_val_loss = float("inf")
     best_trainable_state: dict[str, torch.Tensor] | None = None
     optimizer.zero_grad(set_to_none=True)
@@ -488,6 +537,10 @@ def train_qlora_photoz(
             generator=generator, collate_fn=collate,
         )
         model.train()
+        model.freeze_qwen_representation = epoch < config.head_warmup_epochs
+        phase = "head_warmup" if model.freeze_qwen_representation else "joint_qlora"
+        if epoch == start_epoch or epoch == config.head_warmup_epochs:
+            print(f"QLoRA training phase: {phase}", flush=True)
         total_loss = resumed_total_loss if epoch == start_epoch else 0.0
         total_count = resumed_total_count if epoch == start_epoch else 0
         for batch_index, batch in enumerate(train_loader):
@@ -510,8 +563,12 @@ def train_qlora_photoz(
             )
             if is_update:
                 torch.nn.utils.clip_grad_norm_(
-                    trainable_parameters, config.max_grad_norm
+                    head_parameters, config.max_grad_norm
                 )
+                if not model.freeze_qwen_representation:
+                    torch.nn.utils.clip_grad_norm_(
+                        adapter_parameters, config.lora_max_grad_norm
+                    )
                 optimizer.step()
                 scheduler.step()
                 optimizer.zero_grad(set_to_none=True)
@@ -519,7 +576,10 @@ def train_qlora_photoz(
                 if global_update == 1 or global_update % 100 == 0:
                     print(
                         f"QLoRA update {global_update:,}/{total_updates:,} "
-                        f"epoch={epoch + 1}/{config.epochs} loss={float(loss):.4f}",
+                        f"epoch={epoch + 1}/{config.epochs} phase={phase} "
+                        f"loss={float(loss):.4f} "
+                        f"head_lr={scheduler.get_last_lr()[0]:.3g} "
+                        f"lora_lr={scheduler.get_last_lr()[1]:.3g}",
                         flush=True,
                     )
                 if checkpoint_path is not None and global_update % checkpoint_interval == 0:
@@ -553,8 +613,10 @@ def train_qlora_photoz(
         val_metrics = summarize_pdf_metrics(val_evaluation)
         row = {
             "epoch": epoch,
+            "phase": phase,
             "train_loss": total_loss / max(total_count, 1),
             "learning_rate": float(scheduler.get_last_lr()[0]),
+            "lora_learning_rate": float(scheduler.get_last_lr()[1]),
             **{f"val_{key}": value for key, value in val_metrics.items()},
         }
         history.append(row)
@@ -571,6 +633,7 @@ def train_qlora_photoz(
         resumed_total_loss = 0.0
         resumed_total_count = 0
 
+    model.freeze_qwen_representation = False
     if best_trainable_state is not None:
         for name, parameter in model.named_parameters():
             if name in best_trainable_state:

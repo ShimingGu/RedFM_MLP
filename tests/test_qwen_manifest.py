@@ -66,13 +66,25 @@ class QwenManifestTest(unittest.TestCase):
 
 
 class QwenMultibandMorphologyTest(unittest.TestCase):
+    def test_missing_revised_catalogue_uses_verified_fallback(self) -> None:
+        module = load_image_comparison_module()
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            revised = root / "multiband_updated.fits"
+            fallback = root / "multiband.fits"
+            fallback.touch()
+            module.DEFAULT_CATALOGUE = revised
+            module.FALLBACK_MULTIBAND_CATALOGUE = fallback
+            resolved = module.resolve_catalogue_path(revised)
+        self.assertEqual(resolved, fallback.resolve())
+
     def test_product_and_prompt_use_catalogue_morphology_without_tokens(self) -> None:
         module = load_image_comparison_module()
         parser = module.build_parser()
         defaults = parser.parse_args([])
         self.assertEqual(
             defaults.catalogue.name,
-            "COSMOS-HSCpipe-Phosphoros_morphological_multiband.fits",
+            "COSMOS-HSCpipe-Phosphoros_morphological_multiband_updated.fits",
         )
         self.assertFalse(hasattr(defaults, "morphology_dir"))
         self.assertFalse(hasattr(defaults, "token_batch_size"))

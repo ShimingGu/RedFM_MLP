@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import gc
+import hashlib
 import json
 import math
 import sys
@@ -42,9 +43,16 @@ from aion_magnitude.utils import make_redshift_grid, set_random_seed
 
 
 COMPARISON_NAME = "qwen_mlp_full_image_comparison"
-DEFAULT_CATALOGUE = Path(
-    "/arc/projects/ots/Cosmic_Imprint_of_Time/clauds/catalogs/"
-    "COSMOS-HSCpipe-Phosphoros_morphological_multiband.fits"
+CATALOGUE_ROOT = Path(
+    "/arc/projects/ots/Cosmic_Imprint_of_Time/clauds/catalogs"
+)
+DEFAULT_CATALOGUE = (
+    CATALOGUE_ROOT
+    / "COSMOS-HSCpipe-Phosphoros_morphological_multiband_updated.fits"
+)
+FALLBACK_MULTIBAND_CATALOGUE = (
+    CATALOGUE_ROOT
+    / "COSMOS-HSCpipe-Phosphoros_morphological_multiband.fits"
 )
 DEFAULT_OUTPUT_DIR = Path(
     "/arc/home/gsm/aion_output/figures/qwen-mlp_full_image_comparison"
@@ -105,6 +113,21 @@ def validate_args(args: argparse.Namespace) -> None:
         args.train_fraction + args.test_fraction + args.val_fraction, 1.0
     ):
         raise ValueError("Train, test, and validation fractions must sum to one.")
+
+
+def resolve_catalogue_path(path: str | Path) -> Path:
+    requested = Path(path).expanduser()
+    if requested.exists():
+        return requested.resolve()
+    if requested == DEFAULT_CATALOGUE and FALLBACK_MULTIBAND_CATALOGUE.exists():
+        fallback = FALLBACK_MULTIBAND_CATALOGUE.resolve()
+        print(
+            f"revised multiband catalogue is not available yet: {requested}; "
+            f"using verified fallback: {fallback}",
+            flush=True,
+        )
+        return fallback
+    raise FileNotFoundError(f"Catalogue not found: {requested}")
 
 
 def qwen_settings(
@@ -378,22 +401,31 @@ def write_manifest(
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     validate_args(args)
-    args.catalogue = qwen_base.resolve_existing_path(args.catalogue)
+    args.catalogue = resolve_catalogue_path(args.catalogue)
     args.output_dir = Path(args.output_dir).expanduser()
     args.cache_root = Path(args.cache_root).expanduser()
-    if not args.catalogue.exists():
-        raise FileNotFoundError(f"Catalogue not found: {args.catalogue}")
 
     product, preparation, redshift_bounds = build_catalogue_product(args)
     qwen_config, serialization = qwen_settings(args)
     selection_tag = "all" if args.max_rows is None else f"n{args.max_rows}"
+    catalogue_stat = args.catalogue.stat()
+    catalogue_provenance = hashlib.sha256(
+        (
+            f"{args.catalogue.resolve()}:"
+            f"{catalogue_stat.st_size}:{catalogue_stat.st_mtime_ns}"
+        ).encode()
+    ).hexdigest()[:12]
     qwen_cache_path = (
         Path(args.qwen_cache_path).expanduser()
         if args.qwen_cache_path is not None
         else args.cache_root
         / COMPARISON_NAME
         / "catalogue_multiband_complete6"
-        / f"{selection_tag}_{qwen_base.qwen_run_tag(qwen_config)}.pt"
+        / args.catalogue.stem
+        / (
+            f"{selection_tag}_{catalogue_provenance}_"
+            f"{qwen_base.qwen_run_tag(qwen_config)}.pt"
+        )
     )
     output_dir = args.output_dir
     output_dir.mkdir(parents=True, exist_ok=True)

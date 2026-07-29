@@ -26,9 +26,13 @@ class QwenPosttrainingTest(unittest.TestCase):
     def test_defaults_require_last_pooling_and_language_only_targets(self) -> None:
         config = QwenPosttrainingConfig().normalized()
         self.assertEqual(config.pooling, "last")
-        self.assertNotIn("all-linear", config.lora_target_modules)
+        self.assertEqual(config.lora_target_modules, "q_proj,k_proj,v_proj,o_proj")
+        self.assertLess(config.lora_learning_rate, config.learning_rate)
+        self.assertEqual(config.head_warmup_epochs, 3)
         with self.assertRaises(ValueError):
             QwenPosttrainingConfig(pooling="mean").normalized()
+        with self.assertRaises(ValueError):
+            QwenPosttrainingConfig(epochs=3, head_warmup_epochs=3).normalized()
 
     def test_photoz_model_uses_last_non_padding_token(self) -> None:
         model = QwenPhotoZModel(
@@ -44,6 +48,24 @@ class QwenPosttrainingTest(unittest.TestCase):
         self.assertEqual(tuple(logits.shape), (2, 7))
         summary = trainable_parameter_summary(model)
         self.assertGreater(summary["trainable_parameters"], 0)
+
+    def test_head_warmup_detaches_qwen_representation(self) -> None:
+        model = QwenPhotoZModel(
+            _ToyQwen(hidden_size=12),
+            hidden_size=12,
+            n_z_bins=7,
+            head_hidden_dim=9,
+        )
+        model.freeze_qwen_representation = True
+        logits = model(
+            input_ids=torch.tensor([[1, 2, 0], [3, 4, 5]]),
+            attention_mask=torch.tensor([[1, 1, 0], [1, 1, 1]]),
+        )
+        logits.sum().backward()
+        self.assertIsNone(model.qwen.embedding.weight.grad)
+        self.assertTrue(
+            any(parameter.grad is not None for parameter in model.photoz_head.parameters())
+        )
 
     def test_text_dataset_keeps_rows_aligned(self) -> None:
         dataset = TextRedshiftDataset(
