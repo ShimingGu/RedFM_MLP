@@ -245,8 +245,10 @@ def require_peft() -> None:
 
 def create_qlora_photoz_model(
     config: QwenPosttrainingConfig,
+    *,
+    use_dora: bool = False,
 ) -> tuple[QwenPhotoZModel, Any, torch.device]:
-    """Load a 4-bit frozen base, attach trainable LoRA adapters, then add the head."""
+    """Load a 4-bit base, attach LoRA or DoRA adapters, then add the head."""
     require_peft()
     config = config.normalized()
     device = resolve_torch_device(config.device)
@@ -274,6 +276,7 @@ def create_qlora_photoz_model(
             if name.strip()
         ],
         bias="none",
+        use_dora=bool(use_dora),
     )
     qwen = get_peft_model(base_model, lora_config)
     hidden_size = qwen_hidden_size(qwen)
@@ -379,7 +382,8 @@ def _save_training_checkpoint(checkpoint_dir: Path, **state: Any) -> Path:
     temporary = path.with_suffix(".pt.tmp")
     torch.save({"format_version": 1, **state}, temporary)
     temporary.replace(path)
-    print(f"saved QLoRA checkpoint {path}", flush=True)
+    method_label = str(state.get("method_label", "QLoRA"))
+    print(f"saved {method_label} checkpoint {path}", flush=True)
     return path
 
 
@@ -416,11 +420,17 @@ def train_qlora_photoz(
     checkpoint_dir: str | Path | None = None,
     checkpoint_interval: int = 100,
     resume: bool = True,
+    use_dora: bool = False,
 ) -> dict[str, Any]:
-    """Jointly train QLoRA adapters and the photo-z head with binned CE."""
+    """Jointly train QLoRA/DoRA adapters and the photo-z head with binned CE."""
     config = config.normalized()
+    use_dora = bool(use_dora)
+    method_label = "DoRA" if use_dora else "QLoRA"
+    method_slug = "dora" if use_dora else "qlora"
     set_random_seed(config.seed)
-    model, tokenizer, device = create_qlora_photoz_model(config)
+    model, tokenizer, device = create_qlora_photoz_model(
+        config, use_dora=use_dora
+    )
     collate = make_text_collator(tokenizer, max_length=config.max_length)
     val_loader = DataLoader(
         val_dataset,
@@ -447,7 +457,7 @@ def train_qlora_photoz(
         if parameter.requires_grad
     ]
     if not adapter_parameters:
-        raise RuntimeError("QLoRA model has no trainable adapter parameters.")
+        raise RuntimeError(f"{method_label} model has no trainable adapter parameters.")
     optimizer = torch.optim.AdamW(
         [
             {
@@ -511,6 +521,10 @@ def train_qlora_photoz(
             # RNG states must remain CPU ByteTensors. Optimizer.load_state_dict
             # moves its tensors to the parameter devices after this CPU load.
             saved = torch.load(candidates[-1], map_location="cpu", weights_only=False)
+            if bool(saved.get("use_dora", False)) != use_dora:
+                raise ValueError(
+                    f"{method_label} checkpoint method does not match: {candidates[-1]}"
+                )
             if saved.get("config") != asdict(config):
                 raise ValueError(f"QLoRA checkpoint configuration does not match: {candidates[-1]}")
             expected_sizes = (len(train_dataset), len(val_dataset), len(test_dataset))
@@ -528,7 +542,11 @@ def train_qlora_photoz(
             resumed_total_loss = float(saved["epoch_total_loss"])
             resumed_total_count = int(saved["epoch_total_count"])
             _restore_rng_state(saved)
-            print(f"resuming QLoRA from {candidates[-1]} at update {global_update:,}/{total_updates:,}", flush=True)
+            print(
+                f"resuming {method_label} from {candidates[-1]} at update "
+                f"{global_update:,}/{total_updates:,}",
+                flush=True,
+            )
 
     for epoch in range(start_epoch, config.epochs):
         generator = torch.Generator().manual_seed(config.seed + epoch)
@@ -538,9 +556,13 @@ def train_qlora_photoz(
         )
         model.train()
         model.freeze_qwen_representation = epoch < config.head_warmup_epochs
-        phase = "head_warmup" if model.freeze_qwen_representation else "joint_qlora"
+        phase = (
+            "head_warmup"
+            if model.freeze_qwen_representation
+            else f"joint_{method_slug}"
+        )
         if epoch == start_epoch or epoch == config.head_warmup_epochs:
-            print(f"QLoRA training phase: {phase}", flush=True)
+            print(f"{method_label} training phase: {phase}", flush=True)
         total_loss = resumed_total_loss if epoch == start_epoch else 0.0
         total_count = resumed_total_count if epoch == start_epoch else 0
         for batch_index, batch in enumerate(train_loader):
@@ -575,7 +597,7 @@ def train_qlora_photoz(
                 global_update += 1
                 if global_update == 1 or global_update % 100 == 0:
                     print(
-                        f"QLoRA update {global_update:,}/{total_updates:,} "
+                        f"{method_label} update {global_update:,}/{total_updates:,} "
                         f"epoch={epoch + 1}/{config.epochs} phase={phase} "
                         f"loss={float(loss):.4f} "
                         f"head_lr={scheduler.get_last_lr()[0]:.3g} "
@@ -586,6 +608,8 @@ def train_qlora_photoz(
                     _save_training_checkpoint(
                         checkpoint_path,
                         config=asdict(config),
+                        use_dora=use_dora,
+                        method_label=method_label,
                         dataset_sizes=(len(train_dataset), len(val_dataset), len(test_dataset)),
                         epoch=epoch,
                         next_batch_index=batch_index + 1,
@@ -621,7 +645,7 @@ def train_qlora_photoz(
         }
         history.append(row)
         print(
-            f"QLoRA epoch={epoch:03d} train_loss={row['train_loss']:.4f} "
+            f"{method_label} epoch={epoch:03d} train_loss={row['train_loss']:.4f} "
             f"val_loss={val_metrics['cross_entropy']:.4f} "
             f"val_nmad={val_metrics['nmad']:.4f}",
             flush=True,
@@ -663,7 +687,7 @@ def train_qlora_photoz(
     model.qwen.save_pretrained(adapter_dir)
     torch.save(model.photoz_head.state_dict(), output_dir / "photoz_head.pt")
     result = {
-        "model_kind": "qlora_photoz",
+        "model_kind": f"{method_slug}_photoz",
         "history": history,
         "final_metrics": {
             "val": summarize_pdf_metrics(val_evaluation),
@@ -672,8 +696,9 @@ def train_qlora_photoz(
         "val_evaluation": val_evaluation,
         "test_evaluation": test_evaluation,
         "metadata": {
-            "posttraining_method": "qlora_direct_photoz_cross_entropy",
+            "posttraining_method": f"{method_slug}_direct_photoz_cross_entropy",
             "pooling": config.pooling,
+            "use_dora": use_dora,
             "config": {
                 key: str(value) if isinstance(value, (Path, torch.device)) else value
                 for key, value in asdict(config).items()

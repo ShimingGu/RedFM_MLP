@@ -11,7 +11,39 @@ PYTORCH_ALLOC_CONF=backend:cudaMallocAsync \
 --max-rows=50000 \
 --device=cuda
      
-AION_QWEN_GPU_DEVICES=0,1   QLORA_EPOCHS=10   AION_OUTPUT_DIR=/arc/home/gsm/aion_output/figures/qwen-qwen_posttraining_comparison-e10  QLORA_CHECKPOINT_DIR=/arc/projects/ots/Cosmic_Imprint_of_Time/qlora_checkpoints/qwen-qwen_posttraining-comparison-e10 QWEN_USE_MORPHOLOGY=1 ./scripts/qwen-qwen_posttraining_comparison_multigpu.sh --no-qlora-resume
+AION_QWEN_GPU_DEVICES=0,1   QLORA_EPOCHS=10   AION_OUTPUT_DIR=/arc/home/gsm/aion_output/figures/qwen-qwen_posttraining_comparison-e10  QLORA_CHECKPOINT_DIR=/arc/projects/ots/Cosmic_Imprint_of_Time/qlora_checkpoints/qwen-qwen_posttraining-comparison-e10 QWEN_USE_MORPHOLOGY=0 ./scripts/qwen-qwen_posttraining_comparison_multigpu.sh --no-qlora-resume
 
   pixi run python -u -m aion_magnitude.morphology_catalogue features \
     --target-batch-size 256 --device cuda
+
+# IA3 Qwen post-training on GPU slice 0 (launch in its own terminal).
+IA3_GPU_DEVICE=0 \
+IA3_EPOCHS=10 \
+IA3_OUTPUT_DIR=/arc/home/gsm/aion_output/figures/qwen-ia3_posttraining-e10 \
+IA3_CHECKPOINT_DIR=/arc/projects/ots/Cosmic_Imprint_of_Time/ia3_checkpoints/qwen-ia3-posttraining-e10 \
+QWEN_USE_MORPHOLOGY=0 \
+./scripts/qwen-ia3_posttraining.sh --no-ia3-resume
+
+# Residual cached-embedding adapter on GPU slice 1 (launch in its own terminal).
+EMBEDDING_ADAPTER_GPU_DEVICE=1 \
+EMBEDDING_ADAPTER_EPOCHS=10 \
+EMBEDDING_ADAPTER_OUTPUT_DIR=/arc/home/gsm/aion_output/figures/qwen-residual_embedding_adapter-e10 \
+QWEN_USE_MORPHOLOGY=0 \
+./scripts/qwen-residual_embedding_adapter_posttraining.sh
+
+# DoRA-SFT on logical GPU slice 2; matched to the 10-epoch QLoRA arm.
+DORA_GPU_DEVICE=2 \
+DORA_EPOCHS=10 \
+DORA_OUTPUT_DIR=/arc/home/gsm/aion_output/figures/qwen-dora_posttraining-e10 \
+DORA_CHECKPOINT_DIR=/arc/projects/ots/Cosmic_Imprint_of_Time/dora_checkpoints/qwen-dora-posttraining-e10 \
+QWEN_USE_MORPHOLOGY=0 \
+./scripts/qwen-dora_posttraining.sh --no-dora-resume
+
+# One-epoch RLVR continuation of the completed QLoRA-SFT policy on slice 3.
+RLVR_GPU_DEVICE=3 \
+RLVR_EPOCHS=1 \
+RLVR_OUTPUT_DIR=/arc/home/gsm/aion_output/figures/qwen-qlora_rlvr-e1 \
+RLVR_CHECKPOINT_DIR=/arc/projects/ots/Cosmic_Imprint_of_Time/rlvr_checkpoints/qwen-qlora-rlvr-e1 \
+RLVR_SOURCE_DIR=/arc/home/gsm/aion_output/figures/qwen-qwen_posttraining_comparison-e10/qlora \
+QWEN_USE_MORPHOLOGY=0 \
+./scripts/qwen-rlvr_posttraining.sh --no-rlvr-resume
