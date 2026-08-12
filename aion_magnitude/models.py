@@ -16,7 +16,7 @@ from .utils import flux_to_ab_mag, _path_tag, resolve_torch_device, table_length
 try:
     from aion.model import AION
     from aion.codecs import CodecManager
-    from aion.modalities import HSCMagG, HSCMagR, HSCMagI, HSCMagZ, HSCMagY
+    from aion.modalities import HSCImage, HSCMagG, HSCMagR, HSCMagI, HSCMagZ, HSCMagY
     AION_AVAILABLE = True
     AION_IMPORT_ERROR = None
 except ImportError as exc:
@@ -136,6 +136,76 @@ def load_frozen_aion(
     return aion, codec_manager
 
 
+def encode_hsc_aion_tokens(
+    batch: Mapping[str, torch.Tensor],
+    codec_manager,
+    device: torch.device | str | None = None,
+) -> dict[str, torch.Tensor]:
+    """Tokenize native HSC grizy magnitudes for reuse by a trainable encoder."""
+    device = resolve_torch_device(device)
+    modalities = [
+        HSCMagG(value=batch["g_mag"].to(device)),
+        HSCMagR(value=batch["r_mag"].to(device)),
+        HSCMagI(value=batch["i_mag"].to(device)),
+        HSCMagZ(value=batch["z_mag"].to(device)),
+        HSCMagY(value=batch["y_mag"].to(device)),
+    ]
+    with torch.no_grad():
+        return {
+            key: value.detach()
+            for key, value in codec_manager.encode(*modalities).items()
+        }
+
+
+def encode_hsc_aion_image_tokens(
+    batch: Mapping[str, torch.Tensor],
+    images: torch.Tensor | np.ndarray,
+    codec_manager,
+    device: torch.device | str | None = None,
+) -> dict[str, torch.Tensor]:
+    """Tokenize native grizy magnitudes and 96-pixel grizy image cutouts."""
+    device = resolve_torch_device(device)
+    flux = torch.as_tensor(images, dtype=torch.float32, device=device)
+    if flux.ndim != 4 or tuple(flux.shape[1:]) != (5, 96, 96):
+        raise ValueError("HSC grizy images must have shape [batch, 5, 96, 96].")
+    modalities = [
+        HSCMagG(value=batch["g_mag"].to(device)),
+        HSCMagR(value=batch["r_mag"].to(device)),
+        HSCMagI(value=batch["i_mag"].to(device)),
+        HSCMagZ(value=batch["z_mag"].to(device)),
+        HSCMagY(value=batch["y_mag"].to(device)),
+        HSCImage(
+            flux=flux,
+            bands=["HSC-G", "HSC-R", "HSC-I", "HSC-Z", "HSC-Y"],
+        ),
+    ]
+    with torch.no_grad():
+        return {
+            key: value.detach()
+            for key, value in codec_manager.encode(*modalities).items()
+        }
+
+
+def encode_aion_tokens(
+    tokens: Mapping[str, torch.Tensor],
+    aion,
+    device: torch.device | str | None = None,
+) -> torch.Tensor:
+    """Run already-tokenized modalities through AION without disabling gradients."""
+    device = resolve_torch_device(device)
+    run_tokens = {key: value.to(device) for key, value in tokens.items()}
+    n_tokens = sum(
+        tensor.shape[1] if tensor.ndim > 1 else 1
+        for tensor in run_tokens.values()
+    )
+    with torch.autocast(
+        device_type=device.type,
+        dtype=torch.bfloat16,
+        enabled=device.type == "cuda",
+    ):
+        return aion.encode(run_tokens, num_encoder_tokens=n_tokens)
+
+
 def extract_hsc_aion_embedding(
     batch: dict[str, torch.Tensor],
     aion,
@@ -145,26 +215,29 @@ def extract_hsc_aion_embedding(
     track_input_grad: bool = False,
 ) -> torch.Tensor:
     device = resolve_torch_device(device)
-    modalities = [
-        HSCMagG(value=batch["g_mag"].to(device)),
-        HSCMagR(value=batch["r_mag"].to(device)),
-        HSCMagI(value=batch["i_mag"].to(device)),
-        HSCMagZ(value=batch["z_mag"].to(device)),
-        HSCMagY(value=batch["y_mag"].to(device)),
-    ]
-
+    tokens = encode_hsc_aion_tokens(batch, codec_manager, device=device)
     context = nullcontext() if track_input_grad else torch.no_grad()
     with context:
-        tokens = codec_manager.encode(*modalities)
-        n_tokens = sum(
-            tensor.shape[1] if tensor.ndim > 1 else 1
-            for tensor in tokens.values()
-        )
-        # AION provides the encoder sequence; mean pooling makes one vector per object.
-        sequence = aion.encode(tokens, num_encoder_tokens=n_tokens)
-        embedding = sequence.mean(dim=1)
+        return encode_aion_tokens(tokens, aion, device=device).mean(dim=1)
 
-    return embedding
+
+def extract_hsc_aion_image_embedding(
+    batch: dict[str, torch.Tensor],
+    images: torch.Tensor | np.ndarray,
+    aion,
+    codec_manager,
+    device: torch.device | str | None = None,
+    *,
+    track_input_grad: bool = False,
+) -> torch.Tensor:
+    """Embed native HSC grizy magnitudes and images in one AION encoder call."""
+    device = resolve_torch_device(device)
+    tokens = encode_hsc_aion_image_tokens(
+        batch, images, codec_manager, device=device
+    )
+    context = nullcontext() if track_input_grad else torch.no_grad()
+    with context:
+        return encode_aion_tokens(tokens, aion, device=device).mean(dim=1)
 
 
 def build_baseline_model(

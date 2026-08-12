@@ -166,6 +166,46 @@ The launcher stores the updated resumable cache under
 A row-limited `features` command remains development-only and cannot write the
 final catalogue.
 
+### AION-only grizy post-training
+
+The AION post-training launchers run two matched input arms by default:
+
+- `photometry`: native AION HSC grizy magnitude modalities;
+- `photometry-images`: the same magnitudes plus real HSC PDR3 grizy
+  96x96 cutouts through AION's native five-channel HSC image codec.
+
+Each encoder-PEFT arm trains a matched frozen-AION baseline with the same
+single-query cross-attention pooler and photo-z head on exactly the same objects
+and split. It then writes loss, scatter, PIT, population n(z), and tomographic
+n(z) comparison plots. Neither input arm loads or uses a Qwen model. Codec
+tokens, rather than encoder outputs, are cached so adapted runs recompute the
+real AION encoder during every training step.
+
+Run the five AION-only post-training comparisons with:
+
+```bash
+./scripts/aion-ia3_posttraining.sh
+./scripts/aion-residual_embedding_adapter_posttraining.sh
+./scripts/aion-dora_posttraining.sh
+./scripts/aion-qlora_posttraining.sh
+./scripts/aion-rlvr_posttraining.sh
+```
+
+IA3 gates the K/V attention channels and feed-forward activations in all 12
+AION encoder blocks. DoRA applies magnitude/direction low-rank adaptation to
+all encoder attention/MLP linears and the encoder output projection. QLoRA
+targets those same real weights with bitsandbytes NF4 double quantization,
+LoRA, and a paged AdamW optimizer. The residual bottleneck adapter and its RLVR
+continuation intentionally remain post-encoder mean-vector controls; their
+metadata and plot labels identify that scope explicitly.
+
+All five launchers default to both arms. Set `AION_INPUT_MODES=photometry` or
+`AION_INPUT_MODES=photometry-images` to run one. The image preparation reads
+the manifest and row-to-pixel assignments under
+`aion_multiband_morphology_catalogue_updated`; it creates the missing
+`y_assignment.npz` under a file lock without waiting for the updated
+morphology FITS catalogue.
+
 Intentionally excluded:
 
 - catalogue/data files: `data/`, `provabgs_desi_ls.hdf5`, etc.

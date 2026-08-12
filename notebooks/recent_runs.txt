@@ -16,13 +16,14 @@ AION_QWEN_GPU_DEVICES=0,1   QLORA_EPOCHS=10   AION_OUTPUT_DIR=/arc/home/gsm/aion
   pixi run python -u -m aion_magnitude.morphology_catalogue features \
     --target-batch-size 256 --device cuda
 
-# IA3 Qwen post-training on GPU slice 0 (launch in its own terminal).
-IA3_GPU_DEVICE=0 \
+# IA3 Qwen post-training on the sole free MIG slice of physical GPU 1.
+IA3_GPU_DEVICE=MIG-4d383313-9dbd-5ddd-9cf0-334335c5dbb1 \
+PYTORCH_ALLOC_CONF=backend:cudaMallocAsync \
 IA3_EPOCHS=10 \
 IA3_OUTPUT_DIR=/arc/home/gsm/aion_output/figures/qwen-ia3_posttraining-e10 \
 IA3_CHECKPOINT_DIR=/arc/projects/ots/Cosmic_Imprint_of_Time/ia3_checkpoints/qwen-ia3-posttraining-e10 \
 QWEN_USE_MORPHOLOGY=0 \
-./scripts/qwen-ia3_posttraining.sh --no-ia3-resume
+./scripts/qwen-ia3_posttraining.sh
 
 # Residual cached-embedding adapter on GPU slice 1 (launch in its own terminal).
 EMBEDDING_ADAPTER_GPU_DEVICE=1 \
@@ -39,11 +40,90 @@ DORA_CHECKPOINT_DIR=/arc/projects/ots/Cosmic_Imprint_of_Time/dora_checkpoints/qw
 QWEN_USE_MORPHOLOGY=0 \
 ./scripts/qwen-dora_posttraining.sh --no-dora-resume
 
-# One-epoch RLVR continuation of the completed QLoRA-SFT policy on slice 3.
-RLVR_GPU_DEVICE=3 \
+# One-epoch RLVR continuation on a free MIG slice of physical GPU 2.
+RLVR_GPU_DEVICE=MIG-e3b9f51c-6f3a-5739-8c87-4595f0bcc249 \
 RLVR_EPOCHS=1 \
 RLVR_OUTPUT_DIR=/arc/home/gsm/aion_output/figures/qwen-qlora_rlvr-e1 \
 RLVR_CHECKPOINT_DIR=/arc/projects/ots/Cosmic_Imprint_of_Time/rlvr_checkpoints/qwen-qlora-rlvr-e1 \
 RLVR_SOURCE_DIR=/arc/home/gsm/aion_output/figures/qwen-qwen_posttraining_comparison-e10/qlora \
 QWEN_USE_MORPHOLOGY=0 \
 ./scripts/qwen-rlvr_posttraining.sh --no-rlvr-resume
+
+# AION-only post-training schedule (2026-08-11).
+# All five runs use native AION grizy inputs only (no Qwen): photometry first,
+# then photometry plus HSC grizy cutouts. IA3, DoRA, and QLoRA now rerun the
+# real AION encoder from cached codec tokens and compare against a matched frozen
+# AION + learned cross-attention head. The residual adapter and RLVR remain
+# explicitly labeled post-encoder mean-vector controls.
+#
+# Current exact slice map:
+#   free: MIG-e861... (GPU 0), MIG-e3b9.../MIG-fda1.../MIG-5a79... (GPU 2)
+#   busy: MIG-4d38... = Qwen IA3; MIG-7014... = Qwen DoRA
+#         MIG-399a... = multiband catalogue builder.
+#
+# Run the script commands below in displayed order. The first launcher builds
+# the shared cached AION products (mean vectors plus codec tokens); later
+# launchers reuse them. This avoids concurrent writes without bypassing the
+# launchers under ./scripts. Legacy image products without tokens rebuild
+# automatically; legacy photometry products are upgraded in place.
+
+
+# IMPLEMENTATION MIGRATION (2026-08-12): discard/overwrite IA3, DoRA, and QLoRA
+# result.pt files produced before this change. Those old runs adapted a 768-D
+# cached mean vector and were not encoder PEFT. The launchers below always rerun
+# the candidate and use attentive_head_only/result.pt as their baseline, so the
+# same commands are sufficient. Do not interpret the old aion-qlora-e10 image
+# scatter as a valid QLoRA result. Safe defaults are microbatch 1, eval batch 2,
+# and 16-step gradient accumulation for the 581-token image arm.
+
+# PRIORITY 1: AION QLoRA on the free slice formerly used as logical slice 1.
+# Its launcher prepares both shared products and then trains both input arms.
+AION_QLORA_GPU_DEVICE=MIG-e861fb83-db56-5cff-bdc5-d1adc0185b3e \
+PYTORCH_ALLOC_CONF=backend:cudaMallocAsync \
+AION_INPUT_MODES="photometry photometry-images" \
+AION_MAX_ROWS=300000 \
+AION_QLORA_EPOCHS=10 \
+AION_QLORA_OUTPUT_DIR=/arc/home/gsm/aion_output/figures/aion-qlora-e10 \
+./scripts/aion-qlora_posttraining.sh
+
+# PRIORITY 2: supervised residual AION embedding adapter on a free GPU 2 slice.
+# It must finish before the AION RLVR command below.
+AION_ADAPTER_GPU_DEVICE=MIG-fda15469-042d-5616-9b17-1f97897acd03 \
+PYTORCH_ALLOC_CONF=backend:cudaMallocAsync \
+AION_INPUT_MODES="photometry photometry-images" \
+AION_MAX_ROWS=300000 \
+AION_ADAPTER_EPOCHS=10 \
+AION_ADAPTER_OUTPUT_DIR=/arc/home/gsm/aion_output/figures/aion-residual_embedding_adapter-e10 \
+./scripts/aion-residual_embedding_adapter_posttraining.sh
+
+# PRIORITY 3: one-epoch AION RLVR continuation on the Qwen-RLVR counterpart slice.
+# Start only after PRIORITY 2 finishes. Reusing its output root makes RLVR load
+# the completed supervised residual adapter instead of training a duplicate.
+AION_RLVR_GPU_DEVICE=MIG-e3b9f51c-6f3a-5739-8c87-4595f0bcc249 \
+PYTORCH_ALLOC_CONF=backend:cudaMallocAsync \
+AION_INPUT_MODES="photometry photometry-images" \
+AION_MAX_ROWS=300000 \
+AION_RLVR_EPOCHS=1 \
+AION_RLVR_RESUME=0 \
+AION_RLVR_OUTPUT_DIR=/arc/home/gsm/aion_output/figures/aion-residual_embedding_adapter-e10 \
+./scripts/aion-rlvr_posttraining.sh
+
+# DEFERRED: AION IA3. Start only after the Qwen IA3 process above exits, then
+# reuse that counterpart's exact MIG slice.
+AION_IA3_GPU_DEVICE=MIG-4d383313-9dbd-5ddd-9cf0-334335c5dbb1 \
+PYTORCH_ALLOC_CONF=backend:cudaMallocAsync \
+AION_INPUT_MODES="photometry photometry-images" \
+AION_MAX_ROWS=300000 \
+AION_IA3_EPOCHS=10 \
+AION_IA3_OUTPUT_DIR=/arc/home/gsm/aion_output/figures/aion-ia3-e10 \
+./scripts/aion-ia3_posttraining.sh
+
+# DEFERRED: AION DoRA. Start only after the Qwen DoRA process above exits, then
+# reuse logical slice 2 by its exact UUID (avoids ordinal remapping).
+AION_DORA_GPU_DEVICE=MIG-701404cb-3971-5042-9fc5-b75ca728cea2 \
+PYTORCH_ALLOC_CONF=backend:cudaMallocAsync \
+AION_INPUT_MODES="photometry photometry-images" \
+AION_MAX_ROWS=300000 \
+AION_DORA_EPOCHS=10 \
+AION_DORA_OUTPUT_DIR=/arc/home/gsm/aion_output/figures/aion-dora-e10 \
+./scripts/aion-dora_posttraining.sh

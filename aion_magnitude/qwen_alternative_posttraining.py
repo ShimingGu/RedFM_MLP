@@ -647,7 +647,7 @@ def train_residual_embedding_adapter(
     output_dir: str | Path,
     config: ResidualEmbeddingAdapterConfig,
 ) -> dict[str, Any]:
-    """Train a residual bottleneck and PDF head on cached frozen Qwen vectors."""
+    """Train a residual bottleneck and PDF head on cached frozen embeddings."""
     config = config.normalized()
     if train_dataset.embeddings.shape[1] != val_dataset.embeddings.shape[1]:
         raise ValueError("Train and validation embedding dimensions do not match.")

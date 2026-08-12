@@ -21,11 +21,66 @@ from .dataset import (
 )
 from .models import (
     load_frozen_aion,
-    extract_hsc_aion_embedding,
+    encode_aion_tokens,
+    encode_hsc_aion_tokens,
     validate_cached_aion_mag_adjustment,
     aion_mag_adjustment_metadata,
 )
 from .config import AIONMagnitudeConfig, make_magnitude_config, resolve_training_paths
+
+
+def extract_aion_embeddings_and_tokens_to_memory(
+    dataset: CLAUDSPhotoZDataset,
+    aion,
+    codec_manager,
+    batch_size: int = 512,
+    num_workers: int = 0,
+    device: torch.device | str | None = None,
+) -> tuple[torch.Tensor, dict[str, torch.Tensor]]:
+    if len(dataset) == 0:
+        raise ValueError(
+            "Cannot extract AION embeddings or tokens from an empty CLAUDS dataset. "
+            "If another job is preparing the same cache, wait for it and retry."
+        )
+    device = resolve_torch_device(device)
+    loader = DataLoader(
+        dataset, batch_size=batch_size, shuffle=False, num_workers=num_workers,
+        collate_fn=collate_clauds_photoz,
+    )
+    embeddings: list[torch.Tensor] = []
+    token_parts: dict[str, list[torch.Tensor]] = {}
+    for batch in loader:
+        tokens = encode_hsc_aion_tokens(batch.hsc_batch, codec_manager, device=device)
+        with torch.no_grad():
+            embedding = encode_aion_tokens(tokens, aion, device=device).mean(dim=1)
+        embeddings.append(embedding.float().cpu())
+        for key, value in tokens.items():
+            token_parts.setdefault(key, []).append(value.cpu())
+    return torch.cat(embeddings), {
+        key: torch.cat(parts) for key, parts in token_parts.items()
+    }
+
+
+def extract_aion_tokens_to_memory(
+    dataset: CLAUDSPhotoZDataset,
+    codec_manager,
+    batch_size: int = 512,
+    num_workers: int = 0,
+    device: torch.device | str | None = None,
+) -> dict[str, torch.Tensor]:
+    if len(dataset) == 0:
+        raise ValueError("Cannot extract AION tokens from an empty CLAUDS dataset.")
+    device = resolve_torch_device(device)
+    loader = DataLoader(
+        dataset, batch_size=batch_size, shuffle=False, num_workers=num_workers,
+        collate_fn=collate_clauds_photoz,
+    )
+    token_parts: dict[str, list[torch.Tensor]] = {}
+    for batch in loader:
+        tokens = encode_hsc_aion_tokens(batch.hsc_batch, codec_manager, device=device)
+        for key, value in tokens.items():
+            token_parts.setdefault(key, []).append(value.cpu())
+    return {key: torch.cat(parts) for key, parts in token_parts.items()}
 
 
 def extract_aion_embeddings_to_memory(
@@ -36,21 +91,11 @@ def extract_aion_embeddings_to_memory(
     num_workers: int = 0,
     device: torch.device | str | None = None,
 ) -> torch.Tensor:
-    device = resolve_torch_device(device)
-    loader = DataLoader(
-        dataset,
-        batch_size=batch_size,
-        shuffle=False,
-        num_workers=num_workers,
-        collate_fn=collate_clauds_photoz,
+    embeddings, _ = extract_aion_embeddings_and_tokens_to_memory(
+        dataset, aion, codec_manager, batch_size=batch_size,
+        num_workers=num_workers, device=device,
     )
-
-    embeddings = []
-    for batch in loader:
-        embedding = extract_hsc_aion_embedding(batch.hsc_batch, aion, codec_manager, device=device)
-        embeddings.append(embedding.cpu())
-
-    return torch.cat(embeddings, dim=0)
+    return embeddings
 
 
 def save_cached_product(
@@ -60,6 +105,7 @@ def save_cached_product(
     feature_names: Sequence[str],
     split_labels: Sequence[str] | None = None,
     metadata: Mapping[str, Any] | None = None,
+    aion_tokens: Mapping[str, torch.Tensor] | None = None,
 ) -> None:
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -69,6 +115,9 @@ def save_cached_product(
         "z_spec": dataset.z_spec,
         "redshift_reference": dataset.redshift_reference,
         "aion_embedding": aion_embeddings.cpu(),
+        "aion_tokens": None if aion_tokens is None else {
+            key: value.cpu() for key, value in aion_tokens.items()
+        },
         "extra_features": dataset.extra_features.cpu(),
         "feature_names": list(feature_names),
         "split_labels": None if split_labels is None else list(split_labels),
@@ -450,7 +499,7 @@ def build_and_cache_aion_embeddings(
 
     if use_aion_embedding:
         aion, codec_manager = load_frozen_aion(device=device)
-        aion_embeddings = extract_aion_embeddings_to_memory(
+        aion_embeddings, aion_tokens = extract_aion_embeddings_and_tokens_to_memory(
             raw_dataset,
             aion=aion,
             codec_manager=codec_manager,
@@ -464,6 +513,7 @@ def build_and_cache_aion_embeddings(
         }
     else:
         aion_embeddings = torch.empty((len(raw_dataset), 0), dtype=torch.float32)
+        aion_tokens = None
         aion_metadata = {
             "aion_model": None,
             "aion_embedding_pooling": None,
@@ -486,6 +536,7 @@ def build_and_cache_aion_embeddings(
         feature_names,
         split_labels=split_labels,
         metadata=metadata,
+        aion_tokens=aion_tokens,
     )
     return load_cached_product(cache_path)
 

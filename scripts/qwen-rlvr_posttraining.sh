@@ -17,6 +17,7 @@ fi
 
 GPU_DEVICE="${RLVR_GPU_DEVICE:-3}"
 OUTPUT_DIR="${RLVR_OUTPUT_DIR:-/arc/home/gsm/aion_output/figures/qwen-qlora_rlvr-e1}"
+HEAD_ONLY_RESULT="${HEAD_ONLY_QWEN_RESULT:-/arc/home/gsm/aion_output/figures/qwen-qwen_posttraining_comparison-e10/frozen/result.pt}"
 CHECKPOINT_DIR="${RLVR_CHECKPOINT_DIR:-/arc/projects/ots/Cosmic_Imprint_of_Time/rlvr_checkpoints/qwen-qlora-rlvr-e1}"
 SOURCE_DIR="${RLVR_SOURCE_DIR:-/arc/home/gsm/aion_output/figures/qwen-qwen_posttraining_comparison-e10/qlora}"
 SOURCE_ADAPTER="${RLVR_SOURCE_ADAPTER_DIR:-$SOURCE_DIR/adapter}"
@@ -76,3 +77,11 @@ env CUDA_VISIBLE_DEVICES="$GPU_DEVICE" PYTHONUNBUFFERED=1 \
     "${PYTHON_CMD[@]}" "$REPO_ROOT/notebooks/qwen_dora_rlvr_posttraining.py" \
     --stage rlvr "${COMMON_ARGS[@]}" "$@" \
     2>&1 | tee "$OUTPUT_DIR/rlvr.log"
+
+"${PYTHON_CMD[@]}" "$REPO_ROOT/notebooks/plot_qwen_posttraining.py" \
+    --baseline-result-path "$HEAD_ONLY_RESULT" \
+    --result-path "$OUTPUT_DIR/rlvr/result.pt" \
+    --output-dir "$OUTPUT_DIR" \
+    --prefix qwen_rlvr_comparison \
+    --label "QLoRA+RLVR-Qwen+photo-z-head" \
+    --summary-path "$OUTPUT_DIR/rlvr_run.json"

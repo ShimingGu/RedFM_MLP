@@ -1,4 +1,7 @@
 from __future__ import annotations
+import fcntl
+import shutil
+import tempfile
 import warnings
 from dataclasses import dataclass
 from pathlib import Path
@@ -405,26 +408,50 @@ def load_clauds_catalogue_from_fits(
     sample_require_valid_bands: Sequence[str] = (),
 ) -> CLAUDSSplitCatalogue:
     split_output_dir = Path(split_output_dir)
+    split_output_dir.mkdir(parents=True, exist_ok=True)
     paths = {
         "bands": split_output_dir / "clauds_bands.npy",
         "errors": split_output_dir / "clauds_errors.npy",
         "redshifts": split_output_dir / "clauds_redshifts.npy",
         "flags": split_output_dir / "clauds_flags.npy",
     }
-    if overwrite or not all(path.exists() for path in paths.values()) or not split_cache_matches_current_schema(paths):
-        paths = split_clauds_catalogue(
-            catalogue_path,
-            split_output_dir,
-            chunk_size=chunk_size,
-            overwrite=True,
-            max_rows=max_rows,
-            sample_mode=sample_mode,
-            row_start=row_start,
-            row_stop=row_stop,
-            sample_seed=sample_seed,
-            require_valid_bands=sample_require_valid_bands,
+    lock_path = split_output_dir / ".clauds_split.lock"
+    with lock_path.open("a+b") as lock_file:
+        fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX)
+        cache_ready = (
+            all(path.exists() for path in paths.values())
+            and split_cache_matches_current_schema(paths)
         )
-    arrays = {key: np.load(path, mmap_mode="r") for key, path in paths.items()}
+        if overwrite or not cache_ready:
+            staging_dir = Path(
+                tempfile.mkdtemp(
+                    prefix=".clauds_split_build-",
+                    dir=split_output_dir,
+                )
+            )
+            try:
+                staged_paths = split_clauds_catalogue(
+                    catalogue_path,
+                    staging_dir,
+                    chunk_size=chunk_size,
+                    overwrite=False,
+                    max_rows=max_rows,
+                    sample_mode=sample_mode,
+                    row_start=row_start,
+                    row_stop=row_stop,
+                    sample_seed=sample_seed,
+                    require_valid_bands=sample_require_valid_bands,
+                )
+                if not split_cache_matches_current_schema(staged_paths):
+                    raise RuntimeError("Staged CLAUDS split cache is invalid.")
+                for key, destination in paths.items():
+                    Path(staged_paths[key]).replace(destination)
+            finally:
+                shutil.rmtree(staging_dir, ignore_errors=True)
+        arrays = {
+            key: np.load(path, mmap_mode="r")
+            for key, path in paths.items()
+        }
     return CLAUDSSplitCatalogue(
         bands=arrays["bands"],
         errors=arrays["errors"],

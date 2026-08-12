@@ -17,6 +17,7 @@ fi
 
 GPU_DEVICE="${EMBEDDING_ADAPTER_GPU_DEVICE:-3}"
 OUTPUT_DIR="${EMBEDDING_ADAPTER_OUTPUT_DIR:-/arc/home/gsm/aion_output/figures/qwen-residual_embedding_adapter-e10}"
+HEAD_ONLY_RESULT="${HEAD_ONLY_QWEN_RESULT:-/arc/home/gsm/aion_output/figures/qwen-qwen_posttraining_comparison-e10/frozen/result.pt}"
 mkdir -p -- "$OUTPUT_DIR"
 
 FLAGS=()
@@ -62,3 +63,11 @@ env CUDA_VISIBLE_DEVICES="$GPU_DEVICE" PYTHONUNBUFFERED=1 \
     "${PYTHON_CMD[@]}" "$REPO_ROOT/notebooks/qwen_alternative_posttraining.py" \
     --stage embedding-adapter "${COMMON_ARGS[@]}" "$@" \
     2>&1 | tee "$OUTPUT_DIR/embedding_adapter.log"
+
+"${PYTHON_CMD[@]}" "$REPO_ROOT/notebooks/plot_qwen_posttraining.py" \
+    --baseline-result-path "$HEAD_ONLY_RESULT" \
+    --result-path "$OUTPUT_DIR/embedding_adapter/result.pt" \
+    --output-dir "$OUTPUT_DIR" \
+    --prefix qwen_embedding_adapter_comparison \
+    --label "residual-embedding-adapter-Qwen+photo-z-head" \
+    --summary-path "$OUTPUT_DIR/embedding_adapter_run.json"

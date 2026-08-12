@@ -102,6 +102,10 @@ from .dataset import (
 # Export models
 from .models import (
     ExtraPhotometryEncoder,
+    encode_aion_tokens,
+    encode_hsc_aion_tokens,
+    encode_hsc_aion_image_tokens,
+    extract_hsc_aion_image_embedding,
     PhotoZHead,
     TabularPhotoZModel,
     AIONOnlyPhotoZModel,
@@ -125,6 +129,8 @@ from .models import (
 # Export caching
 from .caching import (
     extract_aion_embeddings_to_memory,
+    extract_aion_embeddings_and_tokens_to_memory,
+    extract_aion_tokens_to_memory,
     save_cached_product,
     ensure_cached_product_redshift_reference,
     refresh_cached_product_catalogue_features,
