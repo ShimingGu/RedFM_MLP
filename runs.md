@@ -433,3 +433,38 @@ written as `.part` and then renamed.
 - Qwen launchers default to last pooling. IoTFM launchers default to mean
   pooling; that difference is intentional and should be recorded when comparing
   model families.
+
+## GLM-5.2 0.8B Frozen Mapping post-training
+
+The local architecture-test checkpoint can now be compared under one matched
+catalogue protocol with a GLM-5.2-head-only control and five post-training
+methods:
+
+- `scripts/glm52-qlora_posttraining.sh`
+- `scripts/glm52-dora_posttraining.sh`
+- `scripts/glm52-ia3_posttraining.sh`
+- `scripts/glm52-residual_embedding_adapter_posttraining.sh`
+- `scripts/glm52-rlvr_posttraining.sh`
+
+Each launcher defaults to two sequential input arms: catalogue photometry and
+the same photometry plus the 42 measured u/g/r/i/z/y morphology values. No image
+cutouts or image tokens are read. Both the head-only control and trainable arms
+use the existing IoTFM catalogue serialization and last non-padding-token
+pooling. This last-pool control is intentionally separate from the older
+mean-pool `iotfm_mlp.sh` result.
+
+QLoRA and DoRA target GLM MLA attention and DSA-indexer linears. The packed
+3-D routed-expert tensors are not PEFT-compatible and remain frozen. IA3 uses
+`kv_b_proj` for MLA key/value output scaling and `down_proj` as the
+feed-forward target. The residual embedding adapter is explicitly a
+post-encoder cached-vector control. RLVR is a continuation of the completed
+supervised QLoRA adapter and stops if that source policy is absent.
+
+The default checkpoint is
+`/arc/home/gsm/hf_models/GLM-5.2-0.8B-A0.8B`, loaded locally in NF4 with double
+quantization. Outputs share
+`/arc/home/gsm/aion_output/figures/glm52-posttraining-e10`; a file lock makes
+the matched GLM-5.2-head-only control safe to reuse when method launchers
+overlap. Every method/input arm writes Qwen-style loss, scatter, PIT, N(z), and
+tomographic N(z) comparison figures. Set `GLM52_INPUT_MODES=photometry` or
+`GLM52_INPUT_MODES=photometry-morphology` for only one arm.

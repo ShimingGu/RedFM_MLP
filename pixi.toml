@@ -27,7 +27,7 @@ safetensors = ">=0.8.0,<0.9"
 pip = ">=26.1.2,<27"
 pytest = "*"
 timm = ">=1.0.28,<2"
-peft = ">=0.19.1,<0.20"
+peft = ">=0.20,<0.21"
 fitsio = ">=1.4.2,<2"
 
 [pypi-dependencies]

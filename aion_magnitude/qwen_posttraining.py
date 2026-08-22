@@ -266,15 +266,47 @@ def create_qlora_photoz_model(
         base_model,
         use_gradient_checkpointing=True,
     )
+    target_setting = config.lora_target_modules.strip()
+    target_modules: list[str]
+    if target_setting.startswith("linear-suffixes:"):
+        suffixes = [
+            name.strip()
+            for name in target_setting.removeprefix("linear-suffixes:").split(",")
+            if name.strip()
+        ]
+        if not suffixes:
+            raise ValueError("LoRA linear suffixes must not be empty.")
+        target_modules = [
+            name
+            for name, _module in base_model.named_modules()
+            if name and any(
+                name == suffix or name.endswith(f".{suffix}")
+                for suffix in suffixes
+            )
+        ]
+        matched_suffixes = {
+            suffix
+            for suffix in suffixes
+            if any(
+                name == suffix or name.endswith(f".{suffix}")
+                for name in target_modules
+            )
+        }
+        missing = sorted(set(suffixes) - matched_suffixes)
+        if missing:
+            raise ValueError(f"LoRA linear suffixes were not found: {missing}")
+    else:
+        target_modules = [
+            name.strip() for name in target_setting.split(",") if name.strip()
+        ]
+        if not target_modules:
+            raise ValueError("LoRA target modules must not be empty.")
     lora_config = LoraConfig(
         task_type=TaskType.FEATURE_EXTRACTION,
         r=config.lora_rank,
         lora_alpha=config.lora_alpha,
         lora_dropout=config.lora_dropout,
-        target_modules=[
-            name.strip() for name in config.lora_target_modules.split(",")
-            if name.strip()
-        ],
+        target_modules=target_modules,
         bias="none",
         use_dora=bool(use_dora),
     )

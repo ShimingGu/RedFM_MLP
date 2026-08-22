@@ -209,6 +209,10 @@ def load_inference_optimized_transformer(
         "trust_remote_code": config.trust_remote_code,
     }
     tokenizer = AutoTokenizer.from_pretrained(model_path, **common)
+    if getattr(tokenizer, "pad_token_id", None) is None and hasattr(
+        tokenizer, "eos_token"
+    ):
+        tokenizer.pad_token = tokenizer.eos_token
     model_kwargs = dict(common)
     dtype = _resolve_dtype(config.torch_dtype, device)
     if dtype is not None:
@@ -216,8 +220,18 @@ def load_inference_optimized_transformer(
     if config.load_in_4bit:
         if BitsAndBytesConfig is None:
             raise ImportError("transformers with bitsandbytes support is required for 4-bit loading.")
-        model_kwargs["quantization_config"] = BitsAndBytesConfig(load_in_4bit=True)
-        model_kwargs["device_map"] = "auto"
+        if device.type != "cuda":
+            raise RuntimeError("4-bit inference-optimized models require a CUDA device.")
+        model_kwargs["quantization_config"] = BitsAndBytesConfig(
+            load_in_4bit=True,
+            bnb_4bit_quant_type="nf4",
+            bnb_4bit_compute_dtype=torch.bfloat16,
+            bnb_4bit_use_double_quant=True,
+        )
+        device_index = device.index
+        if device_index is None:
+            device_index = torch.cuda.current_device()
+        model_kwargs["device_map"] = {"": int(device_index)}
     model = AutoModel.from_pretrained(model_path, **model_kwargs)
     if not config.load_in_4bit:
         model.to(device)
