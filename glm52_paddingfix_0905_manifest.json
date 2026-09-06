@@ -1,0 +1,55 @@
+{
+  "date": "2026-09-05",
+  "model": "/arc/home/gsm/hf_models/GLM-5.2-0.8B-A0.8B",
+  "status": "completed",
+  "conclusion": "Padding-safe pooling fixes the old failure; Stage 1 clears both live frozen execution and the direct head protocol, and corrected QLoRA adds a modest gain.",
+  "cache": "/scratch/.tmp-gsm/aion_output/cache_glm52_paddingfix_0905/glm52_posttraining/COSMOS-HSCpipe-Phosphoros_morphological_multiband_updated/n300000_seed42_magnitudes_60fd8c1fd845/GLM_5.2_0.8B_A0.8B_last_len512_kbit_prepared_nf4.pt",
+  "stage0": {
+    "report": "/arc/home/gsm/aion_output/figures/glm52-failure-analysis-paddingfix-0905/stage0_invariants/stage0_report.md",
+    "checks_passed": true,
+    "cached_vs_prepared_mean_cosine": 0.9997701645,
+    "cached_vs_prepared_cross_entropy_delta": 0.000208
+  },
+  "stage1": {
+    "report": "/arc/home/gsm/aion_output/figures/glm52-failure-analysis-paddingfix-0905/stage1_head_controls/stage1_report.json",
+    "result": "/arc/home/gsm/aion_output/figures/glm52-failure-analysis-paddingfix-0905/stage1_head_controls/stage1_result.pt",
+    "validation_curves": "/arc/home/gsm/aion_output/figures/glm52-failure-analysis-paddingfix-0905/stage1_head_controls/stage1_validation_curves.png",
+    "test_evaluated": false,
+    "live_baseline_gate_passed": true,
+    "selected_epoch_zero_based": {
+      "A_cached_baseline": 5,
+      "B_cached_direct": 3,
+      "C_live_baseline": 5,
+      "D_live_direct": 3
+    },
+    "validation": {
+      "A_cached_baseline": {"cross_entropy": 4.8831219673, "nmad": 0.2367181778},
+      "B_cached_direct": {"cross_entropy": 4.8684544563, "nmad": 0.2312487066},
+      "C_live_baseline": {"cross_entropy": 4.8830685616, "nmad": 0.2368189245},
+      "D_live_direct": {"cross_entropy": 4.8688316345, "nmad": 0.2323669195}
+    }
+  },
+  "runs": {
+    "frozen": {
+      "result": "/arc/home/gsm/aion_output/figures/glm52-posttraining-paddingfix-0905/photometry/head_only/result.pt",
+      "test_cross_entropy": 4.8769841194,
+      "test_nmad": 0.2385359108,
+      "test_catastrophic_outlier_fraction": 0.5272178054,
+      "test_mean_crps": 0.4051333666
+    },
+    "qlora": {
+      "result": "/arc/home/gsm/aion_output/figures/glm52-posttraining-paddingfix-0905/photometry/qlora/result.pt",
+      "summary": "/arc/home/gsm/aion_output/figures/glm52-posttraining-paddingfix-0905/photometry/qlora_run.json",
+      "selected_epoch": 4,
+      "test_cross_entropy": 4.8530077934,
+      "test_nmad": 0.2263357490,
+      "test_catastrophic_outlier_fraction": 0.5075688958,
+      "test_mean_crps": 0.3931046426
+    }
+  },
+  "optional_next_stages": [
+    "checkpoint-selection objective study",
+    "layer and pooling probes",
+    "GLM-specific target-module sweep"
+  ]
+}

@@ -227,3 +227,41 @@ Each stage should contain its configuration, seed, split identity, metric histor
 ## Expected first conclusion
 
 The strongest current prediction is that the trained-head replay will succeed and the matched control will identify the direct head-training protocol as the primary cause. The adapter-target hypothesis becomes credible only if a warm-started, head-frozen adapter fails after the live representation and optimizer controls have passed.
+
+## Execution outcome (2026-09-05)
+
+Stage 0 instead identified a padding-sensitive last-token pooling bug: the old
+absolute index calculation assumed right padding, while GLM batches are left
+padded. After fixing both shared pooling paths, rebuilding a k-bit-prepared
+300,000-row cache, and rerunning the matched frozen head and QLoRA, every Stage
+0 invariant passes and QLoRA improves over the frozen baseline.
+
+| Corrected method | Test CE | Test NMAD | Test catastrophic fraction |
+|---|---:|---:|---:|
+| Frozen head | 4.876984 | 0.238536 | 0.527218 |
+| QLoRA, validation-CE-selected epoch 4 | **4.853008** | **0.226336** | **0.507569** |
+
+The original failure is explained without proceeding to the more expensive
+Stages 1-5. Those stages are retained above as optional optimization work.
+Full provenance, metrics, artifacts, and a reproduction command are in
+`glm52_paddingfix_0905.md`; the machine-readable index is
+`glm52_paddingfix_0905_manifest.json`.
+
+### Stage 1 result
+
+Stage 1 was subsequently requested and completed on the full 60,000/15,000
+train/validation split without evaluating the test split.
+
+| Arm | Validation CE | Validation NMAD | Selected epoch |
+|---|---:|---:|---:|
+| A: cached + baseline protocol | 4.883122 | 0.236718 | 5 |
+| B: cached + direct protocol | **4.868454** | **0.231249** | 3 |
+| C: live + baseline protocol | 4.883069 | 0.236819 | 5 |
+| D: live + direct protocol | **4.868832** | **0.232367** | 3 |
+
+The A/C live-baseline gate passes for both CE and NMAD, and B/D also agree
+within 1%. The direct protocol is not the cause of the old failure: it slightly
+outperforms the baseline protocol at the validation-CE-selected checkpoint.
+Stage 1 therefore clears both live frozen training and the direct head
+optimizer path. See the Stage 1 report under
+`/arc/home/gsm/aion_output/figures/glm52-failure-analysis-paddingfix-0905/stage1_head_controls/`.

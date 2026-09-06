@@ -254,7 +254,10 @@ def pool_hidden_states(
     if pooling == "mean":
         weights = mask.unsqueeze(-1).to(hidden_states.dtype)
         return (hidden_states * weights).sum(1) / weights.sum(1).clamp_min(1)
-    positions = mask.long().sum(1).sub(1).clamp_min(0)
+    token_positions = torch.arange(
+        mask.shape[1], device=hidden_states.device
+    ).unsqueeze(0).expand_as(mask)
+    positions = token_positions.masked_fill(~mask, -1).amax(dim=1).clamp_min(0)
     last = hidden_states[torch.arange(hidden_states.shape[0], device=hidden_states.device), positions]
     if pooling == "last":
         return last

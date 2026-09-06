@@ -5,6 +5,7 @@ from unittest.mock import MagicMock, patch
 import torch
 
 import aion_magnitude.Inference_Opt_TFM as inference_opt_tfm
+from aion_magnitude.FM_Qwen import pool_qwen_hidden_states
 from aion_magnitude.Inference_Opt_TFM import (
     CatalogueSerializationConfig,
     InferenceOptimizedEmbeddingConfig,
@@ -68,6 +69,21 @@ class TestInferenceOptimizedTransformer(unittest.TestCase):
         torch.testing.assert_close(pool_hidden_states(hidden, mask, "mean"), torch.tensor([[2.0, 3.0]]))
         torch.testing.assert_close(pool_hidden_states(hidden, mask, "last"), torch.tensor([[3.0, 4.0]]))
         self.assertEqual(pool_hidden_states(hidden, mask, "mean_last").shape, (1, 4))
+
+    def test_last_pooling_supports_both_padding_sides(self):
+        hidden = torch.tensor(
+            [
+                [[1.0, 2.0], [3.0, 4.0], [99.0, 99.0]],
+                [[99.0, 99.0], [5.0, 6.0], [7.0, 8.0]],
+            ]
+        )
+        mask = torch.tensor([[1, 1, 0], [0, 1, 1]])
+        expected = torch.tensor([[3.0, 4.0], [7.0, 8.0]])
+
+        torch.testing.assert_close(pool_hidden_states(hidden, mask, "last"), expected)
+        torch.testing.assert_close(
+            pool_qwen_hidden_states(hidden, mask, pooling="last"), expected
+        )
 
     def test_extraction_uses_base_hidden_states_without_cache(self):
         class Tokenizer:

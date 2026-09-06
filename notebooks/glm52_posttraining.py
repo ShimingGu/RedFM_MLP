@@ -13,6 +13,7 @@ from typing import Any
 
 import numpy as np
 import torch
+from peft import prepare_model_for_kbit_training
 
 ROOT = Path(__file__).resolve().parents[1]
 NOTEBOOK_DIR = Path(__file__).resolve().parent
@@ -309,7 +310,7 @@ def _cache_path(
         / "glm52_posttraining"
         / catalogue.stem
         / f"{selection_tag}_seed{args.seed}_{input_tag}_{provenance}"
-        / f"{model_tag}_last_len{config.max_length}_nf4.pt"
+        / f"{model_tag}_last_len{config.max_length}_kbit_prepared_nf4.pt"
     )
 
 
@@ -320,6 +321,8 @@ def _expected_cache_metadata(
 ) -> dict[str, Any]:
     return {
         **build_embedding_metadata(config, serialization),
+        "kbit_prepared": True,
+        "last_token_pooling": "padding_side_safe_v2",
         "input_feature_names": [str(name) for name in product["feature_names"]],
         "input_representation": product["metadata"]["input_representation"],
         "image_cutouts_read": False,
@@ -352,6 +355,10 @@ def _extract_or_load_embeddings(
 
     texts = _serialize_product(product, serialization)
     tokenizer, model, device = load_inference_optimized_transformer(config)
+    model = prepare_model_for_kbit_training(
+        model, use_gradient_checkpointing=True
+    )
+    model.eval()
     try:
         embeddings = extract_text_embeddings(
             texts,

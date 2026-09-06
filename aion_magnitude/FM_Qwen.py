@@ -267,7 +267,11 @@ def pool_qwen_hidden_states(
     if pooling == "mean":
         return mean_embedding
 
-    last_indices = attention_mask.to(last_hidden_state.device).sum(dim=1).clamp_min(1) - 1
+    token_mask = attention_mask.to(last_hidden_state.device).bool()
+    token_positions = torch.arange(
+        token_mask.shape[1], device=last_hidden_state.device
+    ).unsqueeze(0).expand_as(token_mask)
+    last_indices = token_positions.masked_fill(~token_mask, -1).amax(dim=1).clamp_min(0)
     batch_indices = torch.arange(last_hidden_state.shape[0], device=last_hidden_state.device)
     last_embedding = last_hidden_state[batch_indices, last_indices]
     if pooling == "last":
