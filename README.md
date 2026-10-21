@@ -274,3 +274,49 @@ launcher then writes `pydantic_report.json` with embedding, optimization, and
 photo-z diagnostics. See [`multigpu.md`](multigpu.md) for the complete cluster
 handoff, output layout, resume behavior, and the future one-case/multi-GPU
 extension contract.
+
+### Independent DESI–LS and GalaxiesML-Spectra Qwen post-training
+
+The four Step 1 commands at the end of `notebooks/recent_runs.txt` run QLoRA
+and quantized DoRA separately on each new catalogue, using
+`scripts/qwen-survey_posttraining.sh`. Each command uses two devices: one
+for a frozen-Qwen control and one for the adapter. These are independent
+comparison arms; the adapter itself trains on one device.
+
+DESI–LS uses native DR9 Tractor grz/W1/W2 fluxes and one-sigma errors, joined
+by integer TARGETID to the DR1 primary spectroscopic Z. GalaxiesML-Spectra
+uses its own HSC grizy cModel magnitudes and errors, converted to AB
+nanomaggies with zero point 22.5, and its native DESI_redshift. Both include
+EBV, retain missing measurements explicitly, and use the DR1 catalogue to
+exclude spectroscopic stars/quasars and poor redshift fits. No images or
+spectral pixels are loaded, and no band alignment or joint training is used.
+
+The documented uniform quality cut (ZWARN=0, COADD_FIBERSTATUS=0,
+DELTACHI2>40, at least three valid bands, finite spec-z in [0,4.5]) defines
+this training experiment; it is not the tracer-specific DESI LSS/OII
+success definition. HSC labels must also agree with the current primary
+DR1 redshift within 0.001(1+z). Duplicate imaging objects are removed.
+The source selection and all rejection/retention counts are saved in
+`prepared.json`. Training uses approximately 20/5/75 percent grouped
+train/validation/test splits, identical for QLoRA and DoRA within each
+catalogue. These are within-catalogue baselines; cross-survey transfer
+requires a later overlap audit and independent test design.
+
+Each run preserves the established ten-epoch, three-epoch head-warm-up
+protocol, validates that every serialized row fits the context window,
+saves resumable adapters and photo-z heads, and produces the standard
+loss/scatter/PIT/N(z)/tomographic comparison plots. Source, cohort, model,
+and run provenance checks prevent stale caches or incompatible resumes.
+A CPU-only data audit is available by appending
+`--prepare-only --skip-tokenizer-audit`; the actual training command
+requires a successful tokenizer audit. The project Pixi lock already
+contains fitsio and h5py; alternative environments need the
+`survey-posttraining` extra plus the existing Qwen runtime dependencies.
+
+The survey launcher resolves CUDA ordinals and MIG UUIDs to actual device UUIDs,
+holds per-device reservations for the run, and checks per-slice NVML memory
+before model loading (8 GiB free by default). Set `SURVEY_GPU_DEVICES` to an
+explicit comma-separated pair of MIG UUIDs to select individual slices. The
+updated assignments in `recent_runs.txt` preserve the two currently healthy
+runs and place the failed DESI–LS QLoRA retry on two idle slices. Reservations
+coordinate these launchers; cluster allocation and other users remain external.

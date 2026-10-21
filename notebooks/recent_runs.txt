@@ -196,3 +196,62 @@ AION_QLORA_RLVR_SOURCE_DIR=/arc/home/gsm/aion_output/figures/aion-qlora-e10 \
 AION_QLORA_RLVR_OUTPUT_DIR=/arc/home/gsm/aion_output/figures/aion-qlora_rlvr-e1 \
 AION_QLORA_RLVR_CHECKPOINT_DIR=/arc/projects/ots/Cosmic_Imprint_of_Time/rlvr_checkpoints/aion-qlora-rlvr-e1 \
 ./scripts/aion-qlora_rlvr_posttraining.sh
+
+# STEP 1: independent Qwen3.5-4B-Base supervised post-training (2026-10-20).
+# Four native-catalogue runs; no joint training or cross-catalogue band alignment.
+# DESI-LS inputs: LS DR9 Tractor grz + W1/W2 fluxes and one-sigma errors.
+# GalaxiesML-Spec inputs: HSC PDR2 grizy cModel photometry and errors, converted
+# from AB magnitudes to nanomaggies (zero point 22.5). EBV is included in both.
+# No images, spectra, photo-z labels, classification, or targeting flags as inputs.
+# Labels: DESI Z for DESI-LS; native DESI_redshift for GalaxiesML-Spec, checked
+# against the DR1 primary redshift. Both require SPECTYPE=GALAXY, ZWARN=0,
+# COADD_FIBERSTATUS=0, DELTACHI2>40, finite z in [0,4.5], and >=3 valid bands.
+# This is a uniform training quality cut, not the tracer-specific DESI LSS/OII cut.
+# Imaging duplicates are removed; deterministic grouped splits are ~20/5/75%
+# train/validation/test. QLoRA and DoRA reuse the exact same cohort per catalogue.
+# At most 300,000 galaxies per catalogue; GalaxiesML-Spec uses all qualifying
+# galaxies (its 134,533 source rows also contain non-galaxies that are excluded).
+# Each command uses TWO GPUs: frozen-Qwen control + adapter arm in parallel.
+# This is parallel comparison arms, not distributed adapter training.
+# MIG audit updated after the 2026-10-20 runtime collision. Seven slices are
+# accessible. Commands 2 and 3 are already running on four slices; leave them.
+# Command 1 now uses two previously idle slices and can run alongside 2 and 3.
+# Command 4 reuses command 3's pair AFTER command 3 finishes. All four pairs
+# would require eight slices; seven are available. One slice stays spare here.
+# UUID assignments are explicit; check availability again when launching later.
+# The launcher reserves actual UUIDs and requires >=8 GiB free per slice;
+# it rejects occupied pairs before model loading (including legacy active runs).
+# Protocol: NF4 double quantization, last non-padding-token pooling, 300 z bins,
+# 10 epochs (3 head-only + 7 joint), head LR=2e-4, adapter LR=1e-5,
+# microbatch=1, accumulation=16, rank=8, alpha=16, dropout=.05, q/k/v/o targets.
+# Preparation audits every text for truncation at max_length=512. Separate
+# output/checkpoint directories prevent method/catalogue resume collisions.
+# CPU data audit: append --prepare-only --skip-tokenizer-audit (no GPU/model run).
+
+# 1. RETRY QLoRA x DESI-LS: GPU 2 slice 1 + GPU 3 slice 0 (idle at audit).
+SURVEY_GPU_DEVICES=MIG-9c43b8e3-f3eb-566b-bdf8-74b3fa005f4d,MIG-d962ba4a-01b6-5721-80fd-beff8871efcc \
+SURVEY_MAX_ROWS=300000 \
+SURVEY_OUTPUT_DIR=/arc/home/gsm/aion_output/figures/qwen-desi-ls-qlora-specz-e10 \
+SURVEY_CHECKPOINT_DIR=/arc/projects/ots/Cosmic_Imprint_of_Time/qwen_survey_checkpoints/desi-ls-qlora-specz-e10 \
+./scripts/qwen-survey_posttraining.sh --catalogue-kind desi-ls --method qlora
+
+# 2. ALREADY RUNNING DoRA x DESI-LS: GPU 0 slice 0 + GPU 1 slice 0.
+SURVEY_GPU_DEVICES=MIG-af64bd5e-69e9-567f-a0f0-ef361218f0a6,MIG-5bd31563-e820-50d1-a416-e14721d5a628 \
+SURVEY_MAX_ROWS=300000 \
+SURVEY_OUTPUT_DIR=/arc/home/gsm/aion_output/figures/qwen-desi-ls-dora-specz-e10 \
+SURVEY_CHECKPOINT_DIR=/arc/projects/ots/Cosmic_Imprint_of_Time/qwen_survey_checkpoints/desi-ls-dora-specz-e10 \
+./scripts/qwen-survey_posttraining.sh --catalogue-kind desi-ls --method dora
+
+# 3. ALREADY RUNNING QLoRA x GalaxiesML-Spec: GPU 1 slice 1 + GPU 2 slice 0.
+SURVEY_GPU_DEVICES=MIG-19c37799-0407-566f-ba9f-2a1f12ad1ede,MIG-0a2e21a6-8961-56b1-9eb4-997ae914386e \
+SURVEY_MAX_ROWS=300000 \
+SURVEY_OUTPUT_DIR=/arc/home/gsm/aion_output/figures/qwen-galaxiesml-spec-qlora-specz-e10 \
+SURVEY_CHECKPOINT_DIR=/arc/projects/ots/Cosmic_Imprint_of_Time/qwen_survey_checkpoints/galaxiesml-spec-qlora-specz-e10 \
+./scripts/qwen-survey_posttraining.sh --catalogue-kind galaxiesml-spec --method qlora
+
+# 4. WAIT FOR COMMAND 3: DoRA x GalaxiesML-Spec, reusing its two slices.
+SURVEY_GPU_DEVICES=MIG-19c37799-0407-566f-ba9f-2a1f12ad1ede,MIG-0a2e21a6-8961-56b1-9eb4-997ae914386e \
+SURVEY_MAX_ROWS=300000 \
+SURVEY_OUTPUT_DIR=/arc/home/gsm/aion_output/figures/qwen-galaxiesml-spec-dora-specz-e10 \
+SURVEY_CHECKPOINT_DIR=/arc/projects/ots/Cosmic_Imprint_of_Time/qwen_survey_checkpoints/galaxiesml-spec-dora-specz-e10 \
+./scripts/qwen-survey_posttraining.sh --catalogue-kind galaxiesml-spec --method dora

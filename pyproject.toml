@@ -28,6 +28,10 @@ qwen-cuda = [
     "peft>=0.19,<0.20",
     "transformers>=4.57,<5",
 ]
+survey-posttraining = [
+    "fitsio>=1.4,<2",
+    "h5py>=3.11,<4",
+]
 evals = [
     "pydantic-evals>=2,<3",
 ]
