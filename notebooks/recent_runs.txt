@@ -249,9 +249,130 @@ SURVEY_OUTPUT_DIR=/arc/home/gsm/aion_output/figures/qwen-galaxiesml-spec-qlora-s
 SURVEY_CHECKPOINT_DIR=/arc/projects/ots/Cosmic_Imprint_of_Time/qwen_survey_checkpoints/galaxiesml-spec-qlora-specz-e10 \
 ./scripts/qwen-survey_posttraining.sh --catalogue-kind galaxiesml-spec --method qlora
 
-# 4. WAIT FOR COMMAND 3: DoRA x GalaxiesML-Spec, reusing its two slices.
-SURVEY_GPU_DEVICES=MIG-19c37799-0407-566f-ba9f-2a1f12ad1ede,MIG-0a2e21a6-8961-56b1-9eb4-997ae914386e \
+# 4. SEPARATE SESSION: DoRA x GalaxiesML-Spec on GPU 0 slice 0 + GPU 1 slice 0.
+SURVEY_GPU_DEVICES=MIG-c4d4e61c-1fd4-558d-83ac-7fa3a7ddb72e,MIG-602d54f2-c2e4-5e69-bb0a-c4877158ed11 \
 SURVEY_MAX_ROWS=300000 \
 SURVEY_OUTPUT_DIR=/arc/home/gsm/aion_output/figures/qwen-galaxiesml-spec-dora-specz-e10 \
 SURVEY_CHECKPOINT_DIR=/arc/projects/ots/Cosmic_Imprint_of_Time/qwen_survey_checkpoints/galaxiesml-spec-dora-specz-e10 \
 ./scripts/qwen-survey_posttraining.sh --catalogue-kind galaxiesml-spec --method dora
+
+# GLM-5.2-0.8B-A0.8B capacity checks (target_glm_1021.md): run in this order.
+# Both use GalaxiesML-Spec native photometry and DESI spectroscopic z as true z.
+# Same quality-selected, grouped cohort as the survey runs (seed 42, ~20/5/75 split).
+# One idle slice per command: GPU 2 slice 0 / GPU 3 slice 0 (2026-10-21 audit).
+# Append --prepare-only for a CPU cohort audit.
+
+# 1. Small-sample overfitting sanity check: 512 TRAIN objects, evaluated on themselves.
+# Current QLoRA configuration; 100 epochs (3 head-only + 97 joint).
+# This measures training fit only; no held-out validation/test objects are evaluated.
+CUDA_VISIBLE_DEVICES=MIG-bef01423-2506-5edb-a289-80c60b1f0297 \
+PYTORCH_ALLOC_CONF=backend:cudaMallocAsync \
+pixi run python -u notebooks/glm52_capacity_checks.py \
+    --check overfit --catalogue-kind galaxiesml-spec --train-objects 512 --epochs 100 \
+    --survey-prepared-json /arc/home/gsm/aion_output/figures/qwen-galaxiesml-spec-qlora-specz-e10/prepared.json \
+    --output-dir /arc/home/gsm/aion_output/figures/glm52-capacity-galaxiesml-spec-1021/overfit-n512
+
+# 2. Matched numeric MLP: same grizy fluxes/errors + EBV, spec-z labels, objects, and splits.
+# Uses 22,444 training objects, selects on 5,683 validation objects; 300 z bins in [0,4.5].
+# Training-only imputation/scaling plus missingness flags; 100 epochs; no test evaluation.
+CUDA_VISIBLE_DEVICES=MIG-412ff209-a29c-5bc8-9aa2-fd1a41474aec \
+PYTORCH_ALLOC_CONF=backend:cudaMallocAsync \
+pixi run python -u notebooks/glm52_capacity_checks.py \
+    --check numeric-mlp --catalogue-kind galaxiesml-spec --epochs 100 --mlp-batch-size 256 --mlp-learning-rate 1e-3 \
+    --survey-prepared-json /arc/home/gsm/aion_output/figures/qwen-galaxiesml-spec-qlora-specz-e10/prepared.json \
+    --output-dir /arc/home/gsm/aion_output/figures/glm52-capacity-galaxiesml-spec-1021/matched-numeric-mlp
+
+# 3. Numerical sensitivity: fixed GalaxiesML-Spec validation subset, inference only.
+# Run after the GLM check above saves result.pt, adapter/, and photoz_head.pt.
+# Uses the corrected-implementation 512-object GLM checkpoint; no full-cohort GLM claim.
+# Preserves native magnitude-to-flux conversion, saved preprocessing, and formatting.
+# Qwen: completed adapter if available, otherwise the saved frozen-Qwen + PDF-head control.
+# Writes report.md, diagnostic plots, per-pair CSV, and fixed-subset provenance.
+# CPU input audit: append --prepare-only. No retraining or held-out test evaluation.
+CUDA_VISIBLE_DEVICES=MIG-412ff209-a29c-5bc8-9aa2-fd1a41474aec \
+PYTORCH_ALLOC_CONF=backend:cudaMallocAsync \
+pixi run python -u notebooks/glm52_numerical_sensitivity.py \
+    --glm-run-dir /arc/home/gsm/aion_output/figures/glm52-capacity-galaxiesml-spec-1021/overfit-n512 \
+    --mlp-run-dir /arc/home/gsm/aion_output/figures/glm52-capacity-galaxiesml-spec-1021/matched-numeric-mlp \
+    --qwen-run-dir /arc/home/gsm/aion_output/figures/qwen-galaxiesml-spec-qlora-specz-e10 \
+    --survey-prepared-json /arc/home/gsm/aion_output/figures/qwen-galaxiesml-spec-qlora-specz-e10/prepared.json \
+    --sample-size 32 --seed 42 --mag-steps 0.0001 0.001 0.01 0.05 0.1 \
+    --output-dir /arc/home/gsm/aion_output/figures/glm52-numerical-sensitivity-galaxiesml-spec-1021
+
+# 4. Toy-pretrained vs randomly initialized GLM: GalaxiesML-Spec / DESI spec-z.
+# Matched heads, nested training subsets, fixed validation subset, and paired budgets.
+# Frozen-head + QLoRA screen: 128/512 training objects, 256 validation, 5 epochs.
+# Any >=5% relative CE or NMAD difference triggers paired repeats with seeds 43/44.
+# Small broader-tuning pair runs if memory permits: embeddings + all attention/dense/shared
+# MLP/router/norm parameters train; routed experts stay frozen in both initializations.
+# No held-out test evaluation. Writes report.md, curves, sample-efficiency plots, metrics.
+# CPU cohort/token audit only: append --prepare-only. Arms run sequentially on one slice.
+CUDA_VISIBLE_DEVICES=MIG-cf4217df-b565-5503-ab5d-9ec7cdbfe26a \
+PYTORCH_ALLOC_CONF=backend:cudaMallocAsync \
+pixi run python -u notebooks/glm52_pretraining_transfer.py \
+    --survey-prepared-json /arc/home/gsm/aion_output/figures/qwen-galaxiesml-spec-qlora-specz-e10/prepared.json \
+    --train-sizes 128 512 --val-objects 256 --epochs 5 \
+    --data-seed 42 --seed 42 --repeat-seeds 43 44 --promising-relative-difference 0.05 \
+    --microbatch-size 4 --effective-batch-size 16 \
+    --broad-backbone auto --broad-train-objects 128 --broad-epochs 3 \
+    --output-dir /arc/home/gsm/aion_output/figures/glm52-pretraining-transfer-galaxiesml-spec-1021
+
+
+
+# Qwen3.5-0.8B-Base: QLoRA / DoRA x GalaxiesML-Spec / DESI-Legacy / CLAUDS.
+# Fill in the blank GPU assignments before launching.
+# DESI-Legacy uses catalogue-kind desi-ls. Survey runs use two GPUs
+# (frozen,adapter); CLAUDS QLoRA uses two GPUs and CLAUDS DoRA uses one.
+# CLAUDS uses its existing photometry-only pipeline, not the survey spec-z pipeline.
+
+# 1. Qwen3.5-0.8B-Base QLoRA x GalaxiesML-Spec.
+SURVEY_GPU_DEVICES= \
+QWEN_MODEL=/arc/home/gsm/hf_models/Qwen3.5-0.8B-Base \
+SURVEY_MAX_ROWS=300000 \
+SURVEY_OUTPUT_DIR=/arc/home/gsm/aion_output/figures/qwen3.5-0.8b-galaxiesml-spec-qlora-specz-e10 \
+SURVEY_CHECKPOINT_DIR=/arc/projects/ots/Cosmic_Imprint_of_Time/qwen_survey_checkpoints/qwen3.5-0.8b-galaxiesml-spec-qlora-specz-e10 \
+./scripts/qwen-survey_posttraining.sh --catalogue-kind galaxiesml-spec --method qlora
+
+# 2. Qwen3.5-0.8B-Base DoRA x GalaxiesML-Spec.
+SURVEY_GPU_DEVICES= \
+QWEN_MODEL=/arc/home/gsm/hf_models/Qwen3.5-0.8B-Base \
+SURVEY_MAX_ROWS=300000 \
+SURVEY_OUTPUT_DIR=/arc/home/gsm/aion_output/figures/qwen3.5-0.8b-galaxiesml-spec-dora-specz-e10 \
+SURVEY_CHECKPOINT_DIR=/arc/projects/ots/Cosmic_Imprint_of_Time/qwen_survey_checkpoints/qwen3.5-0.8b-galaxiesml-spec-dora-specz-e10 \
+./scripts/qwen-survey_posttraining.sh --catalogue-kind galaxiesml-spec --method dora
+
+# 3. Qwen3.5-0.8B-Base QLoRA x DESI-Legacy.
+SURVEY_GPU_DEVICES= \
+QWEN_MODEL=/arc/home/gsm/hf_models/Qwen3.5-0.8B-Base \
+SURVEY_MAX_ROWS=300000 \
+SURVEY_OUTPUT_DIR=/arc/home/gsm/aion_output/figures/qwen3.5-0.8b-desi-ls-qlora-specz-e10 \
+SURVEY_CHECKPOINT_DIR=/arc/projects/ots/Cosmic_Imprint_of_Time/qwen_survey_checkpoints/qwen3.5-0.8b-desi-ls-qlora-specz-e10 \
+./scripts/qwen-survey_posttraining.sh --catalogue-kind desi-ls --method qlora
+
+# 4. Qwen3.5-0.8B-Base DoRA x DESI-Legacy.
+SURVEY_GPU_DEVICES= \
+QWEN_MODEL=/arc/home/gsm/hf_models/Qwen3.5-0.8B-Base \
+SURVEY_MAX_ROWS=300000 \
+SURVEY_OUTPUT_DIR=/arc/home/gsm/aion_output/figures/qwen3.5-0.8b-desi-ls-dora-specz-e10 \
+SURVEY_CHECKPOINT_DIR=/arc/projects/ots/Cosmic_Imprint_of_Time/qwen_survey_checkpoints/qwen3.5-0.8b-desi-ls-dora-specz-e10 \
+./scripts/qwen-survey_posttraining.sh --catalogue-kind desi-ls --method dora
+
+# 5. Qwen3.5-0.8B-Base QLoRA x CLAUDS.
+AION_QWEN_GPU_DEVICES= \
+QWEN_MODEL=/arc/home/gsm/hf_models/Qwen3.5-0.8B-Base \
+AION_MAX_ROWS=300000 \
+QLORA_EPOCHS=10 \
+QWEN_USE_MORPHOLOGY=0 \
+AION_OUTPUT_DIR=/arc/home/gsm/aion_output/figures/qwen3.5-0.8b-clauds-qlora-e10 \
+QLORA_CHECKPOINT_DIR=/arc/projects/ots/Cosmic_Imprint_of_Time/qlora_checkpoints/qwen3.5-0.8b-clauds-qlora-e10 \
+./scripts/qwen-qwen_posttraining_comparison_multigpu.sh
+
+# 6. Qwen3.5-0.8B-Base DoRA x CLAUDS.
+DORA_GPU_DEVICE= \
+QWEN_MODEL=/arc/home/gsm/hf_models/Qwen3.5-0.8B-Base \
+AION_MAX_ROWS=300000 \
+DORA_EPOCHS=10 \
+QWEN_USE_MORPHOLOGY=0 \
+DORA_OUTPUT_DIR=/arc/home/gsm/aion_output/figures/qwen3.5-0.8b-clauds-dora-e10 \
+DORA_CHECKPOINT_DIR=/arc/projects/ots/Cosmic_Imprint_of_Time/dora_checkpoints/qwen3.5-0.8b-clauds-dora-e10 \
+./scripts/qwen-dora_posttraining.sh
