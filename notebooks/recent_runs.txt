@@ -321,7 +321,7 @@ pixi run python -u notebooks/glm52_pretraining_transfer.py \
 
 # Qwen3.5-0.8B-Base: QLoRA / DoRA x GalaxiesML-Spec / DESI-Legacy / CLAUDS.
 # Runs 1/2 use four distinct idle slices in this session (2026-10-21 audit).
-# Fill in the remaining blank GPU assignments before launching runs 3–6.
+# Fill in the remaining blank GPU assignments before launching runs 3, 4, and 6.
 # DESI-Legacy uses catalogue-kind desi-ls. Survey runs use two GPUs
 # (frozen,adapter); CLAUDS QLoRA uses two GPUs and CLAUDS DoRA uses one.
 # CLAUDS uses its existing photometry-only pipeline, not the survey spec-z pipeline.
@@ -358,8 +358,8 @@ SURVEY_OUTPUT_DIR=/arc/home/gsm/aion_output/figures/qwen3.5-0.8b-desi-ls-dora-sp
 SURVEY_CHECKPOINT_DIR=/arc/projects/ots/Cosmic_Imprint_of_Time/qwen_survey_checkpoints/qwen3.5-0.8b-desi-ls-dora-specz-e10 \
 ./scripts/qwen-survey_posttraining.sh --catalogue-kind desi-ls --method dora
 
-# 5. Qwen3.5-0.8B-Base QLoRA x CLAUDS.
-AION_QWEN_GPU_DEVICES= \
+# 5. Qwen3.5-0.8B-Base QLoRA x CLAUDS: GPU 1 slice 1 + GPU 2 slice 0 (2026-10-23 audit).
+AION_QWEN_GPU_DEVICES=MIG-19c37799-0407-566f-ba9f-2a1f12ad1ede,MIG-0a2e21a6-8961-56b1-9eb4-997ae914386e \
 QWEN_MODEL=/arc/home/gsm/hf_models/Qwen3.5-0.8B-Base \
 AION_MAX_ROWS=300000 \
 QLORA_EPOCHS=10 \
