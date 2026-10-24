@@ -1,0 +1,33 @@
+{
+  "archived_metrics": {
+    "bias": 0.02849966287612915,
+    "catastrophic_outlier_fraction": 0.03125,
+    "cross_entropy": 2.1227493286132812,
+    "mean_crps": 0.02457878552377224,
+    "mean_log_score": 2.1227495670318604,
+    "median_bias": 0.0179882925003767,
+    "nmad": 0.019476069137454033,
+    "p16_p84_coverage": 0.71875,
+    "pit_mean": 0.4290516674518585
+  },
+  "checkpoint_update": 200,
+  "max_abs_logit_change_vs_original": 1.25,
+  "max_abs_logit_error": 0.0,
+  "max_abs_pdf_error": 0.0,
+  "metrics": {
+    "bias": 0.02849966287612915,
+    "catastrophic_outlier_fraction": 0.03125,
+    "cross_entropy": 2.1227493286132812,
+    "mean_crps": 0.02457878552377224,
+    "mean_log_score": 2.1227495670318604,
+    "median_bias": 0.0179882925003767,
+    "nmad": 0.019476069137454033,
+    "p16_p84_coverage": 0.71875,
+    "pit_mean": 0.4290516674518585
+  },
+  "n": 32,
+  "passed": true,
+  "same_trained_state_serial_vs_parallel": true,
+  "selection_used": false,
+  "test_evaluated": false
+}

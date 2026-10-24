@@ -1,0 +1,72 @@
+{
+  "effective_batch_size": 16,
+  "evaluation_gpus": [
+    "MIG-bef01423-2506-5edb-a289-80c60b1f0297",
+    "MIG-412ff209-a29c-5bc8-9aa2-fd1a41474aec"
+  ],
+  "evaluations": [
+    {
+      "batch_size": 8,
+      "n": 32,
+      "same_original_batch_grouping": true,
+      "seconds": 2.2225722204893827,
+      "sequence": 1,
+      "worker_peak_allocated_gib": [
+        4.743676662445068,
+        4.744542121887207
+      ],
+      "workers": 2
+    },
+    {
+      "batch_size": 8,
+      "n": 5683,
+      "same_original_batch_grouping": true,
+      "seconds": 233.10154006816447,
+      "sequence": 2,
+      "worker_peak_allocated_gib": [
+        4.652151584625244,
+        4.652151584625244
+      ],
+      "workers": 2
+    },
+    {
+      "batch_size": 8,
+      "n": 5683,
+      "same_original_batch_grouping": true,
+      "seconds": 233.06800839863718,
+      "sequence": 3,
+      "worker_peak_allocated_gib": [
+        4.652151584625244,
+        4.652151584625244
+      ],
+      "workers": 2
+    },
+    {
+      "batch_size": 8,
+      "n": 5683,
+      "same_original_batch_grouping": true,
+      "seconds": 233.09360334463418,
+      "sequence": 4,
+      "worker_peak_allocated_gib": [
+        4.652151584625244,
+        4.652151584625244
+      ],
+      "workers": 2
+    },
+    {
+      "batch_size": 8,
+      "n": 5683,
+      "same_original_batch_grouping": true,
+      "seconds": 232.88178734481335,
+      "sequence": 5,
+      "worker_peak_allocated_gib": [
+        4.652151584625244,
+        4.652151584625244
+      ],
+      "workers": 2
+    }
+  ],
+  "optimization_unchanged": true,
+  "training_gpus": 1,
+  "transport": "CPU checkpoint files; no MIG peer access"
+}

@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/scratch/RedFM_MLP/.pixi/envs/default/bin/python",
+    "/scratch/RedFM_MLP/notebooks/qwen_filter_parallel.py",
+    "--stage",
+    "migrate",
+    "--gpu",
+    "MIG-a9b1fb4a-5c28-5b03-9686-f831c6facf25",
+    "--eval-gpus",
+    "MIG-bef01423-2506-5edb-a289-80c60b1f0297,MIG-412ff209-a29c-5bc8-9aa2-fd1a41474aec",
+    "--min-update",
+    "250"
+  ],
+  "launched_utc": "2026-10-23T09:34:12.777618+00:00",
+  "pid": 480191
+}

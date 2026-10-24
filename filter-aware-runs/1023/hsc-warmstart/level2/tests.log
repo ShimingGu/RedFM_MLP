@@ -1,0 +1,13 @@
+...................................................                      [100%]
+=============================== warnings summary ===============================
+.pixi/envs/default/lib/python3.13/site-packages/torch/jit/_script.py:362: 14 warnings
+  /scratch/RedFM_MLP/.pixi/envs/default/lib/python3.13/site-packages/torch/jit/_script.py:362: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+    warnings.warn(
+
+tests/test_filter_photometry.py::test_trainer_none_test_dataset_does_not_evaluate_or_report_test
+  /scratch/RedFM_MLP/aion_magnitude/qwen_posttraining.py:634: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+  Consider using tensor.detach() first. (Triggered internally at /home/conda/feedstock_root/build_artifacts/libtorch_1780240372025/work/torch/csrc/autograd/generated/python_variable_methods.cpp:836.)
+    f"loss={float(loss):.4f} "
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+51 passed, 15 warnings in 10.58s

@@ -1,0 +1,13 @@
+{
+  "A_phase": "training",
+  "A_update": 180,
+  "B_phase": "queued",
+  "C_phase": "queued",
+  "code_and_input_hashes_verified": true,
+  "durable_C_pid": 470768,
+  "predecessor": {
+    "pid": 458636,
+    "start_ticks": "1421183268"
+  },
+  "verified_utc": "2026-10-23T09:10:14.248317+00:00"
+}

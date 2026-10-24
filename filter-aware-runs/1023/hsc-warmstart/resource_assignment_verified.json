@@ -1,0 +1,22 @@
+{
+  "B_queued": true,
+  "C_queued": true,
+  "active_arm": "A",
+  "all_three_gpu_locks_held": true,
+  "evaluation_workers": [
+    {
+      "gpu": "bef01423-2506-5edb-a289-80c60b1f0297",
+      "inference_only": true,
+      "pid": 483631
+    },
+    {
+      "gpu": "412ff209-a29c-5bc8-9aa2-fd1a41474aec",
+      "inference_only": true,
+      "pid": 483632
+    }
+  ],
+  "last_validation_update": 250,
+  "resumed_update": 250,
+  "scientific_manifests_and_input_hashes_unchanged": true,
+  "verified_utc": "2026-10-23T09:43:30.083062+00:00"
+}

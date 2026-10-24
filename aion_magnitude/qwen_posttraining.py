@@ -446,7 +446,7 @@ def train_qlora_photoz(
     *,
     train_dataset: TextRedshiftDataset,
     val_dataset: TextRedshiftDataset,
-    test_dataset: TextRedshiftDataset,
+    test_dataset: TextRedshiftDataset | None,
     output_dir: str | Path,
     config: QwenPosttrainingConfig,
     checkpoint_dir: str | Path | None = None,
@@ -454,7 +454,7 @@ def train_qlora_photoz(
     resume: bool = True,
     use_dora: bool = False,
 ) -> dict[str, Any]:
-    """Jointly train QLoRA/DoRA adapters and the photo-z head with binned CE."""
+    """Train adapters/head with binned CE; None leaves held-out tests untouched."""
     config = config.normalized()
     use_dora = bool(use_dora)
     method_label = "DoRA" if use_dora else "QLoRA"
@@ -470,7 +470,7 @@ def train_qlora_photoz(
         shuffle=False,
         collate_fn=collate,
     )
-    test_loader = DataLoader(
+    test_loader = None if test_dataset is None else DataLoader(
         test_dataset,
         batch_size=config.eval_batch_size,
         shuffle=False,
@@ -559,7 +559,7 @@ def train_qlora_photoz(
                 )
             if saved.get("config") != asdict(config):
                 raise ValueError(f"QLoRA checkpoint configuration does not match: {candidates[-1]}")
-            expected_sizes = (len(train_dataset), len(val_dataset), len(test_dataset))
+            expected_sizes = (len(train_dataset), len(val_dataset), 0 if test_dataset is None else len(test_dataset))
             if tuple(saved.get("dataset_sizes", ())) != expected_sizes:
                 raise ValueError(f"QLoRA checkpoint dataset sizes do not match: {candidates[-1]}")
             _load_trainable_state(model, saved["trainable_state"])
@@ -642,7 +642,7 @@ def train_qlora_photoz(
                         config=asdict(config),
                         use_dora=use_dora,
                         method_label=method_label,
-                        dataset_sizes=(len(train_dataset), len(val_dataset), len(test_dataset)),
+                        dataset_sizes=(len(train_dataset), len(val_dataset), 0 if test_dataset is None else len(test_dataset)),
                         epoch=epoch,
                         next_batch_index=batch_index + 1,
                         global_update=global_update,
@@ -706,7 +706,7 @@ def train_qlora_photoz(
         redshift_edges=redshift_edges,
         redshift_centers=redshift_centers,
     )
-    test_evaluation = evaluate_text_photoz_model(
+    test_evaluation = None if test_loader is None else evaluate_text_photoz_model(
         model,
         test_loader,
         device=device,
@@ -723,10 +723,10 @@ def train_qlora_photoz(
         "history": history,
         "final_metrics": {
             "val": summarize_pdf_metrics(val_evaluation),
-            "test": summarize_pdf_metrics(test_evaluation),
+            **({"test": summarize_pdf_metrics(test_evaluation)} if test_evaluation is not None else {}),
         },
         "val_evaluation": val_evaluation,
-        "test_evaluation": test_evaluation,
+        **({"test_evaluation": test_evaluation} if test_evaluation is not None else {}),
         "metadata": {
             "posttraining_method": f"{method_slug}_direct_photoz_cross_entropy",
             "pooling": config.pooling,
@@ -738,6 +738,7 @@ def train_qlora_photoz(
             **trainable_parameter_summary(model),
             "adapter_dir": str(adapter_dir),
             "head_checkpoint": str(output_dir / "photoz_head.pt"),
+            "test_evaluated": test_evaluation is not None,
         },
     }
     torch.save(result, output_dir / "result.pt")

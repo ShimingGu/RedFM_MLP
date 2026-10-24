@@ -1,0 +1,815 @@
+{
+  "groups": {
+    "2715043695165443": "ls:9010:345468:461",
+    "39627484932606719": "ls:9010:258891:2815",
+    "39627485695971229": "ls:9010:259073:3997",
+    "39627509687386294": "ls:9010:264793:182",
+    "39627520861021297": "ls:9010:267457:9329",
+    "39627531829121772": "ls:9010:270072:4844",
+    "39627549742995421": "ls:9010:274343:6109",
+    "39627567501677279": "ls:9010:278577:4831",
+    "39627571121358345": "ls:9010:279440:1545",
+    "39627574988508787": "ls:9010:280362:3699",
+    "39627581187691694": "ls:9010:281840:5294",
+    "39627583117068747": "ls:9010:282300:2507",
+    "39627583737823802": "ls:9010:282448:570",
+    "39627607410475817": "ls:9010:288092:809",
+    "39627611176964215": "ls:9010:288990:4215",
+    "39627612426863743": "ls:9010:289288:1151",
+    "39627612615606529": "ls:9010:289333:257",
+    "39627617036406124": "ls:9010:290387:3436",
+    "39627623088784321": "ls:9010:291830:961",
+    "39627624741342055": "ls:9010:292224:2919",
+    "39627624749728443": "ls:9010:292226:699",
+    "39627625227881036": "ls:9010:292340:2636",
+    "39627630365901078": "ls:9010:293565:278",
+    "39627630634338656": "ls:9010:293629:2400",
+    "39627633255777393": "ls:9010:294254:1137",
+    "39627634686042785": "ls:9010:294595:8865",
+    "39627635168382292": "ls:9010:294710:3412",
+    "39627636875462333": "ls:9010:295117:1725",
+    "39627637483639616": "ls:9010:295262:4928",
+    "39627639291382661": "ls:9010:295693:2949",
+    "39627654483151505": "ls:9010:299315:2705",
+    "39627654944523330": "ls:9010:299425:1090",
+    "39627657607907997": "ls:9010:300060:2717",
+    "39627658329328452": "ls:9010:300232:2884",
+    "39627667649074277": "ls:9010:302454:5221",
+    "39627672837427949": "ls:9010:303691:4845",
+    "39627673634341258": "ls:9010:303881:394",
+    "39627673697259132": "ls:9010:303896:3708",
+    "39627678256468118": "ls:9010:304983:4246",
+    "39627679464424922": "ls:9010:305271:1498",
+    "39627679837716556": "ls:9010:305360:76",
+    "39627697164387058": "ls:9010:309491:754",
+    "39627702931554511": "ls:9010:310866:207",
+    "39627708900051938": "ls:9010:312289:3042",
+    "39627715518664119": "ls:9010:313867:3511",
+    "39627717733257367": "ls:9010:314395:4247",
+    "39627718341427951": "ls:9010:314540:751",
+    "39627719486477202": "ls:9010:314813:5010",
+    "39627721038368546": "ls:9010:315183:3874",
+    "39627722070167202": "ls:9010:315429:3746",
+    "39627724209260468": "ls:9010:315939:1972",
+    "39627726625177667": "ls:9010:316515:67",
+    "39627727698925449": "ls:9010:316771:6025",
+    "39627733126350586": "ls:9010:318065:1786",
+    "39627734070070929": "ls:9010:318290:3729",
+    "39627735877819117": "ls:9010:318721:6893",
+    "39627737211603959": "ls:9010:319039:3063",
+    "39627745545684065": "ls:9010:321026:1121",
+    "39627753825244596": "ls:9010:323000:5556",
+    "39627757239403872": "ls:9010:323814:1376",
+    "39627757650447208": "ls:9010:323912:2920",
+    "39627757834998118": "ls:9010:323956:4454",
+    "39627766487848876": "ls:9010:326019:6060",
+    "39627769797153774": "ls:9010:326808:5102",
+    "39627769948144958": "ls:9010:326844:1342",
+    "39627770073974480": "ls:9010:326874:1744",
+    "39627772640889391": "ls:9010:327486:2607",
+    "39627776038274678": "ls:9010:328296:1654",
+    "39627781750917471": "ls:9010:329658:2399",
+    "39627782707218127": "ls:9010:329886:1743",
+    "39627784460440950": "ls:9010:330304:5494",
+    "39627790542179178": "ls:9010:331754:2922",
+    "39627791506867455": "ls:9010:331984:1279",
+    "39627793897623126": "ls:9010:332554:3670",
+    "39627793994090389": "ls:9010:332577:1941",
+    "39627794044423461": "ls:9010:332589:3365",
+    "39627796435181941": "ls:9010:333159:8565",
+    "39627803259312067": "ls:9010:334786:6083",
+    "39627806040132685": "ls:9010:335449:3149",
+    "39627809265555927": "ls:9010:336218:6615",
+    "39627809345248428": "ls:9010:336237:7340",
+    "39627811043938083": "ls:9010:336642:3875",
+    "39627818149085470": "ls:9010:338336:286",
+    "39627821135439217": "ls:9010:339048:9585",
+    "39627823928839863": "ls:9010:339714:3767",
+    "39627824490876862": "ls:9010:339848:4030",
+    "39627829150745231": "ls:9010:340959:655",
+    "39627830014774061": "ls:9010:341165:2861",
+    "39627830757167497": "ls:9010:341342:4489",
+    "39627831113681807": "ls:9010:341427:2959",
+    "39627832581688108": "ls:9010:341777:2860",
+    "39627835303791439": "ls:9010:342426:2895",
+    "39627842866120846": "ls:9010:344229:2190",
+    "39627845756000604": "ls:9010:344918:6492",
+    "39627848692008203": "ls:9010:345618:1291",
+    "39627853460933269": "ls:9010:346755:2709",
+    "39627853855197421": "ls:9010:346849:2285",
+    "39627854228489198": "ls:9010:346938:1006",
+    "39627856996729349": "ls:9010:347598:517",
+    "39627860016630276": "ls:9010:348318:2564",
+    "39627860209566700": "ls:9010:348364:1004",
+    "39627861186839982": "ls:9010:348597:1454",
+    "39627875141288757": "ls:9010:351924:821",
+    "39627879226540137": "ls:9010:352898:105",
+    "39627879226540902": "ls:9010:352898:870",
+    "39627881013317684": "ls:9010:353324:4148",
+    "39627882036726118": "ls:9010:353568:2406",
+    "39627884033215260": "ls:9010:354044:2844",
+    "39627890664411377": "ls:9010:355625:4337",
+    "39627895533996714": "ls:9010:356786:2730",
+    "39627901745761624": "ls:9010:358267:3416",
+    "39627905822626481": "ls:9010:359239:4785",
+    "39627907575844450": "ls:9010:359657:3682",
+    "39627915280779847": "ls:9010:361494:2631",
+    "39627917801557351": "ls:9010:362095:3431",
+    "39627933412759277": "ls:9010:365817:5869",
+    "39627933651834998": "ls:9010:365874:6262",
+    "39627945345549975": "ls:9010:368662:1687",
+    "39627946985525289": "ls:9010:369053:4137",
+    "39627948130568803": "ls:9010:369326:2659",
+    "39627949686656894": "ls:9010:369697:3966",
+    "39627951767034659": "ls:9010:370193:6947",
+    "39627959299998444": "ls:9010:371989:748",
+    "39627963540442010": "ls:9010:373000:2970",
+    "39627968158368553": "ls:9010:374101:809",
+    "39627970838532406": "ls:9010:374740:4406",
+    "39627975569708214": "ls:9010:375868:5302",
+    "39627978103062680": "ls:9010:376472:152",
+    "39627981789860199": "ls:9010:377351:4455",
+    "39627992783129040": "ls:9010:379972:2512",
+    "39627993718459923": "ls:9010:380195:3603",
+    "39627999682757026": "ls:9010:381617:418",
+    "39628007458997444": "ls:9010:383471:1220",
+    "39628029021913579": "ls:9010:388612:491",
+    "39628033685982884": "ls:9010:389724:3748",
+    "39628039897747585": "ls:9010:391205:4225",
+    "39628040879210890": "ls:9010:391439:394",
+    "39628042867312844": "ls:9010:391913:2252",
+    "39628058927305541": "ls:9010:395742:4933",
+    "39628066334442921": "ls:9010:397508:1449",
+    "39628071078199931": "ls:9010:398639:635",
+    "39628080846738388": "ls:9010:400968:5076",
+    "39628131048358985": "ls:9010:412937:1097",
+    "39628137524365714": "ls:9010:414481:2450",
+    "39628147540366870": "ls:9010:416869:5654",
+    "39628149478133075": "ls:9010:417331:3411",
+    "39628155014612975": "ls:9010:418651:2031",
+    "39628158562995859": "ls:9010:419497:3731",
+    "39628160534320827": "ls:9010:419967:5819",
+    "39628176795634443": "ls:9010:423844:2827",
+    "39628207816707287": "ls:9010:431240:3287",
+    "39628211448975298": "ls:9010:432106:4034",
+    "39628217199367962": "ls:9010:433477:5914",
+    "39628222979119988": "ls:9010:434855:7028",
+    "39628228641426218": "ls:9010:436205:2858",
+    "39628253748529066": "ls:9010:442191:1962",
+    "39628273931521683": "ls:9010:447003:3731",
+    "39628276200638873": "ls:9010:447544:2457",
+    "39628283335150984": "ls:9010:449245:3464",
+    "39628285453272191": "ls:9010:449750:1151",
+    "39628287013553498": "ls:9010:450122:1370",
+    "39628304071786725": "ls:9010:454189:229",
+    "39628309218203289": "ls:9010:455416:5785",
+    "39628318789602775": "ls:9010:457698:3543",
+    "39628324867147611": "ls:9010:459147:1883",
+    "39628346845302447": "ls:9010:464387:3759",
+    "39628362813016216": "ls:9010:468194:2200",
+    "39628369008004996": "ls:9010:469671:3972",
+    "39628369242889533": "ls:9010:469727:7485",
+    "39628374309605183": "ls:9010:470935:3903",
+    "39628375785997545": "ls:9010:471287:1257",
+    "39628390491227368": "ls:9010:474793:1256",
+    "39628390910659064": "ls:9010:474893:2552",
+    "39628401664852441": "ls:9010:477457:473",
+    "39628403040584490": "ls:9010:477785:810",
+    "39628405246788380": "ls:9010:478311:796",
+    "39628405884322008": "ls:9010:478463:216",
+    "39628424771273382": "ls:9010:482966:678",
+    "39628442794197444": "ls:9010:487263:452",
+    "39628458757721856": "ls:9010:491069:3840",
+    "39628471231582475": "ls:9010:494043:4363",
+    "39628476336047044": "ls:9010:495260:964",
+    "39628492068881829": "ls:9010:499011:1445",
+    "39628492517672202": "ls:9010:499118:1290",
+    "39628495713731712": "ls:9010:499880:1152",
+    "39628502818882411": "ls:9010:501574:875",
+    "39628505993973048": "ls:9010:502331:3384",
+    "39628514969782804": "ls:9010:504471:2580",
+    "39628516785917947": "ls:9010:504904:4091",
+    "39628517792548893": "ls:9010:505144:2077",
+    "39628518316840959": "ls:9010:505269:6143",
+    "39628544933888622": "ls:9010:511615:622",
+    "39632930774977124": "ls:9011:508705:2660",
+    "39632931517366430": "ls:9011:508882:158",
+    "39632936017857146": "ls:9011:509955:2682",
+    "39632939847254076": "ls:9011:510868:60",
+    "39632955882081269": "ls:9011:514691:3061",
+    "39632956293120683": "ls:9011:514789:683",
+    "39632956595113496": "ls:9011:514861:3608",
+    "39632960017663214": "ls:9011:515677:1262",
+    "39632964920806669": "ls:9011:516846:3341",
+    "39632965847745421": "ls:9011:517067:909",
+    "39632966455920588": "ls:9011:517212:1996",
+    "39632971384228661": "ls:9011:518387:2869",
+    "39632976681632130": "ls:9011:519650:386",
+    "39632977151396063": "ls:9011:519762:2271",
+    "39632981735771282": "ls:9011:520855:3218",
+    "39632985640666397": "ls:9011:521786:1309",
+    "39632991189730428": "ls:9011:523109:1148",
+    "39632991336531553": "ls:9011:523144:1633",
+    "39633010131207222": "ls:9011:527625:1078",
+    "39633010508694088": "ls:9011:527715:584",
+    "39633010764548910": "ls:9011:527776:2862",
+    "39633015919348055": "ls:9011:529005:2391",
+    "39633024995821912": "ls:9011:531169:2392",
+    "39633025620772872": "ls:9011:531318:2056",
+    "39633026019230304": "ls:9011:531413:608",
+    "39633038795082706": "ls:9011:534459:3026",
+    "39633062828445100": "ls:9011:540189:3500",
+    "39633077558839333": "ls:9011:543701:2085",
+    "39633090833812186": "ls:9011:546866:2778",
+    "39633091941109572": "ls:9011:547130:3908",
+    "39633113906677511": "ls:9011:552367:1799",
+    "39633127387168874": "ls:9011:555581:106",
+    "39633127408142577": "ls:9011:555586:2289",
+    "39633127898877662": "ls:9011:555703:3806",
+    "39633152691406194": "ls:9011:561614:1394",
+    "39633156994761656": "ls:9011:562640:952",
+    "39633166717159945": "ls:9011:564958:2569",
+    "39633169976131880": "ls:9011:565735:296",
+    "39633190763105949": "ls:9011:570691:3741",
+    "39633192025588606": "ls:9011:570992:894",
+    "39633203673172720": "ls:9011:573769:2800",
+    "39633212615428759": "ls:9011:575901:2711",
+    "39633224242039774": "ls:9011:578673:3038",
+    "39633227656203119": "ls:9011:579487:2927",
+    "39633240415276951": "ls:9011:582529:3991",
+    "39633260619237700": "ls:9011:587346:2372",
+    "39633285831198795": "ls:9011:593357:2123",
+    "39633297986291284": "ls:9011:596255:1620",
+    "39633322036431116": "ls:9011:601989:2316",
+    "39633351664995754": "ls:9011:609053:3498",
+    "39633355506978237": "ls:9011:609969:3517",
+    "39633372405826508": "ls:9011:613998:972",
+    "39633380312091704": "ls:9011:615883:3128",
+    "39633399844966629": "ls:9011:620540:4325",
+    "39633409999375783": "ls:9011:622961:3495",
+    "39633426877255328": "ls:9011:626985:3744",
+    "39633429364478653": "ls:9011:627578:4797",
+    "39633441171440642": "ls:9011:630393:1026",
+    "39633453913738912": "ls:9011:633431:3744",
+    "39633480677593078": "ls:9011:639812:4086",
+    "39633502278258548": "ls:9011:644962:3956",
+    "39633532179450524": "ls:9011:652091:2716",
+    "39633536562496856": "ls:9011:653136:1368",
+    "39636447866654221": "ls:9012:298669:3597"
+  },
+  "query_manifest_sha256": "d12d0c89bbcca134bb7adda0e341c858f1bed15c8836005f543686af959ec055",
+  "sources": [
+    {
+      "bytes": 283049280,
+      "mtime_ns": 1792475339367694224,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp000-iron.fits"
+    },
+    {
+      "bytes": 398750400,
+      "mtime_ns": 1792475342572697713,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp002-iron.fits"
+    },
+    {
+      "bytes": 84035520,
+      "mtime_ns": 1792475336954691598,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp003-iron.fits"
+    },
+    {
+      "bytes": 317589120,
+      "mtime_ns": 1792475340145695071,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp008-iron.fits"
+    },
+    {
+      "bytes": 9023040,
+      "mtime_ns": 1792475331084685209,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp009-iron.fits"
+    },
+    {
+      "bytes": 15543360,
+      "mtime_ns": 1792475331288685431,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp010-iron.fits"
+    },
+    {
+      "bytes": 752316480,
+      "mtime_ns": 1792475352813708860,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp016-iron.fits"
+    },
+    {
+      "bytes": 139587840,
+      "mtime_ns": 1792475336478691080,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp017-iron.fits"
+    },
+    {
+      "bytes": 726399360,
+      "mtime_ns": 1792475356321712678,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp018-iron.fits"
+    },
+    {
+      "bytes": 260841600,
+      "mtime_ns": 1792475347709703304,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp019-iron.fits"
+    },
+    {
+      "bytes": 247893120,
+      "mtime_ns": 1792475347048702585,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp020-iron.fits"
+    },
+    {
+      "bytes": 404962560,
+      "mtime_ns": 1792475352379708387,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp021-iron.fits"
+    },
+    {
+      "bytes": 290422080,
+      "mtime_ns": 1792475352726708765,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp022-iron.fits"
+    },
+    {
+      "bytes": 457274880,
+      "mtime_ns": 1792475359666716319,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp023-iron.fits"
+    },
+    {
+      "bytes": 635028480,
+      "mtime_ns": 1792475365358722514,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp024-iron.fits"
+    },
+    {
+      "bytes": 414207360,
+      "mtime_ns": 1792475365001722126,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp025-iron.fits"
+    },
+    {
+      "bytes": 166616640,
+      "mtime_ns": 1792475358038714547,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp026-iron.fits"
+    },
+    {
+      "bytes": 371854080,
+      "mtime_ns": 1792475364779721884,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp027-iron.fits"
+    },
+    {
+      "bytes": 263816640,
+      "mtime_ns": 1792475365162722301,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp028-iron.fits"
+    },
+    {
+      "bytes": 428639040,
+      "mtime_ns": 1792475371901729636,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp029-iron.fits"
+    },
+    {
+      "bytes": 374160960,
+      "mtime_ns": 1792475371516729217,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp030-iron.fits"
+    },
+    {
+      "bytes": 343010880,
+      "mtime_ns": 1792475376762734927,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp031-iron.fits"
+    },
+    {
+      "bytes": 859253760,
+      "mtime_ns": 1792475393292751677,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp032-iron.fits"
+    },
+    {
+      "bytes": 653428800,
+      "mtime_ns": 1792475387303745671,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp033-iron.fits"
+    },
+    {
+      "bytes": 139446720,
+      "mtime_ns": 1792475372135729891,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp034-iron.fits"
+    },
+    {
+      "bytes": 1019793600,
+      "mtime_ns": 1792475403931762348,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp035-iron.fits"
+    },
+    {
+      "bytes": 1238690880,
+      "mtime_ns": 1792475410248768683,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp036-iron.fits"
+    },
+    {
+      "bytes": 607956480,
+      "mtime_ns": 1792475392387750770,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp037-iron.fits"
+    },
+    {
+      "bytes": 956871360,
+      "mtime_ns": 1792475406420764844,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp038-iron.fits"
+    },
+    {
+      "bytes": 490158720,
+      "mtime_ns": 1792475403000761414,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp039-iron.fits"
+    },
+    {
+      "bytes": 724680000,
+      "mtime_ns": 1792475414053772499,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp040-iron.fits"
+    },
+    {
+      "bytes": 992324160,
+      "mtime_ns": 1792475423536782010,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp041-iron.fits"
+    },
+    {
+      "bytes": 516983040,
+      "mtime_ns": 1792475417992776450,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp042-iron.fits"
+    },
+    {
+      "bytes": 733968000,
+      "mtime_ns": 1792475426707785190,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp043-iron.fits"
+    },
+    {
+      "bytes": 274420800,
+      "mtime_ns": 1792475415398773848,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp044-iron.fits"
+    },
+    {
+      "bytes": 149843520,
+      "mtime_ns": 1792475417517775973,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp045-iron.fits"
+    },
+    {
+      "bytes": 212987520,
+      "mtime_ns": 1792475421725780194,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp046-iron.fits"
+    },
+    {
+      "bytes": 65494080,
+      "mtime_ns": 1792475417870776327,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp047-iron.fits"
+    },
+    {
+      "bytes": 453767040,
+      "mtime_ns": 1792475431656790154,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp048-iron.fits"
+    },
+    {
+      "bytes": 265602240,
+      "mtime_ns": 1792475426604785087,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp049-iron.fits"
+    },
+    {
+      "bytes": 393203520,
+      "mtime_ns": 1792475431860790358,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp052-iron.fits"
+    },
+    {
+      "bytes": 16090560,
+      "mtime_ns": 1792475422710781182,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp053-iron.fits"
+    },
+    {
+      "bytes": 274276800,
+      "mtime_ns": 1792475430960789456,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp058-iron.fits"
+    },
+    {
+      "bytes": 290586240,
+      "mtime_ns": 1792475433647792151,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp059-iron.fits"
+    },
+    {
+      "bytes": 262650240,
+      "mtime_ns": 1792475435209793717,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp062-iron.fits"
+    },
+    {
+      "bytes": 3680640,
+      "mtime_ns": 1792475427910786397,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp063-iron.fits"
+    },
+    {
+      "bytes": 49815360,
+      "mtime_ns": 1792475430910789406,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp065-iron.fits"
+    },
+    {
+      "bytes": 23025600,
+      "mtime_ns": 1792475431920790419,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp066-iron.fits"
+    },
+    {
+      "bytes": 260340480,
+      "mtime_ns": 1792475439869798391,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp067-iron.fits"
+    },
+    {
+      "bytes": 359424000,
+      "mtime_ns": 1792475444091802625,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp068-iron.fits"
+    },
+    {
+      "bytes": 937186560,
+      "mtime_ns": 1792475461777820363,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp069-iron.fits"
+    },
+    {
+      "bytes": 591937920,
+      "mtime_ns": 1792475452117810675,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp070-iron.fits"
+    },
+    {
+      "bytes": 668203200,
+      "mtime_ns": 1792475455818814387,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp071-iron.fits"
+    },
+    {
+      "bytes": 274423680,
+      "mtime_ns": 1792475445899804439,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp072-iron.fits"
+    },
+    {
+      "bytes": 672209280,
+      "mtime_ns": 1792475461378819963,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp073-iron.fits"
+    },
+    {
+      "bytes": 884736000,
+      "mtime_ns": 1792475466491825091,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp074-iron.fits"
+    },
+    {
+      "bytes": 494147520,
+      "mtime_ns": 1792475461548820134,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp075-iron.fits"
+    },
+    {
+      "bytes": 548542080,
+      "mtime_ns": 1792475465891824489,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp076-iron.fits"
+    },
+    {
+      "bytes": 408309120,
+      "mtime_ns": 1792475465999824597,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp077-iron.fits"
+    },
+    {
+      "bytes": 371684160,
+      "mtime_ns": 1792475468763827370,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp078-iron.fits"
+    },
+    {
+      "bytes": 212618880,
+      "mtime_ns": 1792475466442825042,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp079-iron.fits"
+    },
+    {
+      "bytes": 15664320,
+      "mtime_ns": 1792475463480822071,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp080-iron.fits"
+    },
+    {
+      "bytes": 24825600,
+      "mtime_ns": 1792475467526826129,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp082-iron.fits"
+    },
+    {
+      "bytes": 69120,
+      "mtime_ns": 1792475466591825191,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp084-iron.fits"
+    },
+    {
+      "bytes": 723643200,
+      "mtime_ns": 1792475486936845596,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp085-iron.fits"
+    },
+    {
+      "bytes": 101908800,
+      "mtime_ns": 1792475469371827979,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp087-iron.fits"
+    },
+    {
+      "bytes": 807540480,
+      "mtime_ns": 1792475489330847997,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp088-iron.fits"
+    },
+    {
+      "bytes": 135051840,
+      "mtime_ns": 1792475472661831279,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp089-iron.fits"
+    },
+    {
+      "bytes": 467219520,
+      "mtime_ns": 1792475481246839889,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp090-iron.fits"
+    },
+    {
+      "bytes": 9973440,
+      "mtime_ns": 1792475469650828259,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp091-iron.fits"
+    },
+    {
+      "bytes": 2759040,
+      "mtime_ns": 1792475469753828362,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp093-iron.fits"
+    },
+    {
+      "bytes": 146880,
+      "mtime_ns": 1792475469839828449,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp098-iron.fits"
+    },
+    {
+      "bytes": 541128960,
+      "mtime_ns": 1792475486755845414,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp099-iron.fits"
+    },
+    {
+      "bytes": 524640960,
+      "mtime_ns": 1792475485414844070,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp100-iron.fits"
+    },
+    {
+      "bytes": 2105585280,
+      "mtime_ns": 1792475535200894001,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp101-iron.fits"
+    },
+    {
+      "bytes": 1752289920,
+      "mtime_ns": 1792475535673894476,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp102-iron.fits"
+    },
+    {
+      "bytes": 687611520,
+      "mtime_ns": 1792475506441865158,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp103-iron.fits"
+    },
+    {
+      "bytes": 618431040,
+      "mtime_ns": 1792475506240864957,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp104-iron.fits"
+    },
+    {
+      "bytes": 1677905280,
+      "mtime_ns": 1792475537147895954,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp105-iron.fits"
+    },
+    {
+      "bytes": 1761526080,
+      "mtime_ns": 1792475540641899458,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp106-iron.fits"
+    },
+    {
+      "bytes": 664974720,
+      "mtime_ns": 1792475528221887002,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp107-iron.fits"
+    },
+    {
+      "bytes": 507873600,
+      "mtime_ns": 1792475524938883709,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp108-iron.fits"
+    },
+    {
+      "bytes": 230647680,
+      "mtime_ns": 1792475533225892021,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp109-iron.fits"
+    },
+    {
+      "bytes": 155255040,
+      "mtime_ns": 1792475534312893111,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp110-iron.fits"
+    },
+    {
+      "bytes": 335911680,
+      "mtime_ns": 1792475540166898982,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp111-iron.fits"
+    },
+    {
+      "bytes": 223119360,
+      "mtime_ns": 1792475537975896785,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp117-iron.fits"
+    },
+    {
+      "bytes": 15776640,
+      "mtime_ns": 1792475538382897193,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp120-iron.fits"
+    },
+    {
+      "bytes": 245131200,
+      "mtime_ns": 1792475544258903086,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp121-iron.fits"
+    },
+    {
+      "bytes": 1103826240,
+      "mtime_ns": 1792475571556930464,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp122-iron.fits"
+    },
+    {
+      "bytes": 1337495040,
+      "mtime_ns": 1792475574574933491,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp123-iron.fits"
+    },
+    {
+      "bytes": 68276160,
+      "mtime_ns": 1792475541360900179,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp124-iron.fits"
+    },
+    {
+      "bytes": 4014720,
+      "mtime_ns": 1792475540844899662,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp125-iron.fits"
+    },
+    {
+      "bytes": 1098624960,
+      "mtime_ns": 1792475573632932546,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp126-iron.fits"
+    },
+    {
+      "bytes": 734690880,
+      "mtime_ns": 1792475563932922818,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp127-iron.fits"
+    },
+    {
+      "bytes": 8991360,
+      "mtime_ns": 1792475543111901936,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp135-iron.fits"
+    },
+    {
+      "bytes": 180547200,
+      "mtime_ns": 1792475549672908516,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp141-iron.fits"
+    },
+    {
+      "bytes": 86538240,
+      "mtime_ns": 1792475547422906259,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp142-iron.fits"
+    },
+    {
+      "bytes": 439404480,
+      "mtime_ns": 1792475565359924249,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp143-iron.fits"
+    },
+    {
+      "bytes": 15675840,
+      "mtime_ns": 1792475551793910643,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp151-iron.fits"
+    },
+    {
+      "bytes": 3150720,
+      "mtime_ns": 1792475552127910978,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp157-iron.fits"
+    },
+    {
+      "bytes": 582186240,
+      "mtime_ns": 1792475571678930587,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp159-iron.fits"
+    },
+    {
+      "bytes": 315253440,
+      "mtime_ns": 1792475573894932809,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp175-iron.fits"
+    },
+    {
+      "bytes": 20689920,
+      "mtime_ns": 1792475566792925686,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp189-iron.fits"
+    },
+    {
+      "bytes": 285681600,
+      "mtime_ns": 1792475574094933010,
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp191-iron.fits"
+    }
+  ],
+  "token_audits": {
+    "level0": {
+      "max": 221,
+      "max_seq_length": 1024,
+      "median": 211.0,
+      "min": 208,
+      "n": 256,
+      "p95": 216.0,
+      "total_tokens": 53999,
+      "truncated": 0
+    },
+    "level1": {
+      "max": 173,
+      "max_seq_length": 1024,
+      "median": 162.0,
+      "min": 158,
+      "n": 256,
+      "p95": 167.0,
+      "total_tokens": 41585,
+      "truncated": 0
+    },
+    "level2": {
+      "max": 276,
+      "max_seq_length": 1024,
+      "median": 265.0,
+      "min": 261,
+      "n": 256,
+      "p95": 270.0,
+      "total_tokens": 67953,
+      "truncated": 0
+    }
+  }
+}

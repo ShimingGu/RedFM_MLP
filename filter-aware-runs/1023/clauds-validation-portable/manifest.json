@@ -1,0 +1,201 @@
+{
+  "catalogue": "clauds",
+  "cohort_file_sha256": "35c82b905f8a440c5d5bf8b74d8a1cc663bdd033f811e4b17d063f30b75c9d01",
+  "cohort_sha256": "76a4634a3e9f9dcf8c8066ec846f1e56a16dd4a1db685f9a10f19bf9a4412221",
+  "held_out_test_evaluated": false,
+  "max_seq_length": 1024,
+  "model": "Qwen3.5-4B-Base",
+  "registry_path": "/scratch/RedFM_MLP/configs/filter_registry_v1.json",
+  "registry_sha256": "ace98d2ad8b38afc4275afb627a3811451e3605a8a07412fc89234680bda8d5b",
+  "registry_version": "filter_registry_v1_20261023",
+  "representations": {
+    "level0-native": {
+      "texts_sha256": "05cc373f3410dc633164f93a0876588ef5e7439b583313b53d4dca32cfa7450a",
+      "token_audit": {
+        "max": 140,
+        "max_seq_length": 1024,
+        "median": 140.0,
+        "min": 140,
+        "n": 192,
+        "p95": 140.0,
+        "total_tokens": 26880,
+        "truncated": 0
+      }
+    },
+    "level1-flux": {
+      "texts_sha256": "a0a01ec690f3170ecd0fbd2077419444149fc37dcc1adea11e5f16a6c10ff97f",
+      "token_audit": {
+        "max": 302,
+        "max_seq_length": 1024,
+        "median": 242.0,
+        "min": 170,
+        "n": 192,
+        "p95": 302.0,
+        "total_tokens": 48272,
+        "truncated": 0
+      }
+    },
+    "level1-native": {
+      "texts_sha256": "5e96428a8d79e7d4bfe272c560d86ba0a7171588275c54918177a9ace18544af",
+      "token_audit": {
+        "max": 243,
+        "max_seq_length": 1024,
+        "median": 243.0,
+        "min": 243,
+        "n": 192,
+        "p95": 243.0,
+        "total_tokens": 46656,
+        "truncated": 0
+      }
+    },
+    "level2-flux": {
+      "texts_sha256": "4d711c88fd0a1e1c0d1c11acb9586b7fb10892c755f2eae4696b8e7572e92933",
+      "token_audit": {
+        "max": 521,
+        "max_seq_length": 1024,
+        "median": 461.0,
+        "min": 389,
+        "n": 192,
+        "p95": 521.0,
+        "total_tokens": 90320,
+        "truncated": 0
+      }
+    },
+    "level2-native": {
+      "texts_sha256": "b7a8aecabc9ef673e96517f577021dcf2f79171d0bf6a9faacef0056cf617dd9",
+      "token_audit": {
+        "max": 462,
+        "max_seq_length": 1024,
+        "median": 462.0,
+        "min": 462,
+        "n": 192,
+        "p95": 462.0,
+        "total_tokens": 88704,
+        "truncated": 0
+      }
+    }
+  },
+  "selection_seed": 1023,
+  "serializer_version": "filter_photometry_v1",
+  "source_metadata": {
+    "archived_validation_ids_labels_exact": true,
+    "catalogue": "/arc/projects/ots/Cosmic_Imprint_of_Time/clauds/catalogs/COSMOS-HSCpipe-Phosphoros_morphological_multiband.fits",
+    "extinction": "as_loaded; not changed or inferred",
+    "feature_names": [
+      "u_mag",
+      "u_star_mag",
+      "g_mag",
+      "r_mag",
+      "i_mag",
+      "z_mag",
+      "y_mag",
+      "Y_mag",
+      "J_mag",
+      "H_mag",
+      "Ks_mag"
+    ],
+    "imputation": {
+      "columns": {
+        "H_mag": {
+          "dropped": false,
+          "fill": 24.365999221801758,
+          "fit_split": "train",
+          "n_missing": 243983
+        },
+        "J_mag": {
+          "dropped": false,
+          "fill": 24.58324432373047,
+          "fit_split": "train",
+          "n_missing": 244299
+        },
+        "Ks_mag": {
+          "dropped": false,
+          "fill": 24.095584869384766,
+          "fit_split": "train",
+          "n_missing": 245434
+        },
+        "Y_mag": {
+          "dropped": false,
+          "fill": 24.810382843017578,
+          "fit_split": "train",
+          "n_missing": 245193
+        },
+        "g_mag": {
+          "dropped": false,
+          "fill": 25.46443271636963,
+          "fit_split": "train",
+          "n_missing": 19210
+        },
+        "i_mag": {
+          "dropped": false,
+          "fill": 24.86415672302246,
+          "fit_split": "train",
+          "n_missing": 15833
+        },
+        "r_mag": {
+          "dropped": false,
+          "fill": 25.128427505493164,
+          "fit_split": "train",
+          "n_missing": 15436
+        },
+        "u_mag": {
+          "dropped": false,
+          "fill": 25.977767944335938,
+          "fit_split": "train",
+          "n_missing": 131474
+        },
+        "u_star_mag": {
+          "dropped": false,
+          "fill": 25.803855895996094,
+          "fit_split": "train",
+          "n_missing": 120239
+        },
+        "y_mag": {
+          "dropped": false,
+          "fill": 24.341413497924805,
+          "fit_split": "train",
+          "n_missing": 32688
+        },
+        "z_mag": {
+          "dropped": false,
+          "fill": 24.64280128479004,
+          "fit_split": "train",
+          "n_missing": 15915
+        }
+      },
+      "dropped_columns": [],
+      "fit_split": "train",
+      "method": "median"
+    },
+    "target": "ZPHOT",
+    "training": {
+      "batch_size": 1,
+      "device": "cuda",
+      "epochs": 10,
+      "eval_batch_size": 8,
+      "gradient_accumulation_steps": 16,
+      "head_hidden_dim": 256,
+      "head_warmup_epochs": 3,
+      "learning_rate": 0.0002,
+      "local_files_only": true,
+      "lora_alpha": 16,
+      "lora_dropout": 0.05,
+      "lora_learning_rate": 1e-05,
+      "lora_max_grad_norm": 0.1,
+      "lora_rank": 8,
+      "lora_target_modules": "q_proj,k_proj,v_proj,o_proj",
+      "max_grad_norm": 1.0,
+      "max_length": 2048,
+      "model_path": "Qwen3.5-4B-Base",
+      "n_z_bins": 300,
+      "pooling": "last",
+      "seed": 42,
+      "warmup_fraction": 0.03,
+      "weight_decay": 0.01,
+      "z_max": 5.992499828338623,
+      "z_min": 0.005000030156224966
+    }
+  },
+  "train_rows": 128,
+  "val_rows": 64
+}

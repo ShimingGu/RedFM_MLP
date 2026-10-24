@@ -1,0 +1,12 @@
+{
+  "full_transmission_curves_in_prompt": false,
+  "independent_branch": true,
+  "learned_filter_embeddings": false,
+  "max_length_common_to_all_arms": 512,
+  "no_truncation": true,
+  "original_archived_adapter_and_trained_head_hashes_verified": true,
+  "source_and_target_texts_differ_from_B_only_in_pivot_and_width": true,
+  "source_arrays_identical_to_A_and_B": true,
+  "target_labels_fitted": false,
+  "test_evaluated": false
+}

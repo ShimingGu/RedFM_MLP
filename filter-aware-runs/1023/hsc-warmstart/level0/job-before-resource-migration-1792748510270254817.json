@@ -1,0 +1,13 @@
+{
+  "command": [
+    "/scratch/RedFM_MLP/.pixi/envs/default/bin/python",
+    "/scratch/RedFM_MLP/notebooks/qwen_filter_warmstart.py",
+    "--stage",
+    "run",
+    "--output-dir",
+    "/scratch/RedFM_MLP/filter-aware-runs/1023/hsc-warmstart/level0"
+  ],
+  "gpu": "MIG-a9b1fb4a-5c28-5b03-9686-f831c6facf25",
+  "launched_utc": "2026-10-23T08:03:53.109321+00:00",
+  "pid": 443954
+}

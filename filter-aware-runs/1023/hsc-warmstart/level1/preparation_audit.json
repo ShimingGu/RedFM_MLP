@@ -1,0 +1,14 @@
+{
+  "labels_values_errors_and_masks_preserved": true,
+  "native_source_text_identical_to_A": true,
+  "no_wavelength_or_width_in_source": true,
+  "original_archive_adapter_and_head_sha256_verified": true,
+  "registry_curves_verified": true,
+  "source_arrays_identical_to_A": true,
+  "source_checkpoint_is_A_continued_checkpoint": false,
+  "source_cohort_file_identical_to_A": true,
+  "target_filter_mapping": "named columns; Legacy RELEASE-specific DECam or BASS/MzLS plus WISE; CLAUDS MegaCam/HSC/VIRCAM",
+  "target_labels_fitted": false,
+  "target_native_text_identical_to_A": true,
+  "test_evaluated": false
+}

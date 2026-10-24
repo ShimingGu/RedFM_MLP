@@ -1,0 +1,63 @@
+{
+  "base_checkpoint_matches_archived_fingerprints": true,
+  "base_model": {
+    "files": [
+      {
+        "bytes": 3161,
+        "mtime_ns": 1784475096961008948,
+        "path": "/arc/home/gsm/hf_models/Qwen3.5-4B-Base/config.json"
+      },
+      {
+        "bytes": 3353259,
+        "mtime_ns": 1784475098358019498,
+        "path": "/arc/home/gsm/hf_models/Qwen3.5-4B-Base/merges.txt"
+      },
+      {
+        "bytes": 5329398712,
+        "mtime_ns": 1784475109593104345,
+        "path": "/arc/home/gsm/hf_models/Qwen3.5-4B-Base/model.safetensors-00001-of-00002.safetensors"
+      },
+      {
+        "bytes": 3990429344,
+        "mtime_ns": 1784475107487088441,
+        "path": "/arc/home/gsm/hf_models/Qwen3.5-4B-Base/model.safetensors-00002-of-00002.safetensors"
+      },
+      {
+        "bytes": 76196,
+        "mtime_ns": 1784475110454110847,
+        "path": "/arc/home/gsm/hf_models/Qwen3.5-4B-Base/model.safetensors.index.json"
+      },
+      {
+        "bytes": 390,
+        "mtime_ns": 1784475110842113778,
+        "path": "/arc/home/gsm/hf_models/Qwen3.5-4B-Base/preprocessor_config.json"
+      },
+      {
+        "bytes": 12807196,
+        "mtime_ns": 1784475113556134274,
+        "path": "/arc/home/gsm/hf_models/Qwen3.5-4B-Base/tokenizer.json"
+      },
+      {
+        "bytes": 16713,
+        "mtime_ns": 1784475112582126918,
+        "path": "/arc/home/gsm/hf_models/Qwen3.5-4B-Base/tokenizer_config.json"
+      },
+      {
+        "bytes": 386,
+        "mtime_ns": 1784475114373140444,
+        "path": "/arc/home/gsm/hf_models/Qwen3.5-4B-Base/video_preprocessor_config.json"
+      },
+      {
+        "bytes": 6722759,
+        "mtime_ns": 1784475115612149801,
+        "path": "/arc/home/gsm/hf_models/Qwen3.5-4B-Base/vocab.json"
+      }
+    ],
+    "model": "/arc/home/gsm/hf_models/Qwen3.5-4B-Base"
+  },
+  "clauds_all_representation_files_verified": true,
+  "clauds_archived_validation_ids_labels_exact": true,
+  "clauds_portable_cohort_reconstruction_exact": true,
+  "clauds_split_dtype": "<U5",
+  "held_out_test_evaluated": false
+}

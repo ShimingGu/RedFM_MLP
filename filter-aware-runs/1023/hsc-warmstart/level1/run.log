@@ -1,0 +1,107 @@
+[transformers] The fast path is not available because one of the required library is not installed. Falling back to torch implementation. To install follow https://github.com/fla-org/flash-linear-attention#installation and https://github.com/Dao-AILab/causal-conv1d
+Loading weights:   0%|          | 0/723 [00:00<?, ?it/s]Loading weights:   0%|          | 1/723 [00:04<55:49,  4.64s/it]Loading weights:   1%|          | 8/723 [00:05<05:40,  2.10it/s]Loading weights:   2%|▏         | 11/723 [00:05<03:48,  3.11it/s]Loading weights:   2%|▏         | 13/723 [00:05<03:21,  3.53it/s]Loading weights:   2%|▏         | 15/723 [00:05<02:43,  4.34it/s]Loading weights:   3%|▎         | 22/723 [00:05<01:17,  9.05it/s]Loading weights:   3%|▎         | 25/723 [00:06<01:06, 10.45it/s]Loading weights:   4%|▍         | 28/723 [00:06<01:18,  8.88it/s]Loading weights:   5%|▍         | 36/723 [00:06<00:51, 13.35it/s]Loading weights:   5%|▌         | 39/723 [00:06<00:46, 14.85it/s]Loading weights:   6%|▌         | 42/723 [00:07<01:17,  8.83it/s]Loading weights:   6%|▌         | 44/723 [00:07<01:09,  9.76it/s]Loading weights:   6%|▋         | 46/723 [00:08<01:33,  7.27it/s]Loading weights:   7%|▋         | 48/723 [00:08<01:20,  8.41it/s]Loading weights:   7%|▋         | 51/723 [00:08<01:05, 10.33it/s]Loading weights:   7%|▋         | 53/723 [00:08<00:59, 11.29it/s]Loading weights:   8%|▊         | 55/723 [00:08<00:53, 12.58it/s]Loading weights:   8%|▊         | 61/723 [00:09<00:39, 16.66it/s]Loading weights:   9%|▉         | 64/723 [00:09<00:38, 17.17it/s]Loading weights:   9%|▉         | 66/723 [00:09<00:53, 12.35it/s]Loading weights:   9%|▉         | 68/723 [00:09<00:50, 13.02it/s]Loading weights:  10%|█         | 75/723 [00:09<00:30, 21.36it/s]Loading weights:  11%|█         | 79/723 [00:10<00:42, 15.07it/s]Loading weights:  11%|█▏        | 82/723 [00:10<00:52, 12.27it/s]Loading weights:  12%|█▏        | 89/723 [00:10<00:33, 19.04it/s]Loading weights:  13%|█▎        | 92/723 [00:10<00:31, 20.09it/s]Loading weights:  13%|█▎        | 95/723 [00:11<01:08,  9.12it/s]Loading weights:  14%|█▎        | 98/723 [00:12<01:05,  9.58it/s]Loading weights:  14%|█▍        | 100/723 [00:12<01:14,  8.36it/s]Loading weights:  15%|█▍        | 106/723 [00:12<00:51, 12.09it/s]Loading weights:  16%|█▌        | 114/723 [00:12<00:34, 17.50it/s]Loading weights:  16%|█▌        | 117/723 [00:13<00:31, 19.06it/s]Loading weights:  17%|█▋        | 120/723 [00:13<00:54, 11.15it/s]Loading weights:  18%|█▊        | 128/723 [00:13<00:32, 18.36it/s]Loading weights:  18%|█▊        | 132/723 [00:14<00:36, 16.21it/s]Loading weights:  19%|█▊        | 135/723 [00:14<00:43, 13.55it/s]Loading weights:  20%|█▉        | 142/723 [00:14<00:30, 19.06it/s]Loading weights:  20%|██        | 146/723 [00:14<00:30, 18.81it/s]Loading weights:  21%|██        | 149/723 [00:15<00:37, 15.14it/s]Loading weights:  21%|██        | 152/723 [00:15<00:52, 10.83it/s]Loading weights:  21%|██▏       | 154/723 [00:15<00:51, 11.08it/s]Loading weights:  22%|██▏       | 159/723 [00:16<00:39, 14.12it/s]Loading weights:  23%|██▎       | 167/723 [00:16<00:26, 20.80it/s]Loading weights:  24%|██▎       | 170/723 [00:16<00:24, 22.15it/s]Loading weights:  24%|██▍       | 173/723 [00:16<00:37, 14.82it/s]Loading weights:  25%|██▌       | 181/723 [00:16<00:23, 22.83it/s]Loading weights:  26%|██▌       | 185/723 [00:17<00:29, 18.32it/s]Loading weights:  26%|██▌       | 188/723 [00:17<00:37, 14.31it/s]Loading weights:  27%|██▋       | 195/723 [00:17<00:25, 20.50it/s]Loading weights:  28%|██▊       | 199/723 [00:18<00:28, 18.42it/s]Loading weights:  28%|██▊       | 202/723 [00:18<00:34, 14.96it/s]Loading weights:  28%|██▊       | 205/723 [00:19<00:50, 10.21it/s]Loading weights:  29%|██▊       | 207/723 [00:19<00:50, 10.22it/s]Loading weights:  29%|██▉       | 212/723 [00:19<00:39, 12.84it/s]Loading weights:  30%|███       | 220/723 [00:19<00:25, 19.57it/s]Loading weights:  31%|███       | 223/723 [00:19<00:26, 18.64it/s]Loading weights:  31%|███▏      | 226/723 [00:20<00:45, 11.02it/s]Loading weights:  32%|███▏      | 234/723 [00:20<00:28, 17.44it/s]Loading weights:  33%|███▎      | 237/723 [00:20<00:26, 18.49it/s]Loading weights:  33%|███▎      | 240/723 [00:21<00:36, 13.11it/s]Loading weights:  34%|███▍      | 248/723 [00:21<00:24, 19.64it/s]Loading weights:  35%|███▍      | 251/723 [00:21<00:27, 17.19it/s]Loading weights:  35%|███▌      | 254/723 [00:22<00:38, 12.19it/s]Loading weights:  36%|███▌      | 257/723 [00:22<00:37, 12.40it/s]Loading weights:  36%|███▌      | 259/723 [00:22<00:45, 10.23it/s]Loading weights:  37%|███▋      | 265/723 [00:22<00:30, 15.15it/s]Loading weights:  38%|███▊      | 273/723 [00:23<00:19, 23.12it/s]Loading weights:  38%|███▊      | 277/723 [00:23<00:22, 19.55it/s]Loading weights:  39%|███▊      | 280/723 [00:23<00:27, 16.20it/s]Loading weights:  40%|███▉      | 287/723 [00:23<00:18, 23.07it/s]Loading weights:  40%|████      | 291/723 [00:24<00:21, 19.79it/s]Loading weights:  41%|████      | 294/723 [00:24<00:25, 16.66it/s]Loading weights:  42%|████▏     | 301/723 [00:24<00:20, 20.65it/s]Loading weights:  42%|████▏     | 304/723 [00:24<00:20, 20.07it/s]Loading weights:  42%|████▏     | 307/723 [00:25<00:33, 12.24it/s]Loading weights:  43%|████▎     | 310/723 [00:25<00:32, 12.86it/s]Loading weights:  43%|████▎     | 312/723 [00:25<00:37, 11.03it/s]Loading weights:  44%|████▎     | 316/723 [00:25<00:27, 14.55it/s]Loading weights:  44%|████▍     | 319/723 [00:26<00:24, 16.19it/s]Loading weights:  45%|████▌     | 326/723 [00:26<00:17, 22.86it/s]Loading weights:  46%|████▌     | 329/723 [00:26<00:18, 21.30it/s]Loading weights:  46%|████▌     | 332/723 [00:26<00:33, 11.84it/s]Loading weights:  47%|████▋     | 340/723 [00:27<00:20, 19.11it/s]Loading weights:  47%|████▋     | 343/723 [00:27<00:20, 18.90it/s]Loading weights:  48%|████▊     | 346/723 [00:27<00:27, 13.64it/s]Loading weights:  49%|████▉     | 354/723 [00:27<00:16, 21.74it/s]Loading weights:  50%|████▉     | 358/723 [00:28<00:24, 14.77it/s]Loading weights:  50%|████▉     | 361/723 [00:28<00:28, 12.49it/s]Loading weights:  50%|█████     | 364/723 [00:28<00:29, 12.16it/s]Loading weights:  51%|█████     | 366/723 [00:29<00:30, 11.65it/s]Loading weights:  51%|█████▏    | 371/723 [00:29<00:26, 13.43it/s]Loading weights:  52%|█████▏    | 379/723 [00:29<00:16, 20.73it/s]Loading weights:  53%|█████▎    | 382/723 [00:29<00:16, 21.28it/s]Loading weights:  53%|█████▎    | 385/723 [00:30<00:23, 14.61it/s]Loading weights:  54%|█████▍    | 393/723 [00:30<00:14, 22.48it/s]Loading weights:  55%|█████▍    | 397/723 [00:30<00:18, 17.21it/s]Loading weights:  55%|█████▌    | 400/723 [00:30<00:20, 15.48it/s]Loading weights:  56%|█████▋    | 407/723 [00:31<00:14, 22.01it/s]Loading weights:  57%|█████▋    | 411/723 [00:31<00:16, 18.67it/s]Loading weights:  57%|█████▋    | 414/723 [00:31<00:19, 15.58it/s]Loading weights:  58%|█████▊    | 417/723 [00:32<00:24, 12.57it/s]Loading weights:  58%|█████▊    | 419/723 [00:32<00:23, 12.78it/s]Loading weights:  58%|█████▊    | 422/723 [00:32<00:19, 15.12it/s]Loading weights:  59%|█████▊    | 424/723 [00:32<00:21, 14.16it/s]Loading weights:  62%|██████▏   | 446/723 [00:32<00:05, 47.55it/s]Loading weights:  63%|██████▎   | 453/723 [00:32<00:05, 51.45it/s]Loading weights:  64%|██████▎   | 460/723 [00:32<00:05, 51.47it/s]Loading weights:  64%|██████▍   | 466/723 [00:33<00:05, 45.38it/s]Loading weights:  66%|██████▋   | 480/723 [00:33<00:03, 63.41it/s]Loading weights:  68%|██████▊   | 494/723 [00:33<00:03, 67.09it/s]Loading weights:  71%|███████▏  | 516/723 [00:33<00:02, 98.77it/s]Loading weights:  73%|███████▎  | 528/723 [00:33<00:02, 82.42it/s]Loading weights:  75%|███████▍  | 542/723 [00:33<00:01, 92.54it/s]Loading weights:  78%|███████▊  | 564/723 [00:33<00:01, 119.06it/s]Loading weights:  81%|████████  | 586/723 [00:34<00:01, 125.09it/s]Loading weights:  83%|████████▎ | 600/723 [00:34<00:00, 123.61it/s]Loading weights:  85%|████████▍ | 614/723 [00:34<00:00, 127.34it/s]Loading weights:  87%|████████▋ | 628/723 [00:34<00:00, 129.62it/s]Loading weights:  89%|████████▉ | 646/723 [00:34<00:00, 140.74it/s]Loading weights:  91%|█████████▏| 661/723 [00:34<00:00, 135.71it/s]Loading weights:  94%|█████████▍| 682/723 [00:34<00:00, 148.99it/s]Loading weights:  97%|█████████▋| 698/723 [00:34<00:00, 138.31it/s]Loading weights:  99%|█████████▉| 716/723 [00:35<00:00, 135.01it/s]Loading weights: 100%|██████████| 723/723 [00:35<00:00, 20.62it/s] 
+Full Level-1 zero-update diagnostic: {"bias": -0.15784382820129395, "median_bias": -0.14020726084709167, "nmad": 0.1532468944787979, "catastrophic_outlier_fraction": 0.47369346022605896, "cross_entropy": 6.668456077575684, "mean_log_score": 6.668456077575684, "mean_crps": 0.22014890611171722, "p16_p84_coverage": 0.18916065990924835, "pit_mean": 0.8987489342689514}
+/scratch/RedFM_MLP/.pixi/envs/default/lib/python3.13/site-packages/torch/_dynamo/eval_frame.py:1181: UserWarning: torch.utils.checkpoint: the use_reentrant parameter should be passed explicitly. Starting in PyTorch 2.9, calling checkpoint without use_reentrant will raise an exception. use_reentrant=False is recommended, but if you need to preserve the current default behavior, you can pass use_reentrant=True. Refer to docs for more details on the differences between the two variants.
+  return fn(*args, **kwargs)
+train update=1/2806 epoch=1 loss=6.507575
+train update=10/2806 epoch=1 loss=5.398847
+train update=20/2806 epoch=1 loss=5.402021
+train update=30/2806 epoch=1 loss=4.378415
+train update=40/2806 epoch=1 loss=5.021620
+train update=50/2806 epoch=1 loss=4.103109
+train update=60/2806 epoch=1 loss=4.035396
+train update=70/2806 epoch=1 loss=3.924501
+train update=80/2806 epoch=1 loss=3.579401
+train update=90/2806 epoch=1 loss=3.721039
+train update=100/2806 epoch=1 loss=3.725955
+train update=110/2806 epoch=1 loss=3.399450
+train update=120/2806 epoch=1 loss=3.271302
+train update=130/2806 epoch=1 loss=3.671282
+train update=140/2806 epoch=1 loss=3.705902
+train update=150/2806 epoch=1 loss=3.524580
+train update=160/2806 epoch=1 loss=3.162661
+train update=170/2806 epoch=1 loss=3.277516
+train update=180/2806 epoch=1 loss=3.093835
+train update=190/2806 epoch=1 loss=3.132814
+train update=200/2806 epoch=1 loss=3.277657
+train update=210/2806 epoch=1 loss=3.184892
+train update=220/2806 epoch=1 loss=3.026634
+train update=230/2806 epoch=1 loss=2.754677
+train update=240/2806 epoch=1 loss=2.980797
+train update=250/2806 epoch=1 loss=3.312434
+validation update=250/2806 CE=2.896484 NMAD=0.044491 best_update=250
+train update=260/2806 epoch=1 loss=2.909942
+train update=270/2806 epoch=1 loss=2.712760
+train update=280/2806 epoch=1 loss=2.952985
+train update=290/2806 epoch=1 loss=2.748931
+train update=300/2806 epoch=1 loss=3.141863
+train update=310/2806 epoch=1 loss=3.219837
+train update=320/2806 epoch=1 loss=2.576667
+train update=330/2806 epoch=1 loss=3.032625
+train update=340/2806 epoch=1 loss=2.819563
+train update=350/2806 epoch=1 loss=2.597661
+train update=360/2806 epoch=1 loss=2.422374
+train update=370/2806 epoch=1 loss=2.676177
+train update=380/2806 epoch=1 loss=2.782320
+train update=390/2806 epoch=1 loss=2.534355
+train update=400/2806 epoch=1 loss=2.856186
+train update=410/2806 epoch=1 loss=2.739335
+train update=420/2806 epoch=1 loss=2.530378
+train update=430/2806 epoch=1 loss=2.855408
+train update=440/2806 epoch=1 loss=2.830791
+train update=450/2806 epoch=1 loss=2.694694
+train update=460/2806 epoch=1 loss=2.858888
+train update=470/2806 epoch=1 loss=3.007401
+train update=480/2806 epoch=1 loss=2.552960
+train update=490/2806 epoch=1 loss=3.058738
+train update=500/2806 epoch=1 loss=3.138011
+validation update=500/2806 CE=2.718618 NMAD=0.038543 best_update=500
+train update=510/2806 epoch=1 loss=2.330081
+train update=520/2806 epoch=1 loss=2.842587
+train update=530/2806 epoch=1 loss=2.717547
+train update=540/2806 epoch=1 loss=2.462522
+train update=550/2806 epoch=1 loss=2.355293
+train update=560/2806 epoch=1 loss=2.777996
+train update=570/2806 epoch=1 loss=2.568075
+train update=580/2806 epoch=1 loss=2.516000
+train update=590/2806 epoch=1 loss=2.903123
+train update=600/2806 epoch=1 loss=2.541824
+train update=610/2806 epoch=1 loss=2.674200
+train update=620/2806 epoch=1 loss=2.881612
+train update=630/2806 epoch=1 loss=2.566487
+train update=640/2806 epoch=1 loss=2.484915
+train update=650/2806 epoch=1 loss=2.949737
+train update=660/2806 epoch=1 loss=2.846116
+train update=670/2806 epoch=1 loss=2.713118
+train update=680/2806 epoch=1 loss=2.754556
+train update=690/2806 epoch=1 loss=2.345428
+train update=700/2806 epoch=1 loss=3.081556
+train update=710/2806 epoch=1 loss=2.669511
+train update=720/2806 epoch=1 loss=2.491314
+train update=730/2806 epoch=1 loss=2.452475
+train update=740/2806 epoch=1 loss=2.650448
+train update=750/2806 epoch=1 loss=2.600521
+validation update=750/2806 CE=2.648250 NMAD=0.034537 best_update=750
+train update=760/2806 epoch=1 loss=2.636867
+train update=770/2806 epoch=1 loss=2.509510
+train update=780/2806 epoch=1 loss=2.686114
+train update=790/2806 epoch=1 loss=2.946759
+train update=800/2806 epoch=1 loss=2.636580
+train update=810/2806 epoch=1 loss=2.905299
+train update=820/2806 epoch=1 loss=2.449965
+train update=830/2806 epoch=1 loss=2.668584
+train update=840/2806 epoch=1 loss=2.778164
+train update=850/2806 epoch=1 loss=2.878735
+train update=860/2806 epoch=1 loss=2.683018
+train update=870/2806 epoch=1 loss=3.069645
+train update=880/2806 epoch=1 loss=2.795134
+train update=890/2806 epoch=1 loss=2.851041
+train update=900/2806 epoch=1 loss=2.274734
+train update=910/2806 epoch=1 loss=2.816086
+train update=920/2806 epoch=1 loss=2.637084
+train update=930/2806 epoch=1 loss=2.582446
+train update=940/2806 epoch=1 loss=2.410658
+train update=950/2806 epoch=1 loss=2.525543
+train update=960/2806 epoch=1 loss=2.257248
+train update=970/2806 epoch=1 loss=2.418659
+train update=980/2806 epoch=1 loss=2.699174

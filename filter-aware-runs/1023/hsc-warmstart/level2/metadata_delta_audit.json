@@ -1,0 +1,44 @@
+{
+  "clauds": {
+    "filter_observation_counts": {
+      "HSC.g": 256,
+      "HSC.i": 256,
+      "HSC.r": 256,
+      "HSC.y": 256,
+      "HSC.z": 256,
+      "MegaCam.u": 256,
+      "MegaCam.u_star": 256,
+      "VIRCAM.H": 256,
+      "VIRCAM.J": 256,
+      "VIRCAM.Ks": 256,
+      "VIRCAM.Y": 256
+    },
+    "n": 256,
+    "only_pivot_and_width_added": true
+  },
+  "desi-ls": {
+    "filter_observation_counts": {
+      "BASS.g": 63,
+      "BASS.r": 63,
+      "DECam.g": 193,
+      "DECam.r": 193,
+      "DECam.z": 193,
+      "MzLS.z": 63,
+      "WISE.W1": 256,
+      "WISE.W2": 256
+    },
+    "n": 256,
+    "only_pivot_and_width_added": true
+  },
+  "source": {
+    "filter_observation_counts": {
+      "HSC.g": 28127,
+      "HSC.i": 28127,
+      "HSC.r": 28127,
+      "HSC.y": 28127,
+      "HSC.z": 28127
+    },
+    "n": 28127,
+    "only_pivot_and_width_added": true
+  }
+}

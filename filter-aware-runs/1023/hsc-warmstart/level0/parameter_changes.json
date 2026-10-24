@@ -1,0 +1,34 @@
+{
+  "last_vs_initial": {
+    "adapter": {
+      "changed_values": 1572861,
+      "delta_l2": 0.1955559404473084,
+      "max_abs_change": 0.001146774273365736,
+      "n_values": 1572864,
+      "relative_delta_l2": 0.020421962319223563
+    },
+    "pdf_head": {
+      "changed_values": 799016,
+      "delta_l2": 1.3783714296602254,
+      "max_abs_change": 0.014784887433052063,
+      "n_values": 799020,
+      "relative_delta_l2": 0.04267553099525825
+    }
+  },
+  "selected_vs_initial": {
+    "adapter": {
+      "changed_values": 1572862,
+      "delta_l2": 0.1734755942307566,
+      "max_abs_change": 0.0009860503487288952,
+      "n_values": 1572864,
+      "relative_delta_l2": 0.018116105501995702
+    },
+    "pdf_head": {
+      "changed_values": 799020,
+      "delta_l2": 1.269745027192192,
+      "max_abs_change": 0.013676661998033524,
+      "n_values": 799020,
+      "relative_delta_l2": 0.03931236682508194
+    }
+  }
+}

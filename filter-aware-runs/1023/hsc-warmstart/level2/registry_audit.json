@@ -1,0 +1,244 @@
+{
+  "all_integrals_reproduced": true,
+  "all_profiles_and_original_hashes_verified": true,
+  "definitions": {
+    "integration": "numpy trapezoid on vendored sample grid in nm; negative scan-noise response clipped to zero; no SED weights, no extra atmosphere or red-leak removal",
+    "pivot_nm": "sqrt(integral R(lambda)*lambda dlambda / integral R(lambda)/lambda dlambda)",
+    "response": "Dimensionless relative system throughput R(lambda) for photon-counting response, as distributed by speclite/sedpy; do not multiply by lambda again before computing these summaries.",
+    "width_nm": "integral R(lambda) dlambda / max R(lambda) (rectangular equivalent width, not FWHM)"
+  },
+  "descriptor_precision": "three decimal places in nm",
+  "filters": {
+    "BASS.g": {
+      "approximation": "Nominal system response; not an object-specific throughput.",
+      "curve_sha256": "21127e351b4fea34000e29f4c13ea1f01730ddd6fc438408ecdd1a805c294eb7",
+      "original_sha256": "2f231d81bcacde83f80804093475f8ee81b092395223c68b41a8b5fa7a54f329",
+      "pivot_nm": 475.9348959095759,
+      "serialized_pivot_nm": "475.935",
+      "serialized_width_nm": "134.866",
+      "source_commit": "8159ea61f1c8539136660b4c2e87fbbf94a70097",
+      "wavelength_unit": "nm",
+      "width_nm": 134.86645891806023
+    },
+    "BASS.r": {
+      "approximation": "Nominal system response; not an object-specific throughput.",
+      "curve_sha256": "19c211e4ff6c086d25f2df812c35f87e9206ec0e503182d7e5dd70c3c37b19fb",
+      "original_sha256": "ab2c7cc8c114513d1ab365b929cac3c0f2d5190a04a43c54fa73f2e2eb96e411",
+      "pivot_nm": 639.7239027160568,
+      "serialized_pivot_nm": "639.724",
+      "serialized_width_nm": "139.879",
+      "source_commit": "8159ea61f1c8539136660b4c2e87fbbf94a70097",
+      "wavelength_unit": "nm",
+      "width_nm": 139.8792311054978
+    },
+    "DECam.g": {
+      "approximation": "DECam DR1 total response at airmass 1.2; documented representative response for Legacy DR9 southern DECam photometry, not an exact per-exposure DR9 curve.",
+      "curve_sha256": "314e2b592b89620b644d1a096b8500d95507a1ed0a1de75c7f20410fcf1cd92c",
+      "original_sha256": "d1f3eeb01ab88a7afc4bea1cb1eac25d6fd68a89e053703d5e688828a95990d1",
+      "pivot_nm": 480.85074998391605,
+      "serialized_pivot_nm": "480.851",
+      "serialized_width_nm": "113.128",
+      "source_commit": "8159ea61f1c8539136660b4c2e87fbbf94a70097",
+      "wavelength_unit": "nm",
+      "width_nm": 113.12757650669425
+    },
+    "DECam.r": {
+      "approximation": "DECam DR1 total response at airmass 1.2; documented representative response for Legacy DR9 southern DECam photometry, not an exact per-exposure DR9 curve.",
+      "curve_sha256": "0012c262de38b08d7f24c2976de6d8a29bf78e29aefc87c57ac2f1a1bfcf66b9",
+      "original_sha256": "7b4883a11e13286367d0a9468ef32b41674e2ea57f1f1baeec8a512e8e6ad692",
+      "pivot_nm": 641.7645640160783,
+      "serialized_pivot_nm": "641.765",
+      "serialized_width_nm": "138.535",
+      "source_commit": "8159ea61f1c8539136660b4c2e87fbbf94a70097",
+      "wavelength_unit": "nm",
+      "width_nm": 138.5352001488418
+    },
+    "DECam.z": {
+      "approximation": "DECam DR1 total response at airmass 1.2; documented representative response for Legacy DR9 southern DECam photometry, not an exact per-exposure DR9 curve.",
+      "curve_sha256": "7b01b1438cae89df9240ca97074dd794976ee041ed45e9a3148b2a749ba84b17",
+      "original_sha256": "9bb1f48c657736b372f968c834fde7b90e274f9f398a861d052330b335127048",
+      "pivot_nm": 916.885451383336,
+      "serialized_pivot_nm": "916.885",
+      "serialized_width_nm": "125.375",
+      "source_commit": "8159ea61f1c8539136660b4c2e87fbbf94a70097",
+      "wavelength_unit": "nm",
+      "width_nm": 125.37505032579827
+    },
+    "HSC.g": {
+      "approximation": "HSC 2017 nominal total response. r/r2 and i/i2 exposure mixtures are not available in the existing feature cache; r and i are explicitly representative approximations.",
+      "curve_sha256": "66d8fe4e1c12fd4def9938f0bb69764efd1cd7b12f88217a0354a5df1dd2cffe",
+      "original_sha256": "118ab2e719cca39da5a0a956ee49fc45dbe24cbc98dce8602a978084be776b74",
+      "pivot_nm": 479.11542587232873,
+      "serialized_pivot_nm": "479.115",
+      "serialized_width_nm": "117.941",
+      "source_commit": "8159ea61f1c8539136660b4c2e87fbbf94a70097",
+      "wavelength_unit": "nm",
+      "width_nm": 117.94066627242263
+    },
+    "HSC.i": {
+      "approximation": "HSC 2017 nominal total response. r/r2 and i/i2 exposure mixtures are not available in the existing feature cache; r and i are explicitly representative approximations.",
+      "curve_sha256": "f87c977756ae6959c577520f272e9a0c7de6dd5e533136d888d06a69782fa5ae",
+      "original_sha256": "ec7f15e3bd69d2b55bac0bdcb3ed73140156d1cd9f8eecc12c8e6dcd4a086de4",
+      "pivot_nm": 768.8777145855436,
+      "serialized_pivot_nm": "768.878",
+      "serialized_width_nm": "144.228",
+      "source_commit": "8159ea61f1c8539136660b4c2e87fbbf94a70097",
+      "wavelength_unit": "nm",
+      "width_nm": 144.22837573385522
+    },
+    "HSC.i2": {
+      "approximation": "HSC 2017 nominal total response. r/r2 and i/i2 exposure mixtures are not available in the existing feature cache; r and i are explicitly representative approximations.",
+      "curve_sha256": "bcb0ef60d0b963a8081fbbf59f4da35a87c16db2a36a735a2786923ce43d2803",
+      "original_sha256": "4eff9036de5168969c7d924d40704af98f8f30d99f6a5cdab3de1f17d685edc8",
+      "pivot_nm": 773.312238180501,
+      "serialized_pivot_nm": "773.312",
+      "serialized_width_nm": "144.634",
+      "source_commit": "8159ea61f1c8539136660b4c2e87fbbf94a70097",
+      "wavelength_unit": "nm",
+      "width_nm": 144.63405010850266
+    },
+    "HSC.r": {
+      "approximation": "HSC 2017 nominal total response. r/r2 and i/i2 exposure mixtures are not available in the existing feature cache; r and i are explicitly representative approximations.",
+      "curve_sha256": "729d91d8863bdc65485b081affae0c5ba31cb5c00bf6e34d9d912472126d7a7b",
+      "original_sha256": "65a8f726f624b9581c71547b8a5c933a3e0ade32488744b73f131a82477a9968",
+      "pivot_nm": 621.4047045598709,
+      "serialized_pivot_nm": "621.405",
+      "serialized_width_nm": "143.318",
+      "source_commit": "8159ea61f1c8539136660b4c2e87fbbf94a70097",
+      "wavelength_unit": "nm",
+      "width_nm": 143.31794675349548
+    },
+    "HSC.r2": {
+      "approximation": "HSC 2017 nominal total response. r/r2 and i/i2 exposure mixtures are not available in the existing feature cache; r and i are explicitly representative approximations.",
+      "curve_sha256": "82f1170f28653572054c43874de29b4bec1229595b8481264ce2bae7952eea4b",
+      "original_sha256": "6a8ab7df288dca3413c8b5f84b8c28255b605471c3f080f72c30d0194fcb91b2",
+      "pivot_nm": 621.2649256900397,
+      "serialized_pivot_nm": "621.265",
+      "serialized_width_nm": "147.823",
+      "source_commit": "8159ea61f1c8539136660b4c2e87fbbf94a70097",
+      "wavelength_unit": "nm",
+      "width_nm": 147.8231292517007
+    },
+    "HSC.y": {
+      "approximation": "HSC 2017 nominal total response. r/r2 and i/i2 exposure mixtures are not available in the existing feature cache; r and i are explicitly representative approximations.",
+      "curve_sha256": "d78e4c97d60a5ca7d26e6a5f42c8a105f78bab81535d5bb405e4ca33ef1d119e",
+      "original_sha256": "c22c1fc7a1d9453defdb05acd53fc11349ca1a54f7008c9df2b056f4863d82e0",
+      "pivot_nm": 977.1716237876003,
+      "serialized_pivot_nm": "977.172",
+      "serialized_width_nm": "74.924",
+      "source_commit": "8159ea61f1c8539136660b4c2e87fbbf94a70097",
+      "wavelength_unit": "nm",
+      "width_nm": 74.92359492359492
+    },
+    "HSC.z": {
+      "approximation": "HSC 2017 nominal total response. r/r2 and i/i2 exposure mixtures are not available in the existing feature cache; r and i are explicitly representative approximations.",
+      "curve_sha256": "fc77a99419783ca15aec42ba23e670901456d87152e0d39f83eaf15e985dcacc",
+      "original_sha256": "b3ccbc4db3fbdcea2aa87fd4d0090ec8c18009471789380316fee73cddeed1ef",
+      "pivot_nm": 890.3114055170333,
+      "serialized_pivot_nm": "890.311",
+      "serialized_width_nm": "75.157",
+      "source_commit": "8159ea61f1c8539136660b4c2e87fbbf94a70097",
+      "wavelength_unit": "nm",
+      "width_nm": 75.15659397715473
+    },
+    "MegaCam.u": {
+      "approximation": "CFHT filter MP9302; average system response including nominal atmosphere, not a spatially resolved response.",
+      "curve_sha256": "021440c553bf2e209bdffab7eacea28164dd9841f68fd4b3cff6fdc1a92d6f57",
+      "original_sha256": "77fc7d76266fb2e96484341ac33eab216266e963b4f4d7ef18ff432942e99b11",
+      "pivot_nm": 367.61166222839256,
+      "serialized_pivot_nm": "367.612",
+      "serialized_width_nm": "48.319",
+      "source_commit": "8159ea61f1c8539136660b4c2e87fbbf94a70097",
+      "wavelength_unit": "nm",
+      "width_nm": 48.31909703225905
+    },
+    "MegaCam.u_star": {
+      "approximation": "CFHT filter MP9301; average system response including nominal atmosphere, not a spatially resolved response.",
+      "curve_sha256": "47fc3464bceb09be9697c63e617288980ef622a2fdc3894f164000fbf2d348b5",
+      "original_sha256": "0b49ac7684ed8b0e0c7013c1efe9f237514f4ae1481813ce823335711296f6db",
+      "pivot_nm": 379.942589908473,
+      "serialized_pivot_nm": "379.943",
+      "serialized_width_nm": "56.048",
+      "source_commit": "8159ea61f1c8539136660b4c2e87fbbf94a70097",
+      "wavelength_unit": "nm",
+      "width_nm": 56.04829953180989
+    },
+    "MzLS.z": {
+      "approximation": "Nominal system response; not an object-specific throughput.",
+      "curve_sha256": "d6ed8a91c83c89dfed8e92316b41235bab076e4e92db425f69400e038ecf2a21",
+      "original_sha256": "4d3da144bfdcfc7084c3a0f1129d2f45c20b5144feae5321e70453763e990955",
+      "pivot_nm": 919.9326758181013,
+      "serialized_pivot_nm": "919.933",
+      "serialized_width_nm": "123.635",
+      "source_commit": "8159ea61f1c8539136660b4c2e87fbbf94a70097",
+      "wavelength_unit": "nm",
+      "width_nm": 123.63547443064759
+    },
+    "VIRCAM.H": {
+      "approximation": "ESO component curves combined by sedpy: filter, QE, mirrors and model atmosphere (airmass 1, PWV 1mm); nominal response, not object-specific.",
+      "curve_sha256": "ae77220ef2a349f39f0a33a7bd5f8125db87d9f03c1ea04b8fae18116be3231e",
+      "original_sha256": "569bb938ca15ce16ca7528ee37dc8647166e830466db684451eda2f0e50fe8c9",
+      "pivot_nm": 1643.2806586301815,
+      "serialized_pivot_nm": "1643.281",
+      "serialized_width_nm": "278.399",
+      "source_commit": "402e2566124cde8856b1ab37396c727a6f037879",
+      "wavelength_unit": "nm",
+      "width_nm": 278.39886326544735
+    },
+    "VIRCAM.J": {
+      "approximation": "ESO component curves combined by sedpy: filter, QE, mirrors and model atmosphere (airmass 1, PWV 1mm); nominal response, not object-specific.",
+      "curve_sha256": "ca760d8ef14d982bd506d6c1a8954e1c55a3a95a1eb1d725642235a014cbebbf",
+      "original_sha256": "08eb5451cb9a7859ef6c49d106635d47a330262b66a3088453c973e0653df2f2",
+      "pivot_nm": 1252.7357146570741,
+      "serialized_pivot_nm": "1252.736",
+      "serialized_width_nm": "161.457",
+      "source_commit": "402e2566124cde8856b1ab37396c727a6f037879",
+      "wavelength_unit": "nm",
+      "width_nm": 161.45678258419142
+    },
+    "VIRCAM.Ks": {
+      "approximation": "ESO component curves combined by sedpy: filter, QE, mirrors and model atmosphere (airmass 1, PWV 1mm); nominal response, not object-specific.",
+      "curve_sha256": "2cbab88cc448d44d3be3eeed4409b330a2f4ea068365d04168d3be7f638f099a",
+      "original_sha256": "a7113064b3724127eb1881b1e58621a485673b540d15d1b83084dd3a886efe0c",
+      "pivot_nm": 2150.283774229999,
+      "serialized_pivot_nm": "2150.284",
+      "serialized_width_nm": "287.445",
+      "source_commit": "402e2566124cde8856b1ab37396c727a6f037879",
+      "wavelength_unit": "nm",
+      "width_nm": 287.44495889286054
+    },
+    "VIRCAM.Y": {
+      "approximation": "ESO component curves combined by sedpy: filter, QE, mirrors and model atmosphere (airmass 1, PWV 1mm); nominal response, not object-specific.",
+      "curve_sha256": "cacf20653bed654222e12ddd0fb2a7c63830edae3c3952f6bf13f8dd3aadacc5",
+      "original_sha256": "4c0150a8f47a9ba93441e09888996640df51bdf75923e0a4f33f59aacf9f3d8b",
+      "pivot_nm": 1021.7465700685702,
+      "serialized_pivot_nm": "1021.747",
+      "serialized_width_nm": "89.636",
+      "source_commit": "402e2566124cde8856b1ab37396c727a6f037879",
+      "wavelength_unit": "nm",
+      "width_nm": 89.63598857431708
+    },
+    "WISE.W1": {
+      "approximation": "Wright et al. 2010 weighted mean relative spectral response; speclite zeros values below 1e-4 of maximum. AB flux convention comes from the catalogue, not the WISE Vega zero point.",
+      "curve_sha256": "c6baf5f2a6d62d47543d14a83ae1bd533cac8fd66a064a7036119784f90ee17e",
+      "original_sha256": "73d3c1595c3fb4bcff1c82f0f5f814b37754391924d8572e9328a9de54212a28",
+      "pivot_nm": 3368.2207939487366,
+      "serialized_pivot_nm": "3368.221",
+      "serialized_width_nm": "682.410",
+      "source_commit": "8159ea61f1c8539136660b4c2e87fbbf94a70097",
+      "wavelength_unit": "nm",
+      "width_nm": 682.4098204137305
+    },
+    "WISE.W2": {
+      "approximation": "Wright et al. 2010 weighted mean relative spectral response; speclite zeros values below 1e-4 of maximum. AB flux convention comes from the catalogue, not the WISE Vega zero point.",
+      "curve_sha256": "5f27fcbc35447a106eb6a3610369f0fc0b60b628846e47616c55e35475f77eae",
+      "original_sha256": "3ac627c881466aebfda6d1d3220e7beffd52a64085bed343e7612d0413d07963",
+      "pivot_nm": 4617.9038146319235,
+      "serialized_pivot_nm": "4617.904",
+      "serialized_width_nm": "1050.770",
+      "source_commit": "8159ea61f1c8539136660b4c2e87fbbf94a70097",
+      "wavelength_unit": "nm",
+      "width_nm": 1050.7696849333333
+    }
+  }
+}

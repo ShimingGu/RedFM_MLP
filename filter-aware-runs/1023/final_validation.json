@@ -1,0 +1,15 @@
+{
+  "all_six_transfer_evaluations_completed": true,
+  "all_three_native_arms_completed": true,
+  "held_out_test_evaluated": false,
+  "matched_training_configs": true,
+  "matched_transfer_query_ids": true,
+  "offline_response_profiles_verified": 21,
+  "parameter_counts": {
+    "total_parameters": 2592465708,
+    "trainable_parameters": 2371884
+  },
+  "parameter_counts_match_archived_model": true,
+  "relevant_tests": 43,
+  "target_labels_fitted": false
+}
