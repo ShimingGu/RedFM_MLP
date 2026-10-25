@@ -1,0 +1,851 @@
+{
+  "collected_utc": "2026-10-25T09:37:37.297460+00:00",
+  "scope": "Identification and read-only inspection; no training jobs launched or resumed; checkpoint contents not deserialized.",
+  "sources": [
+    "/arc/home/gsm/.codex/history.jsonl",
+    "/arc/home/gsm/.codex/session_index.jsonl",
+    "/scratch/RedFM_MLP/notebooks/recent_runs.txt"
+  ],
+  "transcripts": "Older rollout JSONL files not found in current sessions archive; recovered prompts are not full assistant/tool transcripts. Neither target ID found in inspected old or active Codex state database.",
+  "sessions": [
+    {
+      "id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+      "title": "Summarise current progress",
+      "first_prompt_utc": "2026-10-20T05:35:33+00:00",
+      "last_prompt_utc": "2026-10-25T05:50:09+00:00",
+      "prompt_count": 52,
+      "prompts": [
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792474533,
+          "text": "first summarise the current progress",
+          "source_line": 670
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792474758,
+          "text": "ok, i just realise that clauds is not perfect sample to study (but imperfect is also a notable feature, so keep it). find a sample that has a lot of spec-z galaxies as another training sample. tell me what i can choose and i will choose later.",
+          "source_line": 671
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792475078,
+          "text": "ok, desi dr1 + legacy surveys ctalogue into ls /arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/",
+          "source_line": 672
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792476153,
+          "text": "and the galaxiesML-Spectra - DESI x HSC as well, same parent folder to desi one, subfolder name GalaxiesMLSpec",
+          "source_line": 673
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792478127,
+          "text": "remind me what posttraining method on qwen3.5-4b works best",
+          "source_line": 674
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792478252,
+          "text": "another question, as catalogues and catalogues differ in their survey specs, would that be possible if i design a posttraining pipeline that applies on one catalogue but can be generalised to the other?",
+          "source_line": 675
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792478660,
+          "text": "we have three catalogues here btw, don't forget clauds",
+          "source_line": 676
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792478729,
+          "text": "in recent_runs.txt, give me four targets to run, better to be multi-gpu tasks if possible:",
+          "source_line": 677
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792478836,
+          "text": "in recent_runs.txt, give me four commands to run: (DoRA|QLoRA x DESI-LS|GalaxiesML-Spec), make sure that the posttraining specs matches what the catalogue needs. this is the first step of the experiment",
+          "source_line": 678
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792479262,
+          "text": "you don't need to consider multi catalogue band information as the training set in the current stage",
+          "source_line": 679
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792479269,
+          "text": "resume",
+          "source_line": 680
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792481415,
+          "text": "==> /arc/home/gsm/aion_output/figures/qwen-desi-ls-qlora-specz-e10/multigpu_logs/adapter.log <==\nRuntimeError: NVML_SUCCESS == r INTERNAL ASSERT FAILED at \"/home/conda/feedstock_root/build_artifacts/libtorch_1780240372025/work/c10/cuda/CUDACachingAllocator.cpp\":1154, please report a bug to PyTorch. \nWorker failed; inspect /arc/home/gsm/aion_output/figures/qwen-desi-ls-qlora-specz-e10/multigpu_logs, but other two works hmm",
+          "source_line": 681
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792481683,
+          "text": "ok, so i will wait",
+          "source_line": 682
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792481699,
+          "text": "but would it be possible to distribute to detailed gpu slices?",
+          "source_line": 683
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792556831,
+          "text": "report progresses",
+          "source_line": 684
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792558719,
+          "text": "''\u4e0d\u8fc7\u8fd8\u6709\u4e00\u4e2a\u5173\u952e\u6761\u4ef6\u6ca1\u786e\u5b9a\uff1a\u4f60\u65b0\u52a0\u7684 DESI-Legacy training set \u7a76\u7adf\u91c7\u7528\u54ea\u4e00\u5957 spec-\\(z\\) compilation\uff0c\u4ee5\u53ca\u5b9e\u9645\u63d0\u53d6\u4e86\u54ea\u4e9b input columns\uff1f'' answer this",
+          "source_line": 685
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792558829,
+          "text": "write that to ./to_copy_1021a.md",
+          "source_line": 686
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792559595,
+          "text": "'\u4f60\u73b0\u5728\u7684 GalaxiesML-spec loader \u7a76\u7adf\u8f93\u5165\u7684\u662f HSC grizy\uff0c\u8fd8\u662f\u5b83\u81ea\u5e26\u7684 Legacy grz/W1/W2\uff1f' answer this",
+          "source_line": 687
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792559765,
+          "text": "./to_copy_1021b.md",
+          "source_line": 688
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792561959,
+          "text": "btw, you remember the previous glm problem right",
+          "source_line": 689
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792562573,
+          "text": "that's still bad. would this be the posttraining upper limit of the glm5.3-0.8B? i know this is a small model. if not then how to estimate the upper limit?",
+          "source_line": 690
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792562739,
+          "text": "write to ./target_glm_1021.md",
+          "source_line": 691
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792563501,
+          "text": "report progresses",
+          "source_line": 692
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792566088,
+          "text": "frozen? where does frozen comes from here for those new trainings?",
+          "source_line": 693
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792587085,
+          "text": "report progresses",
+          "source_line": 713
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792625992,
+          "text": "report progresses",
+          "source_line": 716
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792626091,
+          "text": "i also ran some qwen3.5-0.8b runs here",
+          "source_line": 717
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792626106,
+          "text": "i also ran some qwen3.5-0.8b runs in the other session",
+          "source_line": 718
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792643091,
+          "text": "report progresses",
+          "source_line": 721
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792648445,
+          "text": "report progresses",
+          "source_line": 722
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792651568,
+          "text": "report progresses",
+          "source_line": 723
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792654116,
+          "text": "report progresses",
+          "source_line": 724
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792662866,
+          "text": "report progresses",
+          "source_line": 726
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792722183,
+          "text": "report progresses",
+          "source_line": 727
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792722817,
+          "text": "ok i've updated a bunch of generalization studies in *1022.md*, read them and understand them",
+          "source_line": 728
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792723123,
+          "text": "ok, try apply the qwen3.5-4b-base-qlora-galaxiesml-spec to desi-legacy first only as a sanity test. let's see how raw post-trainned models can be generalised.",
+          "source_line": 729
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792723377,
+          "text": "apply to clauds as well, give me a copy of important plots into ./fast-check-plots/1023/",
+          "source_line": 730
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792728947,
+          "text": "progress report",
+          "source_line": 731
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792729540,
+          "text": "modify line 362 in recent_runs, 0.8-qlora-clauds, to make it runnable here",
+          "source_line": 732
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792732481,
+          "text": "i think we have one more gpu slice, can you apply the previous qwen3.5-4b-qlora-clauds to galaxiesml-spec and desi-legacy as a sanity check?",
+          "source_line": 733
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792741723,
+          "text": "progress report",
+          "source_line": 739
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792746467,
+          "text": "progress report",
+          "source_line": 742
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792766970,
+          "text": "progress report",
+          "source_line": 745
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792767529,
+          "text": "ok, use resources of 0.8b-galaxiesml-spec-dora to incoming 0.8b-clauds-dora",
+          "source_line": 746
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792767543,
+          "text": "line 372 in reent_runs i believe",
+          "source_line": 747
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792767551,
+          "text": "recent_runcs",
+          "source_line": 748
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792767554,
+          "text": "recent_runs",
+          "source_line": 749
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792821669,
+          "text": "check the progress, i just put into 0.8b-dora-clauds into running",
+          "source_line": 751
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792821927,
+          "text": "oh okay, put the freed resource from 4b-galaxiesml-spec-dora to 0.8b-desi-ls-qlora",
+          "source_line": 752
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792849549,
+          "text": "progress report",
+          "source_line": 755
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792886317,
+          "text": "progress report",
+          "source_line": 757
+        },
+        {
+          "session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+          "ts": 1792907409,
+          "text": "progress report",
+          "source_line": 758
+        }
+      ]
+    },
+    {
+      "id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+      "title": "Change GPU device",
+      "first_prompt_utc": "2026-10-21T09:50:22+00:00",
+      "last_prompt_utc": "2026-10-25T05:50:13+00:00",
+      "prompt_count": 38,
+      "prompts": [
+        {
+          "session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+          "ts": 1792576222,
+          "text": "ok i am running line 200-250 of ./notebooks/recent_runs.txt in the other session. now i am requesting a different session here, so different gpu slices for line 252 run. change the gpu device in ./notebooks/recent_runs.txt",
+          "source_line": 694
+        },
+        {
+          "session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+          "ts": 1792576488,
+          "text": "we have a smaller qwen3.5 here right?",
+          "source_line": 695
+        },
+        {
+          "session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+          "ts": 1792576598,
+          "text": "ok, write 6 qwen3.5-0.8B-Base runs after line 258. QLoRA|DoRA x GalaxiesML-Spec|DESI-Legacy|CLAUDS. leave gpu devices empty yet",
+          "source_line": 696
+        },
+        {
+          "session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+          "ts": 1792576989,
+          "text": "ok, we do glm5.2-0.8b-a0.8b checks here, read target_glm_1021.md first",
+          "source_line": 697
+        },
+        {
+          "session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+          "ts": 1792577942,
+          "text": "ok, do this order instead: Small-sample overfitting sanity check -> Matched numeric MLP -> Broader QLoRA / final-block fine-tuning (very optional), full FT only necessary. update this to target_glm_1021.md",
+          "source_line": 698
+        },
+        {
+          "session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+          "ts": 1792578026,
+          "text": "ok, update this to line 259 (before qwen3.5-0.8b-base runs) for Small-sample overfitting sanity check and Matched numeric MLP runs",
+          "source_line": 699
+        },
+        {
+          "session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+          "ts": 1792578742,
+          "text": "assign gpu slices to those two glm runs",
+          "source_line": 700
+        },
+        {
+          "session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+          "ts": 1792580443,
+          "text": "should be both done, summarise to ./glm52_test_1021.md",
+          "source_line": 701
+        },
+        {
+          "session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+          "ts": 1792581479,
+          "text": "change two glm tests from clauds to galaxiesml-spec as training sample",
+          "source_line": 702
+        },
+        {
+          "session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+          "ts": 1792581543,
+          "text": "use spec z as true z here",
+          "source_line": 703
+        },
+        {
+          "session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+          "ts": 1792583035,
+          "text": "put this into ./notebooks/recent_runs.txt::285, before qwen3.5-0.8B-Base runs: Investigate whether the poor generalisation of GLM-5.2-0.8B-A0.8B is related to numerical representation discontinuities.\n\nUsing the corrected GLM QLoRA checkpoint and a fixed validation subset:\n\n1. Perturb individual input magnitudes by small amounts (e.g. \u00b10.0001, 0.001, 0.01, 0.05, 0.1 mag).\n2. Measure changes in predicted redshift (PDF median), hidden representations, tokenisation, and MoE expert routing.\n3. Compare prediction sensitivity with the matched numeric MLP and Qwen, where available.\n4. Identify whether small, physically plausible input changes produce disproportionate prediction jumps, particularly near tokenisation or routing boundaries.\n\nPreserve the existing preprocessing and numerical formatting. Do not retrain models or evaluate on the held-out test set.\n\nProduce a short report with diagnostic plots, quantitative comparisons, and conclusions distinguishing tokenisation, representation, and routing effects. Do not assume discontinuity exists.",
+          "source_line": 704
+        },
+        {
+          "session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+          "ts": 1792583519,
+          "text": "no, i mean write the execution of that instruction into line 285 there, not the prompt",
+          "source_line": 705
+        },
+        {
+          "session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+          "ts": 1792584343,
+          "text": "and put the execution of this into line 302 (again, before the qwen3.5-0.8b runs):",
+          "source_line": 706
+        },
+        {
+          "session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+          "ts": 1792584345,
+          "text": " ",
+          "source_line": 707
+        },
+        {
+          "session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+          "ts": 1792584358,
+          "text": "and put the execution of this into line 302 (again, before the qwen3.5-0.8b runs): Test whether the toy copypasta pretraining of GLM-5.2-0.8B-A0.8B helps or hinders downstream photo-z learning.\n\nCompare:\n\n1. The existing toy-pretrained GLM checkpoint.\n2. An identically configured GLM architecture with random initialisation.\n\nUse identical CLAUDS inputs, ZPHOT targets, train/validation splits, prediction heads, and training budgets.\n\nCompare frozen-backbone + QLoRA/head training first, but recognise that this may unfairly disadvantage random initialisation. Include a small matched experiment unfreezing sufficient backbone parameters to permit learning from scratch, if computationally feasible.\n\nMeasure training/validation learning curves, NMAD, outlier fraction, cross-entropy, and sample efficiency. Use multiple seeds for any promising difference. Do not touch the held-out test set.\n\nDetermine whether the toy-pretrained checkpoint offers positive transfer, negative transfer, or no measurable advantage over random initialisation. Clearly separate empirical findings from speculation about mechanisms.\n\nKeep computational costs modest and produce a concise report.",
+          "source_line": 708
+        },
+        {
+          "session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+          "ts": 1792584732,
+          "text": "use galaxiesml-spec here, i forgot to change this in the prompt",
+          "source_line": 709
+        },
+        {
+          "session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+          "ts": 1792585243,
+          "text": "and summarise the newer galaxiesML-spec tests (of those what clauds tested) into glm52_test_1021spec.md",
+          "source_line": 710
+        },
+        {
+          "session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+          "ts": 1792586275,
+          "text": "summarise the numerical sensitivity run",
+          "source_line": 711
+        },
+        {
+          "session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+          "ts": 1792586438,
+          "text": "copy that report to ./glm52_numsens_gmls_1021.md",
+          "source_line": 712
+        },
+        {
+          "session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+          "ts": 1792587475,
+          "text": "summarise '# 4. Toy-pretrained vs randomly initialized GLM' as well, don't forget to put a .md in the ./",
+          "source_line": 714
+        },
+        {
+          "session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+          "ts": 1792588249,
+          "text": "and make qwen3.5-0.8b-base runs 1 and 2 each with 2 gpu slices available in this session",
+          "source_line": 715
+        },
+        {
+          "session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+          "ts": 1792628876,
+          "text": "it looks like qwen3.5-0.8b-base almost levels up with its 4b variant. so i doubt if i haven't fully utilise the potential of the larger model /thinking",
+          "source_line": 719
+        },
+        {
+          "session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+          "ts": 1792629065,
+          "text": "write this to qwen_potential_1022.md",
+          "source_line": 720
+        },
+        {
+          "session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+          "ts": 1792656356,
+          "text": "think about generalization_prompt_1022.md",
+          "source_line": 725
+        },
+        {
+          "session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+          "ts": 1792733621,
+          "text": "ok, understand ./fast-check*/ first",
+          "source_line": 734
+        },
+        {
+          "session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+          "ts": 1792733745,
+          "text": "ok, read SFT-label_1023.md",
+          "source_line": 735
+        },
+        {
+          "session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+          "ts": 1792734899,
+          "text": "OK, execute it",
+          "source_line": 736
+        },
+        {
+          "session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+          "ts": 1792739897,
+          "text": "continue",
+          "source_line": 737
+        },
+        {
+          "session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+          "ts": 1792741697,
+          "text": "execute ./filter_aware_1023a.md",
+          "source_line": 738
+        },
+        {
+          "session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+          "ts": 1792743516,
+          "text": "execute ./filter_aware_1023b.md",
+          "source_line": 740
+        },
+        {
+          "session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+          "ts": 1792745900,
+          "text": "execute ./filter_aware_1023c.md",
+          "source_line": 741
+        },
+        {
+          "session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+          "ts": 1792747144,
+          "text": "we should have more gpus now after one qwen3.5-0.8b finished. still, make them a->b->c order, don't run them parallel,but you can add more gpus into each run.",
+          "source_line": 743
+        },
+        {
+          "session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+          "ts": 1792758917,
+          "text": "check the progress there",
+          "source_line": 744
+        },
+        {
+          "session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+          "ts": 1792821597,
+          "text": "check the progress there",
+          "source_line": 750
+        },
+        {
+          "session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+          "ts": 1792828725,
+          "text": "progress report",
+          "source_line": 753
+        },
+        {
+          "session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+          "ts": 1792849529,
+          "text": "progress report",
+          "source_line": 754
+        },
+        {
+          "session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+          "ts": 1792886290,
+          "text": "progress report",
+          "source_line": 756
+        },
+        {
+          "session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+          "ts": 1792907413,
+          "text": "progress report",
+          "source_line": 759
+        }
+      ]
+    }
+  ],
+  "qwen_runs": [
+    {
+      "run": "qwen-desi-ls-qlora-specz-e10",
+      "associated_session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+      "association_basis": "user prompt history and notebooks/recent_runs.txt; association describes requested or managed work, not proof of process ownership",
+      "state": "partial; no matching live process observed in this environment",
+      "last_logged_update": 30900,
+      "total_updates": 37410,
+      "training_log": "/arc/home/gsm/aion_output/figures/qwen-desi-ls-qlora-specz-e10/multigpu_logs/adapter.log",
+      "log_tail": [
+        "saved QLoRA checkpoint /arc/projects/ots/Cosmic_Imprint_of_Time/qwen_survey_checkpoints/desi-ls-qlora-specz-e10/checkpoint-update-0030700.pt",
+        "QLoRA update 30,800/37,410 epoch=9/10 phase=joint_qlora loss=4.3277 head_lr=3.64e-05 lora_lr=2.6e-06",
+        "saved QLoRA checkpoint /arc/projects/ots/Cosmic_Imprint_of_Time/qwen_survey_checkpoints/desi-ls-qlora-specz-e10/checkpoint-update-0030800.pt",
+        "QLoRA update 30,900/37,410 epoch=9/10 phase=joint_qlora loss=2.1145 head_lr=3.59e-05 lora_lr=2.56e-06",
+        "saved QLoRA checkpoint /arc/projects/ots/Cosmic_Imprint_of_Time/qwen_survey_checkpoints/desi-ls-qlora-specz-e10/checkpoint-update-0030900.pt"
+      ],
+      "latest_periodic_checkpoint": "/arc/projects/ots/Cosmic_Imprint_of_Time/qwen_survey_checkpoints/desi-ls-qlora-specz-e10/checkpoint-update-0030900.pt",
+      "checkpoint_bytes": 38088731,
+      "final_result": null,
+      "output_dir": "/arc/home/gsm/aion_output/figures/qwen-desi-ls-qlora-specz-e10"
+    },
+    {
+      "run": "qwen-desi-ls-dora-specz-e10",
+      "associated_session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+      "association_basis": "user prompt history and notebooks/recent_runs.txt; association describes requested or managed work, not proof of process ownership",
+      "state": "partial; no matching live process observed in this environment",
+      "last_logged_update": 29900,
+      "total_updates": 37410,
+      "training_log": "/arc/home/gsm/aion_output/figures/qwen-desi-ls-dora-specz-e10/multigpu_logs/adapter.log",
+      "log_tail": [
+        "DoRA update 29,800/37,410 epoch=8/10 phase=joint_dora loss=2.9124 head_lr=4.19e-05 lora_lr=3e-06",
+        "saved DoRA checkpoint /arc/projects/ots/Cosmic_Imprint_of_Time/qwen_survey_checkpoints/desi-ls-dora-specz-e10/checkpoint-update-0029800.pt",
+        "DoRA update 29,900/37,410 epoch=8/10 phase=joint_dora loss=4.2558 head_lr=4.14e-05 lora_lr=2.96e-06",
+        "saved DoRA checkpoint /arc/projects/ots/Cosmic_Imprint_of_Time/qwen_survey_checkpoints/desi-ls-dora-specz-e10/checkpoint-update-0029900.pt",
+        "DoRA epoch=007 train_loss=2.9962 val_loss=3.0194 val_nmad=0.0418"
+      ],
+      "latest_periodic_checkpoint": "/arc/projects/ots/Cosmic_Imprint_of_Time/qwen_survey_checkpoints/desi-ls-dora-specz-e10/checkpoint-update-0029900.pt",
+      "checkpoint_bytes": 39780603,
+      "final_result": null,
+      "output_dir": "/arc/home/gsm/aion_output/figures/qwen-desi-ls-dora-specz-e10"
+    },
+    {
+      "run": "qwen-galaxiesml-spec-qlora-specz-e10",
+      "associated_session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+      "association_basis": "user prompt history and notebooks/recent_runs.txt; association describes requested or managed work, not proof of process ownership",
+      "state": "completed",
+      "last_logged_update": 14000,
+      "total_updates": 14030,
+      "training_log": "/arc/home/gsm/aion_output/figures/qwen-galaxiesml-spec-qlora-specz-e10/multigpu_logs/adapter.log",
+      "log_tail": [
+        "QLoRA update 13,900/14,030 epoch=10/10 phase=joint_qlora loss=2.5640 head_lr=1.91e-06 lora_lr=1.36e-07",
+        "saved QLoRA checkpoint /arc/projects/ots/Cosmic_Imprint_of_Time/qwen_survey_checkpoints/galaxiesml-spec-qlora-specz-e10/checkpoint-update-0013900.pt",
+        "QLoRA update 14,000/14,030 epoch=10/10 phase=joint_qlora loss=1.5305 head_lr=4.41e-07 lora_lr=3.15e-08",
+        "saved QLoRA checkpoint /arc/projects/ots/Cosmic_Imprint_of_Time/qwen_survey_checkpoints/galaxiesml-spec-qlora-specz-e10/checkpoint-update-0014000.pt",
+        "QLoRA epoch=009 train_loss=2.4550 val_loss=2.4530 val_nmad=0.0268"
+      ],
+      "latest_periodic_checkpoint": "/arc/projects/ots/Cosmic_Imprint_of_Time/qwen_survey_checkpoints/galaxiesml-spec-qlora-specz-e10/checkpoint-update-0014000.pt",
+      "checkpoint_bytes": 38089115,
+      "final_result": "/arc/home/gsm/aion_output/figures/qwen-galaxiesml-spec-qlora-specz-e10/qlora/result.pt",
+      "output_dir": "/arc/home/gsm/aion_output/figures/qwen-galaxiesml-spec-qlora-specz-e10"
+    },
+    {
+      "run": "qwen-galaxiesml-spec-dora-specz-e10",
+      "associated_session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+      "association_basis": "user prompt history and notebooks/recent_runs.txt; association describes requested or managed work, not proof of process ownership",
+      "state": "completed",
+      "last_logged_update": 14000,
+      "total_updates": 14030,
+      "training_log": "/arc/home/gsm/aion_output/figures/qwen-galaxiesml-spec-dora-specz-e10/multigpu_logs/adapter.log",
+      "log_tail": [
+        "DoRA update 13,900/14,030 epoch=10/10 phase=joint_dora loss=2.4992 head_lr=1.91e-06 lora_lr=1.36e-07",
+        "saved DoRA checkpoint /arc/projects/ots/Cosmic_Imprint_of_Time/qwen_survey_checkpoints/galaxiesml-spec-dora-specz-e10/checkpoint-update-0013900.pt",
+        "DoRA update 14,000/14,030 epoch=10/10 phase=joint_dora loss=1.4990 head_lr=4.41e-07 lora_lr=3.15e-08",
+        "saved DoRA checkpoint /arc/projects/ots/Cosmic_Imprint_of_Time/qwen_survey_checkpoints/galaxiesml-spec-dora-specz-e10/checkpoint-update-0014000.pt",
+        "DoRA epoch=009 train_loss=2.4490 val_loss=2.4472 val_nmad=0.0269"
+      ],
+      "latest_periodic_checkpoint": "/arc/projects/ots/Cosmic_Imprint_of_Time/qwen_survey_checkpoints/galaxiesml-spec-dora-specz-e10/checkpoint-update-0014000.pt",
+      "checkpoint_bytes": 39781371,
+      "final_result": "/arc/home/gsm/aion_output/figures/qwen-galaxiesml-spec-dora-specz-e10/dora/result.pt",
+      "output_dir": "/arc/home/gsm/aion_output/figures/qwen-galaxiesml-spec-dora-specz-e10"
+    },
+    {
+      "run": "qwen3.5-0.8b-galaxiesml-spec-qlora-specz-e10",
+      "associated_session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+      "association_basis": "user prompt history and notebooks/recent_runs.txt; association describes requested or managed work, not proof of process ownership",
+      "state": "completed",
+      "last_logged_update": 14000,
+      "total_updates": 14030,
+      "training_log": "/arc/home/gsm/aion_output/figures/qwen3.5-0.8b-galaxiesml-spec-qlora-specz-e10/multigpu_logs/adapter.log",
+      "log_tail": [
+        "QLoRA update 13,900/14,030 epoch=10/10 phase=joint_qlora loss=2.1447 head_lr=1.91e-06 lora_lr=1.36e-07",
+        "saved QLoRA checkpoint /arc/projects/ots/Cosmic_Imprint_of_Time/qwen_survey_checkpoints/qwen3.5-0.8b-galaxiesml-spec-qlora-specz-e10/checkpoint-update-0013900.pt",
+        "QLoRA update 14,000/14,030 epoch=10/10 phase=joint_qlora loss=1.7030 head_lr=4.41e-07 lora_lr=3.15e-08",
+        "saved QLoRA checkpoint /arc/projects/ots/Cosmic_Imprint_of_Time/qwen_survey_checkpoints/qwen3.5-0.8b-galaxiesml-spec-qlora-specz-e10/checkpoint-update-0014000.pt",
+        "QLoRA epoch=009 train_loss=2.4859 val_loss=2.4771 val_nmad=0.0276"
+      ],
+      "latest_periodic_checkpoint": "/arc/projects/ots/Cosmic_Imprint_of_Time/qwen_survey_checkpoints/qwen3.5-0.8b-galaxiesml-spec-qlora-specz-e10/checkpoint-update-0014000.pt",
+      "checkpoint_bytes": 15255851,
+      "final_result": "/arc/home/gsm/aion_output/figures/qwen3.5-0.8b-galaxiesml-spec-qlora-specz-e10/qlora/result.pt",
+      "output_dir": "/arc/home/gsm/aion_output/figures/qwen3.5-0.8b-galaxiesml-spec-qlora-specz-e10"
+    },
+    {
+      "run": "qwen3.5-0.8b-galaxiesml-spec-dora-specz-e10",
+      "associated_session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+      "association_basis": "user prompt history and notebooks/recent_runs.txt; association describes requested or managed work, not proof of process ownership",
+      "state": "completed",
+      "last_logged_update": 14000,
+      "total_updates": 14030,
+      "training_log": "/arc/home/gsm/aion_output/figures/qwen3.5-0.8b-galaxiesml-spec-dora-specz-e10/multigpu_logs/adapter.log",
+      "log_tail": [
+        "DoRA update 13,900/14,030 epoch=10/10 phase=joint_dora loss=2.1360 head_lr=1.91e-06 lora_lr=1.36e-07",
+        "saved DoRA checkpoint /arc/projects/ots/Cosmic_Imprint_of_Time/qwen_survey_checkpoints/qwen3.5-0.8b-galaxiesml-spec-dora-specz-e10/checkpoint-update-0013900.pt",
+        "DoRA update 14,000/14,030 epoch=10/10 phase=joint_dora loss=1.7183 head_lr=4.41e-07 lora_lr=3.15e-08",
+        "saved DoRA checkpoint /arc/projects/ots/Cosmic_Imprint_of_Time/qwen_survey_checkpoints/qwen3.5-0.8b-galaxiesml-spec-dora-specz-e10/checkpoint-update-0014000.pt",
+        "DoRA epoch=009 train_loss=2.4828 val_loss=2.4737 val_nmad=0.0274"
+      ],
+      "latest_periodic_checkpoint": "/arc/projects/ots/Cosmic_Imprint_of_Time/qwen_survey_checkpoints/qwen3.5-0.8b-galaxiesml-spec-dora-specz-e10/checkpoint-update-0014000.pt",
+      "checkpoint_bytes": 15886035,
+      "final_result": "/arc/home/gsm/aion_output/figures/qwen3.5-0.8b-galaxiesml-spec-dora-specz-e10/dora/result.pt",
+      "output_dir": "/arc/home/gsm/aion_output/figures/qwen3.5-0.8b-galaxiesml-spec-dora-specz-e10"
+    },
+    {
+      "run": "qwen3.5-0.8b-desi-ls-qlora-specz-e10",
+      "associated_session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+      "association_basis": "user prompt history and notebooks/recent_runs.txt; association describes requested or managed work, not proof of process ownership",
+      "state": "partial; no matching live process observed in this environment",
+      "last_logged_update": 15100,
+      "total_updates": 37410,
+      "training_log": "/arc/home/gsm/aion_output/figures/qwen3.5-0.8b-desi-ls-qlora-specz-e10/multigpu_logs/adapter.log",
+      "log_tail": [
+        "QLoRA epoch=003 train_loss=3.5033 val_loss=3.3525 val_nmad=0.0586",
+        "QLoRA update 15,000/37,410 epoch=5/10 phase=joint_qlora loss=4.9726 head_lr=0.000124 lora_lr=8.82e-06",
+        "saved QLoRA checkpoint /arc/projects/ots/Cosmic_Imprint_of_Time/qwen_survey_checkpoints/qwen3.5-0.8b-desi-ls-qlora-specz-e10/checkpoint-update-0015000.pt",
+        "QLoRA update 15,100/37,410 epoch=5/10 phase=joint_qlora loss=3.9449 head_lr=0.000123 lora_lr=8.78e-06",
+        "saved QLoRA checkpoint /arc/projects/ots/Cosmic_Imprint_of_Time/qwen_survey_checkpoints/qwen3.5-0.8b-desi-ls-qlora-specz-e10/checkpoint-update-0015100.pt"
+      ],
+      "latest_periodic_checkpoint": "/arc/projects/ots/Cosmic_Imprint_of_Time/qwen_survey_checkpoints/qwen3.5-0.8b-desi-ls-qlora-specz-e10/checkpoint-update-0015100.pt",
+      "checkpoint_bytes": 15253867,
+      "final_result": null,
+      "output_dir": "/arc/home/gsm/aion_output/figures/qwen3.5-0.8b-desi-ls-qlora-specz-e10"
+    },
+    {
+      "run": "qwen3.5-0.8b-clauds-qlora-e10",
+      "associated_session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+      "association_basis": "user prompt history and notebooks/recent_runs.txt; association describes requested or managed work, not proof of process ownership",
+      "state": "partial; no matching live process observed in this environment",
+      "last_logged_update": 21600,
+      "total_updates": 37500,
+      "training_log": "/arc/home/gsm/aion_output/figures/qwen3.5-0.8b-clauds-qlora-e10/multigpu_logs/qlora.log",
+      "log_tail": [
+        "saved QLoRA checkpoint /arc/projects/ots/Cosmic_Imprint_of_Time/qlora_checkpoints/qwen3.5-0.8b-clauds-qlora-e10/checkpoint-update-0021400.pt",
+        "QLoRA update 21,500/37,500 epoch=6/10 phase=joint_qlora loss=3.0202 head_lr=8.8e-05 lora_lr=6.28e-06",
+        "saved QLoRA checkpoint /arc/projects/ots/Cosmic_Imprint_of_Time/qlora_checkpoints/qwen3.5-0.8b-clauds-qlora-e10/checkpoint-update-0021500.pt",
+        "QLoRA update 21,600/37,500 epoch=6/10 phase=joint_qlora loss=3.8502 head_lr=8.74e-05 lora_lr=6.24e-06",
+        "saved QLoRA checkpoint /arc/projects/ots/Cosmic_Imprint_of_Time/qlora_checkpoints/qwen3.5-0.8b-clauds-qlora-e10/checkpoint-update-0021600.pt"
+      ],
+      "latest_periodic_checkpoint": "/arc/projects/ots/Cosmic_Imprint_of_Time/qlora_checkpoints/qwen3.5-0.8b-clauds-qlora-e10/checkpoint-update-0021600.pt",
+      "checkpoint_bytes": 15254315,
+      "final_result": null,
+      "output_dir": "/arc/home/gsm/aion_output/figures/qwen3.5-0.8b-clauds-qlora-e10"
+    },
+    {
+      "run": "qwen3.5-0.8b-clauds-dora-e10",
+      "associated_session_id": "01a157ce-9bd6-7872-b0b8-ccefd35855ef",
+      "association_basis": "user prompt history and notebooks/recent_runs.txt; association describes requested or managed work, not proof of process ownership",
+      "state": "partial; no matching live process observed in this environment",
+      "last_logged_update": 15100,
+      "total_updates": 37500,
+      "training_log": "/arc/home/gsm/aion_output/figures/qwen3.5-0.8b-clauds-dora-e10/dora.log",
+      "log_tail": [
+        "DoRA update 15,000/37,500 epoch=4/10 phase=joint_dora loss=4.1330 head_lr=0.000124 lora_lr=8.84e-06",
+        "saved DoRA checkpoint /arc/projects/ots/Cosmic_Imprint_of_Time/dora_checkpoints/qwen3.5-0.8b-clauds-dora-e10/checkpoint-update-0015000.pt",
+        "DoRA epoch=003 train_loss=4.6442 val_loss=4.3920 val_nmad=0.1226",
+        "DoRA update 15,100/37,500 epoch=5/10 phase=joint_dora loss=3.7011 head_lr=0.000123 lora_lr=8.8e-06",
+        "saved DoRA checkpoint /arc/projects/ots/Cosmic_Imprint_of_Time/dora_checkpoints/qwen3.5-0.8b-clauds-dora-e10/checkpoint-update-0015100.pt"
+      ],
+      "latest_periodic_checkpoint": "/arc/projects/ots/Cosmic_Imprint_of_Time/dora_checkpoints/qwen3.5-0.8b-clauds-dora-e10/checkpoint-update-0015100.pt",
+      "checkpoint_bytes": 15884115,
+      "final_result": null,
+      "output_dir": "/arc/home/gsm/aion_output/figures/qwen3.5-0.8b-clauds-dora-e10"
+    }
+  ],
+  "filter_aware_runs": [
+    {
+      "arm": "A",
+      "associated_session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+      "output_dir": "/scratch/RedFM_MLP/filter-aware-runs/1023/hsc-warmstart/level0",
+      "status": {
+        "best_metrics": {
+          "bias": 0.00106125941965729,
+          "catastrophic_outlier_fraction": 0.010733767412602901,
+          "cross_entropy": 2.440431833267212,
+          "mean_crps": 0.02718985266983509,
+          "mean_log_score": 2.440432071685791,
+          "median_bias": 0.0017570103518664837,
+          "nmad": 0.026267804205417633,
+          "p16_p84_coverage": 0.7349991202354431,
+          "pit_mean": 0.5470677614212036
+        },
+        "best_update": 2500,
+        "elapsed_seconds": 59738.124146284536,
+        "finished_utc": "2026-10-24T00:50:55.420834+00:00",
+        "global_update": 2806,
+        "max_updates": 2806,
+        "peak_allocated_gib": 5.452396392822266,
+        "phase": "complete",
+        "target_labels_fitted": false,
+        "test_evaluated": false,
+        "total_run_wall_seconds": 60416.147972,
+        "zero_update_metrics": {
+          "bias": 0.0007001304184086621,
+          "catastrophic_outlier_fraction": 0.010733767412602901,
+          "cross_entropy": 2.4530272483825684,
+          "mean_crps": 0.02740425616502762,
+          "mean_log_score": 2.4530272483825684,
+          "median_bias": 0.0013998079812154174,
+          "nmad": 0.026761578395962715,
+          "p16_p84_coverage": 0.7302480936050415,
+          "pit_mean": 0.5480177998542786
+        }
+      },
+      "status_file": "/scratch/RedFM_MLP/filter-aware-runs/1023/hsc-warmstart/level0/status.json",
+      "report": "/scratch/RedFM_MLP/filter-aware-runs/1023/hsc-warmstart/level0/report.md",
+      "latest_checkpoint": "/scratch/RedFM_MLP/filter-aware-runs/1023/hsc-warmstart/level0/latest.pt"
+    },
+    {
+      "arm": "B",
+      "associated_session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+      "output_dir": "/scratch/RedFM_MLP/filter-aware-runs/1023/hsc-warmstart/level1",
+      "status": {
+        "best_metrics": {
+          "bias": -0.002729612635448575,
+          "catastrophic_outlier_fraction": 0.013549181632697582,
+          "cross_entropy": 2.648249864578247,
+          "mean_crps": 0.03308478370308876,
+          "mean_log_score": 2.648249864578247,
+          "median_bias": -0.0006909758085384965,
+          "nmad": 0.034536585211753845,
+          "p16_p84_coverage": 0.714939296245575,
+          "pit_mean": 0.5542884469032288
+        },
+        "best_update": 750,
+        "elapsed_seconds": 18360.441989598796,
+        "global_update": 980,
+        "max_updates": 2806,
+        "peak_allocated_gib": 5.452396392822266,
+        "phase": "training",
+        "target_labels_fitted": false,
+        "test_evaluated": false,
+        "zero_update_metrics": {
+          "bias": -0.15784382820129395,
+          "catastrophic_outlier_fraction": 0.47369346022605896,
+          "cross_entropy": 6.668456077575684,
+          "mean_crps": 0.22014890611171722,
+          "mean_log_score": 6.668456077575684,
+          "median_bias": -0.14020726084709167,
+          "nmad": 0.1532468944787979,
+          "p16_p84_coverage": 0.18916065990924835,
+          "pit_mean": 0.8987489342689514
+        }
+      },
+      "status_file": "/scratch/RedFM_MLP/filter-aware-runs/1023/hsc-warmstart/level1/status.json",
+      "report": "/scratch/RedFM_MLP/filter-aware-runs/1023/hsc-warmstart/level1/report.md",
+      "latest_checkpoint": "/scratch/RedFM_MLP/filter-aware-runs/1023/hsc-warmstart/level1/latest.pt"
+    },
+    {
+      "arm": "C",
+      "associated_session_id": "01a15ddd-7108-7c21-b878-fda7069abc8c",
+      "output_dir": "/scratch/RedFM_MLP/filter-aware-runs/1023/hsc-warmstart/level2",
+      "status": {
+        "gpu": "MIG-a9b1fb4a-5c28-5b03-9686-f831c6facf25",
+        "phase": "queued",
+        "queue_reason": "Managed sequential pipeline: waiting for all earlier arms to complete successfully",
+        "test_evaluated": false,
+        "updated_utc": "2026-10-23T09:41:50.542192+00:00"
+      },
+      "status_file": "/scratch/RedFM_MLP/filter-aware-runs/1023/hsc-warmstart/level2/status.json",
+      "report": "/scratch/RedFM_MLP/filter-aware-runs/1023/hsc-warmstart/level2/report.md",
+      "latest_checkpoint": null
+    }
+  ]
+}
