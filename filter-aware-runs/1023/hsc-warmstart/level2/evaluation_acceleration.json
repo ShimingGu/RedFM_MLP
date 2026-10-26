@@ -64,6 +64,66 @@
         4.820289134979248
       ],
       "workers": 2
+    },
+    {
+      "batch_size": 8,
+      "n": 5683,
+      "same_original_batch_grouping": true,
+      "seconds": 363.60200046747923,
+      "sequence": 6,
+      "worker_peak_allocated_gib": [
+        4.820289134979248,
+        4.820289134979248
+      ],
+      "workers": 2
+    },
+    {
+      "batch_size": 8,
+      "n": 5683,
+      "same_original_batch_grouping": true,
+      "seconds": 363.8080282751471,
+      "sequence": 7,
+      "worker_peak_allocated_gib": [
+        4.820289134979248,
+        4.820289134979248
+      ],
+      "workers": 2
+    },
+    {
+      "batch_size": 8,
+      "n": 5683,
+      "same_original_batch_grouping": true,
+      "seconds": 363.58798029460013,
+      "sequence": 8,
+      "worker_peak_allocated_gib": [
+        4.820289134979248,
+        4.820289134979248
+      ],
+      "workers": 2
+    },
+    {
+      "batch_size": 8,
+      "n": 5683,
+      "same_original_batch_grouping": true,
+      "seconds": 363.4058772902936,
+      "sequence": 9,
+      "worker_peak_allocated_gib": [
+        4.820289134979248,
+        4.820289134979248
+      ],
+      "workers": 2
+    },
+    {
+      "batch_size": 8,
+      "n": 5683,
+      "same_original_batch_grouping": true,
+      "seconds": 363.42014175467193,
+      "sequence": 10,
+      "worker_peak_allocated_gib": [
+        4.820289134979248,
+        4.820289134979248
+      ],
+      "workers": 2
     }
   ],
   "optimization_unchanged": true,
