@@ -124,6 +124,90 @@
         4.820289134979248
       ],
       "workers": 2
+    },
+    {
+      "batch_size": 8,
+      "n": 5683,
+      "same_original_batch_grouping": true,
+      "seconds": 363.72335037589073,
+      "sequence": 11,
+      "worker_peak_allocated_gib": [
+        4.820289134979248,
+        4.820289134979248
+      ],
+      "workers": 2
+    },
+    {
+      "batch_size": 8,
+      "n": 5683,
+      "same_original_batch_grouping": true,
+      "seconds": 363.60921734943986,
+      "sequence": 12,
+      "worker_peak_allocated_gib": [
+        4.820289134979248,
+        4.820289134979248
+      ],
+      "workers": 2
+    },
+    {
+      "batch_size": 8,
+      "n": 5683,
+      "same_original_batch_grouping": true,
+      "seconds": 363.5971185937524,
+      "sequence": 13,
+      "worker_peak_allocated_gib": [
+        4.820289134979248,
+        4.820289134979248
+      ],
+      "workers": 2
+    },
+    {
+      "batch_size": 8,
+      "n": 5683,
+      "same_original_batch_grouping": true,
+      "seconds": 363.82499771006405,
+      "sequence": 14,
+      "worker_peak_allocated_gib": [
+        4.820289134979248,
+        4.820289134979248
+      ],
+      "workers": 2
+    },
+    {
+      "batch_size": 8,
+      "n": 5683,
+      "same_original_batch_grouping": true,
+      "seconds": 363.7999724932015,
+      "sequence": 15,
+      "worker_peak_allocated_gib": [
+        4.820289134979248,
+        4.820289134979248
+      ],
+      "workers": 2
+    },
+    {
+      "batch_size": 8,
+      "n": 256,
+      "same_original_batch_grouping": true,
+      "seconds": 26.253923032432795,
+      "sequence": 16,
+      "worker_peak_allocated_gib": [
+        5.105799674987793,
+        5.105799674987793
+      ],
+      "workers": 2
+    },
+    {
+      "batch_size": 8,
+      "n": 256,
+      "same_original_batch_grouping": true,
+      "seconds": 16.88083262182772,
+      "sequence": 17,
+      "worker_peak_allocated_gib": [
+        4.820289134979248,
+        4.824067115783691
+      ],
+      "workers": 2
     }
   ],
   "optimization_unchanged": true,

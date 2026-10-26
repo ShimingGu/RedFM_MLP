@@ -1,6 +1,6 @@
 # Experiment C — warm-start Level-2 filter physics
 
-Status: **training**. Updated 2026-10-26T07:24:39.305227+00:00.
+Status: **complete**. Updated 2026-10-26T12:57:53.300871+00:00.
 
 C is an independent branch from the original archived HSC Qwen3.5-4B-Base rank-8 QLoRA adapter and matching trained 256-hidden-unit PDF head. Both components are verified tensor by tensor when GPU execution begins. It uses the same 22,444 training and 5,683 validation objects, labels, numerical formatting, missingness and 300-bin 0–4.5 grid as A/B. Removing only `pivot_nm` and `width_nm` from every source and target string reproduces B byte for byte.
 
@@ -23,20 +23,57 @@ Source HSC grizy uses nominal HSC 2017 profiles. Exposure mixtures of r/r2 and i
 | Original archived weights / Level 1 | 6.668456 | 0.153247 | 47.369% | -0.157844 | 0.220149 | 18.916% |
 | Selected Level 0 A / update 2500 | 2.440432 | 0.026268 | 1.073% | 0.001061 | 0.027190 | 73.500% |
 | Selected Level 1 B / update 2500 | 2.507556 | 0.028672 | 1.056% | -0.000350 | 0.029106 | 72.462% |
-| Selected Level 2 C / update 1750 | 2.609240 | 0.034697 | 1.390% | 0.001018 | 0.031874 | 69.030% |
-| Latest Level-2 validation | 2.609240 | 0.034697 | 1.390% | 0.001018 | 0.031874 | 69.030% |
+| Selected Level 2 C / update 2806 | 2.547055 | 0.030846 | 1.355% | 0.001889 | 0.030307 | 71.248% |
+| Latest Level-2 validation | 2.547055 | 0.030846 | 1.355% | 0.001889 | 0.030307 | 71.248% |
 
 The zero-update rows use identical original weights and objects; their differences measure serializer-only changes. Recovery through SFT is measured separately. A 32-object canonical Level-0 replay checks restoration before the full 5,683-object Level-2 diagnostic.
 
-Training: 1,950/2,806 updates; selected update 1,750; training/periodic-validation wall time 11.644 hours; peak allocated GPU memory 5.452 GiB.
+Training: 2,806/2,806 updates; selected update 2,806; training/periodic-validation wall time 17.185 hours; peak allocated GPU memory 5.452 GiB.
 
-Target inference remains pending until source-only checkpoint selection finishes.
+## Fixed-weight transfer and matched controls
+
+All models use exactly the same audited 256 Legacy and 256 CLAUDS validation objects. Legacy reference: DESI spectroscopic redshift. CLAUDS reference: ZPHOT, not spectroscopy. Existing native CLAUDS imputed AB magnitudes, missing errors/EBV and five-decimal formatting are unchanged.
+
+| Model / evaluation | CE | NMAD | Outliers | Bias | CRPS | 68% coverage |
+|---|---:|---:|---:|---:|---:|---:|
+| clauds / original archived Level 0 | 19.492022 | 0.134513 | 96.484% | -0.519838 | 1.489546 | 1.562% |
+| clauds / selected Level 0 A | 20.045021 | 0.135879 | 96.484% | -0.521222 | 1.492119 | 1.562% |
+| clauds / selected Level 1 B | 13.372568 | 0.124395 | 97.266% | -0.542130 | 1.530952 | 0.781% |
+| clauds / selected Level 2 C | 18.473541 | 0.130129 | 96.484% | -0.523640 | 1.497649 | 1.172% |
+| desi-ls / original archived Level 0 | 5.151609 | 0.153725 | 32.422% | 0.023918 | 0.154725 | 31.250% |
+| desi-ls / selected Level 0 A | 5.059905 | 0.144464 | 32.812% | 0.029038 | 0.152464 | 31.250% |
+| desi-ls / selected Level 1 B | 4.865762 | 0.123267 | 23.438% | -0.012408 | 0.143337 | 28.906% |
+| desi-ls / selected Level 2 C | 4.273280 | 0.100839 | 26.562% | -0.023918 | 0.146732 | 46.484% |
+
+## Findings
+
+Level-2 adaptation changes source CE by -4.248619 and NMAD by -0.121999 relative to its zero-update Level-2 starting point. Relative to the original archived Level-0 capability, selected CE changes by +0.094028, NMAD by +0.004085, and outlier fraction by +0.282%.
+
+Selected Level 2 remains numerically worse than the original source model in cross_entropy, nmad, catastrophic_outlier_fraction. Source quality has not uniformly recovered; target differences cannot provide a clean isolated test of filter-physics transfer.
+
+Critical comparison, clauds, C minus B: CE +5.100973; NMAD +0.005734; outliers -0.781%; bias +0.018490; CRPS -0.033303; coverage +0.391%. Negative CE/NMAD/outlier/CRPS differences favor C; bias and coverage require separate interpretation.
+
+Critical comparison, desi-ls, C minus B: CE -0.592482; NMAD -0.022428; outliers +3.125%; bias -0.011510; CRPS +0.003395; coverage +17.578%. Negative CE/NMAD/outlier/CRPS differences favor C; bias and coverage require separate interpretation.
+
+Total GPU-run wall time: 17.304 hours (queue wait excluded; interruptions included if resumed). Peak allocated memory: 5.452 GiB. GPU UUID and memory at reservation are recorded in `gpu.json`; timing definition is in `timing.json`.
+
+| Arm | Selected / trained updates | Training + validation hours | Total run hours | Peak allocated GiB |
+|---|---:|---:|---:|---:|
+| Level 2 C | 2806 / 2806 | 17.185 | 17.304 | 5.452 |
+| Level 0 A | 2500 / 2806 | 16.594 | 16.782 | 5.452 |
+| Level 1 B | 2500 / 2806 | 14.350 | 42.806 | 5.452 |
 
 ## Interpretation limits
 
 The critical comparison is C versus B, since B already supplies explicit band identities. Source validation also selects checkpoints, so these are model-selection results. Retaining the zero-update candidate guarantees non-increasing CE only relative to Level 2, not the original Level 0; latest validation and last/selected parameter changes are saved. Single-seed point estimates on fixed 256-object target samples do not establish statistical significance.
 
 Every HSC training galaxy uses essentially the same fixed filter set: wavelength and bandwidth do not vary independently across source objects. Successful source adaptation therefore does not demonstrate learning a physically transferable response dependence. Any transfer improvement is preliminary; multiple training filter systems and shuffled or incorrect metadata controls would be needed. This experiment does not demonstrate universal filter-aware generalisation.
+
+![learning_curves.png](learning_curves.png)
+
+![serializer_predictions.png](serializer_predictions.png)
+
+![transfer_predictions.png](transfer_predictions.png)
 
 ## Additional evaluation GPUs
 

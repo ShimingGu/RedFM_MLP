@@ -1,12 +1,5 @@
 {
-  "active_arm": "C",
-  "active_pid": 21109,
-  "evaluation_gpus": [
-    "MIG-0a2e21a6-8961-56b1-9eb4-997ae914386e",
-    "MIG-6c85a6c1-35aa-5ff1-ae36-a468e3e230b6"
-  ],
-  "phase": "running",
-  "sequence": "A -> B -> C",
-  "supervisor_pid": 6833,
-  "training_gpu": "MIG-1bba1f26-8b2b-5b97-9bb1-c886ab9bb8b7"
+  "finished_utc": "2026-10-26T12:57:56.472884+00:00",
+  "phase": "complete",
+  "sequence": "A -> B -> C"
 }
