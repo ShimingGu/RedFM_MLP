@@ -1,19 +1,19 @@
 {
   "effective_batch_size": 16,
   "evaluation_gpus": [
-    "MIG-bef01423-2506-5edb-a289-80c60b1f0297",
-    "MIG-412ff209-a29c-5bc8-9aa2-fd1a41474aec"
+    "MIG-0a2e21a6-8961-56b1-9eb4-997ae914386e",
+    "MIG-6c85a6c1-35aa-5ff1-ae36-a468e3e230b6"
   ],
   "evaluations": [
     {
       "batch_size": 8,
-      "n": 32,
+      "n": 5683,
       "same_original_batch_grouping": true,
-      "seconds": 2.2225722204893827,
+      "seconds": 236.31681850925088,
       "sequence": 1,
       "worker_peak_allocated_gib": [
-        4.743676662445068,
-        4.744542121887207
+        4.652151584625244,
+        4.652151584625244
       ],
       "workers": 2
     },
@@ -21,7 +21,7 @@
       "batch_size": 8,
       "n": 5683,
       "same_original_batch_grouping": true,
-      "seconds": 233.10154006816447,
+      "seconds": 235.2907261326909,
       "sequence": 2,
       "worker_peak_allocated_gib": [
         4.652151584625244,
@@ -33,7 +33,7 @@
       "batch_size": 8,
       "n": 5683,
       "same_original_batch_grouping": true,
-      "seconds": 233.06800839863718,
+      "seconds": 235.47741763852537,
       "sequence": 3,
       "worker_peak_allocated_gib": [
         4.652151584625244,
@@ -45,7 +45,7 @@
       "batch_size": 8,
       "n": 5683,
       "same_original_batch_grouping": true,
-      "seconds": 233.09360334463418,
+      "seconds": 235.29185951128602,
       "sequence": 4,
       "worker_peak_allocated_gib": [
         4.652151584625244,
@@ -57,10 +57,94 @@
       "batch_size": 8,
       "n": 5683,
       "same_original_batch_grouping": true,
-      "seconds": 232.88178734481335,
+      "seconds": 235.48555920645595,
       "sequence": 5,
       "worker_peak_allocated_gib": [
         4.652151584625244,
+        4.652151584625244
+      ],
+      "workers": 2
+    },
+    {
+      "batch_size": 8,
+      "n": 5683,
+      "same_original_batch_grouping": true,
+      "seconds": 235.2894283812493,
+      "sequence": 6,
+      "worker_peak_allocated_gib": [
+        4.652151584625244,
+        4.652151584625244
+      ],
+      "workers": 2
+    },
+    {
+      "batch_size": 8,
+      "n": 5683,
+      "same_original_batch_grouping": true,
+      "seconds": 235.48230004124343,
+      "sequence": 7,
+      "worker_peak_allocated_gib": [
+        4.652151584625244,
+        4.652151584625244
+      ],
+      "workers": 2
+    },
+    {
+      "batch_size": 8,
+      "n": 5683,
+      "same_original_batch_grouping": true,
+      "seconds": 235.27104361355305,
+      "sequence": 8,
+      "worker_peak_allocated_gib": [
+        4.652151584625244,
+        4.652151584625244
+      ],
+      "workers": 2
+    },
+    {
+      "batch_size": 8,
+      "n": 5683,
+      "same_original_batch_grouping": true,
+      "seconds": 235.45952982269228,
+      "sequence": 9,
+      "worker_peak_allocated_gib": [
+        4.652151584625244,
+        4.652151584625244
+      ],
+      "workers": 2
+    },
+    {
+      "batch_size": 8,
+      "n": 5683,
+      "same_original_batch_grouping": true,
+      "seconds": 235.467951413244,
+      "sequence": 10,
+      "worker_peak_allocated_gib": [
+        4.652151584625244,
+        4.652151584625244
+      ],
+      "workers": 2
+    },
+    {
+      "batch_size": 8,
+      "n": 256,
+      "same_original_batch_grouping": true,
+      "seconds": 14.43090788461268,
+      "sequence": 11,
+      "worker_peak_allocated_gib": [
+        4.731344223022461,
+        4.731344223022461
+      ],
+      "workers": 2
+    },
+    {
+      "batch_size": 8,
+      "n": 256,
+      "same_original_batch_grouping": true,
+      "seconds": 10.837895814329386,
+      "sequence": 12,
+      "worker_peak_allocated_gib": [
+        4.6483154296875,
         4.652151584625244
       ],
       "workers": 2

@@ -1,0 +1,36 @@
+{
+  "delta_level2_minus_level0": {
+    "bias": -0.15931956405984238,
+    "catastrophic_outlier_fraction": 0.46471934113651514,
+    "cross_entropy": 4.342647552490234,
+    "mean_crps": 0.1942865177989006,
+    "nmad": 0.12608310393989086,
+    "p16_p84_coverage": -0.5530529469251633
+  },
+  "level2_zero_update_metrics": {
+    "bias": -0.15861943364143372,
+    "catastrophic_outlier_fraction": 0.47545310854911804,
+    "cross_entropy": 6.795674800872803,
+    "mean_crps": 0.22169077396392822,
+    "mean_log_score": 6.7956743240356445,
+    "median_bias": -0.14051660895347595,
+    "nmad": 0.15284468233585358,
+    "p16_p84_coverage": 0.17719514667987823,
+    "pit_mean": 0.9037765264511108
+  },
+  "n": 5683,
+  "only_serializer_changed": true,
+  "original_level0_metrics": {
+    "bias": 0.0007001304184086621,
+    "catastrophic_outlier_fraction": 0.010733767412602901,
+    "cross_entropy": 2.4530272483825684,
+    "mean_crps": 0.02740425616502762,
+    "mean_log_score": 2.4530272483825684,
+    "median_bias": 0.0013998079812154174,
+    "nmad": 0.026761578395962715,
+    "p16_p84_coverage": 0.7302480936050415,
+    "pit_mean": 0.5480177998542786
+  },
+  "same_objects_and_labels": true,
+  "same_weights": true
+}

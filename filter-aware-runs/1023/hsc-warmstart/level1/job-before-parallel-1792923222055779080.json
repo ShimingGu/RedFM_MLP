@@ -1,0 +1,23 @@
+{
+  "command": [
+    "/scratch/RedFM_MLP/.pixi/envs/default/bin/python",
+    "/scratch/RedFM_MLP/notebooks/qwen_filter_parallel.py",
+    "--stage",
+    "run",
+    "--arm",
+    "B",
+    "--gpu",
+    "MIG-a9b1fb4a-5c28-5b03-9686-f831c6facf25",
+    "--eval-gpus",
+    "MIG-bef01423-2506-5edb-a289-80c60b1f0297,MIG-412ff209-a29c-5bc8-9aa2-fd1a41474aec"
+  ],
+  "evaluation_gpus": [
+    "MIG-bef01423-2506-5edb-a289-80c60b1f0297",
+    "MIG-412ff209-a29c-5bc8-9aa2-fd1a41474aec"
+  ],
+  "gpu": "MIG-a9b1fb4a-5c28-5b03-9686-f831c6facf25",
+  "launched_utc": "2026-10-24T00:50:59.768450+00:00",
+  "pid": 568424,
+  "sequence": "A -> B -> C",
+  "supervisor_pid": 483538
+}

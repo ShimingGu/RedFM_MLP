@@ -1,18 +1,18 @@
 {
   "arm": "B",
-  "assigned_utc": "2026-10-24T00:51:05.791166+00:00",
+  "assigned_utc": "2026-10-25T10:13:48.238569+00:00",
   "code_sha256": {
     "aion_magnitude/qwen_parallel_evaluation.py": "13135d8c7718fa165edb93c94d3730bf61212a3494fdbefc7062f502075984b0",
     "notebooks/qwen_filter_parallel.py": "1f01f9f05a841484189beea9deb447143a745f0aaad86b7888a173c7cc8d2fcf"
   },
   "evaluation_gpus": [
-    "MIG-bef01423-2506-5edb-a289-80c60b1f0297",
-    "MIG-412ff209-a29c-5bc8-9aa2-fd1a41474aec"
+    "MIG-0a2e21a6-8961-56b1-9eb4-997ae914386e",
+    "MIG-6c85a6c1-35aa-5ff1-ae36-a468e3e230b6"
   ],
   "evaluation_parallel": true,
   "optimizer_updates_parallel": false,
   "original_batch_grouping_preserved": true,
   "protocol_unchanged": true,
-  "resumed": false,
-  "training_gpu": "MIG-a9b1fb4a-5c28-5b03-9686-f831c6facf25"
+  "resumed": true,
+  "training_gpu": "MIG-1bba1f26-8b2b-5b97-9bb1-c886ab9bb8b7"
 }

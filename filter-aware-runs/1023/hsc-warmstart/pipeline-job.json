@@ -5,16 +5,16 @@
     "--stage",
     "pipeline",
     "--gpu",
-    "MIG-a9b1fb4a-5c28-5b03-9686-f831c6facf25",
+    "MIG-1bba1f26-8b2b-5b97-9bb1-c886ab9bb8b7",
     "--eval-gpus",
-    "MIG-bef01423-2506-5edb-a289-80c60b1f0297,MIG-412ff209-a29c-5bc8-9aa2-fd1a41474aec"
+    "MIG-0a2e21a6-8961-56b1-9eb4-997ae914386e,MIG-6c85a6c1-35aa-5ff1-ae36-a468e3e230b6"
   ],
   "evaluation_gpus": [
-    "MIG-bef01423-2506-5edb-a289-80c60b1f0297",
-    "MIG-412ff209-a29c-5bc8-9aa2-fd1a41474aec"
+    "MIG-0a2e21a6-8961-56b1-9eb4-997ae914386e",
+    "MIG-6c85a6c1-35aa-5ff1-ae36-a468e3e230b6"
   ],
-  "launched_utc": "2026-10-23T09:41:50.544764+00:00",
-  "pid": 483538,
+  "launched_utc": "2026-10-25T10:13:34.544091+00:00",
+  "pid": 6833,
   "sequence": "A -> B -> C",
-  "training_gpu": "MIG-a9b1fb4a-5c28-5b03-9686-f831c6facf25"
+  "training_gpu": "MIG-1bba1f26-8b2b-5b97-9bb1-c886ab9bb8b7"
 }

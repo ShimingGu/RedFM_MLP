@@ -1,15 +1,15 @@
 {
   "effective_batch_size": 16,
   "evaluation_gpus": [
-    "MIG-bef01423-2506-5edb-a289-80c60b1f0297",
-    "MIG-412ff209-a29c-5bc8-9aa2-fd1a41474aec"
+    "MIG-0a2e21a6-8961-56b1-9eb4-997ae914386e",
+    "MIG-6c85a6c1-35aa-5ff1-ae36-a468e3e230b6"
   ],
   "evaluations": [
     {
       "batch_size": 8,
       "n": 32,
       "same_original_batch_grouping": true,
-      "seconds": 2.283360732719302,
+      "seconds": 2.440343527123332,
       "sequence": 1,
       "worker_peak_allocated_gib": [
         4.743676662445068,

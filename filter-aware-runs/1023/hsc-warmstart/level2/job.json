@@ -1,25 +1,23 @@
 {
   "command": [
     "/scratch/RedFM_MLP/.pixi/envs/default/bin/python",
-    "/scratch/RedFM_MLP/notebooks/qwen_filter_physics_warmstart.py",
+    "/scratch/RedFM_MLP/notebooks/qwen_filter_parallel.py",
     "--stage",
     "run",
-    "--output-dir",
-    "/scratch/RedFM_MLP/filter-aware-runs/1023/hsc-warmstart/level2",
+    "--arm",
+    "C",
     "--gpu",
-    "MIG-a9b1fb4a-5c28-5b03-9686-f831c6facf25",
-    "--wait-for-gpu",
-    "--after-pid",
-    "458636",
-    "--after-start-ticks",
-    "1421183268"
+    "MIG-1bba1f26-8b2b-5b97-9bb1-c886ab9bb8b7",
+    "--eval-gpus",
+    "MIG-0a2e21a6-8961-56b1-9eb4-997ae914386e,MIG-6c85a6c1-35aa-5ff1-ae36-a468e3e230b6"
   ],
-  "gpu": "MIG-a9b1fb4a-5c28-5b03-9686-f831c6facf25",
-  "launched_utc": "2026-10-23T09:09:43.611002+00:00",
-  "pid": 470768,
-  "predecessor": {
-    "pid": 458636,
-    "start_ticks": "1421183268"
-  },
-  "wait_for_gpu": true
+  "evaluation_gpus": [
+    "MIG-0a2e21a6-8961-56b1-9eb4-997ae914386e",
+    "MIG-6c85a6c1-35aa-5ff1-ae36-a468e3e230b6"
+  ],
+  "gpu": "MIG-1bba1f26-8b2b-5b97-9bb1-c886ab9bb8b7",
+  "launched_utc": "2026-10-25T19:39:30.567406+00:00",
+  "pid": 21109,
+  "sequence": "A -> B -> C",
+  "supervisor_pid": 6833
 }

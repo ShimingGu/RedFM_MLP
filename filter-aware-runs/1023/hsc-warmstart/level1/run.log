@@ -105,3 +105,203 @@ train update=950/2806 epoch=1 loss=2.525543
 train update=960/2806 epoch=1 loss=2.257248
 train update=970/2806 epoch=1 loss=2.418659
 train update=980/2806 epoch=1 loss=2.699174
+[transformers] The fast path is not available because one of the required library is not installed. Falling back to torch implementation. To install follow https://github.com/fla-org/flash-linear-attention#installation and https://github.com/Dao-AILab/causal-conv1d
+Loading weights:   0%|          | 0/723 [00:00<?, ?it/s]Loading weights:   0%|          | 1/723 [00:00<05:24,  2.22it/s]Loading weights:   2%|▏         | 12/723 [00:00<00:25, 28.05it/s]Loading weights:   4%|▎         | 27/723 [00:00<00:11, 58.04it/s]Loading weights:   6%|▌         | 42/723 [00:00<00:08, 80.70it/s]Loading weights:   8%|▊         | 61/723 [00:00<00:06, 109.36it/s]Loading weights:  11%|█         | 78/723 [00:00<00:05, 124.07it/s]Loading weights:  13%|█▎        | 93/723 [00:01<00:04, 128.62it/s]Loading weights:  15%|█▍        | 108/723 [00:01<00:04, 127.01it/s]Loading weights:  18%|█▊        | 128/723 [00:01<00:04, 144.41it/s]Loading weights:  20%|██        | 145/723 [00:01<00:03, 148.95it/s]Loading weights:  22%|██▏       | 161/723 [00:01<00:04, 136.85it/s]Loading weights:  25%|██▌       | 181/723 [00:01<00:03, 150.95it/s]Loading weights:  27%|██▋       | 198/723 [00:01<00:03, 153.59it/s]Loading weights:  30%|██▉       | 214/723 [00:01<00:03, 140.01it/s]Loading weights:  32%|███▏      | 234/723 [00:02<00:03, 153.11it/s]Loading weights:  35%|███▍      | 251/723 [00:02<00:03, 154.61it/s]Loading weights:  37%|███▋      | 267/723 [00:02<00:03, 140.81it/s]Loading weights:  40%|███▉      | 287/723 [00:02<00:02, 153.60it/s]Loading weights:  42%|████▏     | 304/723 [00:02<00:02, 155.34it/s]Loading weights:  44%|████▍     | 320/723 [00:02<00:02, 141.23it/s]Loading weights:  47%|████▋     | 340/723 [00:02<00:02, 153.84it/s]Loading weights:  49%|████▉     | 357/723 [00:02<00:02, 155.63it/s]Loading weights:  52%|█████▏    | 373/723 [00:02<00:02, 141.40it/s]Loading weights:  54%|█████▍    | 393/723 [00:03<00:02, 154.06it/s]Loading weights:  57%|█████▋    | 410/723 [00:03<00:02, 155.76it/s]Loading weights:  59%|█████▉    | 426/723 [00:03<00:02, 141.63it/s]Loading weights:  73%|███████▎  | 528/723 [00:03<00:00, 367.68it/s]Loading weights:  87%|████████▋ | 632/723 [00:03<00:00, 548.29it/s]Loading weights:  99%|█████████▉| 718/723 [00:03<00:00, 628.54it/s]Loading weights: 100%|██████████| 723/723 [00:03<00:00, 199.09it/s]
+/scratch/RedFM_MLP/.pixi/envs/default/lib/python3.13/site-packages/torch/_dynamo/eval_frame.py:1181: UserWarning: torch.utils.checkpoint: the use_reentrant parameter should be passed explicitly. Starting in PyTorch 2.9, calling checkpoint without use_reentrant will raise an exception. use_reentrant=False is recommended, but if you need to preserve the current default behavior, you can pass use_reentrant=True. Refer to docs for more details on the differences between the two variants.
+  return fn(*args, **kwargs)
+train update=960/2806 epoch=1 loss=2.250201
+train update=970/2806 epoch=1 loss=2.417561
+train update=980/2806 epoch=1 loss=2.712157
+train update=990/2806 epoch=1 loss=2.593567
+train update=1000/2806 epoch=1 loss=2.555904
+validation update=1000/2806 CE=2.605130 NMAD=0.032407 best_update=1000
+train update=1010/2806 epoch=1 loss=2.325013
+train update=1020/2806 epoch=1 loss=2.382594
+train update=1030/2806 epoch=1 loss=2.737131
+train update=1040/2806 epoch=1 loss=2.452638
+train update=1050/2806 epoch=1 loss=2.242695
+train update=1060/2806 epoch=1 loss=2.666458
+train update=1070/2806 epoch=1 loss=2.600708
+train update=1080/2806 epoch=1 loss=2.985342
+train update=1090/2806 epoch=1 loss=2.758716
+train update=1100/2806 epoch=1 loss=2.494235
+train update=1110/2806 epoch=1 loss=2.447876
+train update=1120/2806 epoch=1 loss=2.860158
+train update=1130/2806 epoch=1 loss=2.590761
+train update=1140/2806 epoch=1 loss=2.841704
+train update=1150/2806 epoch=1 loss=2.575744
+train update=1160/2806 epoch=1 loss=2.536680
+train update=1170/2806 epoch=1 loss=3.035585
+train update=1180/2806 epoch=1 loss=2.632622
+train update=1190/2806 epoch=1 loss=2.659889
+train update=1200/2806 epoch=1 loss=2.529411
+train update=1210/2806 epoch=1 loss=2.369278
+train update=1220/2806 epoch=1 loss=2.452680
+train update=1230/2806 epoch=1 loss=2.344524
+train update=1240/2806 epoch=1 loss=2.296350
+train update=1250/2806 epoch=1 loss=2.730629
+validation update=1250/2806 CE=2.584298 NMAD=0.032009 best_update=1250
+train update=1260/2806 epoch=1 loss=2.449505
+train update=1270/2806 epoch=1 loss=2.763292
+train update=1280/2806 epoch=1 loss=2.649197
+train update=1290/2806 epoch=1 loss=2.752807
+train update=1300/2806 epoch=1 loss=2.399099
+train update=1310/2806 epoch=1 loss=2.865365
+train update=1320/2806 epoch=1 loss=2.289435
+train update=1330/2806 epoch=1 loss=2.252307
+train update=1340/2806 epoch=1 loss=2.319795
+train update=1350/2806 epoch=1 loss=2.531779
+train update=1360/2806 epoch=1 loss=2.484701
+train update=1370/2806 epoch=1 loss=2.214900
+train update=1380/2806 epoch=1 loss=2.604871
+train update=1390/2806 epoch=1 loss=2.583784
+train update=1400/2806 epoch=1 loss=2.432123
+validation update=1403/2806 CE=2.567772 NMAD=0.031019 best_update=1403
+train update=1410/2806 epoch=2 loss=2.229061
+train update=1420/2806 epoch=2 loss=2.624529
+train update=1430/2806 epoch=2 loss=2.604390
+train update=1440/2806 epoch=2 loss=2.348203
+train update=1450/2806 epoch=2 loss=2.205913
+train update=1460/2806 epoch=2 loss=2.969032
+train update=1470/2806 epoch=2 loss=2.301385
+train update=1480/2806 epoch=2 loss=2.244907
+train update=1490/2806 epoch=2 loss=2.626134
+train update=1500/2806 epoch=2 loss=2.495967
+validation update=1500/2806 CE=2.575793 NMAD=0.031620 best_update=1403
+train update=1510/2806 epoch=2 loss=2.545248
+train update=1520/2806 epoch=2 loss=2.668092
+train update=1530/2806 epoch=2 loss=2.675184
+train update=1540/2806 epoch=2 loss=2.455059
+train update=1550/2806 epoch=2 loss=2.628622
+train update=1560/2806 epoch=2 loss=2.431881
+train update=1570/2806 epoch=2 loss=2.635623
+train update=1580/2806 epoch=2 loss=2.654520
+train update=1590/2806 epoch=2 loss=2.481427
+train update=1600/2806 epoch=2 loss=3.172864
+train update=1610/2806 epoch=2 loss=2.324147
+train update=1620/2806 epoch=2 loss=2.262084
+train update=1630/2806 epoch=2 loss=2.193474
+train update=1640/2806 epoch=2 loss=2.466002
+train update=1650/2806 epoch=2 loss=2.501641
+train update=1660/2806 epoch=2 loss=2.529078
+train update=1670/2806 epoch=2 loss=2.355461
+train update=1680/2806 epoch=2 loss=2.477278
+train update=1690/2806 epoch=2 loss=2.499494
+train update=1700/2806 epoch=2 loss=2.681252
+train update=1710/2806 epoch=2 loss=2.443741
+train update=1720/2806 epoch=2 loss=2.106464
+train update=1730/2806 epoch=2 loss=2.562713
+train update=1740/2806 epoch=2 loss=2.381784
+train update=1750/2806 epoch=2 loss=2.695027
+validation update=1750/2806 CE=2.543628 NMAD=0.030124 best_update=1750
+train update=1760/2806 epoch=2 loss=2.540438
+train update=1770/2806 epoch=2 loss=2.379021
+train update=1780/2806 epoch=2 loss=2.586763
+train update=1790/2806 epoch=2 loss=2.887918
+train update=1800/2806 epoch=2 loss=2.176614
+train update=1810/2806 epoch=2 loss=2.505078
+train update=1820/2806 epoch=2 loss=2.691538
+train update=1830/2806 epoch=2 loss=2.542445
+train update=1840/2806 epoch=2 loss=2.660574
+train update=1850/2806 epoch=2 loss=2.498886
+train update=1860/2806 epoch=2 loss=2.460734
+train update=1870/2806 epoch=2 loss=3.302821
+train update=1880/2806 epoch=2 loss=3.089069
+train update=1890/2806 epoch=2 loss=2.699427
+train update=1900/2806 epoch=2 loss=2.664271
+train update=1910/2806 epoch=2 loss=2.494611
+train update=1920/2806 epoch=2 loss=2.090319
+train update=1930/2806 epoch=2 loss=2.507832
+train update=1940/2806 epoch=2 loss=2.652144
+train update=1950/2806 epoch=2 loss=2.322066
+train update=1960/2806 epoch=2 loss=2.313313
+train update=1970/2806 epoch=2 loss=2.444865
+train update=1980/2806 epoch=2 loss=2.344568
+train update=1990/2806 epoch=2 loss=2.878194
+train update=2000/2806 epoch=2 loss=2.375723
+validation update=2000/2806 CE=2.529013 NMAD=0.029023 best_update=2000
+train update=2010/2806 epoch=2 loss=2.605990
+train update=2020/2806 epoch=2 loss=2.328938
+train update=2030/2806 epoch=2 loss=2.633708
+train update=2040/2806 epoch=2 loss=2.841628
+train update=2050/2806 epoch=2 loss=3.328202
+train update=2060/2806 epoch=2 loss=2.693428
+train update=2070/2806 epoch=2 loss=2.311392
+train update=2080/2806 epoch=2 loss=2.551210
+train update=2090/2806 epoch=2 loss=2.397889
+train update=2100/2806 epoch=2 loss=2.218731
+train update=2110/2806 epoch=2 loss=2.497850
+train update=2120/2806 epoch=2 loss=2.492542
+train update=2130/2806 epoch=2 loss=2.398288
+train update=2140/2806 epoch=2 loss=3.413243
+train update=2150/2806 epoch=2 loss=2.547123
+train update=2160/2806 epoch=2 loss=2.609527
+train update=2170/2806 epoch=2 loss=2.370568
+train update=2180/2806 epoch=2 loss=2.951957
+train update=2190/2806 epoch=2 loss=2.305555
+train update=2200/2806 epoch=2 loss=2.561221
+train update=2210/2806 epoch=2 loss=2.321909
+train update=2220/2806 epoch=2 loss=2.660727
+train update=2230/2806 epoch=2 loss=2.755800
+train update=2240/2806 epoch=2 loss=2.420674
+train update=2250/2806 epoch=2 loss=2.866487
+validation update=2250/2806 CE=2.520470 NMAD=0.029388 best_update=2250
+train update=2260/2806 epoch=2 loss=2.794860
+train update=2270/2806 epoch=2 loss=2.779271
+train update=2280/2806 epoch=2 loss=2.803883
+train update=2290/2806 epoch=2 loss=2.824069
+train update=2300/2806 epoch=2 loss=2.245420
+train update=2310/2806 epoch=2 loss=2.300830
+train update=2320/2806 epoch=2 loss=2.262301
+train update=2330/2806 epoch=2 loss=2.169206
+train update=2340/2806 epoch=2 loss=2.426340
+train update=2350/2806 epoch=2 loss=2.457080
+train update=2360/2806 epoch=2 loss=2.533199
+train update=2370/2806 epoch=2 loss=2.725307
+train update=2380/2806 epoch=2 loss=2.424938
+train update=2390/2806 epoch=2 loss=2.656335
+train update=2400/2806 epoch=2 loss=2.250818
+train update=2410/2806 epoch=2 loss=2.752946
+train update=2420/2806 epoch=2 loss=2.302620
+train update=2430/2806 epoch=2 loss=2.421848
+train update=2440/2806 epoch=2 loss=2.269480
+train update=2450/2806 epoch=2 loss=2.329309
+train update=2460/2806 epoch=2 loss=2.198644
+train update=2470/2806 epoch=2 loss=2.364691
+train update=2480/2806 epoch=2 loss=2.797562
+train update=2490/2806 epoch=2 loss=2.566325
+train update=2500/2806 epoch=2 loss=2.914744
+validation update=2500/2806 CE=2.507556 NMAD=0.028672 best_update=2500
+train update=2510/2806 epoch=2 loss=2.234313
+train update=2520/2806 epoch=2 loss=2.499574
+train update=2530/2806 epoch=2 loss=2.749966
+train update=2540/2806 epoch=2 loss=2.660985
+train update=2550/2806 epoch=2 loss=2.973960
+train update=2560/2806 epoch=2 loss=2.505035
+train update=2570/2806 epoch=2 loss=2.808045
+train update=2580/2806 epoch=2 loss=2.457267
+train update=2590/2806 epoch=2 loss=2.585909
+train update=2600/2806 epoch=2 loss=2.484741
+train update=2610/2806 epoch=2 loss=2.188701
+train update=2620/2806 epoch=2 loss=2.386735
+train update=2630/2806 epoch=2 loss=2.469072
+train update=2640/2806 epoch=2 loss=2.237834
+train update=2650/2806 epoch=2 loss=2.323352
+train update=2660/2806 epoch=2 loss=2.442395
+train update=2670/2806 epoch=2 loss=2.390116
+train update=2680/2806 epoch=2 loss=2.619611
+train update=2690/2806 epoch=2 loss=2.384727
+train update=2700/2806 epoch=2 loss=2.587653
+train update=2710/2806 epoch=2 loss=2.842507
+train update=2720/2806 epoch=2 loss=2.684059
+train update=2730/2806 epoch=2 loss=2.398155
+train update=2740/2806 epoch=2 loss=2.274286
+train update=2750/2806 epoch=2 loss=2.401149
+validation update=2750/2806 CE=2.510715 NMAD=0.029264 best_update=2500
+train update=2760/2806 epoch=2 loss=2.343731
+train update=2770/2806 epoch=2 loss=2.242472
+train update=2780/2806 epoch=2 loss=2.584430
+train update=2790/2806 epoch=2 loss=2.297814
+train update=2800/2806 epoch=2 loss=2.237740
+validation update=2806/2806 CE=2.528105 NMAD=0.029468 best_update=2500
+Experiment B completed: /scratch/RedFM_MLP/filter-aware-runs/1023/hsc-warmstart/level1/report.md

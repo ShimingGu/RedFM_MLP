@@ -1,12 +1,12 @@
 {
-  "active_arm": "B",
-  "active_pid": 568424,
+  "active_arm": "C",
+  "active_pid": 21109,
   "evaluation_gpus": [
-    "MIG-bef01423-2506-5edb-a289-80c60b1f0297",
-    "MIG-412ff209-a29c-5bc8-9aa2-fd1a41474aec"
+    "MIG-0a2e21a6-8961-56b1-9eb4-997ae914386e",
+    "MIG-6c85a6c1-35aa-5ff1-ae36-a468e3e230b6"
   ],
   "phase": "running",
   "sequence": "A -> B -> C",
-  "supervisor_pid": 483538,
-  "training_gpu": "MIG-a9b1fb4a-5c28-5b03-9686-f831c6facf25"
+  "supervisor_pid": 6833,
+  "training_gpu": "MIG-1bba1f26-8b2b-5b97-9bb1-c886ab9bb8b7"
 }

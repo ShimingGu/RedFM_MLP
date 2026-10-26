@@ -358,22 +358,23 @@ SURVEY_OUTPUT_DIR=/arc/home/gsm/aion_output/figures/qwen3.5-0.8b-desi-ls-dora-sp
 SURVEY_CHECKPOINT_DIR=/arc/projects/ots/Cosmic_Imprint_of_Time/qwen_survey_checkpoints/qwen3.5-0.8b-desi-ls-dora-specz-e10 \
 ./scripts/qwen-survey_posttraining.sh --catalogue-kind desi-ls --method dora
 
-# 5. Qwen3.5-0.8B-Base QLoRA x CLAUDS: GPU 1 slice 1 + GPU 2 slice 0 (2026-10-23 audit).
-AION_QWEN_GPU_DEVICES=MIG-19c37799-0407-566f-ba9f-2a1f12ad1ede,MIG-0a2e21a6-8961-56b1-9eb4-997ae914386e \
-QWEN_MODEL=/arc/home/gsm/hf_models/Qwen3.5-0.8B-Base \
-AION_MAX_ROWS=300000 \
-QLORA_EPOCHS=10 \
-QWEN_USE_MORPHOLOGY=0 \
-AION_OUTPUT_DIR=/arc/home/gsm/aion_output/figures/qwen3.5-0.8b-clauds-qlora-e10 \
-QLORA_CHECKPOINT_DIR=/arc/projects/ots/Cosmic_Imprint_of_Time/qlora_checkpoints/qwen3.5-0.8b-clauds-qlora-e10 \
-./scripts/qwen-qwen_posttraining_comparison_multigpu.sh
+# 5. Qwen3.5-0.8B-Base QLoRA x CLAUDS: resume latest saved update (21,600 on 2026-10-25).
+# GPU 0 slice 1 trains; GPU 0 slice 2 evaluates. User launches this command.
+# Both CLAUDS pairs are separate from the three running filter-aware slices.
+# Configuration, optimizer, scheduler and RNG come from the existing checkpoint.
+# Evaluation uses the second slice with the original batch grouping and object order.
+pixi run --locked python notebooks/qwen_clauds_resume.py --method qlora \
+  --gpu MIG-5bd31563-e820-50d1-a416-e14721d5a628 \
+  --eval-gpu MIG-63d7886c-4484-57b3-acba-280cad46132a \
+  --output-dir /arc/home/gsm/aion_output/figures/qwen3.5-0.8b-clauds-qlora-e10 \
+  --checkpoint-dir /arc/projects/ots/Cosmic_Imprint_of_Time/qlora_checkpoints/qwen3.5-0.8b-clauds-qlora-e10 \
+  2>&1 | tee -a /arc/home/gsm/aion_output/figures/qwen3.5-0.8b-clauds-qlora-e10/multigpu_logs/qlora.log
 
-# 6. Qwen3.5-0.8B-Base DoRA x CLAUDS: reuse completed run 2's adapter slice in its original GPU session.
-DORA_GPU_DEVICE=MIG-cf4217df-b565-5503-ab5d-9ec7cdbfe26a \
-QWEN_MODEL=/arc/home/gsm/hf_models/Qwen3.5-0.8B-Base \
-AION_MAX_ROWS=300000 \
-DORA_EPOCHS=10 \
-QWEN_USE_MORPHOLOGY=0 \
-DORA_OUTPUT_DIR=/arc/home/gsm/aion_output/figures/qwen3.5-0.8b-clauds-dora-e10 \
-DORA_CHECKPOINT_DIR=/arc/projects/ots/Cosmic_Imprint_of_Time/dora_checkpoints/qwen3.5-0.8b-clauds-dora-e10 \
-./scripts/qwen-dora_posttraining.sh
+# 6. Qwen3.5-0.8B-Base DoRA x CLAUDS: resume latest saved update (15,100 on 2026-10-25).
+# GPU 0 slice 3 trains; GPU 1 slice 1 evaluates. User launches this command.
+pixi run --locked python notebooks/qwen_clauds_resume.py --method dora \
+  --gpu MIG-07c57191-de6e-5338-8811-f0cfb7498db5 \
+  --eval-gpu MIG-9c43b8e3-f3eb-566b-bdf8-74b3fa005f4d \
+  --output-dir /arc/home/gsm/aion_output/figures/qwen3.5-0.8b-clauds-dora-e10 \
+  --checkpoint-dir /arc/projects/ots/Cosmic_Imprint_of_Time/dora_checkpoints/qwen3.5-0.8b-clauds-dora-e10 \
+  2>&1 | tee -a /arc/home/gsm/aion_output/figures/qwen3.5-0.8b-clauds-dora-e10/dora.log

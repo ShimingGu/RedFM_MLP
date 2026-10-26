@@ -1,0 +1,84 @@
+{
+  "created_utc": "2026-10-25T10:10:17.531216+00:00",
+  "training_gpu": "MIG-1bba1f26-8b2b-5b97-9bb1-c886ab9bb8b7",
+  "evaluation_gpus": [
+    "MIG-0a2e21a6-8961-56b1-9eb4-997ae914386e",
+    "MIG-6c85a6c1-35aa-5ff1-ae36-a468e3e230b6"
+  ],
+  "sequence": "skip completed A -> resume B -> independent C",
+  "preserved_artifacts": {
+    "level0/summary.json": {
+      "bytes": 497060,
+      "sha256": "532cabe80a2832c7b2b63a07afcaa168a6cdf04d3687ede4bda75d266caaa622"
+    },
+    "level1/latest.pt": {
+      "bytes": 38145227,
+      "sha256": "275e4afb9a64772fc7eb27e6f10efa64da47d472cd6df0eab6cb974de0e094cc"
+    },
+    "level1/zero_update_validation.pt": {
+      "bytes": 13935141,
+      "sha256": "56ffafc69e49a88ac015ae67383e052bf3d590a5559d45a6e5a1df4492574672"
+    },
+    "level1/best_validation.pt": {
+      "bytes": 13934837,
+      "sha256": "571614e8306685ff8b73d3c79c7446122ac1d8442b77bffd5defe62731bf9308"
+    }
+  },
+  "resume_update": 950,
+  "last_logged_update": 980,
+  "optimizer_rng_validated": true,
+  "versions": {
+    "torch": "2.10.0",
+    "numpy": "2.5.1",
+    "transformers": "5.14.1",
+    "peft": "0.20.0",
+    "bitsandbytes": "0.49.2"
+  },
+  "verified_utc": "2026-10-25T10:23:07.686550+00:00",
+  "supervisor_pid": 6833,
+  "training_pid": 6890,
+  "verified_training_update": 970,
+  "probe": {
+    "archived_metrics": {
+      "bias": 0.0234063770622015,
+      "catastrophic_outlier_fraction": 0.03125,
+      "cross_entropy": 2.0911121368408203,
+      "mean_crps": 0.023618651553988457,
+      "mean_log_score": 2.0911123752593994,
+      "median_bias": 0.011606818996369839,
+      "nmad": 0.015513196587562561,
+      "p16_p84_coverage": 0.78125,
+      "pit_mean": 0.45608291029930115
+    },
+    "max_abs_logit_error": 0.0,
+    "max_abs_pdf_error": 0.0,
+    "metrics": {
+      "bias": 0.0234063770622015,
+      "catastrophic_outlier_fraction": 0.03125,
+      "cross_entropy": 2.0911121368408203,
+      "mean_crps": 0.023618651553988457,
+      "mean_log_score": 2.0911123752593994,
+      "median_bias": 0.011606818996369839,
+      "nmad": 0.015513196587562561,
+      "p16_p84_coverage": 0.78125,
+      "pit_mean": 0.45608291029930115
+    },
+    "n": 32,
+    "passed": true
+  },
+  "clauds_training_launched": false,
+  "clauds_inference_probes": {
+    "qlora": {
+      "passed": true,
+      "n": 32,
+      "max_abs_logit_error": 0.0,
+      "max_abs_pdf_error": 0.0
+    },
+    "dora": {
+      "passed": true,
+      "n": 32,
+      "max_abs_logit_error": 0.0,
+      "max_abs_pdf_error": 0.0
+    }
+  }
+}

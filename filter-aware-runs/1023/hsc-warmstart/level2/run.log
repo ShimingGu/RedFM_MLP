@@ -1,0 +1,99 @@
+[transformers] The fast path is not available because one of the required library is not installed. Falling back to torch implementation. To install follow https://github.com/fla-org/flash-linear-attention#installation and https://github.com/Dao-AILab/causal-conv1d
+Loading weights:   0%|          | 0/723 [00:00<?, ?it/s]Loading weights:   0%|          | 1/723 [00:00<05:26,  2.21it/s]Loading weights:   2%|▏         | 14/723 [00:00<00:22, 31.56it/s]Loading weights:   5%|▍         | 36/723 [00:00<00:08, 76.78it/s]Loading weights:   7%|▋         | 49/723 [00:00<00:07, 84.50it/s]Loading weights:   9%|▉         | 66/723 [00:00<00:06, 106.08it/s]Loading weights:  11%|█         | 81/723 [00:01<00:05, 115.41it/s]Loading weights:  14%|█▎        | 98/723 [00:01<00:04, 127.56it/s]Loading weights:  16%|█▌        | 117/723 [00:01<00:04, 144.35it/s]Loading weights:  18%|█▊        | 133/723 [00:01<00:04, 138.59it/s]Loading weights:  20%|██        | 148/723 [00:01<00:04, 137.18it/s]Loading weights:  23%|██▎       | 167/723 [00:01<00:03, 150.55it/s]Loading weights:  25%|██▌       | 184/723 [00:01<00:03, 153.32it/s]Loading weights:  28%|██▊       | 200/723 [00:01<00:03, 144.64it/s]Loading weights:  30%|██▉       | 215/723 [00:01<00:03, 144.65it/s]Loading weights:  32%|███▏      | 234/723 [00:02<00:03, 154.39it/s]Loading weights:  35%|███▍      | 251/723 [00:02<00:03, 155.78it/s]Loading weights:  37%|███▋      | 267/723 [00:02<00:03, 140.57it/s]Loading weights:  40%|███▉      | 287/723 [00:02<00:02, 153.53it/s]Loading weights:  42%|████▏     | 304/723 [00:02<00:02, 155.20it/s]Loading weights:  44%|████▍     | 320/723 [00:02<00:02, 140.97it/s]Loading weights:  47%|████▋     | 340/723 [00:02<00:02, 153.57it/s]Loading weights:  49%|████▉     | 357/723 [00:02<00:02, 155.34it/s]Loading weights:  52%|█████▏    | 373/723 [00:02<00:02, 141.04it/s]Loading weights:  54%|█████▍    | 393/723 [00:03<00:02, 153.68it/s]Loading weights:  57%|█████▋    | 410/723 [00:03<00:02, 155.25it/s]Loading weights:  59%|█████▉    | 426/723 [00:03<00:02, 141.15it/s]Loading weights:  73%|███████▎  | 528/723 [00:03<00:00, 367.16it/s]Loading weights:  87%|████████▋ | 632/723 [00:03<00:00, 548.00it/s]Loading weights:  99%|█████████▉| 718/723 [00:03<00:00, 628.71it/s]Loading weights: 100%|██████████| 723/723 [00:03<00:00, 199.45it/s]
+Full Level-2 zero-update diagnostic: {"bias": -0.15861943364143372, "median_bias": -0.14051660895347595, "nmad": 0.15284468233585358, "catastrophic_outlier_fraction": 0.47545310854911804, "cross_entropy": 6.795674800872803, "mean_log_score": 6.7956743240356445, "mean_crps": 0.22169077396392822, "p16_p84_coverage": 0.17719514667987823, "pit_mean": 0.9037765264511108}
+/scratch/RedFM_MLP/.pixi/envs/default/lib/python3.13/site-packages/torch/_dynamo/eval_frame.py:1181: UserWarning: torch.utils.checkpoint: the use_reentrant parameter should be passed explicitly. Starting in PyTorch 2.9, calling checkpoint without use_reentrant will raise an exception. use_reentrant=False is recommended, but if you need to preserve the current default behavior, you can pass use_reentrant=True. Refer to docs for more details on the differences between the two variants.
+  return fn(*args, **kwargs)
+train update=1/2806 epoch=1 loss=6.450621
+train update=10/2806 epoch=1 loss=5.414451
+train update=20/2806 epoch=1 loss=5.639036
+train update=30/2806 epoch=1 loss=4.526499
+train update=40/2806 epoch=1 loss=5.467169
+train update=50/2806 epoch=1 loss=4.674455
+train update=60/2806 epoch=1 loss=4.730948
+train update=70/2806 epoch=1 loss=4.691180
+train update=80/2806 epoch=1 loss=3.478944
+train update=90/2806 epoch=1 loss=3.960336
+train update=100/2806 epoch=1 loss=3.781607
+train update=110/2806 epoch=1 loss=3.802194
+train update=120/2806 epoch=1 loss=3.601486
+train update=130/2806 epoch=1 loss=4.154061
+train update=140/2806 epoch=1 loss=4.054974
+train update=150/2806 epoch=1 loss=3.751349
+train update=160/2806 epoch=1 loss=3.578914
+train update=170/2806 epoch=1 loss=3.561728
+train update=180/2806 epoch=1 loss=3.428660
+train update=190/2806 epoch=1 loss=3.656486
+train update=200/2806 epoch=1 loss=3.470922
+train update=210/2806 epoch=1 loss=3.438521
+train update=220/2806 epoch=1 loss=3.421629
+train update=230/2806 epoch=1 loss=3.170645
+train update=240/2806 epoch=1 loss=3.584293
+train update=250/2806 epoch=1 loss=3.417432
+validation update=250/2806 CE=3.232223 NMAD=0.060808 best_update=250
+train update=260/2806 epoch=1 loss=2.904235
+train update=270/2806 epoch=1 loss=3.155004
+train update=280/2806 epoch=1 loss=3.263362
+train update=290/2806 epoch=1 loss=2.944234
+train update=300/2806 epoch=1 loss=3.301057
+train update=310/2806 epoch=1 loss=3.461532
+train update=320/2806 epoch=1 loss=2.738309
+train update=330/2806 epoch=1 loss=3.157297
+train update=340/2806 epoch=1 loss=3.007438
+train update=350/2806 epoch=1 loss=2.743657
+train update=360/2806 epoch=1 loss=2.710548
+train update=370/2806 epoch=1 loss=2.913097
+train update=380/2806 epoch=1 loss=3.024362
+train update=390/2806 epoch=1 loss=2.646545
+train update=400/2806 epoch=1 loss=3.012898
+train update=410/2806 epoch=1 loss=2.800068
+train update=420/2806 epoch=1 loss=2.716812
+train update=430/2806 epoch=1 loss=2.975713
+train update=440/2806 epoch=1 loss=2.811824
+train update=450/2806 epoch=1 loss=2.800366
+train update=460/2806 epoch=1 loss=3.091285
+train update=470/2806 epoch=1 loss=2.927188
+train update=480/2806 epoch=1 loss=2.624156
+train update=490/2806 epoch=1 loss=3.022996
+train update=500/2806 epoch=1 loss=3.141755
+validation update=500/2806 CE=2.763615 NMAD=0.041201 best_update=500
+train update=510/2806 epoch=1 loss=2.385717
+train update=520/2806 epoch=1 loss=2.817376
+train update=530/2806 epoch=1 loss=2.525081
+train update=540/2806 epoch=1 loss=2.563929
+train update=550/2806 epoch=1 loss=2.455872
+train update=560/2806 epoch=1 loss=2.768303
+train update=570/2806 epoch=1 loss=2.711268
+train update=580/2806 epoch=1 loss=2.679296
+train update=590/2806 epoch=1 loss=2.869285
+train update=600/2806 epoch=1 loss=2.548600
+train update=610/2806 epoch=1 loss=2.915608
+train update=620/2806 epoch=1 loss=2.743816
+train update=630/2806 epoch=1 loss=2.585638
+train update=640/2806 epoch=1 loss=2.700214
+train update=650/2806 epoch=1 loss=3.145087
+train update=660/2806 epoch=1 loss=2.851871
+train update=670/2806 epoch=1 loss=2.655991
+train update=680/2806 epoch=1 loss=2.727570
+train update=690/2806 epoch=1 loss=2.627468
+train update=700/2806 epoch=1 loss=2.947821
+train update=710/2806 epoch=1 loss=2.619680
+train update=720/2806 epoch=1 loss=2.719986
+train update=730/2806 epoch=1 loss=2.538026
+train update=740/2806 epoch=1 loss=2.669385
+train update=750/2806 epoch=1 loss=2.848497
+validation update=750/2806 CE=2.705865 NMAD=0.037351 best_update=750
+train update=760/2806 epoch=1 loss=2.892857
+train update=770/2806 epoch=1 loss=2.541003
+train update=780/2806 epoch=1 loss=2.670507
+train update=790/2806 epoch=1 loss=3.219799
+train update=800/2806 epoch=1 loss=2.696247
+train update=810/2806 epoch=1 loss=2.945458
+train update=820/2806 epoch=1 loss=2.418166
+train update=830/2806 epoch=1 loss=2.744182
+train update=840/2806 epoch=1 loss=2.797425
+train update=850/2806 epoch=1 loss=3.269472
+train update=860/2806 epoch=1 loss=2.793914
+train update=870/2806 epoch=1 loss=3.211058
+train update=880/2806 epoch=1 loss=2.863322
+train update=890/2806 epoch=1 loss=3.019948
+train update=900/2806 epoch=1 loss=2.333368
