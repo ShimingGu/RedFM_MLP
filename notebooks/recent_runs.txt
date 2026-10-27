@@ -373,7 +373,7 @@ pixi run --locked python notebooks/qwen_clauds_resume.py --method qlora \
 # 6. Qwen3.5-0.8B-Base DoRA x CLAUDS: resume latest saved update (15,100 on 2026-10-25).
 # GPU 0 slice 3 trains; GPU 1 slice 1 evaluates. User launches this command.
 pixi run --locked python notebooks/qwen_clauds_resume.py --method dora \
-  --gpu MIG-07c57191-de6e-5338-8811-f0cfb7498db5 \
+  --gpu MIG-07c57191-de6e-5338xq-8811-f0cfb7498db5 \
   --eval-gpu MIG-9c43b8e3-f3eb-566b-bdf8-74b3fa005f4d \
   --output-dir /arc/home/gsm/aion_output/figures/qwen3.5-0.8b-clauds-dora-e10 \
   --checkpoint-dir /arc/projects/ots/Cosmic_Imprint_of_Time/dora_checkpoints/qwen3.5-0.8b-clauds-dora-e10 \
