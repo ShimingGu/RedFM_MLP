@@ -1,7 +1,0 @@
-{
-  "max_abs_logit_error": 0.0,
-  "n": 32,
-  "passed": true,
-  "token_text_exact": true,
-  "weights_updated": false
-}

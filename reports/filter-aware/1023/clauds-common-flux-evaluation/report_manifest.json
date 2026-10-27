@@ -1,0 +1,10 @@
+{
+  "created_utc": "2026-10-26T16:27:47.486949+00:00",
+  "command": "pixi run --locked python notebooks/report_clauds_common_flux.py --output-dir filter-aware-runs/1023/clauds-common-flux-evaluation",
+  "code_sha256": "5a05b71d634a17479b9c670975348e72ba7799db9cef67e69b611d47b4c67f55",
+  "input_summary_sha256": "91051762f8ff9ba1f471182e29c0224fa51637f70c5077d3cb073bfcf7485751",
+  "input_manifest_sha256": "0cc8b01379f47d323ce3ef8547462f1bbd5de806038409446045d8f4d3e692c8",
+  "report_sha256": "4c421c02e71799bc1d5745f7439a97cc695cd30a5dd745138faba7e51a697e57",
+  "new_inference_performed": false,
+  "new_training_performed": false
+}

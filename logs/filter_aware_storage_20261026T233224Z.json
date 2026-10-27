@@ -1,0 +1,8 @@
+{
+  "destination": "/arc/projects/ots/Cosmic_Imprint_of_Time/filter_aware_checkpoints",
+  "manifest": "/arc/projects/ots/Cosmic_Imprint_of_Time/filter_aware_storage_manifest.json",
+  "source": "/scratch/RedFM_MLP/filter-aware-runs",
+  "bytes": 493476041,
+  "file_count": 417,
+  "copy_sha256_verified": true
+}

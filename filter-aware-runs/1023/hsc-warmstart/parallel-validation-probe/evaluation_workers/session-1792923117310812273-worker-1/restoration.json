@@ -1,9 +1,0 @@
-{
-  "adapter_trainable": true,
-  "head_trainable": true,
-  "total_parameters": 2592465708,
-  "trainable_fraction": 0.0009149143198618541,
-  "trainable_parameters": 2371884,
-  "trained_adapter_loaded": true,
-  "trained_pdf_head_loaded": true
-}

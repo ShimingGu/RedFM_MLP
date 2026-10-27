@@ -1,7 +1,0 @@
-{
-  "gpu": "MIG-a9b1fb4a-5c28-5b03-9686-f831c6facf25",
-  "phase": "queued",
-  "queue_reason": "Managed sequential pipeline: waiting for all earlier arms to complete successfully",
-  "test_evaluated": false,
-  "updated_utc": "2026-10-23T09:41:50.542192+00:00"
-}

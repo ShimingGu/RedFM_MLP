@@ -1,5 +1,0 @@
-{
-  "excludes_gpu_queue_wait": true,
-  "first_run_started_utc": "2026-10-25T19:39:37.153271+00:00",
-  "includes_interruptions_if_resumed": true
-}

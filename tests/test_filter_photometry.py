@@ -107,7 +107,7 @@ def test_missing_flux_and_error_stay_missing_without_discarding_signed_flux():
 
 def test_clauds_raw_flux_harmonisation_keeps_negative_zero_and_masks():
     flux, sigma, valid = fp.clauds_flux_to_nanomaggy([-2, 0, 10, -99, np.nan], [1, 2, -99, 4, 1])
-    np.testing.assert_allclose(flux[:3], np.array([-2, 0, 10]) * 10**(-.2))
+    np.testing.assert_allclose(flux[:3], np.array([-2, 0, 10]) * 10**(-.56))
     assert np.isnan(flux[3:]).all() and valid.tolist() == [True, True, True, False, False]
     assert np.isnan(sigma[2:]).all()
     f, e = fp.magnitude_to_nanomaggy([22.5, 25, np.nan], [.1, .2, .1])

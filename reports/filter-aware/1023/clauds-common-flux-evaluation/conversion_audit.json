@@ -1,0 +1,126 @@
+{
+  "changed_fields": [
+    "unit and sigma_unit AB_mag -> AB_nanomaggy",
+    "mag -> flux",
+    "measured raw flux uncertainties replace sigma=NA when available",
+    "unavailable imputed magnitude entries -> flux=NA",
+    "hsc configuration deletes six non-HSC band records only"
+  ],
+  "conversion": "f_nMgy = f_microJy * 10**((22.5-23.9)/2.5)",
+  "counts": {
+    "H": {
+      "bad_photometry_flag": 0,
+      "flag_excluded_finite_flux": 0,
+      "genuine_nonpositive_flux": 9,
+      "missing_flux": 198,
+      "original_imputed_magnitude": 207,
+      "valid_flux": 58,
+      "valid_sigma": 57
+    },
+    "J": {
+      "bad_photometry_flag": 0,
+      "flag_excluded_finite_flux": 0,
+      "genuine_nonpositive_flux": 6,
+      "missing_flux": 199,
+      "original_imputed_magnitude": 205,
+      "valid_flux": 57,
+      "valid_sigma": 57
+    },
+    "Ks": {
+      "bad_photometry_flag": 0,
+      "flag_excluded_finite_flux": 0,
+      "genuine_nonpositive_flux": 8,
+      "missing_flux": 200,
+      "original_imputed_magnitude": 208,
+      "valid_flux": 56,
+      "valid_sigma": 53
+    },
+    "Y": {
+      "bad_photometry_flag": 0,
+      "flag_excluded_finite_flux": 0,
+      "genuine_nonpositive_flux": 8,
+      "missing_flux": 200,
+      "original_imputed_magnitude": 208,
+      "valid_flux": 56,
+      "valid_sigma": 54
+    },
+    "g": {
+      "bad_photometry_flag": 31,
+      "flag_excluded_finite_flux": 0,
+      "genuine_nonpositive_flux": 7,
+      "missing_flux": 11,
+      "original_imputed_magnitude": 18,
+      "valid_flux": 245,
+      "valid_sigma": 243
+    },
+    "i": {
+      "bad_photometry_flag": 32,
+      "flag_excluded_finite_flux": 0,
+      "genuine_nonpositive_flux": 9,
+      "missing_flux": 13,
+      "original_imputed_magnitude": 22,
+      "valid_flux": 243,
+      "valid_sigma": 242
+    },
+    "r": {
+      "bad_photometry_flag": 29,
+      "flag_excluded_finite_flux": 0,
+      "genuine_nonpositive_flux": 5,
+      "missing_flux": 10,
+      "original_imputed_magnitude": 15,
+      "valid_flux": 246,
+      "valid_sigma": 246
+    },
+    "u": {
+      "bad_photometry_flag": 0,
+      "flag_excluded_finite_flux": 0,
+      "genuine_nonpositive_flux": 14,
+      "missing_flux": 106,
+      "original_imputed_magnitude": 120,
+      "valid_flux": 150,
+      "valid_sigma": 144
+    },
+    "u_star": {
+      "bad_photometry_flag": 0,
+      "flag_excluded_finite_flux": 0,
+      "genuine_nonpositive_flux": 18,
+      "missing_flux": 80,
+      "original_imputed_magnitude": 98,
+      "valid_flux": 176,
+      "valid_sigma": 172
+    },
+    "y": {
+      "bad_photometry_flag": 40,
+      "flag_excluded_finite_flux": 0,
+      "genuine_nonpositive_flux": 19,
+      "missing_flux": 12,
+      "original_imputed_magnitude": 31,
+      "valid_flux": 244,
+      "valid_sigma": 241
+    },
+    "z": {
+      "bad_photometry_flag": 47,
+      "flag_excluded_finite_flux": 0,
+      "genuine_nonpositive_flux": 6,
+      "missing_flux": 6,
+      "original_imputed_magnitude": 12,
+      "valid_flux": 250,
+      "valid_sigma": 249
+    }
+  },
+  "extinction": "No extinction correction, EBV lookup, or photometric zero-point fitting applied. Target EBV stays NA. hscPipe/Phosphoros uses uncorrected fluxes (paper section 4.1); SExtractor extinction statement does not describe this catalogue. Source HSC magnitudes are used as catalogued with MW_EBV supplied. Exact local cmodel extinction history is not encoded in its FITS header.",
+  "flags": "Missing iff non-finite/-99 flux OR notObserved OR isNoData; preserve signed flux otherwise. hasBadPhotometry/isClean saved, no new quality cut.",
+  "formula_verified": true,
+  "magnitude_equivalent": "m_AB=23.9-2.5*log10(f_microJy); f_nMgy=10**((22.5-m_AB)/2.5)",
+  "missingness": "Raw fluxes replace imputed magnitude entries only when real measurements exist; no magnitude imputation enters flux inputs",
+  "native_reference": "Historical imputed m=23-2.5log10(f_microJy), 0.9 mag brighter than physical AB; unchanged byte for byte",
+  "near_infrared": "VIRCAM raw cmodel fluxes are microJy under the same AB convention, not Vega magnitudes; no Vega offset applied",
+  "previous_flux_overestimate_factor": 2.290867652767773,
+  "previous_optional_flux_scale": 0.6309573444801932,
+  "raw_ID_ZPHOT_matches": true,
+  "raw_unit": "microJy in all bands, Desprez et al. 2023 Table E.2",
+  "reference_supported_range_fraction": 1.0,
+  "scale": 0.2754228703338166,
+  "sigma": "Measured FLUXERR scaled linearly; equivalent to magnitude-error Jacobian for positive measurements; no extra error floor or rescaling",
+  "source": "https://arxiv.org/pdf/2301.13750"
+}

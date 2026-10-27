@@ -85,15 +85,28 @@ def magnitude_to_nanomaggy(magnitude, sigma_mag=None):
     return f, sigma
 
 
-def clauds_flux_to_nanomaggy(flux, sigma):
-    """CLAUDS catalogue ZP=23 linear units -> AB nanomaggies (ZP=22.5).
+def clauds_flux_to_nanomaggy(flux, sigma, *, not_observed=None, no_data=None):
+    """CLAUDS hscPipe microJy -> AB nanomaggies (AB zero points 23.9/22.5).
+
+    Desprez et al. (2023), Table E.2, specifies microJy for all FLUX_CMODEL
+    and FLUXERR_CMODEL bands, including VIRCAM. The native magnitude pipeline
+    uses ZP=23; that historical representation is intentionally not changed here.
 
     Valid negative/zero fluxes remain valid; missing sentinel -99 is not flux.
-    Flux and uncertainty validity are retained independently.
+    Observation flags exclude unavailable measurements without imputing values.
+    Unavailable/nonpositive uncertainties remain explicitly missing.
     """
     f, e = np.asarray(flux, float), np.asarray(sigma, float)
-    scale = 10 ** ((22.5 - 23.0) / 2.5)
+    if f.shape != e.shape:
+        raise ValueError("Aligned CLAUDS flux and uncertainty arrays required")
+    scale = 10 ** ((22.5 - 23.9) / 2.5)
     valid = np.isfinite(f) & (f != -99)
+    for flag in (not_observed, no_data):
+        if flag is not None:
+            flag = np.asarray(flag, bool)
+            if flag.shape != f.shape:
+                raise ValueError("CLAUDS observation flags must align with fluxes")
+            valid &= ~flag
     good_e = valid & np.isfinite(e) & (e > 0)
     return np.where(valid, f * scale, np.nan), np.where(good_e, e * scale, np.nan), valid
 

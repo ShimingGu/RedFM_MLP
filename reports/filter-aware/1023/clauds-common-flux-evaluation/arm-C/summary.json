@@ -1,0 +1,71 @@
+{
+  "code_sha256": "840a0a08fa8944c5bb78099486559360ef1266aa4853ce0a9edb5a405c3af14b",
+  "command": [
+    "notebooks/qwen_clauds_common_flux_evaluation.py",
+    "--stage",
+    "run",
+    "--arm",
+    "C",
+    "--output-dir",
+    "filter-aware-runs/1023/clauds-common-flux-evaluation"
+  ],
+  "conditions": {
+    "C_flux_full": {
+      "metrics": {
+        "bias": -0.5349071025848389,
+        "catastrophic_outlier_fraction": 0.96875,
+        "cross_entropy": 13.723078727722168,
+        "mean_crps": 1.5051279067993164,
+        "mean_log_score": 13.723075866699219,
+        "median_bias": -0.5740059018135071,
+        "nmad": 0.13275474309921265,
+        "p16_p84_coverage": 0.01953125,
+        "pit_mean": 0.9883215427398682
+      },
+      "seconds": 59.3921838067472,
+      "weights_updated": false
+    },
+    "C_flux_hsc": {
+      "metrics": {
+        "bias": -0.5404391884803772,
+        "catastrophic_outlier_fraction": 0.97265625,
+        "cross_entropy": 10.530447006225586,
+        "mean_crps": 1.42634916305542,
+        "mean_log_score": 10.530447006225586,
+        "median_bias": -0.5746021270751953,
+        "nmad": 0.13068027794361115,
+        "p16_p84_coverage": 0.04296875,
+        "pit_mean": 0.972995400428772
+      },
+      "seconds": 29.025971746072173,
+      "weights_updated": false
+    },
+    "C_native_full": {
+      "metrics": {
+        "bias": -0.5236397981643677,
+        "catastrophic_outlier_fraction": 0.96484375,
+        "cross_entropy": 18.473541259765625,
+        "mean_crps": 1.4976491928100586,
+        "mean_log_score": 18.473539352416992,
+        "median_bias": -0.562180757522583,
+        "nmad": 0.13012902438640594,
+        "p16_p84_coverage": 0.01171875,
+        "pit_mean": 0.9898231625556946
+      },
+      "seconds": 52.69377646036446,
+      "weights_updated": false
+    }
+  },
+  "gpu": {
+    "memory_before_gib": {
+      "free": 10.73345947265625,
+      "total": 10.75,
+      "used": 0.01654052734375
+    },
+    "uuid": "6c85a6c1-35aa-5ff1-ae36-a468e3e230b6"
+  },
+  "peak_allocated_gib": 5.452396392822266,
+  "seconds": 199.10395346581936,
+  "test_evaluated": false,
+  "weights_updated": false
+}

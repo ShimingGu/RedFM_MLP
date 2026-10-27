@@ -8,3 +8,8 @@ dist/
 *.egg-info/
 
 .venv/
+.pixi/
+
+# Generated filter-aware data live in the persistent /arc project directory.
+# Match both a directory and the local compatibility symlink.
+/filter-aware-runs
