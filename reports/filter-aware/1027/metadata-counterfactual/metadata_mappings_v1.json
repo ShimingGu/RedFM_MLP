@@ -1,0 +1,1092 @@
+{
+  "version": "filter_metadata_counterfactual_v1",
+  "groups": {
+    "hsc": [
+      "HSC.g",
+      "HSC.r",
+      "HSC.i",
+      "HSC.z",
+      "HSC.y"
+    ],
+    "legacy": [
+      "BASS.g",
+      "DECam.g",
+      "BASS.r",
+      "DECam.r",
+      "DECam.z",
+      "MzLS.z",
+      "WISE.W1",
+      "WISE.W2"
+    ]
+  },
+  "original": {
+    "HSC.g": {
+      "pivot_nm": 479.11542587232873,
+      "width_nm": 117.94066627242263
+    },
+    "HSC.r": {
+      "pivot_nm": 621.4047045598709,
+      "width_nm": 143.31794675349548
+    },
+    "HSC.i": {
+      "pivot_nm": 768.8777145855436,
+      "width_nm": 144.22837573385522
+    },
+    "HSC.z": {
+      "pivot_nm": 890.3114055170333,
+      "width_nm": 75.15659397715473
+    },
+    "HSC.y": {
+      "pivot_nm": 977.1716237876003,
+      "width_nm": 74.92359492359492
+    },
+    "BASS.g": {
+      "pivot_nm": 475.9348959095759,
+      "width_nm": 134.8664589180602
+    },
+    "DECam.g": {
+      "pivot_nm": 480.85074998391804,
+      "width_nm": 113.12757650664528
+    },
+    "BASS.r": {
+      "pivot_nm": 639.7239027160568,
+      "width_nm": 139.8792311054978
+    },
+    "DECam.r": {
+      "pivot_nm": 641.7645640160802,
+      "width_nm": 138.53520014889378
+    },
+    "DECam.z": {
+      "pivot_nm": 916.8854513833359,
+      "width_nm": 125.37505032589537
+    },
+    "MzLS.z": {
+      "pivot_nm": 919.9326758181013,
+      "width_nm": 123.63547443064759
+    },
+    "WISE.W1": {
+      "pivot_nm": 3368.2207939487366,
+      "width_nm": 682.4098204137304
+    },
+    "WISE.W2": {
+      "pivot_nm": 4617.903814631923,
+      "width_nm": 1050.7696849333333
+    }
+  },
+  "conditions": {
+    "correct": {
+      "family": "control",
+      "rule": "Immutable original registry values",
+      "mapping": {
+        "HSC.g": {
+          "pivot_nm": 479.11542587232873,
+          "width_nm": 117.94066627242263
+        },
+        "HSC.r": {
+          "pivot_nm": 621.4047045598709,
+          "width_nm": 143.31794675349548
+        },
+        "HSC.i": {
+          "pivot_nm": 768.8777145855436,
+          "width_nm": 144.22837573385522
+        },
+        "HSC.z": {
+          "pivot_nm": 890.3114055170333,
+          "width_nm": 75.15659397715473
+        },
+        "HSC.y": {
+          "pivot_nm": 977.1716237876003,
+          "width_nm": 74.92359492359492
+        },
+        "BASS.g": {
+          "pivot_nm": 475.9348959095759,
+          "width_nm": 134.8664589180602
+        },
+        "DECam.g": {
+          "pivot_nm": 480.85074998391804,
+          "width_nm": 113.12757650664528
+        },
+        "BASS.r": {
+          "pivot_nm": 639.7239027160568,
+          "width_nm": 139.8792311054978
+        },
+        "DECam.r": {
+          "pivot_nm": 641.7645640160802,
+          "width_nm": 138.53520014889378
+        },
+        "DECam.z": {
+          "pivot_nm": 916.8854513833359,
+          "width_nm": 125.37505032589537
+        },
+        "MzLS.z": {
+          "pivot_nm": 919.9326758181013,
+          "width_nm": 123.63547443064759
+        },
+        "WISE.W1": {
+          "pivot_nm": 3368.2207939487366,
+          "width_nm": 682.4098204137304
+        },
+        "WISE.W2": {
+          "pivot_nm": 4617.903814631923,
+          "width_nm": 1050.7696849333333
+        }
+      },
+      "donors": {},
+      "changed_fields": [],
+      "units": "nm",
+      "precision": "%.3f"
+    },
+    "paired-cycle-forward": {
+      "family": "paired",
+      "rule": "Forward cycle within HSC and all actually used Legacy physical profiles; pair moved together",
+      "mapping": {
+        "HSC.g": {
+          "pivot_nm": 621.4047045598709,
+          "width_nm": 143.31794675349548
+        },
+        "HSC.r": {
+          "pivot_nm": 768.8777145855436,
+          "width_nm": 144.22837573385522
+        },
+        "HSC.i": {
+          "pivot_nm": 890.3114055170333,
+          "width_nm": 75.15659397715473
+        },
+        "HSC.z": {
+          "pivot_nm": 977.1716237876003,
+          "width_nm": 74.92359492359492
+        },
+        "HSC.y": {
+          "pivot_nm": 479.11542587232873,
+          "width_nm": 117.94066627242263
+        },
+        "BASS.g": {
+          "pivot_nm": 480.85074998391804,
+          "width_nm": 113.12757650664528
+        },
+        "DECam.g": {
+          "pivot_nm": 639.7239027160568,
+          "width_nm": 139.8792311054978
+        },
+        "BASS.r": {
+          "pivot_nm": 641.7645640160802,
+          "width_nm": 138.53520014889378
+        },
+        "DECam.r": {
+          "pivot_nm": 916.8854513833359,
+          "width_nm": 125.37505032589537
+        },
+        "DECam.z": {
+          "pivot_nm": 919.9326758181013,
+          "width_nm": 123.63547443064759
+        },
+        "MzLS.z": {
+          "pivot_nm": 3368.2207939487366,
+          "width_nm": 682.4098204137304
+        },
+        "WISE.W1": {
+          "pivot_nm": 4617.903814631923,
+          "width_nm": 1050.7696849333333
+        },
+        "WISE.W2": {
+          "pivot_nm": 475.9348959095759,
+          "width_nm": 134.8664589180602
+        }
+      },
+      "donors": {
+        "hsc": {
+          "HSC.g": "HSC.r",
+          "HSC.r": "HSC.i",
+          "HSC.i": "HSC.z",
+          "HSC.z": "HSC.y",
+          "HSC.y": "HSC.g"
+        },
+        "legacy": {
+          "BASS.g": "DECam.g",
+          "DECam.g": "BASS.r",
+          "BASS.r": "DECam.r",
+          "DECam.r": "DECam.z",
+          "DECam.z": "MzLS.z",
+          "MzLS.z": "WISE.W1",
+          "WISE.W1": "WISE.W2",
+          "WISE.W2": "BASS.g"
+        }
+      },
+      "changed_fields": [
+        "pivot_nm",
+        "width_nm"
+      ],
+      "units": "nm",
+      "precision": "%.3f"
+    },
+    "paired-cycle-reverse": {
+      "family": "paired",
+      "rule": "Reverse cycle in the same physical-profile groups; pair moved together",
+      "mapping": {
+        "HSC.g": {
+          "pivot_nm": 977.1716237876003,
+          "width_nm": 74.92359492359492
+        },
+        "HSC.r": {
+          "pivot_nm": 479.11542587232873,
+          "width_nm": 117.94066627242263
+        },
+        "HSC.i": {
+          "pivot_nm": 621.4047045598709,
+          "width_nm": 143.31794675349548
+        },
+        "HSC.z": {
+          "pivot_nm": 768.8777145855436,
+          "width_nm": 144.22837573385522
+        },
+        "HSC.y": {
+          "pivot_nm": 890.3114055170333,
+          "width_nm": 75.15659397715473
+        },
+        "BASS.g": {
+          "pivot_nm": 4617.903814631923,
+          "width_nm": 1050.7696849333333
+        },
+        "DECam.g": {
+          "pivot_nm": 475.9348959095759,
+          "width_nm": 134.8664589180602
+        },
+        "BASS.r": {
+          "pivot_nm": 480.85074998391804,
+          "width_nm": 113.12757650664528
+        },
+        "DECam.r": {
+          "pivot_nm": 639.7239027160568,
+          "width_nm": 139.8792311054978
+        },
+        "DECam.z": {
+          "pivot_nm": 641.7645640160802,
+          "width_nm": 138.53520014889378
+        },
+        "MzLS.z": {
+          "pivot_nm": 916.8854513833359,
+          "width_nm": 125.37505032589537
+        },
+        "WISE.W1": {
+          "pivot_nm": 919.9326758181013,
+          "width_nm": 123.63547443064759
+        },
+        "WISE.W2": {
+          "pivot_nm": 3368.2207939487366,
+          "width_nm": 682.4098204137304
+        }
+      },
+      "donors": {
+        "hsc": {
+          "HSC.g": "HSC.y",
+          "HSC.r": "HSC.g",
+          "HSC.i": "HSC.r",
+          "HSC.z": "HSC.i",
+          "HSC.y": "HSC.z"
+        },
+        "legacy": {
+          "BASS.g": "WISE.W2",
+          "DECam.g": "BASS.g",
+          "BASS.r": "DECam.g",
+          "DECam.r": "BASS.r",
+          "DECam.z": "DECam.r",
+          "MzLS.z": "DECam.z",
+          "WISE.W1": "MzLS.z",
+          "WISE.W2": "WISE.W1"
+        }
+      },
+      "changed_fields": [
+        "pivot_nm",
+        "width_nm"
+      ],
+      "units": "nm",
+      "precision": "%.3f"
+    },
+    "paired-derangement": {
+      "family": "paired",
+      "rule": "Derangement seed=1027031+101*domain_group_index; pair moved together",
+      "mapping": {
+        "HSC.g": {
+          "pivot_nm": 768.8777145855436,
+          "width_nm": 144.22837573385522
+        },
+        "HSC.r": {
+          "pivot_nm": 890.3114055170333,
+          "width_nm": 75.15659397715473
+        },
+        "HSC.i": {
+          "pivot_nm": 621.4047045598709,
+          "width_nm": 143.31794675349548
+        },
+        "HSC.z": {
+          "pivot_nm": 977.1716237876003,
+          "width_nm": 74.92359492359492
+        },
+        "HSC.y": {
+          "pivot_nm": 479.11542587232873,
+          "width_nm": 117.94066627242263
+        },
+        "BASS.g": {
+          "pivot_nm": 641.7645640160802,
+          "width_nm": 138.53520014889378
+        },
+        "DECam.g": {
+          "pivot_nm": 3368.2207939487366,
+          "width_nm": 682.4098204137304
+        },
+        "BASS.r": {
+          "pivot_nm": 4617.903814631923,
+          "width_nm": 1050.7696849333333
+        },
+        "DECam.r": {
+          "pivot_nm": 480.85074998391804,
+          "width_nm": 113.12757650664528
+        },
+        "DECam.z": {
+          "pivot_nm": 639.7239027160568,
+          "width_nm": 139.8792311054978
+        },
+        "MzLS.z": {
+          "pivot_nm": 475.9348959095759,
+          "width_nm": 134.8664589180602
+        },
+        "WISE.W1": {
+          "pivot_nm": 916.8854513833359,
+          "width_nm": 125.37505032589537
+        },
+        "WISE.W2": {
+          "pivot_nm": 919.9326758181013,
+          "width_nm": 123.63547443064759
+        }
+      },
+      "donors": {
+        "hsc": {
+          "HSC.g": "HSC.i",
+          "HSC.r": "HSC.z",
+          "HSC.i": "HSC.r",
+          "HSC.z": "HSC.y",
+          "HSC.y": "HSC.g"
+        },
+        "legacy": {
+          "BASS.g": "DECam.r",
+          "DECam.g": "WISE.W1",
+          "BASS.r": "WISE.W2",
+          "DECam.r": "DECam.g",
+          "DECam.z": "BASS.r",
+          "MzLS.z": "BASS.g",
+          "WISE.W1": "DECam.z",
+          "WISE.W2": "MzLS.z"
+        }
+      },
+      "changed_fields": [
+        "pivot_nm",
+        "width_nm"
+      ],
+      "units": "nm",
+      "precision": "%.3f"
+    },
+    "wavelength-cycle": {
+      "family": "wavelength",
+      "rule": "Same forward donor mapping as paired-cycle-forward; width stays correct",
+      "mapping": {
+        "HSC.g": {
+          "pivot_nm": 621.4047045598709,
+          "width_nm": 117.94066627242263
+        },
+        "HSC.r": {
+          "pivot_nm": 768.8777145855436,
+          "width_nm": 143.31794675349548
+        },
+        "HSC.i": {
+          "pivot_nm": 890.3114055170333,
+          "width_nm": 144.22837573385522
+        },
+        "HSC.z": {
+          "pivot_nm": 977.1716237876003,
+          "width_nm": 75.15659397715473
+        },
+        "HSC.y": {
+          "pivot_nm": 479.11542587232873,
+          "width_nm": 74.92359492359492
+        },
+        "BASS.g": {
+          "pivot_nm": 480.85074998391804,
+          "width_nm": 134.8664589180602
+        },
+        "DECam.g": {
+          "pivot_nm": 639.7239027160568,
+          "width_nm": 113.12757650664528
+        },
+        "BASS.r": {
+          "pivot_nm": 641.7645640160802,
+          "width_nm": 139.8792311054978
+        },
+        "DECam.r": {
+          "pivot_nm": 916.8854513833359,
+          "width_nm": 138.53520014889378
+        },
+        "DECam.z": {
+          "pivot_nm": 919.9326758181013,
+          "width_nm": 125.37505032589537
+        },
+        "MzLS.z": {
+          "pivot_nm": 3368.2207939487366,
+          "width_nm": 123.63547443064759
+        },
+        "WISE.W1": {
+          "pivot_nm": 4617.903814631923,
+          "width_nm": 682.4098204137304
+        },
+        "WISE.W2": {
+          "pivot_nm": 475.9348959095759,
+          "width_nm": 1050.7696849333333
+        }
+      },
+      "donors": {
+        "hsc": {
+          "HSC.g": "HSC.r",
+          "HSC.r": "HSC.i",
+          "HSC.i": "HSC.z",
+          "HSC.z": "HSC.y",
+          "HSC.y": "HSC.g"
+        },
+        "legacy": {
+          "BASS.g": "DECam.g",
+          "DECam.g": "BASS.r",
+          "BASS.r": "DECam.r",
+          "DECam.r": "DECam.z",
+          "DECam.z": "MzLS.z",
+          "MzLS.z": "WISE.W1",
+          "WISE.W1": "WISE.W2",
+          "WISE.W2": "BASS.g"
+        }
+      },
+      "changed_fields": [
+        "pivot_nm"
+      ],
+      "units": "nm",
+      "precision": "%.3f"
+    },
+    "wavelength-derangement": {
+      "family": "wavelength",
+      "rule": "Same seeded donor mapping as paired-derangement; width stays correct",
+      "mapping": {
+        "HSC.g": {
+          "pivot_nm": 768.8777145855436,
+          "width_nm": 117.94066627242263
+        },
+        "HSC.r": {
+          "pivot_nm": 890.3114055170333,
+          "width_nm": 143.31794675349548
+        },
+        "HSC.i": {
+          "pivot_nm": 621.4047045598709,
+          "width_nm": 144.22837573385522
+        },
+        "HSC.z": {
+          "pivot_nm": 977.1716237876003,
+          "width_nm": 75.15659397715473
+        },
+        "HSC.y": {
+          "pivot_nm": 479.11542587232873,
+          "width_nm": 74.92359492359492
+        },
+        "BASS.g": {
+          "pivot_nm": 641.7645640160802,
+          "width_nm": 134.8664589180602
+        },
+        "DECam.g": {
+          "pivot_nm": 3368.2207939487366,
+          "width_nm": 113.12757650664528
+        },
+        "BASS.r": {
+          "pivot_nm": 4617.903814631923,
+          "width_nm": 139.8792311054978
+        },
+        "DECam.r": {
+          "pivot_nm": 480.85074998391804,
+          "width_nm": 138.53520014889378
+        },
+        "DECam.z": {
+          "pivot_nm": 639.7239027160568,
+          "width_nm": 125.37505032589537
+        },
+        "MzLS.z": {
+          "pivot_nm": 475.9348959095759,
+          "width_nm": 123.63547443064759
+        },
+        "WISE.W1": {
+          "pivot_nm": 916.8854513833359,
+          "width_nm": 682.4098204137304
+        },
+        "WISE.W2": {
+          "pivot_nm": 919.9326758181013,
+          "width_nm": 1050.7696849333333
+        }
+      },
+      "donors": {
+        "hsc": {
+          "HSC.g": "HSC.i",
+          "HSC.r": "HSC.z",
+          "HSC.i": "HSC.r",
+          "HSC.z": "HSC.y",
+          "HSC.y": "HSC.g"
+        },
+        "legacy": {
+          "BASS.g": "DECam.r",
+          "DECam.g": "WISE.W1",
+          "BASS.r": "WISE.W2",
+          "DECam.r": "DECam.g",
+          "DECam.z": "BASS.r",
+          "MzLS.z": "BASS.g",
+          "WISE.W1": "DECam.z",
+          "WISE.W2": "MzLS.z"
+        }
+      },
+      "changed_fields": [
+        "pivot_nm"
+      ],
+      "units": "nm",
+      "precision": "%.3f"
+    },
+    "width-cycle": {
+      "family": "width",
+      "rule": "Same forward donor mapping as paired-cycle-forward; pivot stays correct",
+      "mapping": {
+        "HSC.g": {
+          "pivot_nm": 479.11542587232873,
+          "width_nm": 143.31794675349548
+        },
+        "HSC.r": {
+          "pivot_nm": 621.4047045598709,
+          "width_nm": 144.22837573385522
+        },
+        "HSC.i": {
+          "pivot_nm": 768.8777145855436,
+          "width_nm": 75.15659397715473
+        },
+        "HSC.z": {
+          "pivot_nm": 890.3114055170333,
+          "width_nm": 74.92359492359492
+        },
+        "HSC.y": {
+          "pivot_nm": 977.1716237876003,
+          "width_nm": 117.94066627242263
+        },
+        "BASS.g": {
+          "pivot_nm": 475.9348959095759,
+          "width_nm": 113.12757650664528
+        },
+        "DECam.g": {
+          "pivot_nm": 480.85074998391804,
+          "width_nm": 139.8792311054978
+        },
+        "BASS.r": {
+          "pivot_nm": 639.7239027160568,
+          "width_nm": 138.53520014889378
+        },
+        "DECam.r": {
+          "pivot_nm": 641.7645640160802,
+          "width_nm": 125.37505032589537
+        },
+        "DECam.z": {
+          "pivot_nm": 916.8854513833359,
+          "width_nm": 123.63547443064759
+        },
+        "MzLS.z": {
+          "pivot_nm": 919.9326758181013,
+          "width_nm": 682.4098204137304
+        },
+        "WISE.W1": {
+          "pivot_nm": 3368.2207939487366,
+          "width_nm": 1050.7696849333333
+        },
+        "WISE.W2": {
+          "pivot_nm": 4617.903814631923,
+          "width_nm": 134.8664589180602
+        }
+      },
+      "donors": {
+        "hsc": {
+          "HSC.g": "HSC.r",
+          "HSC.r": "HSC.i",
+          "HSC.i": "HSC.z",
+          "HSC.z": "HSC.y",
+          "HSC.y": "HSC.g"
+        },
+        "legacy": {
+          "BASS.g": "DECam.g",
+          "DECam.g": "BASS.r",
+          "BASS.r": "DECam.r",
+          "DECam.r": "DECam.z",
+          "DECam.z": "MzLS.z",
+          "MzLS.z": "WISE.W1",
+          "WISE.W1": "WISE.W2",
+          "WISE.W2": "BASS.g"
+        }
+      },
+      "changed_fields": [
+        "width_nm"
+      ],
+      "units": "nm",
+      "precision": "%.3f"
+    },
+    "width-derangement": {
+      "family": "width",
+      "rule": "Same seeded donor mapping as paired-derangement; pivot stays correct",
+      "mapping": {
+        "HSC.g": {
+          "pivot_nm": 479.11542587232873,
+          "width_nm": 144.22837573385522
+        },
+        "HSC.r": {
+          "pivot_nm": 621.4047045598709,
+          "width_nm": 75.15659397715473
+        },
+        "HSC.i": {
+          "pivot_nm": 768.8777145855436,
+          "width_nm": 143.31794675349548
+        },
+        "HSC.z": {
+          "pivot_nm": 890.3114055170333,
+          "width_nm": 74.92359492359492
+        },
+        "HSC.y": {
+          "pivot_nm": 977.1716237876003,
+          "width_nm": 117.94066627242263
+        },
+        "BASS.g": {
+          "pivot_nm": 475.9348959095759,
+          "width_nm": 138.53520014889378
+        },
+        "DECam.g": {
+          "pivot_nm": 480.85074998391804,
+          "width_nm": 682.4098204137304
+        },
+        "BASS.r": {
+          "pivot_nm": 639.7239027160568,
+          "width_nm": 1050.7696849333333
+        },
+        "DECam.r": {
+          "pivot_nm": 641.7645640160802,
+          "width_nm": 113.12757650664528
+        },
+        "DECam.z": {
+          "pivot_nm": 916.8854513833359,
+          "width_nm": 139.8792311054978
+        },
+        "MzLS.z": {
+          "pivot_nm": 919.9326758181013,
+          "width_nm": 134.8664589180602
+        },
+        "WISE.W1": {
+          "pivot_nm": 3368.2207939487366,
+          "width_nm": 125.37505032589537
+        },
+        "WISE.W2": {
+          "pivot_nm": 4617.903814631923,
+          "width_nm": 123.63547443064759
+        }
+      },
+      "donors": {
+        "hsc": {
+          "HSC.g": "HSC.i",
+          "HSC.r": "HSC.z",
+          "HSC.i": "HSC.r",
+          "HSC.z": "HSC.y",
+          "HSC.y": "HSC.g"
+        },
+        "legacy": {
+          "BASS.g": "DECam.r",
+          "DECam.g": "WISE.W1",
+          "BASS.r": "WISE.W2",
+          "DECam.r": "DECam.g",
+          "DECam.z": "BASS.r",
+          "MzLS.z": "BASS.g",
+          "WISE.W1": "DECam.z",
+          "WISE.W2": "MzLS.z"
+        }
+      },
+      "changed_fields": [
+        "width_nm"
+      ],
+      "units": "nm",
+      "precision": "%.3f"
+    },
+    "pivot-plus-02": {
+      "family": "local-wavelength",
+      "rule": "Every physical-profile pivot multiplied by 1.02; width correct",
+      "mapping": {
+        "HSC.g": {
+          "pivot_nm": 488.6977343897753,
+          "width_nm": 117.94066627242263
+        },
+        "HSC.r": {
+          "pivot_nm": 633.8327986510683,
+          "width_nm": 143.31794675349548
+        },
+        "HSC.i": {
+          "pivot_nm": 784.2552688772545,
+          "width_nm": 144.22837573385522
+        },
+        "HSC.z": {
+          "pivot_nm": 908.1176336273741,
+          "width_nm": 75.15659397715473
+        },
+        "HSC.y": {
+          "pivot_nm": 996.7150562633524,
+          "width_nm": 74.92359492359492
+        },
+        "BASS.g": {
+          "pivot_nm": 485.45359382776746,
+          "width_nm": 134.8664589180602
+        },
+        "DECam.g": {
+          "pivot_nm": 490.4677649835964,
+          "width_nm": 113.12757650664528
+        },
+        "BASS.r": {
+          "pivot_nm": 652.518380770378,
+          "width_nm": 139.8792311054978
+        },
+        "DECam.r": {
+          "pivot_nm": 654.5998552964018,
+          "width_nm": 138.53520014889378
+        },
+        "DECam.z": {
+          "pivot_nm": 935.2231604110026,
+          "width_nm": 125.37505032589537
+        },
+        "MzLS.z": {
+          "pivot_nm": 938.3313293344634,
+          "width_nm": 123.63547443064759
+        },
+        "WISE.W1": {
+          "pivot_nm": 3435.5852098277114,
+          "width_nm": 682.4098204137304
+        },
+        "WISE.W2": {
+          "pivot_nm": 4710.261890924561,
+          "width_nm": 1050.7696849333333
+        }
+      },
+      "donors": {},
+      "changed_fields": [
+        "pivot_nm"
+      ],
+      "units": "nm",
+      "precision": "%.3f"
+    },
+    "pivot-minus-02": {
+      "family": "local-wavelength",
+      "rule": "Every physical-profile pivot multiplied by 0.98; width correct",
+      "mapping": {
+        "HSC.g": {
+          "pivot_nm": 469.53311735488217,
+          "width_nm": 117.94066627242263
+        },
+        "HSC.r": {
+          "pivot_nm": 608.9766104686735,
+          "width_nm": 143.31794675349548
+        },
+        "HSC.i": {
+          "pivot_nm": 753.5001602938327,
+          "width_nm": 144.22837573385522
+        },
+        "HSC.z": {
+          "pivot_nm": 872.5051774066926,
+          "width_nm": 75.15659397715473
+        },
+        "HSC.y": {
+          "pivot_nm": 957.6281913118482,
+          "width_nm": 74.92359492359492
+        },
+        "BASS.g": {
+          "pivot_nm": 466.41619799138437,
+          "width_nm": 134.8664589180602
+        },
+        "DECam.g": {
+          "pivot_nm": 471.2337349842397,
+          "width_nm": 113.12757650664528
+        },
+        "BASS.r": {
+          "pivot_nm": 626.9294246617357,
+          "width_nm": 139.8792311054978
+        },
+        "DECam.r": {
+          "pivot_nm": 628.9292727357586,
+          "width_nm": 138.53520014889378
+        },
+        "DECam.z": {
+          "pivot_nm": 898.5477423556691,
+          "width_nm": 125.37505032589537
+        },
+        "MzLS.z": {
+          "pivot_nm": 901.5340223017392,
+          "width_nm": 123.63547443064759
+        },
+        "WISE.W1": {
+          "pivot_nm": 3300.856378069762,
+          "width_nm": 682.4098204137304
+        },
+        "WISE.W2": {
+          "pivot_nm": 4525.545738339284,
+          "width_nm": 1050.7696849333333
+        }
+      },
+      "donors": {},
+      "changed_fields": [
+        "pivot_nm"
+      ],
+      "units": "nm",
+      "precision": "%.3f"
+    },
+    "pivot-plus-05": {
+      "family": "local-wavelength",
+      "rule": "Every physical-profile pivot multiplied by 1.05; width correct",
+      "mapping": {
+        "HSC.g": {
+          "pivot_nm": 503.0711971659452,
+          "width_nm": 117.94066627242263
+        },
+        "HSC.r": {
+          "pivot_nm": 652.4749397878644,
+          "width_nm": 143.31794675349548
+        },
+        "HSC.i": {
+          "pivot_nm": 807.3216003148208,
+          "width_nm": 144.22837573385522
+        },
+        "HSC.z": {
+          "pivot_nm": 934.826975792885,
+          "width_nm": 75.15659397715473
+        },
+        "HSC.y": {
+          "pivot_nm": 1026.0302049769803,
+          "width_nm": 74.92359492359492
+        },
+        "BASS.g": {
+          "pivot_nm": 499.73164070505476,
+          "width_nm": 134.8664589180602
+        },
+        "DECam.g": {
+          "pivot_nm": 504.89328748311397,
+          "width_nm": 113.12757650664528
+        },
+        "BASS.r": {
+          "pivot_nm": 671.7100978518597,
+          "width_nm": 139.8792311054978
+        },
+        "DECam.r": {
+          "pivot_nm": 673.8527922168842,
+          "width_nm": 138.53520014889378
+        },
+        "DECam.z": {
+          "pivot_nm": 962.7297239525027,
+          "width_nm": 125.37505032589537
+        },
+        "MzLS.z": {
+          "pivot_nm": 965.9293096090064,
+          "width_nm": 123.63547443064759
+        },
+        "WISE.W1": {
+          "pivot_nm": 3536.6318336461736,
+          "width_nm": 682.4098204137304
+        },
+        "WISE.W2": {
+          "pivot_nm": 4848.7990053635185,
+          "width_nm": 1050.7696849333333
+        }
+      },
+      "donors": {},
+      "changed_fields": [
+        "pivot_nm"
+      ],
+      "units": "nm",
+      "precision": "%.3f"
+    },
+    "pivot-minus-05": {
+      "family": "local-wavelength",
+      "rule": "Every physical-profile pivot multiplied by 0.95; width correct",
+      "mapping": {
+        "HSC.g": {
+          "pivot_nm": 455.15965457871226,
+          "width_nm": 117.94066627242263
+        },
+        "HSC.r": {
+          "pivot_nm": 590.3344693318774,
+          "width_nm": 143.31794675349548
+        },
+        "HSC.i": {
+          "pivot_nm": 730.4338288562664,
+          "width_nm": 144.22837573385522
+        },
+        "HSC.z": {
+          "pivot_nm": 845.7958352411816,
+          "width_nm": 75.15659397715473
+        },
+        "HSC.y": {
+          "pivot_nm": 928.3130425982202,
+          "width_nm": 74.92359492359492
+        },
+        "BASS.g": {
+          "pivot_nm": 452.13815111409707,
+          "width_nm": 134.8664589180602
+        },
+        "DECam.g": {
+          "pivot_nm": 456.8082124847221,
+          "width_nm": 113.12757650664528
+        },
+        "BASS.r": {
+          "pivot_nm": 607.737707580254,
+          "width_nm": 139.8792311054978
+        },
+        "DECam.r": {
+          "pivot_nm": 609.6763358152762,
+          "width_nm": 138.53520014889378
+        },
+        "DECam.z": {
+          "pivot_nm": 871.041178814169,
+          "width_nm": 125.37505032589537
+        },
+        "MzLS.z": {
+          "pivot_nm": 873.9360420271962,
+          "width_nm": 123.63547443064759
+        },
+        "WISE.W1": {
+          "pivot_nm": 3199.8097542512996,
+          "width_nm": 682.4098204137304
+        },
+        "WISE.W2": {
+          "pivot_nm": 4387.008623900327,
+          "width_nm": 1050.7696849333333
+        }
+      },
+      "donors": {},
+      "changed_fields": [
+        "pivot_nm"
+      ],
+      "units": "nm",
+      "precision": "%.3f"
+    },
+    "placebo-length-structure": {
+      "family": "placebo",
+      "mapping": {
+        "HSC.g": {
+          "pivot_nm": 977.1716237876003,
+          "width_nm": 144.22837573385522
+        },
+        "HSC.r": {
+          "pivot_nm": 890.3114055170333,
+          "width_nm": 74.92359492359492
+        },
+        "HSC.i": {
+          "pivot_nm": 479.11542587232873,
+          "width_nm": 143.31794675349548
+        },
+        "HSC.z": {
+          "pivot_nm": 621.4047045598709,
+          "width_nm": 117.94066627242263
+        },
+        "HSC.y": {
+          "pivot_nm": 768.8777145855436,
+          "width_nm": 75.15659397715473
+        },
+        "BASS.g": {
+          "pivot_nm": 639.7239027160568,
+          "width_nm": 138.53520014889378
+        },
+        "DECam.g": {
+          "pivot_nm": 919.9326758181013,
+          "width_nm": 125.37505032589537
+        },
+        "BASS.r": {
+          "pivot_nm": 916.8854513833359,
+          "width_nm": 123.63547443064759
+        },
+        "DECam.r": {
+          "pivot_nm": 475.9348959095759,
+          "width_nm": 139.8792311054978
+        },
+        "DECam.z": {
+          "pivot_nm": 641.7645640160802,
+          "width_nm": 113.12757650664528
+        },
+        "MzLS.z": {
+          "pivot_nm": 480.85074998391804,
+          "width_nm": 134.8664589180602
+        },
+        "WISE.W1": {
+          "pivot_nm": 4617.903814631923,
+          "width_nm": 1050.7696849333333
+        },
+        "WISE.W2": {
+          "pivot_nm": 3368.2207939487366,
+          "width_nm": 682.4098204137304
+        }
+      },
+      "donors": {
+        "HSC.g": {
+          "pivot_nm": "HSC.y",
+          "width_nm": "HSC.i"
+        },
+        "HSC.r": {
+          "pivot_nm": "HSC.z",
+          "width_nm": "HSC.y"
+        },
+        "HSC.i": {
+          "pivot_nm": "HSC.g",
+          "width_nm": "HSC.r"
+        },
+        "HSC.z": {
+          "pivot_nm": "HSC.r",
+          "width_nm": "HSC.g"
+        },
+        "HSC.y": {
+          "pivot_nm": "HSC.i",
+          "width_nm": "HSC.z"
+        },
+        "BASS.g": {
+          "pivot_nm": "BASS.r",
+          "width_nm": "DECam.r"
+        },
+        "DECam.g": {
+          "pivot_nm": "MzLS.z",
+          "width_nm": "DECam.z"
+        },
+        "BASS.r": {
+          "pivot_nm": "DECam.z",
+          "width_nm": "MzLS.z"
+        },
+        "DECam.r": {
+          "pivot_nm": "BASS.g",
+          "width_nm": "BASS.r"
+        },
+        "DECam.z": {
+          "pivot_nm": "DECam.r",
+          "width_nm": "DECam.g"
+        },
+        "MzLS.z": {
+          "pivot_nm": "DECam.g",
+          "width_nm": "BASS.g"
+        },
+        "WISE.W1": {
+          "pivot_nm": "WISE.W2",
+          "width_nm": "WISE.W2"
+        },
+        "WISE.W2": {
+          "pivot_nm": "WISE.W1",
+          "width_nm": "WISE.W1"
+        }
+      },
+      "rule": "Independent seeded pivot/width derangements within HSC, Legacy optical, and Legacy WISE strata. Distinct donors for pivot and width where n>2; the two WISE profiles swap both fields. Conserves registry marginals within strata, never physical identity associations. Seeds 1027173+101*stratum and 1027291+101*stratum. Token matching is measured, never assumed.",
+      "changed_fields": [
+        "pivot_nm",
+        "width_nm"
+      ],
+      "units": "nm",
+      "precision": "%.3f"
+    }
+  },
+  "grouping": "Each physical profile has one global mapping. Shared WISE profiles are never assigned inconsistent north/south values. DECam and BASS/MzLS remain distinct filter identities."
+}

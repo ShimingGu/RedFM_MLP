@@ -1,0 +1,85 @@
+{
+  "version": "matched_evaluation_v1",
+  "created_utc": "2026-10-28T15:45:44.501646+00:00",
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "pilot_seed": 42,
+  "counts": {
+    "T": 16600,
+    "V": 4257,
+    "P": 61696
+  },
+  "split_membership_sha256": {
+    "train_membership.npz": "44435de65232e927dd3f464fd866992ac8a8b1a2d091892ccd3348106f9f4705",
+    "validation_membership.npz": "732be6fa35f339b9922d9fe1f8caa65b959651c434f4fd0ac1686a844f5aa24a",
+    "evaluation_membership.npz": "c73bef1e8a17d6ff9417e315fb6062f2b0cfca240762f3f19b2d18a60fb4a257"
+  },
+  "evaluation": "Locked previously analysed P; same IDs/order/reference z in every cell; no held-out tuning or calibration",
+  "representation": "Common Level-1 only; physical filter IDs, native flux/sigma, EBV; no pivots or widths",
+  "grid": {
+    "n_bins": 300,
+    "z_min": 0.0,
+    "z_max": 4.5,
+    "probability": "Softmax mass per bin; CE bucketize left boundary convention inherited from evaluator"
+  },
+  "source_validation": "Only own-source V CE, end of each epoch, common cadence; save best and fixed-final-budget states separately. No automatic P evaluation during training.",
+  "budget": {
+    "epochs": 10,
+    "head_warmup_epochs": 3,
+    "updates_per_epoch": 1038,
+    "total_updates": 10380,
+    "head_only_updates": 3114,
+    "joint_updates": 7266,
+    "total_examples": 166000,
+    "effective_batch": 16,
+    "epoch_final_batch": 8,
+    "partial_batch": "Loss divided by actual eight examples, not nominal sixteen"
+  },
+  "budget_justification": "One-seed four-model implementation/convergence pilot at an evidence-backed historical 3-head+7-joint schedule; original native HSC/Legacy curves still improve late. Fresh Level-1 convergence is not established. Any future common-budget revision/three-seed expansion uses source validation only before locked-P scoring, never whichever transfer result is favourable.",
+  "bootstrap": {
+    "replicates": 1000,
+    "seed": 1028,
+    "unit": "paired physical galaxy",
+    "shared_indices": true,
+    "confidence": "Percentile 95%, directly on paired differences, conditional on trained checkpoint"
+  },
+  "seed_analysis": "Report every matched seed, then means and sample dispersion; separate galaxy-bootstrap uncertainty from training-seed variability; do not assert QLoRA/DoRA stochastic bitwise equivalence",
+  "redshift_edges": [
+    0.0,
+    0.2,
+    0.4,
+    0.6,
+    1.0,
+    4.5
+  ],
+  "aggregation": [
+    "native population-weighted",
+    "equal-bin macro average, including explicitly labelled macro NMAD"
+  ],
+  "metrics": [
+    "CE",
+    "CRPS",
+    "NMAD",
+    "outlier fraction abs(delta)>0.15",
+    "mean/median bias",
+    "68% coverage",
+    "PIT",
+    "per-object normalized residual",
+    "new/rescued catastrophic counts"
+  ],
+  "contrasts": {
+    "P_HL": "CE(H,L)-CE(H,H)",
+    "P_LH": "CE(L,H)-CE(L,L)",
+    "G_HL": "CE(H,L)-CE(L,L)",
+    "G_LH": "CE(L,H)-CE(H,H)",
+    "method_robustness": "P_DoRA-P_QLoRA for each direction, plus absolute target CE differences",
+    "interaction": "[CE(H,L)-CE(H,H)]-[CE(L,L)-CE(L,H)]"
+  },
+  "primary_selected_state": "Source-V selected checkpoint; fixed-final-budget state is a separately labelled secondary trajectory control",
+  "caveats": "Photometric observational-system transfer, not pure filter transmission; pipelines, depths, noise, extinction/calibration and grizy versus grzW1W2 information content differ. No strict high-z extrapolation; P has 400 objects above z=1 and none above z=2.",
+  "full_training_started": false,
+  "original_model_full_inference_started": false
+}

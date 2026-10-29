@@ -1,0 +1,38 @@
+{
+  "version": "matched_level1_v1",
+  "precision": 5,
+  "unit": "AB_nanomaggy",
+  "sigma": "one_sigma",
+  "missing": "NA; valid signed Legacy flux retained",
+  "schema": "Common existing Level-1 template, identical field structure; real survey, cmodel/Tractor, filter/instrument identifiers and EBV provenance differ",
+  "ordering": "Header, five bands in fixed increasing nominal wavelength order for each true system, each with flux/sigma, then EBV",
+  "extra_physical_metadata": false,
+  "registry_read_only": true,
+  "registry_sha256": "ace98d2ad8b38afc4275afb627a3811451e3605a8a07412fc89234680bda8d5b",
+  "tokens": {
+    "hsc": {
+      "n": 82553,
+      "min": 149,
+      "median": 163.0,
+      "p95": 168.0,
+      "max": 174,
+      "max_seq_length": 512,
+      "truncated": 0,
+      "total_tokens": 13539402
+    },
+    "legacy": {
+      "n": 82553,
+      "min": 151,
+      "median": 165.0,
+      "p95": 169.0,
+      "max": 175,
+      "max_seq_length": 512,
+      "truncated": 0,
+      "total_tokens": 13638536
+    }
+  },
+  "input_sha256": {
+    "hsc": "a83f93cac542324ea167425a52dc70403dc7465013b7ba203578724dd92d3b68",
+    "legacy": "c0f9d40f324757a9881bf1e85a3483779413f659c118ed77e93c17f6cabd285b"
+  }
+}

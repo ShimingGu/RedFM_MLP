@@ -1,0 +1,22 @@
+{
+  "created_utc": "2026-10-27T15:17:14.910201+00:00",
+  "all_match_original_benchmark_manifest": true,
+  "sha256": {
+    "/scratch/RedFM_MLP/filter-aware-runs/1027/hsc-legacy-paired-full/cohort.npz": "8c91e5af535a90827803bc0724a4b6f144611d8b55303af211209a8e3e92307d",
+    "/scratch/RedFM_MLP/filter-aware-runs/1027/hsc-legacy-paired-full/eligible_pairs.npz": "94811dc80e52b266d44bb7a6a29cf6b894eb4f9c19e2fb4db84d2b09bce0e718",
+    "/scratch/RedFM_MLP/filter-aware-runs/1027/hsc-legacy-paired-full/evaluation_policy.json": "06e4762eccc7111366beb4f8496fcbb34fd56a5955240b2461916f825f6d96df",
+    "/scratch/RedFM_MLP/configs/filter_registry_v1.json": "ace98d2ad8b38afc4275afb627a3811451e3605a8a07412fc89234680bda8d5b",
+    "/scratch/RedFM_MLP/filter-aware-runs/1027/hsc-legacy-paired-full/inputs/level1_hsc.jsonl": "65502e975cb9d98dd9d90a7e882c8720a1a5d0666d51438cfe66ea8d370b860f",
+    "/scratch/RedFM_MLP/filter-aware-runs/1027/hsc-legacy-paired-full/inputs/level1_legacy.jsonl": "c4d36c8727ba746e33de0071f8bcfe4cdc2b3b654d3d7f5ce3934309d0aea7fe",
+    "/scratch/RedFM_MLP/filter-aware-runs/1027/hsc-legacy-paired-full/inputs/level2_hsc.jsonl": "7201312956ebd822f6a7330da9938caac666585c3ef7d38ac70dd9cd9ae1c32d",
+    "/scratch/RedFM_MLP/filter-aware-runs/1027/hsc-legacy-paired-full/inputs/level2_legacy.jsonl": "ae31f61c051dc985300f09f738fca8e77b2360f079358a36ae7d0a2f0db54fd7",
+    "/scratch/RedFM_MLP/filter-aware-runs/1023/hsc-warmstart/level1/selected/photoz_head.pt": "53762f22df5c62d55360bdf3ed7cdf110d632cc52c6bfbe58a59126f05e153f9",
+    "/scratch/RedFM_MLP/filter-aware-runs/1023/hsc-warmstart/level1/selected/adapter/README.md": "9063a9a01f00f40a29ff64f212a824468018faf080313974980ae4473b2c67e4",
+    "/scratch/RedFM_MLP/filter-aware-runs/1023/hsc-warmstart/level1/selected/adapter/adapter_config.json": "257a97400dc2fb78ed1387acc3035ac9bdc6c2f45102e3e08ca8a9129d7d8e10",
+    "/scratch/RedFM_MLP/filter-aware-runs/1023/hsc-warmstart/level1/selected/adapter/adapter_model.safetensors": "d20ff45ac3ea9775dcc1497f4b6f963c15ff18e8fd008d615f2af8d43bc0a663",
+    "/scratch/RedFM_MLP/filter-aware-runs/1023/hsc-warmstart/level2/selected/photoz_head.pt": "43e40454c3ff36614a5cbc5cd6c6eb7251a244cdf3cbc090de62887398efc48b",
+    "/scratch/RedFM_MLP/filter-aware-runs/1023/hsc-warmstart/level2/selected/adapter/README.md": "9063a9a01f00f40a29ff64f212a824468018faf080313974980ae4473b2c67e4",
+    "/scratch/RedFM_MLP/filter-aware-runs/1023/hsc-warmstart/level2/selected/adapter/adapter_config.json": "f69537f57d285f635638f35ebb3bab5603bafd6e4eade8cd7dddc062263363b9",
+    "/scratch/RedFM_MLP/filter-aware-runs/1023/hsc-warmstart/level2/selected/adapter/adapter_model.safetensors": "c54e3e04b4925216dcb3d0fd61ec08ed47d827d591261b979b5d82eba086b912"
+  }
+}

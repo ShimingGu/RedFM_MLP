@@ -1,0 +1,110 @@
+{
+  "created_utc": "2026-10-29T06:06:48.192742+00:00",
+  "selection": "Lowest saved validation CE within exactly matched validation IDs, order, labels and PDF grid.",
+  "scope": "Completed compatible HSC and CLAUDS predictions. No completed survey-specific Legacy MLP result was found; Legacy is not fabricated or substituted with frozen Qwen.",
+  "split": "validation; also used for checkpoint selection, not independent test evidence",
+  "selected": {
+    "clauds": {
+      "path": "/arc/home/gsm/aion_output/figures/qwen-qwen_posttraining_comparison-e10/qlora/result.pt",
+      "key": null,
+      "label": "qwen-qwen_posttraining_comparison-e10 / qlora",
+      "validation_ce": 3.9305293560028076
+    },
+    "hsc": {
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/filter_aware_checkpoints/1023/hsc-warmstart/level0/best_validation.pt",
+      "key": "direct",
+      "label": "Qwen3.5-4B \u00b7 warm-start Level 0",
+      "validation_ce": 2.440431833267212
+    }
+  },
+  "mlp_sources": {
+    "hsc": "/arc/home/gsm/aion_output/figures/glm52-capacity-galaxiesml-spec-1021/matched-numeric-mlp/result.pt",
+    "clauds": "/arc/home/gsm/aion_output/figures/glm52-capacity-1021/matched-numeric-mlp/result.pt"
+  },
+  "source_sha256": {
+    "/arc/home/gsm/aion_output/figures/glm52-capacity-galaxiesml-spec-1021/matched-numeric-mlp/result.pt": "feaa60a356283f6e9e79e6161374ccac04802d79d6281f723baaaeea0104921f",
+    "/arc/home/gsm/aion_output/figures/glm52-capacity-1021/matched-numeric-mlp/result.pt": "6939715bb2db069d783626cba6b5596c37999f16be07a5440254e0e8b6280125",
+    "/arc/home/gsm/aion_output/figures/qwen-qwen_posttraining_comparison-e10/qlora/result.pt": "2c8af3e21bfbf96b171a4393b790b1e91d561879d7ad9a18326d60bd6738bf33",
+    "/arc/projects/ots/Cosmic_Imprint_of_Time/filter_aware_checkpoints/1023/hsc-warmstart/level0/best_validation.pt": "5ce2231b5e05ce57edb4b93eaa5b7db0a7be6985e6ec2d74960f7023f3e995f8"
+  },
+  "cohort_checks": "Exact validation object IDs/order, target redshifts and PDF grids agree between both models within each dataset.",
+  "target_definitions": {
+    "hsc": "DESI spectroscopic redshift",
+    "clauds": "Catalogue photometric redshift ZPHOT; not spectroscopy"
+  },
+  "tomography": "Bins use each model median; dashed reference histogram and solid stacked probabilities use exactly the same selected galaxies per model. Histograms use every third saved PDF edge. Exact probability sums, no sampling/smoothing.",
+  "training": "Only existing trained models and saved evaluations; no new fitting, inference or GPU use. Training budgets differ.",
+  "metrics": [
+    {
+      "dataset": "hsc",
+      "model": "mlp",
+      "n": 5683,
+      "bias": -0.0008878177031874657,
+      "median_bias": -0.0003620225179474801,
+      "nmad": 0.024847663938999176,
+      "catastrophic_outlier_fraction": 0.011613584123551846,
+      "cross_entropy": 2.3721494674682617,
+      "mean_log_score": 2.37214994430542,
+      "mean_crps": 0.02655559778213501,
+      "p16_p84_coverage": 0.6786908507347107,
+      "pit_mean": 0.5719698071479797
+    },
+    {
+      "dataset": "hsc",
+      "model": "qwen",
+      "n": 5683,
+      "bias": 0.00106125941965729,
+      "median_bias": 0.0017570103518664837,
+      "nmad": 0.026267804205417633,
+      "catastrophic_outlier_fraction": 0.010733767412602901,
+      "cross_entropy": 2.440431833267212,
+      "mean_log_score": 2.440432071685791,
+      "mean_crps": 0.02718985266983509,
+      "p16_p84_coverage": 0.7349991202354431,
+      "pit_mean": 0.5470677614212036
+    },
+    {
+      "dataset": "clauds",
+      "model": "mlp",
+      "n": 15000,
+      "bias": 0.004088062327355146,
+      "median_bias": -0.0012068783398717642,
+      "nmad": 0.07797355204820633,
+      "catastrophic_outlier_fraction": 0.21066667139530182,
+      "cross_entropy": 4.01301383972168,
+      "mean_log_score": 4.01301383972168,
+      "mean_crps": 0.24121099710464478,
+      "p16_p84_coverage": 0.7157999873161316,
+      "pit_mean": 0.5221608281135559
+    },
+    {
+      "dataset": "clauds",
+      "model": "qwen",
+      "n": 15000,
+      "bias": 0.010041018947958946,
+      "median_bias": 0.00016613803745713085,
+      "nmad": 0.07375659793615341,
+      "catastrophic_outlier_fraction": 0.1839333325624466,
+      "cross_entropy": 3.9305293560028076,
+      "mean_log_score": 3.9305293560028076,
+      "mean_crps": 0.22710038721561432,
+      "p16_p84_coverage": 0.6895999908447266,
+      "pit_mean": 0.5185011029243469
+    }
+  ],
+  "visual_inspection": {
+    "status": "passed",
+    "figures": [
+      "mlp_best_qwen_predictions",
+      "mlp_best_qwen_nztomo"
+    ],
+    "pdf_render_dpi": 180,
+    "fonts": "embedded DejaVu Sans",
+    "checks": [
+      "both PDF renders inspected",
+      "titles and legends readable",
+      "no clipped labels",
+      "same-cohort and normalization assertions passed"
+    ]
+  }
+}

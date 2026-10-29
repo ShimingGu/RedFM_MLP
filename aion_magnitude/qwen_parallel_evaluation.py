@@ -45,6 +45,30 @@ def assemble_evaluations(parts, indices, object_ids, labels, edges, centers):
     return evaluation
 
 
+class ProgressLoader:
+    """Report completed batches without altering their contents, grouping or RNG."""
+
+    def __init__(self, loader, publish, *, every_batches=64, cancelled=None):
+        self.loader = loader
+        self.publish = publish
+        self.every_batches = every_batches
+        self.cancelled = cancelled
+
+    def __iter__(self):
+        completed = 0
+        self.publish(completed)
+        for index, batch in enumerate(self.loader, 1):
+            if self.cancelled is not None and self.cancelled():
+                raise RuntimeError("Evaluation cancelled: parent exited or requested shutdown")
+            count = len(batch["z_spec"])
+            yield batch
+            # The evaluator has finished this forward pass and copied its logits to CPU.
+            completed += count
+            if index == 1 or index % self.every_batches == 0:
+                self.publish(completed)
+        self.publish(completed)
+
+
 class EvaluationPool:
     """File-based CPU tensor transport avoids CUDA peer access/NCCL between MIGs."""
     def __init__(self, output_dir, manifest, devices):
@@ -75,14 +99,42 @@ class EvaluationPool:
     def wait_ready(self):
         self._wait([folder / "ready.json" for folder in self.workers])
 
-    def _wait(self, paths, timeout=3600):
+    def _wait(self, paths, timeout=3600, *, progress_paths=None):
+        """Startup has a fixed deadline; evaluation times out only if a shard stalls.
+
+        A progressing 225k-object evaluation may legitimately take over an hour.
+        Only an increase in completed rows for this exact request extends its
+        deadline. Other workers and stale/repeated heartbeats cannot mask a stall.
+        """
         started = time.monotonic()
+        last_activity = [started] * len(paths)
+        completed = [-1] * len(paths)
+        if progress_paths is not None and len(progress_paths) != len(paths):
+            raise ValueError("Each result needs its own progress path")
         while not all(path.exists() for path in paths):
             for child, folder in zip(self.children, self.workers, strict=True):
                 if child.poll() is not None:
                     raise RuntimeError(f"Evaluation worker exited ({child.returncode}); see {folder / 'worker.log'}")
-            if time.monotonic()-started > timeout:
-                raise TimeoutError("Evaluation worker timed out")
+            current = time.monotonic()
+            for index, path in enumerate(paths):
+                if path.exists():
+                    continue
+                if progress_paths is not None:
+                    try:
+                        progress = json.loads(progress_paths[index].read_text())
+                    except (FileNotFoundError, json.JSONDecodeError):
+                        progress = {}
+                    rows = progress.get("completed_rows", -1)
+                    if (progress.get("request") == path.name and isinstance(rows, int)
+                            and rows > completed[index]):
+                        completed[index] = rows
+                        last_activity[index] = current
+                if current - last_activity[index] > timeout:
+                    raise TimeoutError(
+                        f"Evaluation worker timed out: no progress for {timeout:g}s; "
+                        f"completed_rows={completed[index]}, awaiting {path}; "
+                        f"see {path.parent / 'worker.log'}"
+                    )
             time.sleep(.2)
 
     def evaluate_state(self, state, dataset, *, batch_size, max_length, edges, centers):
@@ -102,7 +154,7 @@ class EvaluationPool:
                 redshift_edges=edges.detach().cpu(), redshift_centers=centers.detach().cpu(),
                 result_path=str(result_path.resolve())), worker / "request.pt")
             result_paths.append(result_path)
-        self._wait(result_paths)
+        self._wait(result_paths, progress_paths=[p.parent / "progress.json" for p in result_paths])
         parts = [torch.load(path, map_location="cpu", weights_only=False) for path in result_paths]
         evaluation = assemble_evaluations(parts, indices, dataset.object_ids, dataset.redshifts, edges, centers)
         record = dict(sequence=self.sequence, n=len(dataset), batch_size=batch_size, workers=len(indices),
@@ -162,7 +214,16 @@ def worker(output_dir, parent_pid):
             loader = DataLoader(dataset, batch_size=payload["batch_size"], shuffle=False,
                 collate_fn=make_text_collator(tokenizer, max_length=payload["max_length"]))
             torch.cuda.reset_peak_memory_stats()
-            result = evaluate_text_photoz_model(model, loader, device=torch.device("cuda"),
+            started = time.monotonic()
+            def publish(completed):
+                write_json(out / "progress.json", dict(
+                    request=Path(payload["result_path"]).name, completed_rows=completed,
+                    total_rows=len(dataset), seconds=time.monotonic()-started, pid=os.getpid(),
+                    updated_unix=time.time(), batch_size=payload["batch_size"],
+                ))
+            progress_loader = ProgressLoader(loader, publish,
+                cancelled=lambda: os.getppid() != parent_pid or (out / "shutdown").exists())
+            result = evaluate_text_photoz_model(model, progress_loader, device=torch.device("cuda"),
                 redshift_edges=payload["redshift_edges"].to("cuda"), redshift_centers=payload["redshift_centers"])
             result["worker_peak_allocated_gib"] = torch.cuda.max_memory_allocated()/2**30
             atomic_torch_save(result, payload["result_path"])

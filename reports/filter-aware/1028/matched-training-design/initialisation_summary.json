@@ -1,0 +1,28 @@
+{
+  "created_utc": "2026-10-28T16:16:00.892348+00:00",
+  "all_source_branches_identical_within_seed_method": true,
+  "shared_heads_across_all_four_branches": true,
+  "parameter_counts": {
+    "qlora": {
+      "head": 799020,
+      "adapter": 1572864
+    },
+    "dora": {
+      "head": 799020,
+      "adapter": 1675264
+    }
+  },
+  "dora_additional_trainables": 102400,
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "seed_streams": {
+    "head": "seed",
+    "adapter": "seed+10000",
+    "order": "seed+20000+epoch",
+    "dropout": "seed+30000"
+  },
+  "caveat": "Identical source-branch initialization is verified. Different methods and different token sequence lengths can consume randomness differently; stochastic trajectories are not claimed bitwise equivalent."
+}

@@ -1,0 +1,17 @@
+{
+  "created_utc": "2026-10-28T16:31:07.002546+00:00",
+  "passed": true,
+  "code_files_verified": 16,
+  "final_configs_verified": 12,
+  "immutable_files_verified": 30,
+  "unit_tests": 8,
+  "serializer_tests": 20,
+  "original_validation_replays_exact": 2,
+  "fresh_forward_only_constructions": 12,
+  "Qwen_optimizer_updates": 0,
+  "full_inference_launched": false,
+  "test_log_sha256": {
+    "tests.log": "049a70cfd966cc1d616e29453c1403164c59c1cca7c377db743c35f984587e06",
+    "serializer_tests.log": "510e29f5cdc676b47446ad1a36bc0f11969c23e4fb7fdd7f8016ee7186833b2e"
+  }
+}

@@ -1,0 +1,75 @@
+0.00 0.25 0.50 0.75 1.00 1.25 1.50 1.75 2.00
+DESI spectroscopic redshift
+0.00
+0.25
+0.50
+0.75
+1.00
+1.25
+1.50
+1.75
+2.00
+Predicted redshift (PDF median)
+N = 5,683
+CE = 2.3721
+NMAD = 0.0248
+Outliers = 1.16%
+HSC–DESI · Numeric MLP
+0.00 0.25 0.50 0.75 1.00 1.25 1.50 1.75 2.00
+DESI spectroscopic redshift
+0.00
+0.25
+0.50
+0.75
+1.00
+1.25
+1.50
+1.75
+2.00
+Predicted redshift (PDF median)
+N = 5,683
+CE = 2.4404
+NMAD = 0.0263
+Outliers = 1.07%
+HSC–DESI · Qwen3.5-4B · QLoRA + Level-0 warm-start
+0 1 2 3 4 5 6
+Catalogue photometric redshift (ZPHOT)
+0
+1
+2
+3
+4
+5
+6
+Predicted redshift (PDF median)
+N = 15,000
+CE = 4.0130
+NMAD = 0.0780
+Outliers = 21.07%
+CLAUDS · Numeric MLP
+0 1 2 3 4 5 6
+Catalogue photometric redshift (ZPHOT)
+0
+1
+2
+3
+4
+5
+6
+Predicted redshift (PDF median)
+N = 15,000
+CE = 3.9305
+NMAD = 0.0738
+Outliers = 18.39%
+CLAUDS · Qwen3.5-4B · QLoRA
+10
+0
+10
+1
+10
+2
+Galaxies per hexagon
+Existing MLP vs. best compatible Qwen: redshift predictions
+Same validation objects within each dataset · Qwen selected by lowest saved validation CE
+Validation/model-selection diagnostics, not independent test results. Existing training budgets differ; no new training or inference.
+Outliers: |(zpred − zref)/(1 + zref)| > 0.15. HSC axes show 0–2 (model grid: 0–4.5); all objects enter the metrics.

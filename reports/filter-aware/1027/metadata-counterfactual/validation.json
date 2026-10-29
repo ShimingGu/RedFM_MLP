@@ -1,0 +1,8 @@
+{
+  "created_utc": "2026-10-27T15:19:49.119892+00:00",
+  "unit_tests_passed": 12,
+  "unit_test_log_sha256": "e94f30a582abe501952d33fa520f0a3edb3380f3121ef213e92d60224120d7b7",
+  "synthetic_report_integration_passed": true,
+  "specification_sha256": "d1be370b60b24baed39f553bf2473891dc1f8ab4982f90e7bae75109134fe715",
+  "source_archive_hashes_match": true
+}

@@ -10,7 +10,7 @@ from torch import nn
 from torch.utils.data import DataLoader
 
 from aion_magnitude.metrics import predict_photoz_from_logits, summarize_pdf_metrics
-from aion_magnitude.qwen_parallel_evaluation import EvaluationPool, assemble_evaluations, batch_partitions
+from aion_magnitude.qwen_parallel_evaluation import EvaluationPool, ProgressLoader, assemble_evaluations, batch_partitions
 from aion_magnitude.qwen_posttraining import TextRedshiftDataset
 from aion_magnitude.utils import make_redshift_grid
 
@@ -71,6 +71,59 @@ def test_evaluation_keeps_main_cpu_rng_draw_and_syncs_frozen_selected_weights():
     assert pool.evaluate(model, loader, device=torch.device("cpu"), redshift_edges=edges, redshift_centers=centers) == "result"
     torch.testing.assert_close(torch.get_rng_state(), expected_rng, rtol=0, atol=0)
     assert not model.training
+
+
+def test_progress_loader_preserves_batches_and_rng_and_counts_completed_rows():
+    dataset = TextRedshiftDataset([str(i) for i in range(19)], torch.arange(19), list(range(19)))
+    loader = DataLoader(dataset, batch_size=8, shuffle=False,
+        collate_fn=lambda rows: dict(z_spec=[r['z_spec'] for r in rows], rows=rows))
+    torch.manual_seed(42)
+    expected = [batch['z_spec'] for batch in loader]
+    expected_rng = torch.get_rng_state()
+    torch.manual_seed(42)
+    progress = []
+    actual = []
+    for batch in ProgressLoader(loader, progress.append, every_batches=2):
+        actual.append(batch.pop('z_spec'))  # The real evaluator also mutates the batch.
+    assert actual == expected
+    assert progress == [0, 8, 16, 19]
+    torch.testing.assert_close(torch.get_rng_state(), expected_rng, rtol=0, atol=0)
+
+
+@pytest.mark.parametrize('mode', ['advancing', 'stalled', 'stale_request', 'one_shard_stalled'])
+def test_evaluation_deadline_tracks_each_requests_actual_progress(tmp_path, monkeypatch, mode):
+    import aion_magnitude.qwen_parallel_evaluation as evaluation
+    pool = EvaluationPool.__new__(EvaluationPool)
+    count = 2 if mode == 'one_shard_stalled' else 1
+    pool.workers = [tmp_path / str(i) for i in range(count)]
+    for path in pool.workers: path.mkdir()
+    pool.children = [SimpleNamespace(poll=lambda:None) for _ in pool.workers]
+    results = [path / 'current-result.pt' for path in pool.workers]
+    progress = [path / 'progress.json' for path in pool.workers]
+    clock = [0.]
+    def tick(seconds):
+        clock[0] += seconds
+        for i, path in enumerate(progress):
+            rows = 0 if mode == 'stalled' or (mode == 'one_shard_stalled' and i == 0) else round(clock[0]*10)
+            path.write_text(json.dumps(dict(request='old-result.pt' if mode == 'stale_request' else results[i].name, completed_rows=rows)))
+        if clock[0] >= 3 and mode == 'advancing': results[0].touch()
+    monkeypatch.setattr(evaluation.time, 'monotonic', lambda:clock[0])
+    monkeypatch.setattr(evaluation.time, 'sleep', tick)
+    if mode == 'advancing':
+        pool._wait(results, timeout=1, progress_paths=progress)
+        assert clock[0] >= 3  # A fixed whole-request timeout would have failed.
+    else:
+        with pytest.raises(TimeoutError, match='no progress'):
+            pool._wait(results, timeout=1, progress_paths=progress)
+        assert clock[0] < 2
+
+
+def test_evaluation_reports_dead_worker_before_idle_timeout(tmp_path):
+    pool = EvaluationPool.__new__(EvaluationPool)
+    pool.workers = [tmp_path]
+    pool.children = [SimpleNamespace(poll=lambda:1, returncode=1)]
+    with pytest.raises(RuntimeError, match='exited'):
+        pool._wait([tmp_path/'missing-result.pt'])
 
 
 @pytest.mark.parametrize("failed", [False, True])

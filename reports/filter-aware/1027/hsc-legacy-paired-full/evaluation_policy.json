@@ -1,0 +1,187 @@
+{
+  "created_utc": "2026-10-27T00:36:45.315497+00:00",
+  "inference_started": false,
+  "request": "notebooks/filter_aware_fallback.md, explicitly requested by user",
+  "models": [
+    "original-qlora",
+    "original-dora",
+    "A",
+    "B",
+    "C"
+  ],
+  "excluded_models": {
+    "qlora": {
+      "run": "/arc/home/gsm/aion_output/figures/qwen-desi-ls-qlora-specz-e10",
+      "included": false,
+      "completed_result": false,
+      "completed_head": false,
+      "completed_adapter": false,
+      "source_split_counts": {
+        "test": 225080,
+        "train": 59855,
+        "val": 15053
+      },
+      "source_cache_key": "86208709213f26c0bf44aa8c19278ba2e6a55a4203f615b09667ae0a70af3030",
+      "exposure": "Exact sampled Legacy source IDs unavailable in removed cohort cache; incomplete models excluded, never presumed unexposed"
+    },
+    "dora": {
+      "run": "/arc/home/gsm/aion_output/figures/qwen-desi-ls-dora-specz-e10",
+      "included": false,
+      "completed_result": false,
+      "completed_head": false,
+      "completed_adapter": false,
+      "source_split_counts": {
+        "test": 225080,
+        "train": 59855,
+        "val": 15053
+      },
+      "source_cache_key": "86208709213f26c0bf44aa8c19278ba2e6a55a4203f615b09667ae0a70af3030",
+      "exposure": "Exact sampled Legacy source IDs unavailable in removed cohort cache; incomplete models excluded, never presumed unexposed"
+    }
+  },
+  "categories": "P primary; V exploratory; T never evaluated",
+  "sample_rule": "Ascending SHA256(1027:hsc_object_id); no z or predictions in sampling; n=0 means entire category",
+  "n_primary_limit": 0,
+  "n_validation_limit": 256,
+  "selected_counts": {
+    "P": 61696,
+    "V": 256,
+    "T": 0
+  },
+  "unchanged_selection": "Checkpoints selected on archived HSC validation CE only; no new model/preprocessing/calibration selection using paired labels",
+  "label_rule": "Conservative pre-prediction agreement <=1e-6*(1+abs(z_Iron)); exclude ambiguous differences, do not adjudicate by prediction error; retain original HSC native HDF labels for all cells",
+  "redshift_bins": {
+    "P": {
+      "initial_edges": [
+        0.0,
+        0.2,
+        0.4,
+        0.6,
+        1.0,
+        2.0,
+        4.5
+      ],
+      "initial_counts": [
+        23141,
+        16094,
+        14551,
+        7510,
+        400,
+        0
+      ],
+      "edges": [
+        0.0,
+        0.2,
+        0.4,
+        0.6,
+        1.0,
+        4.5
+      ],
+      "counts": [
+        23141,
+        16094,
+        14551,
+        7510,
+        400
+      ],
+      "minimum": 40,
+      "merge_rule": "Accumulate adjacent bins left-to-right until >=40; merge final small tail backward",
+      "standardization": "Equal weight for each nonempty merged spec-z bin; macro-average within-bin metrics, including NMAD (not pooled weighted NMAD)"
+    },
+    "V": {
+      "initial_edges": [
+        0.0,
+        0.2,
+        0.4,
+        0.6,
+        1.0,
+        2.0,
+        4.5
+      ],
+      "initial_counts": [
+        102,
+        49,
+        70,
+        34,
+        1,
+        0
+      ],
+      "edges": [
+        0.0,
+        0.2,
+        0.4,
+        4.5
+      ],
+      "counts": [
+        102,
+        49,
+        105
+      ],
+      "minimum": 40,
+      "merge_rule": "Accumulate adjacent bins left-to-right until >=40; merge final small tail backward",
+      "standardization": "Equal weight for each nonempty merged spec-z bin; macro-average within-bin metrics, including NMAD (not pooled weighted NMAD)"
+    }
+  },
+  "support": {
+    "fit_rows": 22444,
+    "fit": "HSC source training photometry only; no target labels",
+    "rule": "Both HSC and Legacy must have valid common g/r/z and all 11 transformed coordinates within HSC training marginal 0.5\u201399.5 percentiles",
+    "coordinates": [
+      "asinh_flux_g",
+      "asinh_flux_r",
+      "asinh_flux_z",
+      "log10_sigma_g",
+      "log10_sigma_r",
+      "log10_sigma_z",
+      "asinh_snr_g",
+      "asinh_snr_r",
+      "asinh_snr_z",
+      "asinh_g_minus_r",
+      "asinh_r_minus_z"
+    ],
+    "scale": [
+      0.0173109769821167,
+      0.027746031060814857,
+      0.05816483497619629
+    ],
+    "lower": [
+      3.1920411081692466,
+      3.707839703331549,
+      3.8100185908080952,
+      -2.3301197341047883,
+      -2.1347413718130137,
+      -1.7767965105677062,
+      3.8991521264037634,
+      4.722708400920872,
+      4.690279934250929,
+      -1.4157544981790404,
+      -1.163601582852699
+    ],
+    "upper": [
+      9.983159113651485,
+      10.242780283499576,
+      10.20171003022574,
+      -1.0122614170656645,
+      -0.8618204470388497,
+      -0.48051121457268187,
+      8.721043125811427,
+      9.058691909158824,
+      9.097717942390709,
+      0.3533844324640566,
+      0.5710795263959358
+    ],
+    "hsc_inside": 78745,
+    "legacy_inside": 45901,
+    "both_inside": 45399,
+    "caveat": "Simple marginal optical-support diagnostic, not a density estimate or bandpass matching; strict joint cuts may leave few objects"
+  },
+  "bootstrap": {
+    "replicates": 1000,
+    "seed": 1027,
+    "unit": "paired physical galaxy",
+    "interval": "2.5/97.5 percentile",
+    "conditional": "Existing frozen checkpoints; no training-seed uncertainty"
+  },
+  "source_test_policy": "Original HSC test objects were previously evaluated in completed training reports; now permitted for this predeclared frozen-model matched observation comparison, with no tuning or checkpoint selection. Not a never-inspected external sample.",
+  "comparisons": "HSC vs Legacy within each frozen model; A/B/C penalties on identical IDs; empty Legacy-trained rows, no bidirectional claim"
+}

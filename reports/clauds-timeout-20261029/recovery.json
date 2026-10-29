@@ -1,0 +1,152 @@
+{
+  "audit_root": "/arc/projects/ots/Cosmic_Imprint_of_Time/clauds_evaluation_recovery/20261029T123116Z",
+  "created_utc": "20261029T123116Z",
+  "root_cause": "3600-second whole-request deadline shorter than legitimate 225000-object test inference",
+  "fix": "Per-request, per-worker completed-row progress resets 3600-second idle deadline; stale/repeated progress does not reset it",
+  "tests_passed": 16,
+  "training_updates_remaining": 0,
+  "code_sha256": {
+    "aion_magnitude/qwen_parallel_evaluation.py": "f5c883ee77b23dfe849934112d64b81eb42b2a2f4604ec6e8beade1da5f36b77",
+    "tests/test_qwen_parallel_evaluation.py": "969505be4be21e09bd82899d49e441ec162a587762905ac63651c6f0808eea25",
+    "notebooks/recent_runs.txt": "efde090809a96773af9d583d6303ee69bbbf98ad108360284a9af93747b189be"
+  },
+  "runs": {
+    "qlora": {
+      "pid": 128026,
+      "command": [
+        "pixi",
+        "run",
+        "--locked",
+        "python",
+        "notebooks/qwen_clauds_resume.py",
+        "--method",
+        "qlora",
+        "--gpu",
+        "MIG-5bd31563-e820-50d1-a416-e14721d5a628",
+        "--eval-gpu",
+        "MIG-63d7886c-4484-57b3-acba-280cad46132a",
+        "--output-dir",
+        "/arc/home/gsm/aion_output/figures/qwen3.5-0.8b-clauds-qlora-e10",
+        "--checkpoint-dir",
+        "/arc/projects/ots/Cosmic_Imprint_of_Time/qlora_checkpoints/qwen3.5-0.8b-clauds-qlora-e10"
+      ],
+      "log": "/arc/home/gsm/aion_output/figures/qwen3.5-0.8b-clauds-qlora-e10/multigpu_logs/qlora.log",
+      "checkpoint": "/arc/projects/ots/Cosmic_Imprint_of_Time/qlora_checkpoints/qwen3.5-0.8b-clauds-qlora-e10/checkpoint-update-0037500.pt",
+      "checkpoint_sha256_before": "2e3235292907328136223150c6b928933f75b8b908ee9c1195edcedafe679cbf",
+      "source_validation_probe": {
+        "archived_metrics": {
+          "bias": 0.03177798539400101,
+          "catastrophic_outlier_fraction": 0.09375,
+          "cross_entropy": 3.7242770195007324,
+          "mean_crps": 0.13483665883541107,
+          "mean_log_score": 3.7242770195007324,
+          "median_bias": 0.016751622781157494,
+          "nmad": 0.08773533999919891,
+          "p16_p84_coverage": 0.8125,
+          "pit_mean": 0.4487101435661316
+        },
+        "max_abs_logit_error": 0.0,
+        "max_abs_pdf_error": 0.0,
+        "metrics": {
+          "bias": 0.03177798539400101,
+          "catastrophic_outlier_fraction": 0.09375,
+          "cross_entropy": 3.7242770195007324,
+          "mean_crps": 0.13483665883541107,
+          "mean_log_score": 3.7242770195007324,
+          "median_bias": 0.016751622781157494,
+          "nmad": 0.08773533999919891,
+          "p16_p84_coverage": 0.8125,
+          "pit_mean": 0.4487101435661316
+        },
+        "n": 32,
+        "passed": true
+      },
+      "training_gpu": "MIG-5bd31563-e820-50d1-a416-e14721d5a628",
+      "evaluation_gpu": "MIG-63d7886c-4484-57b3-acba-280cad46132a"
+    },
+    "dora": {
+      "pid": 128044,
+      "command": [
+        "pixi",
+        "run",
+        "--locked",
+        "python",
+        "notebooks/qwen_clauds_resume.py",
+        "--method",
+        "dora",
+        "--gpu",
+        "MIG-07c57191-de6e-5338-8811-f0cfb7498db5",
+        "--eval-gpu",
+        "MIG-9c43b8e3-f3eb-566b-bdf8-74b3fa005f4d",
+        "--output-dir",
+        "/arc/home/gsm/aion_output/figures/qwen3.5-0.8b-clauds-dora-e10",
+        "--checkpoint-dir",
+        "/arc/projects/ots/Cosmic_Imprint_of_Time/dora_checkpoints/qwen3.5-0.8b-clauds-dora-e10"
+      ],
+      "log": "/arc/home/gsm/aion_output/figures/qwen3.5-0.8b-clauds-dora-e10/dora.log",
+      "checkpoint": "/arc/projects/ots/Cosmic_Imprint_of_Time/dora_checkpoints/qwen3.5-0.8b-clauds-dora-e10/checkpoint-update-0037500.pt",
+      "checkpoint_sha256_before": "dc925ecaf06c52413475df684cbcd085299e11f0ea45711956a91cf76f0a1701",
+      "source_validation_probe": {
+        "archived_metrics": {
+          "bias": 0.030651593580842018,
+          "catastrophic_outlier_fraction": 0.09375,
+          "cross_entropy": 3.7188503742218018,
+          "mean_crps": 0.13341274857521057,
+          "mean_log_score": 3.718850612640381,
+          "median_bias": 0.016751622781157494,
+          "nmad": 0.07751735299825668,
+          "p16_p84_coverage": 0.8125,
+          "pit_mean": 0.44874700903892517
+        },
+        "max_abs_logit_error": 0.0,
+        "max_abs_pdf_error": 0.0,
+        "metrics": {
+          "bias": 0.030651593580842018,
+          "catastrophic_outlier_fraction": 0.09375,
+          "cross_entropy": 3.7188503742218018,
+          "mean_crps": 0.13341274857521057,
+          "mean_log_score": 3.718850612640381,
+          "median_bias": 0.016751622781157494,
+          "nmad": 0.07751735299825668,
+          "p16_p84_coverage": 0.8125,
+          "pit_mean": 0.44874700903892517
+        },
+        "n": 32,
+        "passed": true
+      },
+      "training_gpu": "MIG-07c57191-de6e-5338-8811-f0cfb7498db5",
+      "evaluation_gpu": "MIG-9c43b8e3-f3eb-566b-bdf8-74b3fa005f4d"
+    }
+  },
+  "last_verified_utc": "2026-10-29T12:33:04.929927+00:00",
+  "observed_after_restart": {
+    "qlora": {
+      "checkpoint_hash_unchanged": true,
+      "worker": "/arc/home/gsm/aion_output/figures/qwen3.5-0.8b-clauds-qlora-e10/qlora/evaluation_workers/session-1793277112501753369-worker-0",
+      "progress": {
+        "batch_size": 8,
+        "completed_rows": 1536,
+        "pid": 128263,
+        "request": "request-1793277112501753369-1-result.pt",
+        "seconds": 40.193731509149075,
+        "total_rows": 15000,
+        "updated_unix": 1793277182.6626604
+      },
+      "result_complete": false
+    },
+    "dora": {
+      "checkpoint_hash_unchanged": true,
+      "worker": "/arc/home/gsm/aion_output/figures/qwen3.5-0.8b-clauds-dora-e10/dora/evaluation_workers/session-1793277110596028111-worker-0",
+      "progress": {
+        "batch_size": 8,
+        "completed_rows": 1536,
+        "pid": 128251,
+        "request": "request-1793277110596028111-1-result.pt",
+        "seconds": 43.15561977773905,
+        "total_rows": 15000,
+        "updated_unix": 1793277182.6882029
+      },
+      "result_complete": false
+    }
+  }
+}

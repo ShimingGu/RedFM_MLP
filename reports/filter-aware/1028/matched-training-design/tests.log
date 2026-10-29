@@ -1,0 +1,24 @@
+ WARN Encountered 1 warning while parsing the manifest:
+  ⚠ the `[system-requirements]` table is deprecated in favor of virtual
+  │ packages on `platforms`
+    ╭─[/scratch/RedFM_MLP/pixi.toml:8:1]
+  7 │     
+  8 │ ╭─▶ [system-requirements]
+  9 │ ├─▶ cuda = "13.2"
+    · ╰──── declare these on the `platforms` entries instead
+ 10 │     
+    ╰────
+  help: e.g. platforms = [{ platform = "linux-64", cuda = "12" }]
+
+........                                                                 [100%]
+=============================== warnings summary ===============================
+.pixi/envs/default/lib/python3.13/site-packages/torch/jit/_script.py:362: 14 warnings
+  /scratch/RedFM_MLP/.pixi/envs/default/lib/python3.13/site-packages/torch/jit/_script.py:362: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+    warnings.warn(
+
+tests/test_matched_training_1028.py::test_exact_update_budget_and_interrupted_resume_match_final_state
+  /scratch/RedFM_MLP/aion_magnitude/qwen_posttraining.py:354: UserWarning: CUDA is not available or torch_xla is imported. Disabling autocast.
+    with torch.autocast(device_type="cuda", dtype=torch.bfloat16):
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+8 passed, 15 warnings in 5.99s

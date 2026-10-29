@@ -1,0 +1,8 @@
+{
+  "finished_utc": "2026-10-27T15:15:57.252987+00:00",
+  "passed": true,
+  "synthetic_only": true,
+  "n": 25,
+  "output": "/scratch/.tmp-gsm/metadata-report-test-718t5qms/synthetic-metadata-report",
+  "analysis_code_sha256": "09659e8c8246be7e9269e2416f4994ba056c52ca1a77664475fdd792744926b4"
+}

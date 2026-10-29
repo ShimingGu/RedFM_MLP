@@ -1,0 +1,130 @@
+{
+  "created_utc": "2026-10-27T00:38:18.244046+00:00",
+  "changes_to_eligibility": false,
+  "original_hsc_features": {
+    "rows": 28127,
+    "all_reconstructed_raw_train_validation_features_exactly_equal": true
+  },
+  "quality": {
+    "rows": 82553,
+    "hdf_fields_available": [
+      "OBJTYPE",
+      "COADD_FIBERSTATUS"
+    ],
+    "hdf_missing": [
+      "ZCAT_PRIMARY",
+      "ZWARN",
+      "SPECTYPE",
+      "DELTACHI2",
+      "SURVEY",
+      "PROGRAM"
+    ],
+    "fiberstatus_equal": 82153,
+    "hdf_fiberstatus_nonzero": 400,
+    "objtype_equal": 82553,
+    "applied_selection": "Archived DR1 Iron uniform galaxy quality; HDF lacks complete spectral-quality flags; agreement of individual fields cannot prove identical reductions"
+  },
+  "tractor_quality": {
+    "maskbits_nonzero": 4621,
+    "nobs": {
+      "G": {
+        "zero": 0,
+        "min": 1,
+        "median": 4.0
+      },
+      "R": {
+        "zero": 0,
+        "min": 1,
+        "median": 4.0
+      },
+      "Z": {
+        "zero": 0,
+        "min": 1,
+        "median": 4.0
+      },
+      "W1": {
+        "zero": 0,
+        "min": 131,
+        "median": 183.0
+      },
+      "W2": {
+        "zero": 0,
+        "min": 123,
+        "median": 176.0
+      }
+    },
+    "new_maskbits_cut": false
+  },
+  "uncertainty_comparison": {
+    "hdf_iron_zerr_equal": 50004,
+    "rows": 82553
+  },
+  "alternate_legacy_imaging_identity_exposure": {
+    "original-qlora_train": {
+      "same_tractor_imaging_key": 16600,
+      "additional_unflagged": 0
+    },
+    "original-qlora_val": {
+      "same_tractor_imaging_key": 4257,
+      "additional_unflagged": 0
+    },
+    "original-qlora_test": {
+      "same_tractor_imaging_key": 61696,
+      "additional_unflagged": 0
+    },
+    "original-dora_train": {
+      "same_tractor_imaging_key": 16600,
+      "additional_unflagged": 0
+    },
+    "original-dora_val": {
+      "same_tractor_imaging_key": 4257,
+      "additional_unflagged": 0
+    },
+    "original-dora_test": {
+      "same_tractor_imaging_key": 61696,
+      "additional_unflagged": 0
+    },
+    "A_train": {
+      "same_tractor_imaging_key": 16600,
+      "additional_unflagged": 0
+    },
+    "A_val": {
+      "same_tractor_imaging_key": 4257,
+      "additional_unflagged": 0
+    },
+    "A_test": {
+      "same_tractor_imaging_key": 61696,
+      "additional_unflagged": 0
+    },
+    "B_train": {
+      "same_tractor_imaging_key": 16600,
+      "additional_unflagged": 0
+    },
+    "B_val": {
+      "same_tractor_imaging_key": 4257,
+      "additional_unflagged": 0
+    },
+    "B_test": {
+      "same_tractor_imaging_key": 61696,
+      "additional_unflagged": 0
+    },
+    "C_train": {
+      "same_tractor_imaging_key": 16600,
+      "additional_unflagged": 0
+    },
+    "C_val": {
+      "same_tractor_imaging_key": 4257,
+      "additional_unflagged": 0
+    },
+    "C_test": {
+      "same_tractor_imaging_key": 61696,
+      "additional_unflagged": 0
+    }
+  },
+  "provenance_sha256": {
+    "/arc/projects/ots/Cosmic_Imprint_of_Time/GalaxiesMLSpec/provenance/zenodo_record_16989593.json": "967bef78aad09ebbfd2d6ce76e621592ca9b325127a571ebd61a5e6a4738b0ac",
+    "/arc/projects/ots/Cosmic_Imprint_of_Time/GalaxiesMLSpec/provenance/publisher_description.html": "b4a314914f3cecb7c99bfb7a95ddab58863c4e36af281de049455c8443f78b59",
+    "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/provenance/lsdr9_photometry_README.md": "116c37d8acf3520ca3faf41be7fad7a0b5469128ed6a946ab6c1acc1c1f4d394"
+  },
+  "positional_policy": "All raw HDF TARGETIDs have exact unique Tractor counterparts; no position-only recovery was needed. Every retained counterpart must additionally pass the independent 1-arcsec HSC/Tractor positional verification."
+}

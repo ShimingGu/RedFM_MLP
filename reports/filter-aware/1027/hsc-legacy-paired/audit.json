@@ -1,0 +1,935 @@
+{
+  "created_utc": "2026-10-27T00:23:59.774079+00:00",
+  "cutflow": [
+    {
+      "step": "Exactly one original Tractor record per exact TARGETID",
+      "before": 134533,
+      "removed": 0,
+      "remaining": 134533
+    },
+    {
+      "step": "Unique primary DESI Iron spectrum passing original uniform galaxy quality and 0<=z<=4.5",
+      "before": 134533,
+      "removed": 22531,
+      "remaining": 112002
+    },
+    {
+      "step": "Original Legacy survey restriction: main bright/dark (intersection of source protocols)",
+      "before": 112002,
+      "removed": 27277,
+      "remaining": 84725
+    },
+    {
+      "step": "Valid native HDF redshift and error",
+      "before": 84725,
+      "removed": 0,
+      "remaining": 84725
+    },
+    {
+      "step": "HDF/Iron label agreement to predeclared 1e-6 relative tolerance",
+      "before": 84725,
+      "removed": 2140,
+      "remaining": 82585
+    },
+    {
+      "step": "Original HSC minimum three valid bands",
+      "before": 82585,
+      "removed": 0,
+      "remaining": 82585
+    },
+    {
+      "step": "Original Legacy minimum three valid bands, with positive IVAR and NOBS",
+      "before": 82585,
+      "removed": 0,
+      "remaining": 82585
+    },
+    {
+      "step": "Verified DR9 filter provenance RELEASE in 9010/9011/9012",
+      "before": 82585,
+      "removed": 0,
+      "remaining": 82585
+    },
+    {
+      "step": "Exact-ID pair positional verification within fixed one arcsecond",
+      "before": 82585,
+      "removed": 0,
+      "remaining": 82585
+    },
+    {
+      "step": "Unique HSC imaging identity across raw HDF rows",
+      "before": 82585,
+      "removed": 32,
+      "remaining": 82553
+    },
+    {
+      "step": "Unique Legacy imaging key among remaining pairs",
+      "before": 82553,
+      "removed": 0,
+      "remaining": 82553
+    },
+    {
+      "step": "Reject both members of ambiguous sub-arcsecond paired sky neighbours",
+      "before": 82553,
+      "removed": 0,
+      "remaining": 82553
+    }
+  ],
+  "label_audit": {
+    "rows_checked": 84725,
+    "exact_equal": 41965,
+    "numerical_agreement_1e6": 82585,
+    "original_tolerance_1e3": 84725,
+    "max_absolute_difference": 0.0006276939461795639,
+    "hdf_reduction": "Not encoded in HDF attributes or saved publisher provenance; identical reduction cannot be asserted",
+    "tractor_label_reduction": "DESI DR1 Iron zall-pix-iron.fits",
+    "rule": "Conservative pre-prediction agreement <=1e-6*(1+abs(z_Iron)); exclude ambiguous differences, do not adjudicate by prediction error; retain original HSC native HDF labels for all cells"
+  },
+  "raw_audit": {
+    "hdf_rows": 134533,
+    "tractor_rows": 134533,
+    "tractor_unique_ids": 134533,
+    "zcat_rows": 168065,
+    "sources": [
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp016-iron.fits",
+        "matched_rows": 5455
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp032-iron.fits",
+        "matched_rows": 695
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp037-iron.fits",
+        "matched_rows": 193
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp038-iron.fits",
+        "matched_rows": 4790
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp039-iron.fits",
+        "matched_rows": 564
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp041-iron.fits",
+        "matched_rows": 2260
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp044-iron.fits",
+        "matched_rows": 2079
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp067-iron.fits",
+        "matched_rows": 608
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp068-iron.fits",
+        "matched_rows": 292
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp069-iron.fits",
+        "matched_rows": 10235
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp070-iron.fits",
+        "matched_rows": 5615
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp071-iron.fits",
+        "matched_rows": 481
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp072-iron.fits",
+        "matched_rows": 347
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp073-iron.fits",
+        "matched_rows": 13068
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp074-iron.fits",
+        "matched_rows": 5305
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp075-iron.fits",
+        "matched_rows": 2640
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp076-iron.fits",
+        "matched_rows": 1017
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp085-iron.fits",
+        "matched_rows": 6370
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp099-iron.fits",
+        "matched_rows": 2123
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp101-iron.fits",
+        "matched_rows": 30602
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp102-iron.fits",
+        "matched_rows": 11491
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp105-iron.fits",
+        "matched_rows": 7571
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp106-iron.fits",
+        "matched_rows": 17055
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp108-iron.fits",
+        "matched_rows": 1744
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp122-iron.fits",
+        "matched_rows": 199
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp143-iron.fits",
+        "matched_rows": 331
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp159-iron.fits",
+        "matched_rows": 493
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp175-iron.fits",
+        "matched_rows": 910
+      }
+    ],
+    "source_fingerprints": [
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/GalaxiesMLSpec/DESI_HSC_64x64_v2.hdf5",
+        "bytes": 36249693224,
+        "mtime_ns": 1792477445575398845
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/desi_dr1/iron/zcatalog/v1/zall-pix-iron.fits",
+        "bytes": 22371272640,
+        "mtime_ns": 1792475360776717527
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp000-iron.fits",
+        "bytes": 283049280,
+        "mtime_ns": 1792475339367694224
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp002-iron.fits",
+        "bytes": 398750400,
+        "mtime_ns": 1792475342572697713
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp003-iron.fits",
+        "bytes": 84035520,
+        "mtime_ns": 1792475336954691598
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp008-iron.fits",
+        "bytes": 317589120,
+        "mtime_ns": 1792475340145695071
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp009-iron.fits",
+        "bytes": 9023040,
+        "mtime_ns": 1792475331084685209
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp010-iron.fits",
+        "bytes": 15543360,
+        "mtime_ns": 1792475331288685431
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp016-iron.fits",
+        "bytes": 752316480,
+        "mtime_ns": 1792475352813708860
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp017-iron.fits",
+        "bytes": 139587840,
+        "mtime_ns": 1792475336478691080
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp018-iron.fits",
+        "bytes": 726399360,
+        "mtime_ns": 1792475356321712678
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp019-iron.fits",
+        "bytes": 260841600,
+        "mtime_ns": 1792475347709703304
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp020-iron.fits",
+        "bytes": 247893120,
+        "mtime_ns": 1792475347048702585
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp021-iron.fits",
+        "bytes": 404962560,
+        "mtime_ns": 1792475352379708387
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp022-iron.fits",
+        "bytes": 290422080,
+        "mtime_ns": 1792475352726708765
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp023-iron.fits",
+        "bytes": 457274880,
+        "mtime_ns": 1792475359666716319
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp024-iron.fits",
+        "bytes": 635028480,
+        "mtime_ns": 1792475365358722514
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp025-iron.fits",
+        "bytes": 414207360,
+        "mtime_ns": 1792475365001722126
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp026-iron.fits",
+        "bytes": 166616640,
+        "mtime_ns": 1792475358038714547
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp027-iron.fits",
+        "bytes": 371854080,
+        "mtime_ns": 1792475364779721884
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp028-iron.fits",
+        "bytes": 263816640,
+        "mtime_ns": 1792475365162722301
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp029-iron.fits",
+        "bytes": 428639040,
+        "mtime_ns": 1792475371901729636
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp030-iron.fits",
+        "bytes": 374160960,
+        "mtime_ns": 1792475371516729217
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp031-iron.fits",
+        "bytes": 343010880,
+        "mtime_ns": 1792475376762734927
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp032-iron.fits",
+        "bytes": 859253760,
+        "mtime_ns": 1792475393292751677
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp033-iron.fits",
+        "bytes": 653428800,
+        "mtime_ns": 1792475387303745671
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp034-iron.fits",
+        "bytes": 139446720,
+        "mtime_ns": 1792475372135729891
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp035-iron.fits",
+        "bytes": 1019793600,
+        "mtime_ns": 1792475403931762348
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp036-iron.fits",
+        "bytes": 1238690880,
+        "mtime_ns": 1792475410248768683
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp037-iron.fits",
+        "bytes": 607956480,
+        "mtime_ns": 1792475392387750770
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp038-iron.fits",
+        "bytes": 956871360,
+        "mtime_ns": 1792475406420764844
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp039-iron.fits",
+        "bytes": 490158720,
+        "mtime_ns": 1792475403000761414
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp040-iron.fits",
+        "bytes": 724680000,
+        "mtime_ns": 1792475414053772499
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp041-iron.fits",
+        "bytes": 992324160,
+        "mtime_ns": 1792475423536782010
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp042-iron.fits",
+        "bytes": 516983040,
+        "mtime_ns": 1792475417992776450
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp043-iron.fits",
+        "bytes": 733968000,
+        "mtime_ns": 1792475426707785190
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp044-iron.fits",
+        "bytes": 274420800,
+        "mtime_ns": 1792475415398773848
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp045-iron.fits",
+        "bytes": 149843520,
+        "mtime_ns": 1792475417517775973
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp046-iron.fits",
+        "bytes": 212987520,
+        "mtime_ns": 1792475421725780194
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp047-iron.fits",
+        "bytes": 65494080,
+        "mtime_ns": 1792475417870776327
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp048-iron.fits",
+        "bytes": 453767040,
+        "mtime_ns": 1792475431656790154
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp049-iron.fits",
+        "bytes": 265602240,
+        "mtime_ns": 1792475426604785087
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp052-iron.fits",
+        "bytes": 393203520,
+        "mtime_ns": 1792475431860790358
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp053-iron.fits",
+        "bytes": 16090560,
+        "mtime_ns": 1792475422710781182
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp058-iron.fits",
+        "bytes": 274276800,
+        "mtime_ns": 1792475430960789456
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp059-iron.fits",
+        "bytes": 290586240,
+        "mtime_ns": 1792475433647792151
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp062-iron.fits",
+        "bytes": 262650240,
+        "mtime_ns": 1792475435209793717
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp063-iron.fits",
+        "bytes": 3680640,
+        "mtime_ns": 1792475427910786397
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp065-iron.fits",
+        "bytes": 49815360,
+        "mtime_ns": 1792475430910789406
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp066-iron.fits",
+        "bytes": 23025600,
+        "mtime_ns": 1792475431920790419
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp067-iron.fits",
+        "bytes": 260340480,
+        "mtime_ns": 1792475439869798391
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp068-iron.fits",
+        "bytes": 359424000,
+        "mtime_ns": 1792475444091802625
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp069-iron.fits",
+        "bytes": 937186560,
+        "mtime_ns": 1792475461777820363
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp070-iron.fits",
+        "bytes": 591937920,
+        "mtime_ns": 1792475452117810675
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp071-iron.fits",
+        "bytes": 668203200,
+        "mtime_ns": 1792475455818814387
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp072-iron.fits",
+        "bytes": 274423680,
+        "mtime_ns": 1792475445899804439
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp073-iron.fits",
+        "bytes": 672209280,
+        "mtime_ns": 1792475461378819963
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp074-iron.fits",
+        "bytes": 884736000,
+        "mtime_ns": 1792475466491825091
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp075-iron.fits",
+        "bytes": 494147520,
+        "mtime_ns": 1792475461548820134
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp076-iron.fits",
+        "bytes": 548542080,
+        "mtime_ns": 1792475465891824489
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp077-iron.fits",
+        "bytes": 408309120,
+        "mtime_ns": 1792475465999824597
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp078-iron.fits",
+        "bytes": 371684160,
+        "mtime_ns": 1792475468763827370
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp079-iron.fits",
+        "bytes": 212618880,
+        "mtime_ns": 1792475466442825042
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp080-iron.fits",
+        "bytes": 15664320,
+        "mtime_ns": 1792475463480822071
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp082-iron.fits",
+        "bytes": 24825600,
+        "mtime_ns": 1792475467526826129
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp084-iron.fits",
+        "bytes": 69120,
+        "mtime_ns": 1792475466591825191
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp085-iron.fits",
+        "bytes": 723643200,
+        "mtime_ns": 1792475486936845596
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp087-iron.fits",
+        "bytes": 101908800,
+        "mtime_ns": 1792475469371827979
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp088-iron.fits",
+        "bytes": 807540480,
+        "mtime_ns": 1792475489330847997
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp089-iron.fits",
+        "bytes": 135051840,
+        "mtime_ns": 1792475472661831279
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp090-iron.fits",
+        "bytes": 467219520,
+        "mtime_ns": 1792475481246839889
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp091-iron.fits",
+        "bytes": 9973440,
+        "mtime_ns": 1792475469650828259
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp093-iron.fits",
+        "bytes": 2759040,
+        "mtime_ns": 1792475469753828362
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp098-iron.fits",
+        "bytes": 146880,
+        "mtime_ns": 1792475469839828449
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp099-iron.fits",
+        "bytes": 541128960,
+        "mtime_ns": 1792475486755845414
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp100-iron.fits",
+        "bytes": 524640960,
+        "mtime_ns": 1792475485414844070
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp101-iron.fits",
+        "bytes": 2105585280,
+        "mtime_ns": 1792475535200894001
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp102-iron.fits",
+        "bytes": 1752289920,
+        "mtime_ns": 1792475535673894476
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp103-iron.fits",
+        "bytes": 687611520,
+        "mtime_ns": 1792475506441865158
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp104-iron.fits",
+        "bytes": 618431040,
+        "mtime_ns": 1792475506240864957
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp105-iron.fits",
+        "bytes": 1677905280,
+        "mtime_ns": 1792475537147895954
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp106-iron.fits",
+        "bytes": 1761526080,
+        "mtime_ns": 1792475540641899458
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp107-iron.fits",
+        "bytes": 664974720,
+        "mtime_ns": 1792475528221887002
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp108-iron.fits",
+        "bytes": 507873600,
+        "mtime_ns": 1792475524938883709
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp109-iron.fits",
+        "bytes": 230647680,
+        "mtime_ns": 1792475533225892021
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp110-iron.fits",
+        "bytes": 155255040,
+        "mtime_ns": 1792475534312893111
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp111-iron.fits",
+        "bytes": 335911680,
+        "mtime_ns": 1792475540166898982
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp117-iron.fits",
+        "bytes": 223119360,
+        "mtime_ns": 1792475537975896785
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp120-iron.fits",
+        "bytes": 15776640,
+        "mtime_ns": 1792475538382897193
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp121-iron.fits",
+        "bytes": 245131200,
+        "mtime_ns": 1792475544258903086
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp122-iron.fits",
+        "bytes": 1103826240,
+        "mtime_ns": 1792475571556930464
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp123-iron.fits",
+        "bytes": 1337495040,
+        "mtime_ns": 1792475574574933491
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp124-iron.fits",
+        "bytes": 68276160,
+        "mtime_ns": 1792475541360900179
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp125-iron.fits",
+        "bytes": 4014720,
+        "mtime_ns": 1792475540844899662
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp126-iron.fits",
+        "bytes": 1098624960,
+        "mtime_ns": 1792475573632932546
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp127-iron.fits",
+        "bytes": 734690880,
+        "mtime_ns": 1792475563932922818
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp135-iron.fits",
+        "bytes": 8991360,
+        "mtime_ns": 1792475543111901936
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp141-iron.fits",
+        "bytes": 180547200,
+        "mtime_ns": 1792475549672908516
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp142-iron.fits",
+        "bytes": 86538240,
+        "mtime_ns": 1792475547422906259
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp143-iron.fits",
+        "bytes": 439404480,
+        "mtime_ns": 1792475565359924249
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp151-iron.fits",
+        "bytes": 15675840,
+        "mtime_ns": 1792475551793910643
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp157-iron.fits",
+        "bytes": 3150720,
+        "mtime_ns": 1792475552127910978
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp159-iron.fits",
+        "bytes": 582186240,
+        "mtime_ns": 1792475571678930587
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp175-iron.fits",
+        "bytes": 315253440,
+        "mtime_ns": 1792475573894932809
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp189-iron.fits",
+        "bytes": 20689920,
+        "mtime_ns": 1792475566792925686
+      },
+      {
+        "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/DESI-LS/catalogues/ls_dr9/iron/v1.1/tractorphot/tractorphot-nside4-hp191-iron.fits",
+        "bytes": 285681600,
+        "mtime_ns": 1792475574094933010
+      }
+    ],
+    "seconds": 512.9295575618744,
+    "image_or_spectral_pixels_read": false,
+    "training": false,
+    "model_inference": false,
+    "hdf_legacy_limitation": "DESI targeting fibermap flux/ivar/EBV/RELEASE exist but NOBS is absent; use original Tractor VAC measurements and NOBS instead, auditing numerical differences"
+  },
+  "category_counts": {
+    "P": 61696,
+    "V": 4257,
+    "T": 16600
+  },
+  "selected_counts": {
+    "P": 1024,
+    "V": 256,
+    "T": 0
+  },
+  "membership_counts": {
+    "original-qlora_train_exact": 16600,
+    "original-qlora_train_group": 16600,
+    "original-qlora_train_positional": 16600,
+    "original-qlora_train": 16600,
+    "original-qlora_val_exact": 4257,
+    "original-qlora_val_group": 4257,
+    "original-qlora_val_positional": 4257,
+    "original-qlora_val": 4257,
+    "original-qlora_test_exact": 61696,
+    "original-qlora_test_group": 61696,
+    "original-qlora_test_positional": 61696,
+    "original-qlora_test": 61696,
+    "original-dora_train_exact": 16600,
+    "original-dora_train_group": 16600,
+    "original-dora_train_positional": 16600,
+    "original-dora_train": 16600,
+    "original-dora_val_exact": 4257,
+    "original-dora_val_group": 4257,
+    "original-dora_val_positional": 4257,
+    "original-dora_val": 4257,
+    "original-dora_test_exact": 61696,
+    "original-dora_test_group": 61696,
+    "original-dora_test_positional": 61696,
+    "original-dora_test": 61696,
+    "A_train_exact": 16600,
+    "A_train_group": 16600,
+    "A_train_positional": 16600,
+    "A_train": 16600,
+    "A_val_exact": 4257,
+    "A_val_group": 4257,
+    "A_val_positional": 4257,
+    "A_val": 4257,
+    "A_test_exact": 61696,
+    "A_test_group": 61696,
+    "A_test_positional": 61696,
+    "A_test": 61696,
+    "B_train_exact": 16600,
+    "B_train_group": 16600,
+    "B_train_positional": 16600,
+    "B_train": 16600,
+    "B_val_exact": 4257,
+    "B_val_group": 4257,
+    "B_val_positional": 4257,
+    "B_val": 4257,
+    "B_test_exact": 61696,
+    "B_test_group": 61696,
+    "B_test_positional": 61696,
+    "B_test": 61696,
+    "C_train_exact": 16600,
+    "C_train_group": 16600,
+    "C_train_positional": 16600,
+    "C_train": 16600,
+    "C_val_exact": 4257,
+    "C_val_group": 4257,
+    "C_val_positional": 4257,
+    "C_val": 4257,
+    "C_test_exact": 61696,
+    "C_test_group": 61696,
+    "C_test_positional": 61696,
+    "C_test": 61696
+  },
+  "measurement_comparison": {
+    "G": {
+      "flux_equal": 81739,
+      "rows": 82553,
+      "median_abs_flux_difference": 0.0,
+      "p95_abs_flux_difference": 0.0,
+      "ivar_equal": 81525,
+      "nobs_missing_in_hdf": true,
+      "legacy_valid": 82551,
+      "legacy_nonpositive_valid_flux": 16
+    },
+    "R": {
+      "flux_equal": 81739,
+      "rows": 82553,
+      "median_abs_flux_difference": 0.0,
+      "p95_abs_flux_difference": 0.0,
+      "ivar_equal": 81525,
+      "nobs_missing_in_hdf": true,
+      "legacy_valid": 82553,
+      "legacy_nonpositive_valid_flux": 0
+    },
+    "Z": {
+      "flux_equal": 81739,
+      "rows": 82553,
+      "median_abs_flux_difference": 0.0,
+      "p95_abs_flux_difference": 0.0,
+      "ivar_equal": 81525,
+      "nobs_missing_in_hdf": true,
+      "legacy_valid": 82553,
+      "legacy_nonpositive_valid_flux": 0
+    },
+    "W1": {
+      "flux_equal": 81525,
+      "rows": 82553,
+      "median_abs_flux_difference": 0.0,
+      "p95_abs_flux_difference": 0.0,
+      "ivar_equal": 81525,
+      "nobs_missing_in_hdf": true,
+      "legacy_valid": 82553,
+      "legacy_nonpositive_valid_flux": 158
+    },
+    "W2": {
+      "flux_equal": 81525,
+      "rows": 82553,
+      "median_abs_flux_difference": 0.0,
+      "p95_abs_flux_difference": 0.0,
+      "ivar_equal": 81525,
+      "nobs_missing_in_hdf": true,
+      "legacy_valid": 82553,
+      "legacy_nonpositive_valid_flux": 633
+    },
+    "EBV": {
+      "equal": 81532,
+      "rows": 82553
+    },
+    "imaging_key_equal": 81525
+  },
+  "support": {
+    "fit_rows": 22444,
+    "fit": "HSC source training photometry only; no target labels",
+    "rule": "Both HSC and Legacy must have valid common g/r/z and all 11 transformed coordinates within HSC training marginal 0.5\u201399.5 percentiles",
+    "coordinates": [
+      "asinh_flux_g",
+      "asinh_flux_r",
+      "asinh_flux_z",
+      "log10_sigma_g",
+      "log10_sigma_r",
+      "log10_sigma_z",
+      "asinh_snr_g",
+      "asinh_snr_r",
+      "asinh_snr_z",
+      "asinh_g_minus_r",
+      "asinh_r_minus_z"
+    ],
+    "scale": [
+      0.0173109769821167,
+      0.027746031060814857,
+      0.05816483497619629
+    ],
+    "lower": [
+      3.1920411081692466,
+      3.707839703331549,
+      3.8100185908080952,
+      -2.3301197341047883,
+      -2.1347413718130137,
+      -1.7767965105677062,
+      3.8991521264037634,
+      4.722708400920872,
+      4.690279934250929,
+      -1.4157544981790404,
+      -1.163601582852699
+    ],
+    "upper": [
+      9.983159113651485,
+      10.242780283499576,
+      10.20171003022574,
+      -1.0122614170656645,
+      -0.8618204470388497,
+      -0.48051121457268187,
+      8.721043125811427,
+      9.058691909158824,
+      9.097717942390709,
+      0.3533844324640566,
+      0.5710795263959358
+    ],
+    "hsc_inside": 78745,
+    "legacy_inside": 45901,
+    "both_inside": 45399,
+    "caveat": "Simple marginal optical-support diagnostic, not a density estimate or bandpass matching; strict joint cuts may leave few objects"
+  },
+  "release_counts": {
+    "9010": 78911,
+    "9011": 3500,
+    "9012": 142
+  },
+  "scope": "P is independent of training and validation of the five completed HSC models only. Original held-out HSC test objects are allowed and explicitly flagged. Legacy incomplete models excluded; mutual HSC/Legacy-source independence not established.",
+  "pair_radius_arcsec": 1.0,
+  "missingness": "No fabricated measurements or errors; native source preprocessing with minimum 3/5 valid bands",
+  "photometry": "HSC PDR2 cmodel AB magnitudes converted with original Jacobian; original DR9 Tractor signed fluxes, positive IVAR/NOBS; each uses its own EBV; no extra extinction correction"
+}

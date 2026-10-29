@@ -1,0 +1,251 @@
+[
+  {
+    "path": "/arc/home/gsm/aion_output/figures/qwen-desi-ls-dora-specz-e10/dora/result.pt",
+    "key": null,
+    "eligible": false,
+    "reason": "hsc: different validation IDs/order; clauds: different validation IDs/order"
+  },
+  {
+    "path": "/arc/home/gsm/aion_output/figures/qwen-desi-ls-dora-specz-e10/frozen/result.pt",
+    "key": null,
+    "eligible": false,
+    "reason": "hsc: no saved object IDs; clauds: no saved object IDs"
+  },
+  {
+    "path": "/arc/home/gsm/aion_output/figures/qwen-desi-ls-qlora-specz-e10/frozen/result.pt",
+    "key": null,
+    "eligible": false,
+    "reason": "hsc: no saved object IDs; clauds: no saved object IDs"
+  },
+  {
+    "path": "/arc/home/gsm/aion_output/figures/qwen-desi-ls-qlora-specz-e10/qlora/result.pt",
+    "key": null,
+    "eligible": false,
+    "reason": "hsc: different validation IDs/order; clauds: different validation IDs/order"
+  },
+  {
+    "path": "/arc/home/gsm/aion_output/figures/qwen-dora_posttraining-e10/dora/result.pt",
+    "key": null,
+    "dataset": "clauds",
+    "eligible": true,
+    "validation_ce": 3.9313855171203613,
+    "label": "qwen-dora_posttraining-e10 / dora",
+    "n": 15000
+  },
+  {
+    "path": "/arc/home/gsm/aion_output/figures/qwen-galaxiesml-spec-dora-specz-e10/dora/result.pt",
+    "key": null,
+    "dataset": "hsc",
+    "eligible": true,
+    "validation_ce": 2.447197675704956,
+    "label": "qwen-galaxiesml-spec-dora-specz-e10 / dora",
+    "n": 5683
+  },
+  {
+    "path": "/arc/home/gsm/aion_output/figures/qwen-galaxiesml-spec-dora-specz-e10/frozen/result.pt",
+    "key": null,
+    "eligible": false,
+    "reason": "hsc: no saved object IDs; clauds: no saved object IDs"
+  },
+  {
+    "path": "/arc/home/gsm/aion_output/figures/qwen-galaxiesml-spec-qlora-specz-e10/frozen/result.pt",
+    "key": null,
+    "eligible": false,
+    "reason": "hsc: no saved object IDs; clauds: no saved object IDs"
+  },
+  {
+    "path": "/arc/home/gsm/aion_output/figures/qwen-galaxiesml-spec-qlora-specz-e10/qlora/result.pt",
+    "key": null,
+    "dataset": "hsc",
+    "eligible": true,
+    "validation_ce": 2.4530272483825684,
+    "label": "qwen-galaxiesml-spec-qlora-specz-e10 / qlora",
+    "n": 5683
+  },
+  {
+    "path": "/arc/home/gsm/aion_output/figures/qwen-ia3_posttraining-e10/ia3/result.pt",
+    "key": null,
+    "dataset": "clauds",
+    "eligible": true,
+    "validation_ce": 4.409084320068359,
+    "label": "qwen-ia3_posttraining-e10 / ia3",
+    "n": 15000
+  },
+  {
+    "path": "/arc/home/gsm/aion_output/figures/qwen-qlora_rlvr-e1/rlvr/result.pt",
+    "key": null,
+    "dataset": "clauds",
+    "eligible": true,
+    "validation_ce": 4.2156982421875,
+    "label": "qwen-qlora_rlvr-e1 / rlvr",
+    "n": 15000
+  },
+  {
+    "path": "/arc/home/gsm/aion_output/figures/qwen-qwen_posttraining_comparison/frozen/result.pt",
+    "key": null,
+    "eligible": false,
+    "reason": "hsc: no saved object IDs; clauds: no saved object IDs"
+  },
+  {
+    "path": "/arc/home/gsm/aion_output/figures/qwen-qwen_posttraining_comparison/qlora/result.pt",
+    "key": null,
+    "eligible": false,
+    "reason": "hsc: different validation IDs/order; clauds: different validation IDs/order"
+  },
+  {
+    "path": "/arc/home/gsm/aion_output/figures/qwen-qwen_posttraining_comparison-e10/frozen/result.pt",
+    "key": null,
+    "eligible": false,
+    "reason": "hsc: no saved object IDs; clauds: no saved object IDs"
+  },
+  {
+    "path": "/arc/home/gsm/aion_output/figures/qwen-qwen_posttraining_comparison-e10/qlora/result.pt",
+    "key": null,
+    "dataset": "clauds",
+    "eligible": true,
+    "validation_ce": 3.9305293560028076,
+    "label": "qwen-qwen_posttraining_comparison-e10 / qlora",
+    "n": 15000
+  },
+  {
+    "path": "/arc/home/gsm/aion_output/figures/qwen-residual_embedding_adapter-e10/embedding_adapter/result.pt",
+    "key": null,
+    "dataset": "clauds",
+    "eligible": true,
+    "validation_ce": 4.474085807800293,
+    "label": "qwen-residual_embedding_adapter-e10 / embedding_adapter",
+    "n": 15000
+  },
+  {
+    "path": "/arc/home/gsm/aion_output/figures/qwen3.5-0.8b-clauds-qlora-e10/frozen/result.pt",
+    "key": null,
+    "eligible": false,
+    "reason": "hsc: no saved object IDs; clauds: no saved object IDs"
+  },
+  {
+    "path": "/arc/home/gsm/aion_output/figures/qwen3.5-0.8b-desi-ls-qlora-specz-e10/frozen/result.pt",
+    "key": null,
+    "eligible": false,
+    "reason": "hsc: no saved object IDs; clauds: no saved object IDs"
+  },
+  {
+    "path": "/arc/home/gsm/aion_output/figures/qwen3.5-0.8b-galaxiesml-spec-dora-specz-e10/dora/result.pt",
+    "key": null,
+    "dataset": "hsc",
+    "eligible": true,
+    "validation_ce": 2.4737260341644287,
+    "label": "qwen3.5-0.8b-galaxiesml-spec-dora-specz-e10 / dora",
+    "n": 5683
+  },
+  {
+    "path": "/arc/home/gsm/aion_output/figures/qwen3.5-0.8b-galaxiesml-spec-dora-specz-e10/frozen/result.pt",
+    "key": null,
+    "eligible": false,
+    "reason": "hsc: no saved object IDs; clauds: no saved object IDs"
+  },
+  {
+    "path": "/arc/home/gsm/aion_output/figures/qwen3.5-0.8b-galaxiesml-spec-qlora-specz-e10/frozen/result.pt",
+    "key": null,
+    "eligible": false,
+    "reason": "hsc: no saved object IDs; clauds: no saved object IDs"
+  },
+  {
+    "path": "/arc/home/gsm/aion_output/figures/qwen3.5-0.8b-galaxiesml-spec-qlora-specz-e10/qlora/result.pt",
+    "key": null,
+    "dataset": "hsc",
+    "eligible": true,
+    "validation_ce": 2.4771130084991455,
+    "label": "qwen3.5-0.8b-galaxiesml-spec-qlora-specz-e10 / qlora",
+    "n": 5683
+  },
+  {
+    "path": "/arc/home/gsm/aion_output/figures/qwen-qwen_posttraining_comparison/results.pt",
+    "key": "frozen",
+    "eligible": false,
+    "reason": "hsc: no saved object IDs; clauds: no saved object IDs"
+  },
+  {
+    "path": "/arc/home/gsm/aion_output/figures/qwen-qwen_posttraining_comparison/results.pt",
+    "key": "qlora",
+    "eligible": false,
+    "reason": "hsc: different validation IDs/order; clauds: different validation IDs/order"
+  },
+  {
+    "path": "/arc/home/gsm/aion_output/figures/qwen-qwen_posttraining_comparison-e10/results.pt",
+    "key": "frozen",
+    "eligible": false,
+    "reason": "hsc: no saved object IDs; clauds: no saved object IDs"
+  },
+  {
+    "path": "/arc/home/gsm/aion_output/figures/qwen-qwen_posttraining_comparison-e10/results.pt",
+    "key": "qlora",
+    "dataset": "clauds",
+    "eligible": true,
+    "validation_ce": 3.9305293560028076,
+    "label": "figures / qlora",
+    "n": 15000
+  },
+  {
+    "path": "/arc/home/gsm/aion_output/figures/qwen-mlp_full_comparison-qwen3.5-4b/qwen_mlp_full_results.pt",
+    "key": "qwen_morphology",
+    "eligible": false,
+    "reason": "hsc: no saved object IDs; clauds: no saved object IDs"
+  },
+  {
+    "path": "/arc/home/gsm/aion_output/figures/qwen-mlp_full_comparison-qwen3.5-4b-nocompact/qwen_mlp_full_results.pt",
+    "key": "qwen_morphology",
+    "eligible": false,
+    "reason": "hsc: no saved object IDs; clauds: no saved object IDs"
+  },
+  {
+    "path": "/arc/home/gsm/aion_output/figures/qwen-mlp_full_image_comparison/qwen_mlp_full_results.pt",
+    "key": "qwen_morphology",
+    "eligible": false,
+    "reason": "hsc: no saved object IDs; clauds: no saved object IDs"
+  },
+  {
+    "path": "/arc/home/gsm/aion_output/figures/qwen-mlp_full_raw_comparison/qwen_mlp_full_results.pt",
+    "key": "qwen_morphology",
+    "eligible": false,
+    "reason": "hsc: no saved object IDs; clauds: no saved object IDs"
+  },
+  {
+    "path": "/arc/home/gsm/aion_output/figures/qwen-qwen-comparison-short-n300000-random-s42/qwen_mlp_full_results.pt",
+    "key": "qwen_morphology",
+    "eligible": false,
+    "reason": "hsc: no saved object IDs; clauds: no saved object IDs"
+  },
+  {
+    "path": "/arc/home/gsm/aion_output/figures/qwen_aion-timm_raw_comparison/qwen_mlp_full_results.pt",
+    "key": "qwen_morphology",
+    "eligible": false,
+    "reason": "hsc: no saved object IDs; clauds: no saved object IDs"
+  },
+  {
+    "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/filter_aware_checkpoints/1023/hsc-warmstart/level0/best_validation.pt",
+    "key": "direct",
+    "dataset": "hsc",
+    "eligible": true,
+    "validation_ce": 2.440431833267212,
+    "label": "Qwen3.5-4B \u00b7 warm-start Level 0",
+    "n": 5683
+  },
+  {
+    "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/filter_aware_checkpoints/1023/hsc-warmstart/level1/best_validation.pt",
+    "key": "direct",
+    "dataset": "hsc",
+    "eligible": true,
+    "validation_ce": 2.507556438446045,
+    "label": "Qwen3.5-4B \u00b7 warm-start Level 1",
+    "n": 5683
+  },
+  {
+    "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/filter_aware_checkpoints/1023/hsc-warmstart/level2/best_validation.pt",
+    "key": "direct",
+    "dataset": "hsc",
+    "eligible": true,
+    "validation_ce": 2.54705548286438,
+    "label": "Qwen3.5-4B \u00b7 warm-start Level 2",
+    "n": 5683
+  }
+]

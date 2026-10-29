@@ -1,0 +1,79 @@
+{
+  "version": "metadata_counterfactual_policy_v1",
+  "created_utc": "2026-10-27T15:18:02.685485+00:00",
+  "request": "/scratch/RedFM_MLP/Filter-Meta_Counter.md",
+  "benchmark": "/arc/projects/ots/Cosmic_Imprint_of_Time/filter_aware_checkpoints/1027/hsc-legacy-paired-full",
+  "n": 61696,
+  "category": "P only; no V or T",
+  "conditions": [
+    "correct",
+    "paired-cycle-forward",
+    "paired-cycle-reverse",
+    "paired-derangement",
+    "wavelength-cycle",
+    "wavelength-derangement",
+    "width-cycle",
+    "width-derangement",
+    "pivot-plus-02",
+    "pivot-minus-02",
+    "pivot-plus-05",
+    "pivot-minus-05",
+    "placebo-length-structure"
+  ],
+  "mappings_sha256": "49b5c899d20966ed305aa04ed2f5b6a7fa1a230370f04054075caf1f67465a70",
+  "cohort_sha256": "54e3c2f0a12d5d0d272a99737b17e1e4a0a3f31296bf1c4b341b982c48221560",
+  "identifiers_sha256": "4046bbb0aded3e4914c7f7166870afdd91a86fec51a6652928add2f687249bb3",
+  "galaxy_order": "Identical to original P order; no resampling or membership changes",
+  "primary_metric": "CE of probability mass in identical 300 bins over [0,4.5]",
+  "metrics": [
+    "CE",
+    "CRPS",
+    "NMAD",
+    "outlier |delta|>0.15",
+    "mean bias",
+    "median bias",
+    "coverage68",
+    "PIT",
+    "mean absolute normalized residual"
+  ],
+  "redshift_edges": [
+    0.0,
+    0.2,
+    0.4,
+    0.6,
+    1.0,
+    4.5
+  ],
+  "redshift_counts": [
+    23141,
+    16094,
+    14551,
+    7510,
+    400
+  ],
+  "bootstrap": {
+    "replicates": 1000,
+    "seed": 1027031,
+    "file_sha256": "e29ef58bf4f933e684524781c1505f9d2d0dd9425a19d7ce05513dd8ff549ae4",
+    "rule": "Same saved galaxy indices reused for every model/condition/domain and principal contrast; percentile 95%; conditional on fixed checkpoints and this cohort, no training-seed uncertainty"
+  },
+  "smoke": {
+    "n": 32,
+    "rule": "Lowest SHA256(1027031:galaxy_id), restored to original order",
+    "indices_sha256": "5fa2cacc51632b785332bf9bbd8e303e172d3aaaf9b9e3782fe4e893b8f3db20",
+    "labels_used": false,
+    "purpose": "Implementation and computational feasibility only; no counterfactual redshift metrics scored or selected"
+  },
+  "baseline_gate": "Archived full-P B/C metrics reproduced first; live first-256 replay for B/C both domains before smoke. Full B/C live replay, exact logits/PDFs, must finish before any full counterfactual inference.",
+  "perturbation_selection": "Every condition fixed from registry/seeds before new counterfactual predictions; no target-label construction or checkpoint/condition selection",
+  "designs": {
+    "both_domains": "Each condition applied to both real observational representations, with globally consistent physical-profile mappings",
+    "target_only": "Derived contrast using perturbed Legacy and unchanged correct-C HSC; no separate inference needed; labelled target-side effect"
+  },
+  "max_length": 512,
+  "token_audit_sha256": "f6d2546792d78ab90ac96bca00f1be9bb0fa8022d3220cdff281d989288cbbe3",
+  "resource_plan": "All 12 counterfactuals in both domains on all 61,696 P galaxies, after B/C full replay; three idle MIG slices; durable chunked background queue",
+  "inference_weights_updated": false,
+  "calibration": false,
+  "training": false
+}

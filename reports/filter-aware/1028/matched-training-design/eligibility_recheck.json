@@ -1,0 +1,24 @@
+{
+  "created_utc": "2026-10-28T16:16:00.452241+00:00",
+  "n": 82553,
+  "all_raw_metadata_rows_matched": true,
+  "hsc_features_and_validity_exact": true,
+  "original_tractor_flux_ivar_nobs_ebv_reconstruction_exact": true,
+  "shared_spectroscopic_quality_passed": true,
+  "native_HDF_labels_exact": true,
+  "native_Iron_agreement_tolerance": 1e-06,
+  "max_pair_separation_arcsec": 0.9967038153146828,
+  "imaging_identities_exact": true,
+  "rows_by_split": {
+    "T": 16600,
+    "V": 4257,
+    "P": 61696
+  },
+  "raw_metadata_sha256": {
+    "/arc/projects/ots/Cosmic_Imprint_of_Time/filter_aware_checkpoints/1027/hsc-legacy-paired/raw-audit/hdf_metadata.npz": "ddba124e6b60510712ffbf1ffa5e6fb94d882b0a59789344f9b0e98025ab0493",
+    "/arc/projects/ots/Cosmic_Imprint_of_Time/filter_aware_checkpoints/1027/hsc-legacy-paired/raw-audit/tractor_matches.npz": "16ba13fa69757d33a66bb98e293606d63a014021c8f611f39e7e3647d28680b6",
+    "/arc/projects/ots/Cosmic_Imprint_of_Time/filter_aware_checkpoints/1027/hsc-legacy-paired/raw-audit/redshift_matches.npz": "cee8bc8c33543c82968f6b848edfe5d46fe2619138414af0e018a219c67b2217"
+  },
+  "quality_scope": "DR1 Iron quality, same as established policy; HDF-specific fiber-status discrepancies remain documented and are not silently used as a new cut",
+  "images_or_spectral_pixels_read": false
+}

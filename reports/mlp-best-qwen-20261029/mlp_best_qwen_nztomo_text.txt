@@ -1,0 +1,143 @@
+0.0 0.5 1.0 1.5 2.0
+Redshift
+0
+1
+2
+3
+4
+5
+6
+7
+Normalized density
+MLP: 2,252
+Qwen: 2,276
+0 ≤ zmed < 0.2
+0.0 0.5 1.0 1.5 2.0
+Redshift
+0
+1
+2
+3
+4
+5
+MLP: 1,535
+Qwen: 1,564
+0.2 ≤ zmed < 0.4
+0.0 0.5 1.0 1.5 2.0
+Redshift
+0
+1
+2
+3
+4
+5
+6
+MLP: 1,385
+Qwen: 1,136
+0.4 ≤ zmed < 0.6
+0.0 0.5 1.0 1.5 2.0
+Redshift
+0
+1
+2
+3
+4
+5 MLP: 509
+Qwen: 707
+0.6 ≤ zmed < 1
+0.0 0.5 1.0 1.5 2.0
+Redshift
+0
+2
+4
+6
+8
+10
+MLP: 2
+Qwen: 0
+1 ≤ zmed ≤ 4.5
+Within each bin:
+Each model has its own
+bin membership.
+Solid and dashed curves
+share those exact objects.
+0 1 2 3 4 5 6
+Redshift
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+Normalized density
+MLP: 817
+Qwen: 802
+0 ≤ zmed < 0.5
+0 1 2 3 4 5 6
+Redshift
+0.00
+0.25
+0.50
+0.75
+1.00
+1.25
+1.50
+1.75
+2.00 MLP: 2,374
+Qwen: 2,421
+0.5 ≤ zmed < 1
+0 1 2 3 4 5 6
+Redshift
+0.00
+0.25
+0.50
+0.75
+1.00
+1.25
+1.50
+1.75 MLP: 3,287
+Qwen: 3,305
+1 ≤ zmed < 1.5
+0 1 2 3 4 5 6
+Redshift
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+1.2
+1.4
+MLP: 4,653
+Qwen: 4,362
+1.5 ≤ zmed < 2
+0 1 2 3 4 5 6
+Redshift
+0.0
+0.2
+0.4
+0.6
+0.8
+MLP: 3,131
+Qwen: 3,174
+2 ≤ zmed < 3
+0 1 2 3 4 5 6
+Redshift
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+1.2
+MLP: 738
+Qwen: 936
+3 ≤ zmed ≤ 6
+Tomographic n(z): existing MLP vs. best compatible Qwen
+Galaxies assigned to bins using each model’s predicted PDF median; reference and stacked PDF use the same selected galaxies.
+HSC–DESI · 5,683 validation galaxies · DESI spec-z reference
+CLAUDS · 15,000 validation galaxies · catalogue ZPHOT reference
+Curves are normalized separately within each model/bin. Stacked PDFs are exact sums of saved probabilities; no Monte Carlo sampling or smoothing.
+Validation/model-selection diagnostics; training budgets differ. HSC curves are shown at 0–2 without renormalizing the zoom (full PDF support: 0–4.5).
+MLP: stacked PDF MLP: reference histogram Qwen: stacked PDF Qwen: reference histogram

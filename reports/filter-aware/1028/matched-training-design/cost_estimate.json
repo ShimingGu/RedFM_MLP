@@ -1,0 +1,55 @@
+{
+  "created_utc": "2026-10-28T16:16:02.212017+00:00",
+  "units": "MIG-GPU hours on comparable H100 1g.12gb slices; not full-H100-equivalent hours",
+  "per_model": {
+    "qlora": {
+      "head_warmup_seconds_per_update": 3.3270523524284363,
+      "joint_seconds_per_update": 20.178277671337128,
+      "head_training_proxy_MIG_GPU_hours": 2.8779002848505972,
+      "joint_training_proxy_MIG_GPU_hours": 40.72649043331543,
+      "source_validation_MIG_GPU_hours": 0.9822645721336205,
+      "training_plus_validation_MIG_GPU_hours": 44.58665529029965,
+      "measured_Level1_batch8_seconds_per_object": 0.08306677142779031,
+      "caveat": "Training proxy from actual native-input historical checkpoint intervals; new Level-1 gradient throughput was not measured because Qwen training is not authorised. IQR describes recorded timing variation, not uncertainty in this representation transfer."
+    },
+    "dora": {
+      "head_warmup_seconds_per_update": 3.6957836961746215,
+      "joint_seconds_per_update": 20.921766104698182,
+      "head_training_proxy_MIG_GPU_hours": 3.196852897191048,
+      "joint_training_proxy_MIG_GPU_hours": 42.22709792131583,
+      "source_validation_MIG_GPU_hours": 1.0756386621544758,
+      "training_plus_validation_MIG_GPU_hours": 46.499589480661356,
+      "measured_Level1_batch8_seconds_per_object": 0.09096310039361317,
+      "caveat": "Training proxy from actual native-input historical checkpoint intervals; new Level-1 gradient throughput was not measured because Qwen training is not authorised. IQR describes recorded timing variation, not uncertainty in this representation transfer."
+    }
+  },
+  "one_seed_four_models_training_validation": 182.172489541922,
+  "three_seeds_twelve_models_training_validation": 546.517468625766,
+  "additional_two_seeds_training_validation": 364.344979083844,
+  "selected_state_paired_inference_one_seed": 11.929941079881456,
+  "selected_and_final_inference_one_seed": 23.85988215976291,
+  "one_seed_total_with_selected_inference": 194.10243062180345,
+  "three_seed_total_with_selected_inference": 582.3072918654103,
+  "three_free_slices_one_seed_training_queue_hours": 89.1733105805993,
+  "three_free_slices_twelve_models_training_queue_hours": 182.172489541922,
+  "scheduling": "Two DoRA branches plus one QLoRA start; second QLoRA follows on its released slice. For twelve branches, six DoRA jobs then six QLoRA jobs balance four waves over three slices. Existing four CLAUDS slices are not counted.",
+  "storage": {
+    "measured_historical_resume_bytes": {
+      "qlora": 38089243,
+      "dora": 39781499
+    },
+    "measured_adapter_head_bytes": {
+      "qlora": 9501424,
+      "dora": 9915711
+    },
+    "projected_bytes_per_model_run": {
+      "qlora": 134646468,
+      "dora": 139704170
+    },
+    "one_seed_four_runs_bytes": 548701276,
+    "three_seed_twelve_runs_bytes": 1646103828,
+    "selected_state_raw_prediction_bytes_per_seed": 1184563200,
+    "selected_and_final_raw_prediction_bytes_per_seed": 2369126400,
+    "convention": "Uncompressed float32 logits+probability mass dominate prediction estimate; NPZ often smaller, no assumed compression ratio. Two rotating full resume slots, selected/final exports and validation PDFs retained; base checkpoint is shared."
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "created_utc": "2026-10-28T15:44:42.114936+00:00",
+  "counts": {
+    "T": 16600,
+    "V": 4257,
+    "P": 61696
+  },
+  "physical_overlap": {
+    "tolerance_arcsec": 1.0,
+    "total_distinct_object_pairs": 0,
+    "cross_category_pairs": [],
+    "policy": "TARGETID, HSC imaging ID, Legacy release/brick/object identity; HSC/HSC, Legacy/Legacy and HSC/Legacy spherical positions. Self cross-representation pairs excluded."
+  },
+  "redshift_distributions": {
+    "train": {
+      "n": 16600,
+      "min": 0.011322255246341228,
+      "max": 1.6922409534454346,
+      "histogram_edges": [
+        0.0,
+        0.2,
+        0.4,
+        0.6,
+        1.0,
+        4.5
+      ],
+      "histogram": [
+        6199,
+        4290,
+        3925,
+        2078,
+        108
+      ]
+    },
+    "validation": {
+      "n": 4257,
+      "min": 0.006823369301855564,
+      "max": 1.6514034271240234,
+      "histogram_edges": [
+        0.0,
+        0.2,
+        0.4,
+        0.6,
+        1.0,
+        4.5
+      ],
+      "histogram": [
+        1621,
+        1111,
+        1013,
+        492,
+        20
+      ]
+    },
+    "evaluation": {
+      "n": 61696,
+      "min": 3.0504479582305066e-05,
+      "max": 1.697396993637085,
+      "histogram_edges": [
+        0.0,
+        0.2,
+        0.4,
+        0.6,
+        1.0,
+        4.5
+      ],
+      "histogram": [
+        23141,
+        16094,
+        14551,
+        7510,
+        400
+      ]
+    }
+  },
+  "same_labels_for_both_domains": true,
+  "quality_policy": {
+    "rows_checked": 84725,
+    "exact_equal": 41965,
+    "numerical_agreement_1e6": 82585,
+    "original_tolerance_1e3": 84725,
+    "max_absolute_difference": 0.0006276939461795639,
+    "hdf_reduction": "Not encoded in HDF attributes or saved publisher provenance; identical reduction cannot be asserted",
+    "tractor_label_reduction": "DESI DR1 Iron zall-pix-iron.fits",
+    "rule": "Conservative pre-prediction agreement <=1e-6*(1+abs(z_Iron)); exclude ambiguous differences, do not adjudicate by prediction error; retain original HSC native HDF labels for all cells"
+  },
+  "suitability": "Historical exposure labels are a fixed, geometry-clean allocation, not inherited model weights. Fresh bases make T/V/P valid for the new models. Historical Legacy exposure of P is irrelevant to fresh-model training but is audited separately.",
+  "evaluation_status": "Locked, previously analysed paired benchmark; not a prospective blind test",
+  "prospective_replication": "No additional uninspected eligible set exists within this fully audited pool under the unchanged policy. Reserve a new external matched catalogue before training for a future replication; excluded/ambiguous rows are not silently promoted."
+}
