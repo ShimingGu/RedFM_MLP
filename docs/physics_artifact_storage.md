@@ -59,21 +59,24 @@ restoration alone does not install those dependencies.
 
 ## Lightweight branch history
 
-The original local `main` snapshot is preserved at
+The original oversized local snapshot was commit
 `1e73f5004c4092473cfbb2fdc695016e195a0930` (`branch 2 initialisation`). It
-already contains the large data blobs. Deleting files in a later commit on
-that ancestry would still require uploading those blobs.
+contained the large data blobs. The 3,271 migrated files are preserved in the
+external archive; the remaining physics code and reports are preserved in the
+lightweight branch. Local `main` was reset to `origin/main`, removing that
+oversized commit from its active history. Its local reflog may retain the old
+commit temporarily; no aggressive history cleanup was performed.
 
-`Cross-Matching` is prepared as a new lightweight snapshot with the original
-common base `d5da3d9` as its parent, excluding that unpublished large-data
-commit from its ancestry. Remote `main` has separately advanced with Paper I
-work; this branch keeps the physics/Paper II work separate. No remote branch
-history is rewritten or force-pushed. The old local snapshot remains available
-through local `main`, so `.git` may still occupy several GiB locally even
-though uploading `Cross-Matching` does not include those old local-only blobs.
+`Cross-Matching` uses the original common base `d5da3d9` as the parent of its
+lightweight physics snapshot, excluding the oversized commit from its ancestry.
+Remote `main` has separately advanced with Paper I work; this branch keeps the
+physics/Paper II work separate. The remote `main` branch is not rewritten.
 
-This task prepares the local branch; remote publication is a separate action.
-The ordinary publication command, when wanted, is:
+The local Git object store may still occupy several GiB until its old unreachable
+objects are eventually cleaned up, but pushing `Cross-Matching` does not send the
+old local-only blobs. Future clones need archive access to restore large artifacts.
+
+The publication command is:
 
 ```bash
 git push -u origin Cross-Matching

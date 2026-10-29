@@ -2,7 +2,9 @@
 """Interactive GitHub sync helper for the RedFM_MLP workspace.
 
 This script intentionally performs Git operations only after interactive
-confirmation at the pull and commit/push branch decision points.
+confirmation at the pull and commit/push branch decision points. New
+repositories and the default push target use Cross-Matching; pulls default to
+the current branch to avoid merging an unrelated branch by accident.
 """
 
 from __future__ import annotations
@@ -15,6 +17,7 @@ from pathlib import Path
 TARGET_REMOTE_URL = "https://github.com/ShimingGu/RedFM_MLP.git"
 TARGET_REMOTE_DISPLAY = "https://github.com/ShimingGu/RedFM_MLP"
 DEFAULT_REMOTE_NAME = "origin"
+DEFAULT_BRANCH = "Cross-Matching"
 FALLBACK_REMOTE_NAME = "redfm_mlp"
 
 EXCLUDED_PATHS = (
@@ -106,12 +109,12 @@ def ensure_git_repo(start: Path) -> Path:
         return Path((proc.stdout or "").strip()).resolve()
 
     print("No git repository found here. Initializing this folder as a git repository.")
-    git(["init"], cwd=start)
+    git(["init", "--initial-branch", DEFAULT_BRANCH], cwd=start)
     root = Path(git(["rev-parse", "--show-toplevel"], cwd=start)).resolve()
 
     current = current_branch(root, allow_empty=True)
     if not current:
-        git(["checkout", "-B", "main"], cwd=root)
+        git(["checkout", "-B", DEFAULT_BRANCH], cwd=root)
     return root
 
 
@@ -342,7 +345,10 @@ def commit_staged_changes(repo: Path) -> None:
 
 
 def choose_push_branch(current: str) -> str:
-    return input(f"Push to which branch? Press Enter for current branch '{current}': ").strip() or current
+    return input(
+        f"Push local branch '{current}' to which branch? "
+        f"Press Enter for '{DEFAULT_BRANCH}': "
+    ).strip() or DEFAULT_BRANCH
 
 
 def push(repo: Path, remote: str, current: str, push_branch: str) -> None:
