@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "models": [
+    {
+      "model": "N0",
+      "signed_and_invalid_sigma_finite": true,
+      "band_permutation_max_absolute": 0.0
+    },
+    {
+      "model": "N1",
+      "signed_and_invalid_sigma_finite": true,
+      "band_permutation_max_absolute": 1.862645149230957e-08
+    },
+    {
+      "model": "N2",
+      "signed_and_invalid_sigma_finite": true,
+      "band_permutation_max_absolute": 4.887580871582031e-06
+    }
+  ],
+  "negative_flux_retained": true,
+  "missing_and_zero_sigma_excluded": true
+}

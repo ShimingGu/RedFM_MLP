@@ -1,0 +1,95 @@
+Failed to `import dust_attenuation`
+Install from the repo with $ pip install git+https://github.com/karllark/dust_attenuation.git
+generated train 3072 views 1536 SEDs
+physical cache train 512 / 3072
+physical cache train 1024 / 3072
+physical cache train 1536 / 3072
+physical cache train 2048 / 3072
+physical cache train 2560 / 3072
+physical cache train 3072 / 3072
+generated calibration 1024 views 512 SEDs
+physical cache calibration 512 / 1024
+physical cache calibration 1024 / 1024
+generated validation 1024 views 512 SEDs
+physical cache validation 512 / 1024
+physical cache validation 1024 / 1024
+N1 11 0 source CE 5.6987 domains {'M1': 5.706, 'M2': 5.699, 'M3': 5.695, 'M4': 5.695}
+N1 11 1000 source CE 3.938 domains {'M1': 3.595, 'M2': 4.35, 'M3': 4.042, 'M4': 3.765}
+N1 11 2000 source CE 3.2294 domains {'M1': 2.812, 'M2': 3.951, 'M3': 3.241, 'M4': 2.914}
+N1 11 3000 source CE 3.068 domains {'M1': 2.675, 'M2': 3.665, 'M3': 3.067, 'M4': 2.864}
+N1 11 4000 source CE 3.0216 domains {'M1': 2.724, 'M2': 3.598, 'M3': 2.951, 'M4': 2.814}
+N1 11 5000 source CE 2.961 domains {'M1': 2.583, 'M2': 3.628, 'M3': 2.894, 'M4': 2.738}
+N2_original 11 0 source CE 5.4022 domains {'M1': 5.763, 'M2': 4.893, 'M3': 5.298, 'M4': 5.654}
+N2_original 11 1000 source CE 3.3161 domains {'M1': 2.964, 'M2': 3.887, 'M3': 3.288, 'M4': 3.125}
+N2_original 11 2000 source CE 3.1849 domains {'M1': 2.823, 'M2': 3.797, 'M3': 3.114, 'M4': 3.005}
+N2_original 11 3000 source CE 2.9857 domains {'M1': 2.555, 'M2': 3.604, 'M3': 2.982, 'M4': 2.802}
+N2_original 11 4000 source CE 2.9659 domains {'M1': 2.542, 'M2': 3.611, 'M3': 2.929, 'M4': 2.782}
+N2_original 11 5000 source CE 2.9364 domains {'M1': 2.482, 'M2': 3.663, 'M3': 2.885, 'M4': 2.716}
+N2_constrained 11 0 source CE 77.2466 domains {'M1': 60.62, 'M2': 57.729, 'M3': 102.171, 'M4': 88.466}
+N2_constrained 11 1000 source CE 19.4804 domains {'M1': 3.482, 'M2': 21.975, 'M3': 34.864, 'M4': 17.601}
+N2_constrained 11 2000 source CE 18.6242 domains {'M1': 2.333, 'M2': 23.925, 'M3': 32.695, 'M4': 15.544}
+N2_constrained 11 3000 source CE 18.475 domains {'M1': 1.945, 'M2': 25.597, 'M3': 31.199, 'M4': 15.159}
+N2_constrained 11 4000 source CE 17.6378 domains {'M1': 2.482, 'M2': 22.237, 'M3': 30.493, 'M4': 15.338}
+N2_constrained 11 5000 source CE 17.0358 domains {'M1': 1.99, 'M2': 20.607, 'M3': 30.513, 'M4': 15.033}
+N1 23 0 source CE 5.7017 domains {'M1': 5.701, 'M2': 5.699, 'M3': 5.703, 'M4': 5.703}
+N1 23 1000 source CE 3.4884 domains {'M1': 3.057, 'M2': 4.191, 'M3': 3.49, 'M4': 3.216}
+N1 23 2000 source CE 3.1671 domains {'M1': 2.645, 'M2': 3.973, 'M3': 3.232, 'M4': 2.819}
+N1 23 3000 source CE 3.1195 domains {'M1': 2.73, 'M2': 3.802, 'M3': 3.092, 'M4': 2.854}
+N1 23 4000 source CE 3.016 domains {'M1': 2.595, 'M2': 3.667, 'M3': 3.01, 'M4': 2.793}
+N1 23 5000 source CE 2.9947 domains {'M1': 2.555, 'M2': 3.724, 'M3': 2.924, 'M4': 2.775}
+N2_original 23 0 source CE 5.3746 domains {'M1': 5.703, 'M2': 4.895, 'M3': 5.293, 'M4': 5.607}
+N2_original 23 1000 source CE 3.4536 domains {'M1': 3.027, 'M2': 4.129, 'M3': 3.439, 'M4': 3.22}
+N2_original 23 2000 source CE 3.1146 domains {'M1': 2.681, 'M2': 3.832, 'M3': 3.093, 'M4': 2.853}
+N2_original 23 3000 source CE 3.0365 domains {'M1': 2.544, 'M2': 3.8, 'M3': 3.061, 'M4': 2.741}
+N2_original 23 4000 source CE 2.9796 domains {'M1': 2.515, 'M2': 3.664, 'M3': 3.0, 'M4': 2.739}
+N2_original 23 5000 source CE 2.9181 domains {'M1': 2.499, 'M2': 3.561, 'M3': 2.902, 'M4': 2.711}
+N2_constrained 23 0 source CE 77.6011 domains {'M1': 61.611, 'M2': 57.669, 'M3': 102.29, 'M4': 88.834}
+N2_constrained 23 1000 source CE 18.6871 domains {'M1': 2.833, 'M2': 21.911, 'M3': 33.975, 'M4': 16.029}
+N2_constrained 23 2000 source CE 17.6751 domains {'M1': 2.865, 'M2': 20.878, 'M3': 31.029, 'M4': 15.928}
+N2_constrained 23 3000 source CE 18.0706 domains {'M1': 2.113, 'M2': 24.909, 'M3': 30.487, 'M4': 14.774}
+N2_constrained 23 4000 source CE 16.9829 domains {'M1': 2.195, 'M2': 21.29, 'M3': 29.851, 'M4': 14.596}
+N2_constrained 23 5000 source CE 16.5465 domains {'M1': 1.995, 'M2': 20.249, 'M3': 29.955, 'M4': 13.987}
+N0 11 0 source CE 5.7044 domains {'M1': 5.705, 'M2': 5.7, 'M3': 5.719, 'M4': 5.694}
+N0 11 1000 source CE 3.819 domains {'M1': 3.422, 'M2': 4.291, 'M3': 4.055, 'M4': 3.508}
+N0 11 2000 source CE 3.6782 domains {'M1': 3.093, 'M2': 4.405, 'M3': 3.978, 'M4': 3.236}
+N0 11 3000 source CE 3.5091 domains {'M1': 3.084, 'M2': 4.221, 'M3': 3.514, 'M4': 3.217}
+N0 11 4000 source CE 3.3221 domains {'M1': 2.889, 'M2': 4.102, 'M3': 3.303, 'M4': 2.994}
+N0 11 5000 source CE 3.2013 domains {'M1': 2.769, 'M2': 3.967, 'M3': 3.196, 'M4': 2.873}
+N1_kernel 11 0 source CE 5.6986 domains {'M1': 5.705, 'M2': 5.7, 'M3': 5.695, 'M4': 5.695}
+N1_kernel 11 1000 source CE 3.7619 domains {'M1': 3.579, 'M2': 4.039, 'M3': 3.607, 'M4': 3.822}
+N1_kernel 11 2000 source CE 3.2545 domains {'M1': 2.885, 'M2': 3.803, 'M3': 3.214, 'M4': 3.116}
+N1_kernel 11 3000 source CE 3.0969 domains {'M1': 2.708, 'M2': 3.711, 'M3': 2.974, 'M4': 2.994}
+N1_kernel 11 4000 source CE 3.0722 domains {'M1': 2.696, 'M2': 3.732, 'M3': 2.892, 'M4': 2.968}
+N1_kernel 11 5000 source CE 3.0238 domains {'M1': 2.588, 'M2': 3.757, 'M3': 2.891, 'M4': 2.859}
+N2_G1 11 0 source CE 42.5409 domains {'M1': 56.095, 'M2': 19.06, 'M3': 20.351, 'M4': 74.657}
+N2_G1 11 1000 source CE 4.9726 domains {'M1': 2.475, 'M2': 7.878, 'M3': 5.521, 'M4': 4.016}
+N2_G1 11 2000 source CE 4.3794 domains {'M1': 1.753, 'M2': 7.898, 'M3': 4.24, 'M4': 3.627}
+N2_G1 11 3000 source CE 4.1617 domains {'M1': 1.888, 'M2': 6.942, 'M3': 4.117, 'M4': 3.7}
+N2_G1 11 4000 source CE 4.2146 domains {'M1': 2.01, 'M2': 7.033, 'M3': 4.134, 'M4': 3.682}
+N2_G1 11 5000 source CE 4.0595 domains {'M1': 1.773, 'M2': 6.778, 'M3': 4.097, 'M4': 3.591}
+N2_G1 23 0 source CE 42.8579 domains {'M1': 56.979, 'M2': 19.065, 'M3': 20.418, 'M4': 74.969}
+N2_G1 23 1000 source CE 4.6934 domains {'M1': 2.177, 'M2': 7.696, 'M3': 5.083, 'M4': 3.818}
+N2_G1 23 2000 source CE 4.4962 domains {'M1': 1.782, 'M2': 7.854, 'M3': 4.702, 'M4': 3.646}
+N2_G1 23 3000 source CE 4.1433 domains {'M1': 1.878, 'M2': 6.77, 'M3': 4.321, 'M4': 3.605}
+N2_G1 23 4000 source CE 4.0862 domains {'M1': 1.831, 'M2': 6.76, 'M3': 4.195, 'M4': 3.558}
+N2_G1 23 5000 source CE 4.134 domains {'M1': 1.817, 'M2': 6.861, 'M3': 4.196, 'M4': 3.663}
+/scratch/.tmp-gsm/stage0-venv/lib/python3.13/site-packages/numpy/_core/_methods.py:188: RuntimeWarning: invalid value encountered in subtract
+  x = um.subtract(arr, arrmean, out=...)
+Traceback (most recent call last):
+  File "/scratch/RedFM_MLP/scripts/stage2b6_trust.py", line 356, in <module>
+    path=OUT/'models'/f'{arm}_seed{seed}'/'history.json'
+    
+  File "/scratch/RedFM_MLP/scripts/stage2b6_trust.py", line 268, in run
+    for seed in [11,23]:
+    
+  File "/scratch/RedFM_MLP/scripts/diagnose_hsc_clauds_stage0.py", line 46, in write
+    Path(p).write_text(json.dumps(value, indent=2, allow_nan=False, default=lambda v: v.item() if isinstance(v, np.generic) else str(v)) + '\n')
+                       ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/json/__init__.py", line 242, in dumps
+    **kw).encode(obj)
+          ~~~~~~^^^^^
+  File "/usr/local/lib/python3.13/json/encoder.py", line 202, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/usr/local/lib/python3.13/json/encoder.py", line 263, in iterencode
+    return _iterencode(o, 0)
+ValueError: Out of range float values are not JSON compliant: nan

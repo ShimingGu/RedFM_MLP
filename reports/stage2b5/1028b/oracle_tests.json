@@ -1,0 +1,6 @@
+{
+  "passed": true,
+  "known_mixture_correct_fraction": 1.0,
+  "true_z_NNLS_exact": true,
+  "warning": "With 12 free mixtures and only5 bands, zero chi2 may span many z; a different global argmin within a plateau is not solver failure. Known-mixture oracle has more intrinsic information than neural models."
+}

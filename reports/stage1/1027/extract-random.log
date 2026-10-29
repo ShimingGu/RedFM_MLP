@@ -1,0 +1,13 @@
+[transformers] The fast path is not available because one of the required library is not installed. Falling back to torch implementation. To install follow https://github.com/fla-org/flash-linear-attention#installation and https://github.com/Dao-AILab/causal-conv1d
+Loading weights:   0%|          | 0/426 [00:00<?, ?it/s]Loading weights:   0%|          | 1/426 [00:00<01:11,  5.97it/s]Loading weights:   6%|▋         | 27/426 [00:00<00:03, 118.80it/s]Loading weights:  15%|█▌        | 64/426 [00:00<00:01, 214.15it/s]Loading weights:  22%|██▏       | 95/426 [00:00<00:01, 245.62it/s]Loading weights:  31%|███       | 132/426 [00:00<00:01, 286.89it/s]Loading weights:  39%|███▉      | 167/426 [00:00<00:00, 305.85it/s]Loading weights:  47%|████▋     | 200/426 [00:00<00:00, 310.26it/s]Loading weights:  56%|█████▌    | 237/426 [00:00<00:00, 325.25it/s]Loading weights:  64%|██████▎   | 271/426 [00:00<00:00, 327.80it/s]Loading weights:  72%|███████▏  | 306/426 [00:01<00:00, 328.41it/s]Loading weights:  81%|████████  | 344/426 [00:01<00:00, 343.68it/s]Loading weights:  90%|████████▉ | 382/426 [00:01<00:00, 354.25it/s]Loading weights:  98%|█████████▊| 418/426 [00:01<00:00, 338.93it/s]Loading weights: 100%|██████████| 426/426 [00:01<00:00, 298.48it/s]
+random 0 / 1312
+random 128 / 1312
+random 256 / 1312
+random 384 / 1312
+random 512 / 1312
+random 640 / 1312
+random 768 / 1312
+random 896 / 1312
+random 1024 / 1312
+random 1152 / 1312
+random 1280 / 1312

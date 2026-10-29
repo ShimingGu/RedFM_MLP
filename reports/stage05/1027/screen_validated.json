@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "native_logits_bit_exact": true,
+  "all_outputs_finite": true,
+  "pooled_input_verified": true,
+  "control_tests": 4,
+  "full_controls_unchanged": [
+    "native",
+    "ebv_median",
+    "ebv_na",
+    "ebv_front",
+    "query_true",
+    "dim7"
+  ],
+  "no_accuracy_selection": true
+}

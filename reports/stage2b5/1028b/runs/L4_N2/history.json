@@ -1,0 +1,487 @@
+{
+  "name": "N2",
+  "tag": "L4_N2",
+  "seed": 11,
+  "history": [
+    {
+      "update": 0,
+      "train_CE": 5.813586235046387,
+      "source_validation_CE": 5.835031032562256,
+      "train_entropy": 5.426375389099121,
+      "validation_entropy": 5.297188758850098,
+      "parameter_change_L2": 0.0,
+      "head_change_L2": 0.0,
+      "bins_above_uniform_half": 194.11459350585938,
+      "gradient": {},
+      "seconds": 0.009714365005493164
+    },
+    {
+      "update": 50,
+      "train_CE": 5.47943115234375,
+      "source_validation_CE": 5.494747638702393,
+      "train_entropy": 5.518732070922852,
+      "validation_entropy": 5.509789943695068,
+      "parameter_change_L2": 8.08261742722984,
+      "head_change_L2": 7.557216570082557,
+      "bins_above_uniform_half": 237.6041717529297,
+      "gradient": {
+        "CE_to_coeff": 0.05077557638287544,
+        "photometry_to_coeff": 0.014712161384522915,
+        "CE_photometry_cosine": 0.15588423609733582,
+        "neural_logit_range": 0.24682623147964478,
+        "physical_logit_range": 1.7816864252090454,
+        "total_gradient_L2_before_clipping": 0.1575591266155243
+      },
+      "seconds": 0.8555965423583984
+    },
+    {
+      "update": 100,
+      "train_CE": 5.3692450523376465,
+      "source_validation_CE": 5.647374629974365,
+      "train_entropy": 5.445069789886475,
+      "validation_entropy": 5.4303178787231445,
+      "parameter_change_L2": 11.472035534385126,
+      "head_change_L2": 10.742617923783111,
+      "bins_above_uniform_half": 218.36459350585938,
+      "gradient": {
+        "CE_to_coeff": 0.05077557638287544,
+        "photometry_to_coeff": 0.014712161384522915,
+        "CE_photometry_cosine": 0.15588423609733582,
+        "neural_logit_range": 0.24682623147964478,
+        "physical_logit_range": 1.7816864252090454,
+        "total_gradient_L2_before_clipping": 0.29835301637649536
+      },
+      "seconds": 1.7152526378631592
+    },
+    {
+      "update": 150,
+      "train_CE": 5.3354291915893555,
+      "source_validation_CE": 5.589046478271484,
+      "train_entropy": 5.429875373840332,
+      "validation_entropy": 5.416167259216309,
+      "parameter_change_L2": 13.51551356311017,
+      "head_change_L2": 12.687376324750833,
+      "bins_above_uniform_half": 217.6979217529297,
+      "gradient": {
+        "CE_to_coeff": 0.05077557638287544,
+        "photometry_to_coeff": 0.014712161384522915,
+        "CE_photometry_cosine": 0.15588423609733582,
+        "neural_logit_range": 0.24682623147964478,
+        "physical_logit_range": 1.7816864252090454,
+        "total_gradient_L2_before_clipping": 0.326114684343338
+      },
+      "seconds": 2.568570852279663
+    },
+    {
+      "update": 200,
+      "train_CE": 5.305248260498047,
+      "source_validation_CE": 5.635499477386475,
+      "train_entropy": 5.402684211730957,
+      "validation_entropy": 5.383223533630371,
+      "parameter_change_L2": 15.122124200699655,
+      "head_change_L2": 14.175659158138322,
+      "bins_above_uniform_half": 211.875,
+      "gradient": {
+        "CE_to_coeff": 0.05077557638287544,
+        "photometry_to_coeff": 0.014712161384522915,
+        "CE_photometry_cosine": 0.15588423609733582,
+        "neural_logit_range": 0.24682623147964478,
+        "physical_logit_range": 1.7816864252090454,
+        "total_gradient_L2_before_clipping": 0.33302175998687744
+      },
+      "seconds": 3.4294984340667725
+    },
+    {
+      "update": 250,
+      "train_CE": 5.2790727615356445,
+      "source_validation_CE": 5.693546295166016,
+      "train_entropy": 5.380208492279053,
+      "validation_entropy": 5.371554851531982,
+      "parameter_change_L2": 16.644681768015435,
+      "head_change_L2": 15.583824207569537,
+      "bins_above_uniform_half": 208.4479217529297,
+      "gradient": {
+        "CE_to_coeff": 0.05077557638287544,
+        "photometry_to_coeff": 0.014712161384522915,
+        "CE_photometry_cosine": 0.15588423609733582,
+        "neural_logit_range": 0.24682623147964478,
+        "physical_logit_range": 1.7816864252090454,
+        "total_gradient_L2_before_clipping": 0.29101309180259705
+      },
+      "seconds": 4.322048902511597
+    },
+    {
+      "update": 300,
+      "train_CE": 5.245290756225586,
+      "source_validation_CE": 5.659746170043945,
+      "train_entropy": 5.374800682067871,
+      "validation_entropy": 5.3625617027282715,
+      "parameter_change_L2": 18.078694241514395,
+      "head_change_L2": 16.952447847827013,
+      "bins_above_uniform_half": 207.80209350585938,
+      "gradient": {
+        "CE_to_coeff": 0.05077557638287544,
+        "photometry_to_coeff": 0.014712161384522915,
+        "CE_photometry_cosine": 0.15588423609733582,
+        "neural_logit_range": 0.24682623147964478,
+        "physical_logit_range": 1.7816864252090454,
+        "total_gradient_L2_before_clipping": 0.2510471045970917
+      },
+      "seconds": 5.204658031463623
+    },
+    {
+      "update": 350,
+      "train_CE": 5.198416709899902,
+      "source_validation_CE": 5.734275817871094,
+      "train_entropy": 5.345932483673096,
+      "validation_entropy": 5.334583282470703,
+      "parameter_change_L2": 19.677392291084395,
+      "head_change_L2": 18.42743945995111,
+      "bins_above_uniform_half": 200.86459350585938,
+      "gradient": {
+        "CE_to_coeff": 0.05077557638287544,
+        "photometry_to_coeff": 0.014712161384522915,
+        "CE_photometry_cosine": 0.15588423609733582,
+        "neural_logit_range": 0.24682623147964478,
+        "physical_logit_range": 1.7816864252090454,
+        "total_gradient_L2_before_clipping": 0.31321170926094055
+      },
+      "seconds": 6.055447578430176
+    },
+    {
+      "update": 400,
+      "train_CE": 5.168731689453125,
+      "source_validation_CE": 5.715002059936523,
+      "train_entropy": 5.285989761352539,
+      "validation_entropy": 5.279722213745117,
+      "parameter_change_L2": 21.343144520492373,
+      "head_change_L2": 19.935413507026833,
+      "bins_above_uniform_half": 191.30209350585938,
+      "gradient": {
+        "CE_to_coeff": 0.05077557638287544,
+        "photometry_to_coeff": 0.014712161384522915,
+        "CE_photometry_cosine": 0.15588423609733582,
+        "neural_logit_range": 0.24682623147964478,
+        "physical_logit_range": 1.7816864252090454,
+        "total_gradient_L2_before_clipping": 0.9897517561912537
+      },
+      "seconds": 6.90779185295105
+    },
+    {
+      "update": 450,
+      "train_CE": 5.069929599761963,
+      "source_validation_CE": 5.608427047729492,
+      "train_entropy": 5.289573669433594,
+      "validation_entropy": 5.271745681762695,
+      "parameter_change_L2": 23.017369140992088,
+      "head_change_L2": 21.47010059356222,
+      "bins_above_uniform_half": 189.45834350585938,
+      "gradient": {
+        "CE_to_coeff": 0.23762528598308563,
+        "photometry_to_coeff": 0.03857168182730675,
+        "CE_photometry_cosine": -0.7603514194488525,
+        "neural_logit_range": 5.521264553070068,
+        "physical_logit_range": 1.600459098815918,
+        "total_gradient_L2_before_clipping": 1.0232458114624023
+      },
+      "seconds": 7.763031482696533
+    },
+    {
+      "update": 500,
+      "train_CE": 4.99409294128418,
+      "source_validation_CE": 5.715364456176758,
+      "train_entropy": 5.209618091583252,
+      "validation_entropy": 5.199344158172607,
+      "parameter_change_L2": 24.748707557236546,
+      "head_change_L2": 23.102580058728275,
+      "bins_above_uniform_half": 174.73959350585938,
+      "gradient": {
+        "CE_to_coeff": 0.23762528598308563,
+        "photometry_to_coeff": 0.03857168182730675,
+        "CE_photometry_cosine": -0.7603514194488525,
+        "neural_logit_range": 5.521264553070068,
+        "physical_logit_range": 1.600459098815918,
+        "total_gradient_L2_before_clipping": 1.521667242050171
+      },
+      "seconds": 8.63709831237793
+    },
+    {
+      "update": 550,
+      "train_CE": 4.925514221191406,
+      "source_validation_CE": 5.708763599395752,
+      "train_entropy": 5.161458969116211,
+      "validation_entropy": 5.132867336273193,
+      "parameter_change_L2": 26.48859260609833,
+      "head_change_L2": 24.752067072601623,
+      "bins_above_uniform_half": 163.0104217529297,
+      "gradient": {
+        "CE_to_coeff": 0.23762528598308563,
+        "photometry_to_coeff": 0.03857168182730675,
+        "CE_photometry_cosine": -0.7603514194488525,
+        "neural_logit_range": 5.521264553070068,
+        "physical_logit_range": 1.600459098815918,
+        "total_gradient_L2_before_clipping": 1.1048272848129272
+      },
+      "seconds": 9.536529541015625
+    },
+    {
+      "update": 600,
+      "train_CE": 4.8141045570373535,
+      "source_validation_CE": 5.69001579284668,
+      "train_entropy": 5.112150192260742,
+      "validation_entropy": 5.085240840911865,
+      "parameter_change_L2": 28.505196947213935,
+      "head_change_L2": 26.71440552531806,
+      "bins_above_uniform_half": 157.83334350585938,
+      "gradient": {
+        "CE_to_coeff": 0.23762528598308563,
+        "photometry_to_coeff": 0.03857168182730675,
+        "CE_photometry_cosine": -0.7603514194488525,
+        "neural_logit_range": 5.521264553070068,
+        "physical_logit_range": 1.600459098815918,
+        "total_gradient_L2_before_clipping": 2.527217149734497
+      },
+      "seconds": 10.424582242965698
+    },
+    {
+      "update": 650,
+      "train_CE": 4.73165225982666,
+      "source_validation_CE": 5.686839580535889,
+      "train_entropy": 5.072267532348633,
+      "validation_entropy": 5.066289901733398,
+      "parameter_change_L2": 30.15909788496556,
+      "head_change_L2": 28.333090968123887,
+      "bins_above_uniform_half": 157.9479217529297,
+      "gradient": {
+        "CE_to_coeff": 0.23762528598308563,
+        "photometry_to_coeff": 0.03857168182730675,
+        "CE_photometry_cosine": -0.7603514194488525,
+        "neural_logit_range": 5.521264553070068,
+        "physical_logit_range": 1.600459098815918,
+        "total_gradient_L2_before_clipping": 1.4378600120544434
+      },
+      "seconds": 11.276117086410522
+    },
+    {
+      "update": 700,
+      "train_CE": 4.640138626098633,
+      "source_validation_CE": 5.747837066650391,
+      "train_entropy": 5.001669883728027,
+      "validation_entropy": 4.9813032150268555,
+      "parameter_change_L2": 31.793553218210082,
+      "head_change_L2": 29.901588363624317,
+      "bins_above_uniform_half": 146.5625,
+      "gradient": {
+        "CE_to_coeff": 0.23762528598308563,
+        "photometry_to_coeff": 0.03857168182730675,
+        "CE_photometry_cosine": -0.7603514194488525,
+        "neural_logit_range": 5.521264553070068,
+        "physical_logit_range": 1.600459098815918,
+        "total_gradient_L2_before_clipping": 2.975109100341797
+      },
+      "seconds": 12.127529859542847
+    },
+    {
+      "update": 750,
+      "train_CE": 4.5809125900268555,
+      "source_validation_CE": 5.814979553222656,
+      "train_entropy": 4.927979469299316,
+      "validation_entropy": 4.915291786193848,
+      "parameter_change_L2": 33.37107153372353,
+      "head_change_L2": 31.442224437652307,
+      "bins_above_uniform_half": 141.92709350585938,
+      "gradient": {
+        "CE_to_coeff": 0.23762528598308563,
+        "photometry_to_coeff": 0.03857168182730675,
+        "CE_photometry_cosine": -0.7603514194488525,
+        "neural_logit_range": 5.521264553070068,
+        "physical_logit_range": 1.600459098815918,
+        "total_gradient_L2_before_clipping": 1.764031171798706
+      },
+      "seconds": 12.979068279266357
+    },
+    {
+      "update": 800,
+      "train_CE": 4.522281646728516,
+      "source_validation_CE": 5.712518692016602,
+      "train_entropy": 4.907573223114014,
+      "validation_entropy": 4.875453472137451,
+      "parameter_change_L2": 34.823982553702656,
+      "head_change_L2": 32.85704438945575,
+      "bins_above_uniform_half": 134.77084350585938,
+      "gradient": {
+        "CE_to_coeff": 0.23762528598308563,
+        "photometry_to_coeff": 0.03857168182730675,
+        "CE_photometry_cosine": -0.7603514194488525,
+        "neural_logit_range": 5.521264553070068,
+        "physical_logit_range": 1.600459098815918,
+        "total_gradient_L2_before_clipping": 3.511596202850342
+      },
+      "seconds": 13.829270601272583
+    },
+    {
+      "update": 850,
+      "train_CE": 4.485600471496582,
+      "source_validation_CE": 5.818583011627197,
+      "train_entropy": 4.9027886390686035,
+      "validation_entropy": 4.86602783203125,
+      "parameter_change_L2": 36.18208583588762,
+      "head_change_L2": 34.18158095515729,
+      "bins_above_uniform_half": 134.08334350585938,
+      "gradient": {
+        "CE_to_coeff": 0.23762528598308563,
+        "photometry_to_coeff": 0.03857168182730675,
+        "CE_photometry_cosine": -0.7603514194488525,
+        "neural_logit_range": 5.521264553070068,
+        "physical_logit_range": 1.600459098815918,
+        "total_gradient_L2_before_clipping": 3.822817087173462
+      },
+      "seconds": 14.680655479431152
+    },
+    {
+      "update": 900,
+      "train_CE": 4.381585121154785,
+      "source_validation_CE": 5.858656406402588,
+      "train_entropy": 4.807903289794922,
+      "validation_entropy": 4.752006530761719,
+      "parameter_change_L2": 37.543226112832684,
+      "head_change_L2": 35.49467264418075,
+      "bins_above_uniform_half": 125.01042175292969,
+      "gradient": {
+        "CE_to_coeff": 0.23762528598308563,
+        "photometry_to_coeff": 0.03857168182730675,
+        "CE_photometry_cosine": -0.7603514194488525,
+        "neural_logit_range": 5.521264553070068,
+        "physical_logit_range": 1.600459098815918,
+        "total_gradient_L2_before_clipping": 1.5596781969070435
+      },
+      "seconds": 15.54164719581604
+    },
+    {
+      "update": 950,
+      "train_CE": 4.326537132263184,
+      "source_validation_CE": 5.9366774559021,
+      "train_entropy": 4.754609107971191,
+      "validation_entropy": 4.718553066253662,
+      "parameter_change_L2": 38.874788962139036,
+      "head_change_L2": 36.7945451958638,
+      "bins_above_uniform_half": 123.0,
+      "gradient": {
+        "CE_to_coeff": 0.23762528598308563,
+        "photometry_to_coeff": 0.03857168182730675,
+        "CE_photometry_cosine": -0.7603514194488525,
+        "neural_logit_range": 5.521264553070068,
+        "physical_logit_range": 1.600459098815918,
+        "total_gradient_L2_before_clipping": 2.234677314758301
+      },
+      "seconds": 16.392648696899414
+    },
+    {
+      "update": 1000,
+      "train_CE": 4.277598857879639,
+      "source_validation_CE": 5.905492782592773,
+      "train_entropy": 4.737377643585205,
+      "validation_entropy": 4.680869102478027,
+      "parameter_change_L2": 40.20190473957976,
+      "head_change_L2": 38.094027849143245,
+      "bins_above_uniform_half": 117.14583587646484,
+      "gradient": {
+        "CE_to_coeff": 0.23762528598308563,
+        "photometry_to_coeff": 0.03857168182730675,
+        "CE_photometry_cosine": -0.7603514194488525,
+        "neural_logit_range": 5.521264553070068,
+        "physical_logit_range": 1.600459098815918,
+        "total_gradient_L2_before_clipping": 1.9026354551315308
+      },
+      "seconds": 17.241983890533447
+    },
+    {
+      "update": 1050,
+      "train_CE": 4.190363883972168,
+      "source_validation_CE": 5.94420862197876,
+      "train_entropy": 4.6408586502075195,
+      "validation_entropy": 4.579936504364014,
+      "parameter_change_L2": 41.579115805724385,
+      "head_change_L2": 39.45201346465125,
+      "bins_above_uniform_half": 111.35417175292969,
+      "gradient": {
+        "CE_to_coeff": 0.23762528598308563,
+        "photometry_to_coeff": 0.03857168182730675,
+        "CE_photometry_cosine": -0.7603514194488525,
+        "neural_logit_range": 5.521264553070068,
+        "physical_logit_range": 1.600459098815918,
+        "total_gradient_L2_before_clipping": 2.4800140857696533
+      },
+      "seconds": 18.10128617286682
+    },
+    {
+      "update": 1100,
+      "train_CE": 4.107469081878662,
+      "source_validation_CE": 5.936016082763672,
+      "train_entropy": 4.642753601074219,
+      "validation_entropy": 4.612861156463623,
+      "parameter_change_L2": 42.81093486575438,
+      "head_change_L2": 40.65359561121999,
+      "bins_above_uniform_half": 112.5,
+      "gradient": {
+        "CE_to_coeff": 0.23762528598308563,
+        "photometry_to_coeff": 0.03857168182730675,
+        "CE_photometry_cosine": -0.7603514194488525,
+        "neural_logit_range": 5.521264553070068,
+        "physical_logit_range": 1.600459098815918,
+        "total_gradient_L2_before_clipping": 3.2046382427215576
+      },
+      "seconds": 18.956668376922607
+    },
+    {
+      "update": 1150,
+      "train_CE": 4.073827266693115,
+      "source_validation_CE": 6.027717590332031,
+      "train_entropy": 4.615351676940918,
+      "validation_entropy": 4.543361663818359,
+      "parameter_change_L2": 43.98570284753245,
+      "head_change_L2": 41.80026506312531,
+      "bins_above_uniform_half": 107.61458587646484,
+      "gradient": {
+        "CE_to_coeff": 0.23762528598308563,
+        "photometry_to_coeff": 0.03857168182730675,
+        "CE_photometry_cosine": -0.7603514194488525,
+        "neural_logit_range": 5.521264553070068,
+        "physical_logit_range": 1.600459098815918,
+        "total_gradient_L2_before_clipping": 6.3060622215271
+      },
+      "seconds": 19.802812814712524
+    },
+    {
+      "update": 1200,
+      "train_CE": 3.9894368648529053,
+      "source_validation_CE": 6.147641658782959,
+      "train_entropy": 4.531102180480957,
+      "validation_entropy": 4.4753289222717285,
+      "parameter_change_L2": 45.23762653750941,
+      "head_change_L2": 43.034193344126166,
+      "bins_above_uniform_half": 101.4375,
+      "gradient": {
+        "CE_to_coeff": 0.35800057649612427,
+        "photometry_to_coeff": 0.07719063758850098,
+        "CE_photometry_cosine": 0.6955475807189941,
+        "neural_logit_range": 6.534553527832031,
+        "physical_logit_range": 1.876346468925476,
+        "total_gradient_L2_before_clipping": 6.612916469573975
+      },
+      "seconds": 20.661093950271606
+    }
+  ],
+  "best_step": 50,
+  "best_validation_CE": 5.494747638702393,
+  "steps": 1200,
+  "lr": 0.002,
+  "smooth": 3.0,
+  "coarse": false,
+  "replay": false,
+  "response": "full",
+  "parameters": 104792,
+  "seconds": 20.662086725234985,
+  "optimizer": "AdamW weight_decay0.0001; no scheduler (same as original)",
+  "shuffled_training_labels": false
+}

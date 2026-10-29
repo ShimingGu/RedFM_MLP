@@ -1,0 +1,15 @@
+{
+  "Legacy_eligible.npz": "db7c82e7e0e8801be230dfd300da63fccb407c74f1792dcb5611b8f67bf88c8c",
+  "T2_identity_locked.npz": "ec91475b9895efcc5b655855a0776ac55be47fd047a0a40741f7f66637331e69",
+  "HSC_eligible.npz": "7a15887e91259572a784ee665ff21289f7f539502020304955c5a5fc4ed933b4",
+  "T2_photometry.npz": "0751be255b8b15834b97ca54a7c4d3fd10efe696994ed54e8cdda23d3b0bf53a",
+  "legacy_membership_only.npz": "5e932b8edc4ef943f968343e2d967770be34c713d9a2c86027aef032f0a95c74",
+  "legacy_all_membership_astrometry.npz": "13692965e5845b9a429abab1d0dc0739f0d963fe36165be7981f2d85b1f829ec",
+  "legacy_exact_trainval.npz": "c8c39501b2f178a15bb3c3338e17e60c3b98e8d428af11a70e94eec1bd0940d6",
+  "representations.npz": "c1958bbb56f1c339053e48292f7029515770627a2e666ba21198f7907794f9a0",
+  "legacy_trainval_unified.npz": "d9153141bf284d95b6afa0edd0431e56e91ea319376fba385641f7f32722df71",
+  "unlabeled_population_identity.npz": "fe90d54afe48766c16996ec2dfdcb64e1351d19c3090d2a3f105a5d7f5ccd2c7",
+  "T2_candidate_identity.npz": "20a470aa0885bed459133c55c26c55b6ab16d8635933df702d246884b9ed9cf5",
+  "unlabeled_population_photometry.npz": "b47cbedf966b32aef3f2b2a8912769d26446ee6f0356aa792365e46094665ca0",
+  "Mixed_eligible.npz": "a595a684e3c142293799095c3ac996f8a91124b6db90e55b72f60feea8383d10"
+}

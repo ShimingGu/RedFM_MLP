@@ -1,0 +1,11 @@
+{
+  "implementation": true,
+  "elementary": true,
+  "source_validation_learning": true,
+  "original_L4_trained_models_evaluated_on_heldout": [
+    "N2"
+  ],
+  "population_scale_real_training": false,
+  "CLAUDS_labels_used": false,
+  "physics_benefit": "Assess matched/mismatched/oracle results with SED bootstrap; no automatic superiority declaration"
+}

@@ -1,0 +1,10 @@
+system,contrast,metric,bootstrap_unit,median,ci95_low,ci95_high,n_seds
+HSC,base_last_seed11 minus random_last_seed11,outlier_fraction_difference,SED identity,0.046875,-0.14101562499999998,0.203125,32
+HSC,base_last_seed11 minus numeric_set_mlp_seed11,outlier_fraction_difference,SED identity,0.078125,-0.04726562499999998,0.203125,32
+HSC,base_last_seed11 minus physical_template,outlier_fraction_difference,SED identity,0.34375,0.1875,0.53125,32
+CLAUDS,base_last_seed11 minus random_last_seed11,outlier_fraction_difference,SED identity,-0.046875,-0.171875,0.078125,32
+CLAUDS,base_last_seed11 minus numeric_set_mlp_seed11,outlier_fraction_difference,SED identity,0.109375,-0.015625,0.23476562499999964,32
+CLAUDS,base_last_seed11 minus physical_template,outlier_fraction_difference,SED identity,0.546875,0.375,0.65625,32
+new_filters,base_last_seed11 minus random_last_seed11,outlier_fraction_difference,SED identity,-0.046875,-0.1875,0.078125,32
+new_filters,base_last_seed11 minus numeric_set_mlp_seed11,outlier_fraction_difference,SED identity,0.0625,-0.09375,0.21875,32
+new_filters,base_last_seed11 minus physical_template,outlier_fraction_difference,SED identity,0.34375,0.18710937500000002,0.5,32

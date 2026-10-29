@@ -1,0 +1,19 @@
+{
+  "completed": true,
+  "protected_files_checked": 1890,
+  "protected_files_unchanged": true,
+  "protocol_unchanged": true,
+  "all_preregistered_dataset_hashes_match": true,
+  "all_preregistered_candidate_implementation_hashes_match": true,
+  "all20_frozen_model_hashes_match": true,
+  "finite_normalized_prediction_files": 207,
+  "source_split_disjoint": true,
+  "COSMOS_field_held_out": true,
+  "target_IDs_unique": true,
+  "target_labels_in_range_without_clipping": true,
+  "original_Qwen_artifacts_unchanged": true,
+  "source_test_evaluated": false,
+  "Qwen_training": false,
+  "Stage2C": false,
+  "UTC": "2026-10-28T23:52:04Z"
+}

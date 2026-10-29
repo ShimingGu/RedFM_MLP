@@ -1,0 +1,143 @@
+{
+  "family": "BC",
+  "protocol_sha256": "4be1164c7b27ea03fef496696202ad8063b86d6a0c3827c041ca8fbebdf76581",
+  "base_files_sha256": {
+    "video_preprocessor_config.json": "d039cd7d88b3502a99edd455496b75b44ecf7dd3b3669748bafac37e6cecc085",
+    "README.md": "76ead24ea3de5a52610c755ffa0b6e7cb51e3c413f124a3776bc6f16b694474e",
+    "vocab.json": "ce99b4cb2983d118806ce0a8b777a35b093e2000a503ebde25853284c9dfa003",
+    "tokenizer.json": "fe000e3ed39ed12b8d2481d527d44f93c65d37e87645d2dcc80d1bf9d50d2927",
+    "model.safetensors.index.json": "eae340074abb0a5f31a6621f7ae8e8248a7c1790df04a722c4e4b70c2a6d1dbb",
+    "config.json": "ddc63e1c717afa86c865bb5e01313d89d72bb53b97ad4a8a03ba8510c0621670",
+    "LICENSE": "50cbab8a892c5f2993b8c7351a99182507472def3b1374558308605d99b86b32",
+    ".gitattributes": "34448b82c17d60fec9b65b1f093c115ddbaadc04beb1b0140b6bfed2e012a930",
+    "model.safetensors-00002-of-00002.safetensors": "590fbaac095dd31db886c322d9d2f7df47777966391acf306ddddc3e4e3a15ef",
+    "tokenizer_config.json": "3891e840d7dc5fca0af33d3a25083a735e36fe06214e3f707024820cb6b9f89c",
+    "model.safetensors-00001-of-00002.safetensors": "df547074dce70532a0493e5433152bd17a65efb89088cfabc2e7e2371a93d712",
+    "preprocessor_config.json": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516",
+    "merges.txt": "a9d356d7bdf1ef4949e3e748e95b8e10ad9d4e2e838eddc38a0a7b6b94d1db8d"
+  },
+  "adapter_files_sha256": {
+    "/arc/projects/ots/Cosmic_Imprint_of_Time/posttrainings/qwen-qlora/adapter/README.md": "9dd5181a95f66d1e1bd8e1eedecee85c42529d4e6a61299f73c6993226ec53e0",
+    "/arc/projects/ots/Cosmic_Imprint_of_Time/posttrainings/qwen-qlora/adapter/adapter_config.json": "0572ee944dfdcb873454cb6ea68b9b935390109daa9a9f2338f7635ae6a1ab1f",
+    "/arc/projects/ots/Cosmic_Imprint_of_Time/posttrainings/qwen-qlora/adapter/adapter_model.safetensors": "72e9f1e9425ae83215f503a26d426ebe1e027f5887ceb6b712dbe08d76c81cf1",
+    "/arc/projects/ots/Cosmic_Imprint_of_Time/posttrainings/qwen-qlora/photoz_head.pt": "95dbb43b8768415b8b7830b182b966a121a7a433b9e2dd5715bd5ad03fe3d157",
+    "/arc/projects/ots/Cosmic_Imprint_of_Time/posttrainings/qwen-qlora/result.pt": "2c8af3e21bfbf96b171a4393b790b1e91d561879d7ad9a18326d60bd6738bf33"
+  },
+  "tokenizer_sha256": "fe000e3ed39ed12b8d2481d527d44f93c65d37e87645d2dcc80d1bf9d50d2927",
+  "extraction_code_sha256": "e4a712cb8021c1563f6e84b27442abcab7c1c29cade20fa9a820ce8ac9d0ed8d",
+  "feature_files": {
+    "GMS_canonical": {
+      "path": "/scratch/RedFM_MLP/reports/stage4/1029/features/BC/GMS_canonical.npz",
+      "sha256": "03fd8b02048aa095921102f81576d1ca59a366cd113a07e9e64fd1d83428d244",
+      "input_sha256": "f51cf9e8ef1b2c2a3a800c3c0769cfbb1adc8692e306301a0e66227b3c20a6d2",
+      "rows": 2432,
+      "dimension": 2560,
+      "poolings": [
+        "last",
+        "FP32_masked_mean"
+      ],
+      "dtype": "float32 cached; NF4/BF16 frozen forward",
+      "seconds": 251.10963678359985,
+      "deterministic_repeat_max": 0.0
+    },
+    "GMS_alternate": {
+      "path": "/scratch/RedFM_MLP/reports/stage4/1029/features/BC/GMS_alternate.npz",
+      "sha256": "f493b73b341ddbd0d552bd5c6e13de932d1bba368011ea936344c87974f4fa64",
+      "input_sha256": "4f981be32cee159699258f55e36b5d4de054cd8c5b11ed386f47fd16cc06207f",
+      "rows": 2432,
+      "dimension": 2560,
+      "poolings": [
+        "last",
+        "FP32_masked_mean"
+      ],
+      "dtype": "float32 cached; NF4/BF16 frozen forward",
+      "seconds": 324.9812035560608,
+      "deterministic_repeat_max": 0.0
+    },
+    "C_SPEC_canonical": {
+      "path": "/scratch/RedFM_MLP/reports/stage4/1029/features/BC/C_SPEC_canonical.npz",
+      "sha256": "d5778b60d5792b664169c49e775e9d9d2df858ad3a5b2fbc2fea7e9eea7d686b",
+      "input_sha256": "756551775fe649485528a1ba28268c02f187c4ba9a8b633a22671624fee1456d",
+      "rows": 1968,
+      "dimension": 2560,
+      "poolings": [
+        "last",
+        "FP32_masked_mean"
+      ],
+      "dtype": "float32 cached; NF4/BF16 frozen forward",
+      "seconds": 368.6397399902344,
+      "deterministic_repeat_max": 0.0
+    },
+    "C_SPEC_alternate": {
+      "path": "/scratch/RedFM_MLP/reports/stage4/1029/features/BC/C_SPEC_alternate.npz",
+      "sha256": "667b5a2f2b93140dab775b3fccd0cc2102866fc2f445593ff489793dc402ea18",
+      "input_sha256": "de54e62b1fa9c571423079f04ac26a0136a20ede7635c9d329a66f40ded3de7f",
+      "rows": 1968,
+      "dimension": 2560,
+      "poolings": [
+        "last",
+        "FP32_masked_mean"
+      ],
+      "dtype": "float32 cached; NF4/BF16 frozen forward",
+      "seconds": 475.63875126838684,
+      "deterministic_repeat_max": 0.0
+    },
+    "C_ZPHOT_canonical": {
+      "path": "/scratch/RedFM_MLP/reports/stage4/1029/features/BC/C_ZPHOT_canonical.npz",
+      "sha256": "a0a4e5a88354c47896cc1fbbbda65856aadefad776f00fc98d5cd3e493c1a847",
+      "input_sha256": "d38be00d3d703444edaf90e0e11220353aa4bdb870f058215279ffd0cd1bb17c",
+      "rows": 2432,
+      "dimension": 2560,
+      "poolings": [
+        "last",
+        "FP32_masked_mean"
+      ],
+      "dtype": "float32 cached; NF4/BF16 frozen forward",
+      "seconds": 460.9482750892639,
+      "deterministic_repeat_max": 0.0
+    }
+  },
+  "GPU": {
+    "uuid": "96b155fa-58a8-55f6-b1e3-0486e7c783c0",
+    "memory_before_gib": {
+      "total": 10.75,
+      "free": 10.73345947265625,
+      "used": 0.01654052734375
+    }
+  },
+  "seconds": 1891.0127592086792,
+  "peak_GPU_bytes": 5854466048,
+  "all_parameters_frozen": true,
+  "model_eval": true,
+  "no_optimizer_exists": true,
+  "native_replay": {
+    "passed": true,
+    "n": 32,
+    "max_abs_logit_error": 0.0,
+    "max_abs_pdf_error": 0.0,
+    "metrics": {
+      "bias": 0.02133958227932453,
+      "median_bias": 0.030713308602571487,
+      "nmad": 0.06889387965202332,
+      "catastrophic_outlier_fraction": 0.09375,
+      "cross_entropy": 3.775624990463257,
+      "mean_log_score": 3.775624990463257,
+      "mean_crps": 0.1495991349220276,
+      "p16_p84_coverage": 0.71875,
+      "pit_mean": 0.4132723808288574
+    },
+    "archived_metrics": {
+      "bias": 0.02133958227932453,
+      "median_bias": 0.030713308602571487,
+      "nmad": 0.06889387965202332,
+      "catastrophic_outlier_fraction": 0.09375,
+      "cross_entropy": 3.775624990463257,
+      "mean_log_score": 3.775624990463257,
+      "mean_crps": 0.1495991349220276,
+      "p16_p84_coverage": 0.71875,
+      "pit_mean": 0.4132723808288574
+    }
+  },
+  "in_memory_parameter_signature_unchanged": true,
+  "parameter_sample_sha256": "aafd13a0bdad4404bc6b2b538cd0d532b31c6ae22ddfc368ca3fda5de7e2b1d8"
+}

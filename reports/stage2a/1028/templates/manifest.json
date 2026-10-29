@@ -1,0 +1,100 @@
+[
+  {
+    "file": "fsps_QSF_12_v3.param",
+    "url": "https://raw.githubusercontent.com/gbrammer/eazy-photoz/f651e94d91042a84906090a66d2a3fec75504e21/templates/fsps_full/fsps_QSF_12_v3.param",
+    "commit": "f651e94d91042a84906090a66d2a3fec75504e21",
+    "sha256": "34b245fd1b67dda73b864574d8ec3c3b58b5313495bef5114b0c69416a3cc5ad",
+    "bytes": 591
+  },
+  {
+    "file": "tweak_fsps_QSF_12_v3.param",
+    "url": "https://raw.githubusercontent.com/gbrammer/eazy-photoz/f651e94d91042a84906090a66d2a3fec75504e21/templates/fsps_full/tweak_fsps_QSF_12_v3.param",
+    "commit": "f651e94d91042a84906090a66d2a3fec75504e21",
+    "sha256": "33b28f5f14104ff66292ad8bf3ae828c7830cea014c241b9921ee8f47e34797d",
+    "bytes": 780
+  },
+  {
+    "file": "tweak_fsps_QSF_12_v3_001.dat",
+    "url": "https://raw.githubusercontent.com/gbrammer/eazy-photoz/f651e94d91042a84906090a66d2a3fec75504e21/templates/fsps_full/tweak_fsps_QSF_12_v3_001.dat",
+    "commit": "f651e94d91042a84906090a66d2a3fec75504e21",
+    "sha256": "84b12a247a5c6c2b39509d109b03a4b449bb7411b941956472b674ac359a3bef",
+    "bytes": 155844
+  },
+  {
+    "file": "tweak_fsps_QSF_12_v3_002.dat",
+    "url": "https://raw.githubusercontent.com/gbrammer/eazy-photoz/f651e94d91042a84906090a66d2a3fec75504e21/templates/fsps_full/tweak_fsps_QSF_12_v3_002.dat",
+    "commit": "f651e94d91042a84906090a66d2a3fec75504e21",
+    "sha256": "3a89ccdc1f9187af90e604fa501ce59d8fd0d9c883bb22c6e72dd402a91b13ae",
+    "bytes": 155844
+  },
+  {
+    "file": "tweak_fsps_QSF_12_v3_003.dat",
+    "url": "https://raw.githubusercontent.com/gbrammer/eazy-photoz/f651e94d91042a84906090a66d2a3fec75504e21/templates/fsps_full/tweak_fsps_QSF_12_v3_003.dat",
+    "commit": "f651e94d91042a84906090a66d2a3fec75504e21",
+    "sha256": "da23d5677771ea349fe0d671a2ec1d34ed97aefccbb886c48aa4dcd5f373108c",
+    "bytes": 155844
+  },
+  {
+    "file": "tweak_fsps_QSF_12_v3_004.dat",
+    "url": "https://raw.githubusercontent.com/gbrammer/eazy-photoz/f651e94d91042a84906090a66d2a3fec75504e21/templates/fsps_full/tweak_fsps_QSF_12_v3_004.dat",
+    "commit": "f651e94d91042a84906090a66d2a3fec75504e21",
+    "sha256": "991a571045067ebddc5b34391906bdbcae1a1b77639d0f9a98d1f5d1ea6e8397",
+    "bytes": 155844
+  },
+  {
+    "file": "tweak_fsps_QSF_12_v3_005.dat",
+    "url": "https://raw.githubusercontent.com/gbrammer/eazy-photoz/f651e94d91042a84906090a66d2a3fec75504e21/templates/fsps_full/tweak_fsps_QSF_12_v3_005.dat",
+    "commit": "f651e94d91042a84906090a66d2a3fec75504e21",
+    "sha256": "ff5f0ddc3d45a36e3a8f557db1ecce75ceb771c28c3ed7f0f1bf9fea748d1597",
+    "bytes": 155844
+  },
+  {
+    "file": "tweak_fsps_QSF_12_v3_006.dat",
+    "url": "https://raw.githubusercontent.com/gbrammer/eazy-photoz/f651e94d91042a84906090a66d2a3fec75504e21/templates/fsps_full/tweak_fsps_QSF_12_v3_006.dat",
+    "commit": "f651e94d91042a84906090a66d2a3fec75504e21",
+    "sha256": "84c31906d2d17e2dca9818d268cfb3eee62369eb7fae52ea24606fe2b75f4e27",
+    "bytes": 155844
+  },
+  {
+    "file": "tweak_fsps_QSF_12_v3_007.dat",
+    "url": "https://raw.githubusercontent.com/gbrammer/eazy-photoz/f651e94d91042a84906090a66d2a3fec75504e21/templates/fsps_full/tweak_fsps_QSF_12_v3_007.dat",
+    "commit": "f651e94d91042a84906090a66d2a3fec75504e21",
+    "sha256": "ed138e401249e80dd4612e852dcb5510c48b5d08dec5054578bb960097e83246",
+    "bytes": 155844
+  },
+  {
+    "file": "tweak_fsps_QSF_12_v3_008.dat",
+    "url": "https://raw.githubusercontent.com/gbrammer/eazy-photoz/f651e94d91042a84906090a66d2a3fec75504e21/templates/fsps_full/tweak_fsps_QSF_12_v3_008.dat",
+    "commit": "f651e94d91042a84906090a66d2a3fec75504e21",
+    "sha256": "b8a8221c33d842300e3c1f0ab794be1835167fdae65809eb786c8a1b581ccfe2",
+    "bytes": 155844
+  },
+  {
+    "file": "tweak_fsps_QSF_12_v3_009.dat",
+    "url": "https://raw.githubusercontent.com/gbrammer/eazy-photoz/f651e94d91042a84906090a66d2a3fec75504e21/templates/fsps_full/tweak_fsps_QSF_12_v3_009.dat",
+    "commit": "f651e94d91042a84906090a66d2a3fec75504e21",
+    "sha256": "63af6a31f6672956826201af03b080f7624606b4009ff99ded283fc6a244e436",
+    "bytes": 155844
+  },
+  {
+    "file": "tweak_fsps_QSF_12_v3_010.dat",
+    "url": "https://raw.githubusercontent.com/gbrammer/eazy-photoz/f651e94d91042a84906090a66d2a3fec75504e21/templates/fsps_full/tweak_fsps_QSF_12_v3_010.dat",
+    "commit": "f651e94d91042a84906090a66d2a3fec75504e21",
+    "sha256": "cd30fc6519e730b8da247d9abbea5c31028c7158dd669f576d9c194e62065551",
+    "bytes": 155844
+  },
+  {
+    "file": "tweak_fsps_QSF_12_v3_011.dat",
+    "url": "https://raw.githubusercontent.com/gbrammer/eazy-photoz/f651e94d91042a84906090a66d2a3fec75504e21/templates/fsps_full/tweak_fsps_QSF_12_v3_011.dat",
+    "commit": "f651e94d91042a84906090a66d2a3fec75504e21",
+    "sha256": "793c107e10ea33df7a8cd9bff9607df8f28b0c667d88775fddef69a1e99b5092",
+    "bytes": 155844
+  },
+  {
+    "file": "tweak_fsps_QSF_12_v3_012.dat",
+    "url": "https://raw.githubusercontent.com/gbrammer/eazy-photoz/f651e94d91042a84906090a66d2a3fec75504e21/templates/fsps_full/tweak_fsps_QSF_12_v3_012.dat",
+    "commit": "f651e94d91042a84906090a66d2a3fec75504e21",
+    "sha256": "5301445e26ce16da14c72b20119d2a572cc07e88bd7ff70abf3e679f81f8e94c",
+    "bytes": 155844
+  }
+]

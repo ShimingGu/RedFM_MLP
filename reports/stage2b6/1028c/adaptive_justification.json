@@ -1,0 +1,25 @@
+{
+  "source_only": true,
+  "conditional_changes": [
+    {
+      "seed": 11,
+      "CE_change_stronger_physics": {
+        "M1": 0.34394407272338867,
+        "M2": 97.71437883377075,
+        "M3": 149.4253911972046,
+        "M4": 41.22313117980957
+      }
+    },
+    {
+      "seed": 23,
+      "CE_change_stronger_physics": {
+        "M1": -1.8112435340881348,
+        "M2": 99.96600532531738,
+        "M3": 147.27385711669922,
+        "M4": 37.3325719833374
+      }
+    }
+  ],
+  "G1_training_justified": true,
+  "policy": "Gate only if fixed source controls show conditional benefits and harms; no aggregate easy/hard mixture shortcut"
+}

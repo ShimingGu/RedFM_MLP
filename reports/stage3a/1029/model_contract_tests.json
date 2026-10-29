@@ -1,0 +1,80 @@
+{
+  "passed": true,
+  "models": [
+    {
+      "arm": "R0",
+      "parameters": 113900,
+      "permutation_max": 0.0,
+      "scale_max": 0.0,
+      "finite_gradients": true,
+      "empty_uniform": true,
+      "masked_values_irrelevant": true
+    },
+    {
+      "arm": "R1",
+      "parameters": 104012,
+      "permutation_max": 5.960464477539063e-08,
+      "scale_max": 0.0,
+      "finite_gradients": true,
+      "empty_uniform": true,
+      "masked_values_irrelevant": true
+    },
+    {
+      "arm": "R2",
+      "parameters": 157516,
+      "permutation_max": 5.960464477539063e-08,
+      "scale_max": 0.0,
+      "finite_gradients": true,
+      "empty_uniform": true,
+      "masked_values_irrelevant": true
+    },
+    {
+      "arm": "C1",
+      "parameters": 156716,
+      "permutation_max": 5.960464477539063e-08,
+      "scale_max": 0.0,
+      "finite_gradients": true,
+      "empty_uniform": true,
+      "masked_values_irrelevant": true
+    },
+    {
+      "arm": "C2",
+      "parameters": 157516,
+      "permutation_max": 8.940696716308594e-08,
+      "scale_max": 0.0,
+      "finite_gradients": true,
+      "empty_uniform": true,
+      "masked_values_irrelevant": true
+    },
+    {
+      "arm": "C3",
+      "parameters": 157516,
+      "permutation_max": 8.940696716308594e-08,
+      "scale_max": 0.0,
+      "finite_gradients": true,
+      "empty_uniform": true,
+      "masked_values_irrelevant": true
+    },
+    {
+      "arm": "R1_brightness",
+      "parameters": 104012,
+      "permutation_max": 7.078051567077637e-08,
+      "scale_max": 0.32316964864730835,
+      "finite_gradients": true,
+      "empty_uniform": true,
+      "masked_values_irrelevant": true
+    }
+  ],
+  "input_keys": [
+    "f",
+    "e",
+    "ids",
+    "mask",
+    "q",
+    "qa",
+    "brightness",
+    "ebv",
+    "ebv_available"
+  ],
+  "kernel_sha256": "fc0db74392c18fc1423d85bdbb93ea0c95b4da331049fb18c3abf7f68c923fd8"
+}

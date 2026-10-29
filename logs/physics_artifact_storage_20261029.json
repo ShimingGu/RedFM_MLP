@@ -1,0 +1,11 @@
+{
+  "source": "/scratch/RedFM_MLP",
+  "destination": "/arc/projects/ots/Cosmic_Imprint_of_Time/RedFM_MLP_artifacts/physics_branch2_20261029",
+  "source_commit": "1e73f5004c4092473cfbb2fdc695016e195a0930",
+  "file_count": 3271,
+  "bytes": 6322948182,
+  "all_copies_sha256_verified_before_replacement": true,
+  "local_paths_preserved_as_symlinks": true,
+  "seconds": 20.90129256248474,
+  "UTC": "2026-10-29T23:16:11Z"
+}

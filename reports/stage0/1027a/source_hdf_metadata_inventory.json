@@ -1,0 +1,134 @@
+{
+  "root_attributes": {},
+  "metadata": {
+    "coord": {
+      "shape": [
+        134533
+      ],
+      "attributes": {}
+    },
+    "dec": {
+      "shape": [
+        134533
+      ],
+      "attributes": {}
+    },
+    "g_cmodel_mag": {
+      "shape": [
+        134533
+      ],
+      "attributes": {}
+    },
+    "g_cmodel_magsigma": {
+      "shape": [
+        134533
+      ],
+      "attributes": {}
+    },
+    "i_cmodel_mag": {
+      "shape": [
+        134533
+      ],
+      "attributes": {}
+    },
+    "i_cmodel_magsigma": {
+      "shape": [
+        134533
+      ],
+      "attributes": {}
+    },
+    "r_cmodel_mag": {
+      "shape": [
+        134533
+      ],
+      "attributes": {}
+    },
+    "r_cmodel_magsigma": {
+      "shape": [
+        134533
+      ],
+      "attributes": {}
+    },
+    "ra": {
+      "shape": [
+        134533
+      ],
+      "attributes": {}
+    },
+    "skymap_id": {
+      "shape": [
+        134533
+      ],
+      "attributes": {}
+    },
+    "specz_dec": {
+      "shape": [
+        134533
+      ],
+      "attributes": {}
+    },
+    "specz_flag_homogeneous": {
+      "shape": [
+        134533
+      ],
+      "attributes": {}
+    },
+    "specz_mag_i": {
+      "shape": [
+        134533
+      ],
+      "attributes": {}
+    },
+    "specz_name": {
+      "shape": [
+        134533
+      ],
+      "attributes": {}
+    },
+    "specz_ra": {
+      "shape": [
+        134533
+      ],
+      "attributes": {}
+    },
+    "specz_redshift": {
+      "shape": [
+        134533
+      ],
+      "attributes": {}
+    },
+    "specz_redshift_err": {
+      "shape": [
+        134533
+      ],
+      "attributes": {}
+    },
+    "y_cmodel_mag": {
+      "shape": [
+        134533
+      ],
+      "attributes": {}
+    },
+    "y_cmodel_magsigma": {
+      "shape": [
+        134533
+      ],
+      "attributes": {}
+    },
+    "z_cmodel_mag": {
+      "shape": [
+        134533
+      ],
+      "attributes": {}
+    },
+    "z_cmodel_magsigma": {
+      "shape": [
+        134533
+      ],
+      "attributes": {}
+    }
+  },
+  "photometry_rows_read": 22444,
+  "labels_read": false,
+  "images_read": false
+}

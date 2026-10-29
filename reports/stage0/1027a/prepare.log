@@ -1,0 +1,15 @@
+/scratch/RedFM_MLP/scripts/diagnose_hsc_clauds_stage0.py:151: RuntimeWarning: All-NaN slice encountered
+  source_sn=np.nanmedian(sf/se,axis=1); target_sn=np.nanmedian(tf/te,axis=1)
+Traceback (most recent call last):
+  File "/scratch/RedFM_MLP/scripts/diagnose_hsc_clauds_stage0.py", line 448, in <module>
+  File "/scratch/RedFM_MLP/scripts/diagnose_hsc_clauds_stage0.py", line 444, in main
+    run(args.output_dir,args.arm)
+                           ^^^^^^
+  File "/scratch/RedFM_MLP/scripts/diagnose_hsc_clauds_stage0.py", line 292, in prepare
+    report=support(out,sf[train],se[train],source['targetid'][train],sf[val],se[val],source['targetid'][val],tf,te,ids,quality)
+  File "/scratch/RedFM_MLP/scripts/diagnose_hsc_clauds_stage0.py", line 166, in support
+    clf.fit(np.vstack([sx[a],tx[b]]),np.r_[np.zeros(a.sum()),np.ones(b.sum())])
+            ^^^^^^^^^^^^
+  File "/scratch/.tmp-gsm/stage0-venv/lib/python3.13/site-packages/numpy/__init__.py", line 769, in __getattr__
+    raise AttributeError(f"module {__name__!r} has no attribute {attr!r}")
+AttributeError: module 'numpy' has no attribute 'row_stack'

@@ -1,0 +1,13 @@
+{
+  "frozen_before_held_response_evaluation": true,
+  "training_settings_change": false,
+  "source_gate": "Only fixed L3 or matched-basis checkpoints with source-validation CE gain >=0.3; N2 must be compared against learned N1",
+  "new_controlled_held_views": "Reobserve 256 independent source-validation SED instances through full CLAUDS-like curves and strictly new UV/NIR curves, without source HSC/Legacy bands in the latter",
+  "conditions": ["correct", "wrong response metadata", "two bands missing", "SNR degraded by5", "same latent redshift increased by0.1"],
+  "matched_physics": "Use exact saved FSPS mixtures, verified kernel and same 1% nominal errors; include NNLS template-only baseline",
+  "mismatched_physics": "Use saved L3 analytic source parameters and new Gaussian realizations; template mismatch kept explicit",
+  "bootstrap": "300 paired bootstrap replicates over SED groups, including all repeated views per sampled SED; report N2 minus N1 outlier change",
+  "original_strict_Stage1_sets": "Remain frozen; L4 models evaluated only if their original source-validation CE improves>=0.3 and selected update>0",
+  "real_CLAUDS_labels_or_photometry": "Not used",
+  "seed": 2805
+}

@@ -1,0 +1,23 @@
+{
+  "task": "C_ZPHOT",
+  "clean": 2304,
+  "support_pool": 1024,
+  "development": 256,
+  "query": 1024,
+  "exposure_query": 128,
+  "uncertain_exposure_excluded": 0,
+  "validation_only_excluded": 0,
+  "range": "0<=z<=4.5, positive spec-z; never clipped",
+  "close_pairs_excluded": 0,
+  "outside_or_invalid_label_candidates": 75,
+  "minimum_full_bands": 3,
+  "identical_galaxies_for_all_backbones": true,
+  "query_labels_sealed": true,
+  "interpretation": "Genuine off-diagonal transfer comparison; historical catalog evaluation membership retained; no historically trained objects in primary support/dev/query",
+  "source_role": "Historical BC test identities for clean ZPHOT experiment",
+  "subset_seeds": [
+    101,
+    202,
+    303
+  ]
+}

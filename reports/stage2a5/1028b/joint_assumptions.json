@@ -1,0 +1,6 @@
+{
+  "diagnostic_only": true,
+  "shared_SED_and_amplitude": true,
+  "uncorrelated_errors_assumed": true,
+  "limitations": "Shared calibration, morphology and profile-model errors can correlate HSC/Tractor views. Joint chi2 is not independent evidence or a calibrated likelihood. Cross-view diagnostic profiles a separate amplitude."
+}

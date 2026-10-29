@@ -1,0 +1,12 @@
+{
+  "trigger": "Five CLAUDS query objects have zero usable flux/error pairs",
+  "error": "Unmasked template shape divided by a tiny empty-set norm could overflow and yield NaN before the uniform fallback",
+  "correction": "Mask template shape before normalization; floor squared norm before sqrt for finite empty-set gradients",
+  "weights_unchanged": true,
+  "settings_unchanged": true,
+  "target_labels_used_for_fix": false,
+  "source_or_supported_predictions_max_PDF_change_CPU_vs_saved_GPU": 1.5218683984130621e-05,
+  "regression_test": "all_missing_finite_neutral_physics plus finite empty-set gradients",
+  "original_model_lock_sha256": "a0b3712a31609b2d0632c00a5abfc26d382035ff93a48dffcfa9e20334d72f6b",
+  "final_model_lock_sha256": "a0b3712a31609b2d0632c00a5abfc26d382035ff93a48dffcfa9e20334d72f6b"
+}

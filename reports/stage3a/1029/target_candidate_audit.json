@@ -1,0 +1,31 @@
+{
+  "local_photometry_rows": 5474883,
+  "COSMOS_rectangle_rows": 5474883,
+  "coordinate_rectangle_deg": [
+    147,
+    153,
+    -1,
+    5
+  ],
+  "spec_rows_quality": 176004,
+  "quality": "flag=4 (no broad-line flag); confidence>=97; Priority=1",
+  "crossmatch": "corrected spec J2000 positions; closest<0.5 arcsec; second photometric neighbor>1 arcsec; unique counterpart",
+  "candidates_before_cap": 135188,
+  "candidate_count": 2048,
+  "cap": 2048,
+  "old_256_excluded": true,
+  "all_historical_HSC_positions_excluded_radius_arcsec": 1.0,
+  "target_labels_read": false,
+  "spec_file_sha256": "6ffd1145ed9caeba6c16f8e4267415682562b1a37549ac07a070ba5eb6336e99",
+  "actual_columns_read": [
+    "Id_specz",
+    "ra_corrected",
+    "dec_corrected",
+    "flag",
+    "Confidence_level",
+    "Priority",
+    "survey",
+    "GroupSize"
+  ],
+  "remaining": "Exclude historical Legacy sampled membership by position before final lock"
+}

@@ -1,0 +1,1306 @@
+[
+  {
+    "n": 1976,
+    "outlier_difference_R2_minus_R1": -0.10172064777327935,
+    "outlier_difference_CI95": [
+      -0.12601214574898786,
+      -0.07741649797570857
+    ],
+    "relative_outlier_change": -0.16354759967453214,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true,
+    "source": "HSC",
+    "seed": 11,
+    "bandset": "full",
+    "NMAD_difference": -0.08139373362064362,
+    "CRPS_difference": -0.08065608143806458,
+    "CE_difference": 0.8342142105102539
+  },
+  {
+    "source": "HSC",
+    "seed": 11,
+    "bandset": "full",
+    "stratum": "z[0,1)",
+    "n": 1553,
+    "outlier_difference_R2_minus_R1": -0.12491951062459755,
+    "outlier_difference_CI95": [
+      -0.15325177076625884,
+      -0.0978750804893754
+    ],
+    "relative_outlier_change": -0.20770877944325483,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "source": "HSC",
+    "seed": 11,
+    "bandset": "full",
+    "stratum": "z[1,2)",
+    "n": 409,
+    "outlier_difference_R2_minus_R1": -0.02689486552567237,
+    "outlier_difference_CI95": [
+      -0.07090464547677261,
+      0.017114914425427872
+    ],
+    "relative_outlier_change": -0.03859649122807017,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "source": "HSC",
+    "seed": 11,
+    "bandset": "full",
+    "stratum": "z[2,4.50001)",
+    "n": 14,
+    "outlier_difference_R2_minus_R1": 0.2857142857142857,
+    "outlier_difference_CI95": [
+      0.07142857142857142,
+      0.5
+    ],
+    "relative_outlier_change": 0.39999999999999997,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "n": 1976,
+    "outlier_difference_R2_minus_R1": -0.07186234817813765,
+    "outlier_difference_CI95": [
+      -0.08856275303643725,
+      -0.0556553643724697
+    ],
+    "relative_outlier_change": -0.19887955182072828,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true,
+    "source": "HSC",
+    "seed": 11,
+    "bandset": "HSC",
+    "NMAD_difference": -0.02923911064863205,
+    "CRPS_difference": -0.03056579828262329,
+    "CE_difference": -0.2673153877258301
+  },
+  {
+    "source": "HSC",
+    "seed": 11,
+    "bandset": "HSC",
+    "stratum": "z[0,1)",
+    "n": 1553,
+    "outlier_difference_R2_minus_R1": -0.10109465550547328,
+    "outlier_difference_CI95": [
+      -0.11849645846748229,
+      -0.08306503541532517
+    ],
+    "relative_outlier_change": -0.2864963503649635,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "source": "HSC",
+    "seed": 11,
+    "bandset": "HSC",
+    "stratum": "z[1,2)",
+    "n": 409,
+    "outlier_difference_R2_minus_R1": 0.03667481662591687,
+    "outlier_difference_CI95": [
+      0.0,
+      0.07334963325183375
+    ],
+    "relative_outlier_change": 0.0986842105263158,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "source": "HSC",
+    "seed": 11,
+    "bandset": "HSC",
+    "stratum": "z[2,4.50001)",
+    "n": 14,
+    "outlier_difference_R2_minus_R1": 0.0,
+    "outlier_difference_CI95": [
+      0.0,
+      0.0
+    ],
+    "relative_outlier_change": 0.0,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "n": 1976,
+    "outlier_difference_R2_minus_R1": -0.05819838056680162,
+    "outlier_difference_CI95": [
+      -0.07540485829959515,
+      -0.039979757085020245
+    ],
+    "relative_outlier_change": -0.08144475920679886,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true,
+    "source": "HSC",
+    "seed": 11,
+    "bandset": "overlap",
+    "NMAD_difference": -0.005865409970283508,
+    "CRPS_difference": -0.02796560525894165,
+    "CE_difference": -0.22870159149169922
+  },
+  {
+    "source": "HSC",
+    "seed": 11,
+    "bandset": "overlap",
+    "stratum": "z[0,1)",
+    "n": 1553,
+    "outlier_difference_R2_minus_R1": -0.05215711526078558,
+    "outlier_difference_CI95": [
+      -0.07405022537025113,
+      -0.031551835157759174
+    ],
+    "relative_outlier_change": -0.07841239109390126,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "source": "HSC",
+    "seed": 11,
+    "bandset": "overlap",
+    "stratum": "z[1,2)",
+    "n": 409,
+    "outlier_difference_R2_minus_R1": -0.08312958435207823,
+    "outlier_difference_CI95": [
+      -0.11497555012224939,
+      -0.05378973105134474
+    ],
+    "relative_outlier_change": -0.09315068493150686,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "source": "HSC",
+    "seed": 11,
+    "bandset": "overlap",
+    "stratum": "z[2,4.50001)",
+    "n": 14,
+    "outlier_difference_R2_minus_R1": 0.0,
+    "outlier_difference_CI95": [
+      0.0,
+      0.0
+    ],
+    "relative_outlier_change": 0.0,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "n": 14894,
+    "outlier_difference_R2_minus_R1": 0.14368201960521015,
+    "outlier_difference_CI95": [
+      0.13461796696656372,
+      0.15355176581173627
+    ],
+    "relative_outlier_change": 0.2647859440732492,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true,
+    "source": "HSC",
+    "seed": 11,
+    "bandset": "source",
+    "NMAD_difference": 0.3241589665412903,
+    "CRPS_difference": 0.20454904437065125,
+    "CE_difference": -0.47042131423950195
+  },
+  {
+    "source": "HSC",
+    "seed": 11,
+    "bandset": "source",
+    "stratum": "z[0,1)",
+    "n": 12488,
+    "outlier_difference_R2_minus_R1": 0.1200352338244715,
+    "outlier_difference_CI95": [
+      0.10938300768737988,
+      0.1301249199231262
+    ],
+    "relative_outlier_change": 0.2363980444724807,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "source": "HSC",
+    "seed": 11,
+    "bandset": "source",
+    "stratum": "z[1,2)",
+    "n": 2406,
+    "outlier_difference_R2_minus_R1": 0.2664172901080632,
+    "outlier_difference_CI95": [
+      0.24812967581047382,
+      0.28387364921030755
+    ],
+    "relative_outlier_change": 0.3681792073520965,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "n": 1976,
+    "outlier_difference_R2_minus_R1": -0.07034412955465587,
+    "outlier_difference_CI95": [
+      -0.09515435222672064,
+      -0.045040485829959516
+    ],
+    "relative_outlier_change": -0.11749788672865595,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true,
+    "source": "HSC",
+    "seed": 23,
+    "bandset": "full",
+    "NMAD_difference": 0.027734145522117615,
+    "CRPS_difference": -0.08455073833465576,
+    "CE_difference": 0.5048065185546875
+  },
+  {
+    "source": "HSC",
+    "seed": 23,
+    "bandset": "full",
+    "stratum": "z[0,1)",
+    "n": 1553,
+    "outlier_difference_R2_minus_R1": -0.050225370251126854,
+    "outlier_difference_CI95": [
+      -0.08177720540888603,
+      -0.019961365099806824
+    ],
+    "relative_outlier_change": -0.09187279151943463,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "source": "HSC",
+    "seed": 23,
+    "bandset": "full",
+    "stratum": "z[1,2)",
+    "n": 409,
+    "outlier_difference_R2_minus_R1": -0.1491442542787286,
+    "outlier_difference_CI95": [
+      -0.19070904645476772,
+      -0.11246943765281174
+    ],
+    "relative_outlier_change": -0.190625,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "source": "HSC",
+    "seed": 23,
+    "bandset": "full",
+    "stratum": "z[2,4.50001)",
+    "n": 14,
+    "outlier_difference_R2_minus_R1": 0.0,
+    "outlier_difference_CI95": [
+      0.0,
+      0.0
+    ],
+    "relative_outlier_change": 0.0,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "n": 1976,
+    "outlier_difference_R2_minus_R1": -0.05921052631578947,
+    "outlier_difference_CI95": [
+      -0.07439271255060728,
+      -0.044534412955465584
+    ],
+    "relative_outlier_change": -0.1627260083449235,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true,
+    "source": "HSC",
+    "seed": 23,
+    "bandset": "HSC",
+    "NMAD_difference": -0.011339351534843445,
+    "CRPS_difference": -0.030716150999069214,
+    "CE_difference": -0.31801271438598633
+  },
+  {
+    "source": "HSC",
+    "seed": 23,
+    "bandset": "HSC",
+    "stratum": "z[0,1)",
+    "n": 1553,
+    "outlier_difference_R2_minus_R1": -0.06889890534449453,
+    "outlier_difference_CI95": [
+      -0.08564069542820348,
+      -0.05280103026400515
+    ],
+    "relative_outlier_change": -0.21314741035856574,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "source": "HSC",
+    "seed": 23,
+    "bandset": "HSC",
+    "stratum": "z[1,2)",
+    "n": 409,
+    "outlier_difference_R2_minus_R1": -0.02444987775061125,
+    "outlier_difference_CI95": [
+      -0.05867970660146699,
+      0.012224938875305624
+    ],
+    "relative_outlier_change": -0.04926108374384237,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "source": "HSC",
+    "seed": 23,
+    "bandset": "HSC",
+    "stratum": "z[2,4.50001)",
+    "n": 14,
+    "outlier_difference_R2_minus_R1": 0.0,
+    "outlier_difference_CI95": [
+      0.0,
+      0.0
+    ],
+    "relative_outlier_change": 0.0,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "n": 1976,
+    "outlier_difference_R2_minus_R1": 0.076417004048583,
+    "outlier_difference_CI95": [
+      0.05819838056680162,
+      0.0951417004048583
+    ],
+    "relative_outlier_change": 0.12894961571306576,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true,
+    "source": "HSC",
+    "seed": 23,
+    "bandset": "overlap",
+    "NMAD_difference": -0.00726848840713501,
+    "CRPS_difference": 0.05053892731666565,
+    "CE_difference": 1.0098886489868164
+  },
+  {
+    "source": "HSC",
+    "seed": 23,
+    "bandset": "overlap",
+    "stratum": "z[0,1)",
+    "n": 1553,
+    "outlier_difference_R2_minus_R1": 0.08564069542820348,
+    "outlier_difference_CI95": [
+      0.0643915003219575,
+      0.11010946555054733
+    ],
+    "relative_outlier_change": 0.1596638655462185,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "source": "HSC",
+    "seed": 23,
+    "bandset": "overlap",
+    "stratum": "z[1,2)",
+    "n": 409,
+    "outlier_difference_R2_minus_R1": 0.044009779951100246,
+    "outlier_difference_CI95": [
+      0.019559902200488997,
+      0.07090464547677261
+    ],
+    "relative_outlier_change": 0.05555555555555556,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "source": "HSC",
+    "seed": 23,
+    "bandset": "overlap",
+    "stratum": "z[2,4.50001)",
+    "n": 14,
+    "outlier_difference_R2_minus_R1": 0.0,
+    "outlier_difference_CI95": [
+      0.0,
+      0.0
+    ],
+    "relative_outlier_change": 0.0,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "n": 14894,
+    "outlier_difference_R2_minus_R1": -0.12394252719215791,
+    "outlier_difference_CI95": [
+      -0.13414797905196724,
+      -0.11420706324694507
+    ],
+    "relative_outlier_change": -0.20183686857642685,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true,
+    "source": "HSC",
+    "seed": 23,
+    "bandset": "source",
+    "NMAD_difference": 0.04687085747718811,
+    "CRPS_difference": 0.06483832001686096,
+    "CE_difference": 0.4087691307067871
+  },
+  {
+    "source": "HSC",
+    "seed": 23,
+    "bandset": "source",
+    "stratum": "z[0,1)",
+    "n": 12488,
+    "outlier_difference_R2_minus_R1": -0.16143497757847533,
+    "outlier_difference_CI95": [
+      -0.1726457399103139,
+      -0.1499799807815503
+    ],
+    "relative_outlier_change": -0.2895303748384317,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "source": "HSC",
+    "seed": 23,
+    "bandset": "source",
+    "stratum": "z[1,2)",
+    "n": 2406,
+    "outlier_difference_R2_minus_R1": 0.07065669160432253,
+    "outlier_difference_CI95": [
+      0.057772236076475476,
+      0.08354114713216958
+    ],
+    "relative_outlier_change": 0.07787448465414568,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "n": 1976,
+    "outlier_difference_R2_minus_R1": 0.02327935222672065,
+    "outlier_difference_CI95": [
+      -0.00708502024291498,
+      0.05516194331983806
+    ],
+    "relative_outlier_change": 0.03776683087027915,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true,
+    "source": "Legacy",
+    "seed": 11,
+    "bandset": "full",
+    "NMAD_difference": -0.053061798214912415,
+    "CRPS_difference": 0.11229166388511658,
+    "CE_difference": -2.0618648529052734
+  },
+  {
+    "source": "Legacy",
+    "seed": 11,
+    "bandset": "full",
+    "stratum": "z[0,1)",
+    "n": 1553,
+    "outlier_difference_R2_minus_R1": -0.15518351577591757,
+    "outlier_difference_CI95": [
+      -0.18610753380553768,
+      -0.12427559562137798
+    ],
+    "relative_outlier_change": -0.21537086684539766,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "source": "Legacy",
+    "seed": 11,
+    "bandset": "full",
+    "stratum": "z[1,2)",
+    "n": 409,
+    "outlier_difference_R2_minus_R1": 0.7017114914425427,
+    "outlier_difference_CI95": [
+      0.6601466992665037,
+      0.7457212713936431
+    ],
+    "relative_outlier_change": 3.3764705882352937,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "source": "Legacy",
+    "seed": 11,
+    "bandset": "full",
+    "stratum": "z[2,4.50001)",
+    "n": 14,
+    "outlier_difference_R2_minus_R1": 0.0,
+    "outlier_difference_CI95": [
+      0.0,
+      0.0
+    ],
+    "relative_outlier_change": 0.0,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "n": 1976,
+    "outlier_difference_R2_minus_R1": 0.09058704453441295,
+    "outlier_difference_CI95": [
+      0.06324645748987855,
+      0.11892712550607287
+    ],
+    "relative_outlier_change": 0.15578764142732812,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true,
+    "source": "Legacy",
+    "seed": 11,
+    "bandset": "HSC",
+    "NMAD_difference": 0.039365291595458984,
+    "CRPS_difference": 0.16318726539611816,
+    "CE_difference": -2.051626682281494
+  },
+  {
+    "source": "Legacy",
+    "seed": 11,
+    "bandset": "HSC",
+    "stratum": "z[0,1)",
+    "n": 1553,
+    "outlier_difference_R2_minus_R1": -0.04700579523502898,
+    "outlier_difference_CI95": [
+      -0.07662588538312942,
+      -0.018673535093367676
+    ],
+    "relative_outlier_change": -0.07464212678936605,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "source": "Legacy",
+    "seed": 11,
+    "bandset": "HSC",
+    "stratum": "z[1,2)",
+    "n": 409,
+    "outlier_difference_R2_minus_R1": 0.6161369193154034,
+    "outlier_difference_CI95": [
+      0.5696821515892421,
+      0.6625916870415648
+    ],
+    "relative_outlier_change": 1.6050955414012738,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "source": "Legacy",
+    "seed": 11,
+    "bandset": "HSC",
+    "stratum": "z[2,4.50001)",
+    "n": 14,
+    "outlier_difference_R2_minus_R1": 0.0,
+    "outlier_difference_CI95": [
+      0.0,
+      0.0
+    ],
+    "relative_outlier_change": 0.0,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "n": 1976,
+    "outlier_difference_R2_minus_R1": 0.1396761133603239,
+    "outlier_difference_CI95": [
+      0.1128415991902834,
+      0.16852226720647773
+    ],
+    "relative_outlier_change": 0.22512234910277326,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true,
+    "source": "Legacy",
+    "seed": 11,
+    "bandset": "overlap",
+    "NMAD_difference": -0.017304807901382446,
+    "CRPS_difference": 0.22942808270454407,
+    "CE_difference": -1.6739234924316406
+  },
+  {
+    "source": "Legacy",
+    "seed": 11,
+    "bandset": "overlap",
+    "stratum": "z[0,1)",
+    "n": 1553,
+    "outlier_difference_R2_minus_R1": -0.01159047005795235,
+    "outlier_difference_CI95": [
+      -0.0412105602060528,
+      0.019317450096587252
+    ],
+    "relative_outlier_change": -0.01640838650865998,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "source": "Legacy",
+    "seed": 11,
+    "bandset": "overlap",
+    "stratum": "z[1,2)",
+    "n": 409,
+    "outlier_difference_R2_minus_R1": 0.7188264058679706,
+    "outlier_difference_CI95": [
+      0.6748166259168704,
+      0.7603911980440098
+    ],
+    "relative_outlier_change": 2.5565217391304347,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "source": "Legacy",
+    "seed": 11,
+    "bandset": "overlap",
+    "stratum": "z[2,4.50001)",
+    "n": 14,
+    "outlier_difference_R2_minus_R1": 0.0,
+    "outlier_difference_CI95": [
+      0.0,
+      0.0
+    ],
+    "relative_outlier_change": 0.0,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "n": 5351,
+    "outlier_difference_R2_minus_R1": -0.10596150252289292,
+    "outlier_difference_CI95": [
+      -0.11792188376004485,
+      -0.09269295458792749
+    ],
+    "relative_outlier_change": -0.23285420944558524,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true,
+    "source": "Legacy",
+    "seed": 11,
+    "bandset": "source",
+    "NMAD_difference": -0.02295711636543274,
+    "CRPS_difference": -0.07841621339321136,
+    "CE_difference": -3.813655376434326
+  },
+  {
+    "source": "Legacy",
+    "seed": 11,
+    "bandset": "source",
+    "stratum": "z[0,1)",
+    "n": 5320,
+    "outlier_difference_R2_minus_R1": -0.11127819548872181,
+    "outlier_difference_CI95": [
+      -0.12368421052631579,
+      -0.09849624060150376
+    ],
+    "relative_outlier_change": -0.2437216961712639,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "source": "Legacy",
+    "seed": 11,
+    "bandset": "source",
+    "stratum": "z[1,2)",
+    "n": 31,
+    "outlier_difference_R2_minus_R1": 0.8064516129032258,
+    "outlier_difference_CI95": [
+      0.6774193548387096,
+      0.9354838709677419
+    ],
+    "relative_outlier_change": 4.166666666666667,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "n": 1976,
+    "outlier_difference_R2_minus_R1": 0.009615384615384616,
+    "outlier_difference_CI95": [
+      -0.02125506072874494,
+      0.04251012145748988
+    ],
+    "relative_outlier_change": 0.01527331189710611,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true,
+    "source": "Legacy",
+    "seed": 23,
+    "bandset": "full",
+    "NMAD_difference": -0.12791047990322113,
+    "CRPS_difference": 0.09416413307189941,
+    "CE_difference": -2.062161445617676
+  },
+  {
+    "source": "Legacy",
+    "seed": 23,
+    "bandset": "full",
+    "stratum": "z[0,1)",
+    "n": 1553,
+    "outlier_difference_R2_minus_R1": -0.09465550547327753,
+    "outlier_difference_CI95": [
+      -0.1313747585318738,
+      -0.059867997424340076
+    ],
+    "relative_outlier_change": -0.13148479427549195,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "source": "Legacy",
+    "seed": 23,
+    "bandset": "full",
+    "stratum": "z[1,2)",
+    "n": 409,
+    "outlier_difference_R2_minus_R1": 0.4058679706601467,
+    "outlier_difference_CI95": [
+      0.3422982885085575,
+      0.46454767726161367
+    ],
+    "relative_outlier_change": 1.4821428571428572,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "source": "Legacy",
+    "seed": 23,
+    "bandset": "full",
+    "stratum": "z[2,4.50001)",
+    "n": 14,
+    "outlier_difference_R2_minus_R1": 0.0,
+    "outlier_difference_CI95": [
+      0.0,
+      0.0
+    ],
+    "relative_outlier_change": 0.0,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "n": 1976,
+    "outlier_difference_R2_minus_R1": 0.048582995951417005,
+    "outlier_difference_CI95": [
+      0.014663461538461538,
+      0.08299595141700405
+    ],
+    "relative_outlier_change": 0.08156329651656755,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true,
+    "source": "Legacy",
+    "seed": 23,
+    "bandset": "HSC",
+    "NMAD_difference": -0.04922403395175934,
+    "CRPS_difference": 0.17834213376045227,
+    "CE_difference": -2.5647048950195312
+  },
+  {
+    "source": "Legacy",
+    "seed": 23,
+    "bandset": "HSC",
+    "stratum": "z[0,1)",
+    "n": 1553,
+    "outlier_difference_R2_minus_R1": -0.12298776561493883,
+    "outlier_difference_CI95": [
+      -0.16033483580167418,
+      -0.08564069542820348
+    ],
+    "relative_outlier_change": -0.1824259789875836,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "source": "Legacy",
+    "seed": 23,
+    "bandset": "HSC",
+    "stratum": "z[1,2)",
+    "n": 409,
+    "outlier_difference_R2_minus_R1": 0.7017114914425427,
+    "outlier_difference_CI95": [
+      0.6577017114914425,
+      0.7481662591687042
+    ],
+    "relative_outlier_change": 2.4741379310344827,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "source": "Legacy",
+    "seed": 23,
+    "bandset": "HSC",
+    "stratum": "z[2,4.50001)",
+    "n": 14,
+    "outlier_difference_R2_minus_R1": 0.0,
+    "outlier_difference_CI95": [
+      0.0,
+      0.0
+    ],
+    "relative_outlier_change": 0.0,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "n": 1976,
+    "outlier_difference_R2_minus_R1": 0.23785425101214575,
+    "outlier_difference_CI95": [
+      0.21103238866396762,
+      0.26619433198380565
+    ],
+    "relative_outlier_change": 0.45366795366795365,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true,
+    "source": "Legacy",
+    "seed": 23,
+    "bandset": "overlap",
+    "NMAD_difference": 0.02378860116004944,
+    "CRPS_difference": 0.25262951850891113,
+    "CE_difference": -1.1238155364990234
+  },
+  {
+    "source": "Legacy",
+    "seed": 23,
+    "bandset": "overlap",
+    "stratum": "z[0,1)",
+    "n": 1553,
+    "outlier_difference_R2_minus_R1": 0.11976819059884096,
+    "outlier_difference_CI95": [
+      0.09079201545396008,
+      0.14874436574372182
+    ],
+    "relative_outlier_change": 0.20735785953177258,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "source": "Legacy",
+    "seed": 23,
+    "bandset": "overlap",
+    "stratum": "z[1,2)",
+    "n": 409,
+    "outlier_difference_R2_minus_R1": 0.6943765281173594,
+    "outlier_difference_CI95": [
+      0.6503667481662592,
+      0.7383863080684596
+    ],
+    "relative_outlier_change": 2.272,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "source": "Legacy",
+    "seed": 23,
+    "bandset": "overlap",
+    "stratum": "z[2,4.50001)",
+    "n": 14,
+    "outlier_difference_R2_minus_R1": 0.0,
+    "outlier_difference_CI95": [
+      0.0,
+      0.0
+    ],
+    "relative_outlier_change": 0.0,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "n": 5351,
+    "outlier_difference_R2_minus_R1": -0.179031956643618,
+    "outlier_difference_CI95": [
+      -0.1966034386096057,
+      -0.16034386096056813
+    ],
+    "relative_outlier_change": -0.28855421686746985,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true,
+    "source": "Legacy",
+    "seed": 23,
+    "bandset": "source",
+    "NMAD_difference": -0.16434268653392792,
+    "CRPS_difference": 0.03276991844177246,
+    "CE_difference": -4.010270118713379
+  },
+  {
+    "source": "Legacy",
+    "seed": 23,
+    "bandset": "source",
+    "stratum": "z[0,1)",
+    "n": 5320,
+    "outlier_difference_R2_minus_R1": -0.18533834586466166,
+    "outlier_difference_CI95": [
+      -0.20432330827067668,
+      -0.16691729323308271
+    ],
+    "relative_outlier_change": -0.297166968053044,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "source": "Legacy",
+    "seed": 23,
+    "bandset": "source",
+    "stratum": "z[1,2)",
+    "n": 31,
+    "outlier_difference_R2_minus_R1": 0.9032258064516129,
+    "outlier_difference_CI95": [
+      0.7419354838709677,
+      1.0
+    ],
+    "relative_outlier_change": 14.0,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "n": 1976,
+    "outlier_difference_R2_minus_R1": -0.13714574898785425,
+    "outlier_difference_CI95": [
+      -0.16194331983805668,
+      -0.11082995951417005
+    ],
+    "relative_outlier_change": -0.24636363636363637,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true,
+    "source": "Mixed",
+    "seed": 11,
+    "bandset": "full",
+    "NMAD_difference": -0.028271183371543884,
+    "CRPS_difference": -0.08590161800384521,
+    "CE_difference": -0.4026012420654297
+  },
+  {
+    "source": "Mixed",
+    "seed": 11,
+    "bandset": "full",
+    "stratum": "z[0,1)",
+    "n": 1553,
+    "outlier_difference_R2_minus_R1": -0.11526078557630393,
+    "outlier_difference_CI95": [
+      -0.14616870573084353,
+      -0.08628461043142305
+    ],
+    "relative_outlier_change": -0.22629582806573956,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "source": "Mixed",
+    "seed": 11,
+    "bandset": "full",
+    "stratum": "z[1,2)",
+    "n": 409,
+    "outlier_difference_R2_minus_R1": -0.22493887530562348,
+    "outlier_difference_CI95": [
+      -0.27383863080684595,
+      -0.17603911980440098
+    ],
+    "relative_outlier_change": -0.311864406779661,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "source": "Mixed",
+    "seed": 11,
+    "bandset": "full",
+    "stratum": "z[2,4.50001)",
+    "n": 14,
+    "outlier_difference_R2_minus_R1": 0.0,
+    "outlier_difference_CI95": [
+      0.0,
+      0.0
+    ],
+    "relative_outlier_change": 0.0,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "n": 1976,
+    "outlier_difference_R2_minus_R1": 0.01062753036437247,
+    "outlier_difference_CI95": [
+      -0.005073380566801618,
+      0.027327935222672066
+    ],
+    "relative_outlier_change": 0.02727272727272727,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true,
+    "source": "Mixed",
+    "seed": 11,
+    "bandset": "HSC",
+    "NMAD_difference": -0.0015731602907180786,
+    "CRPS_difference": 0.004747912287712097,
+    "CE_difference": -0.027377605438232422
+  },
+  {
+    "source": "Mixed",
+    "seed": 11,
+    "bandset": "HSC",
+    "stratum": "z[0,1)",
+    "n": 1553,
+    "outlier_difference_R2_minus_R1": -0.014810045074050225,
+    "outlier_difference_CI95": [
+      -0.03285576303927881,
+      0.0032356728911782763
+    ],
+    "relative_outlier_change": -0.04107142857142857,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "source": "Mixed",
+    "seed": 11,
+    "bandset": "HSC",
+    "stratum": "z[1,2)",
+    "n": 409,
+    "outlier_difference_R2_minus_R1": 0.10757946210268948,
+    "outlier_difference_CI95": [
+      0.07084352078239609,
+      0.1466992665036675
+    ],
+    "relative_outlier_change": 0.22448979591836735,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "source": "Mixed",
+    "seed": 11,
+    "bandset": "HSC",
+    "stratum": "z[2,4.50001)",
+    "n": 14,
+    "outlier_difference_R2_minus_R1": 0.0,
+    "outlier_difference_CI95": [
+      0.0,
+      0.0
+    ],
+    "relative_outlier_change": 0.0,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "n": 1976,
+    "outlier_difference_R2_minus_R1": -0.008097165991902834,
+    "outlier_difference_CI95": [
+      -0.024291497975708502,
+      0.00708502024291498
+    ],
+    "relative_outlier_change": -0.011602610587382161,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true,
+    "source": "Mixed",
+    "seed": 11,
+    "bandset": "overlap",
+    "NMAD_difference": -0.022018566727638245,
+    "CRPS_difference": -0.042544394731521606,
+    "CE_difference": 0.1431112289428711
+  },
+  {
+    "source": "Mixed",
+    "seed": 11,
+    "bandset": "overlap",
+    "stratum": "z[0,1)",
+    "n": 1553,
+    "outlier_difference_R2_minus_R1": 0.0051513200257566,
+    "outlier_difference_CI95": [
+      -0.013522215067611075,
+      0.02448486799742425
+    ],
+    "relative_outlier_change": 0.008040201005025125,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "source": "Mixed",
+    "seed": 11,
+    "bandset": "overlap",
+    "stratum": "z[1,2)",
+    "n": 409,
+    "outlier_difference_R2_minus_R1": -0.05867970660146699,
+    "outlier_difference_CI95": [
+      -0.08557457212713937,
+      -0.034229828850855744
+    ],
+    "relative_outlier_change": -0.06486486486486487,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "source": "Mixed",
+    "seed": 11,
+    "bandset": "overlap",
+    "stratum": "z[2,4.50001)",
+    "n": 14,
+    "outlier_difference_R2_minus_R1": 0.0,
+    "outlier_difference_CI95": [
+      0.0,
+      0.0
+    ],
+    "relative_outlier_change": 0.0,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "n": 1976,
+    "outlier_difference_R2_minus_R1": 0.0652834008097166,
+    "outlier_difference_CI95": [
+      0.038461538461538464,
+      0.09058704453441295
+    ],
+    "relative_outlier_change": 0.132172131147541,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true,
+    "source": "Mixed",
+    "seed": 23,
+    "bandset": "full",
+    "NMAD_difference": 0.04588174819946289,
+    "CRPS_difference": 0.012357085943222046,
+    "CE_difference": 0.8372740745544434
+  },
+  {
+    "source": "Mixed",
+    "seed": 23,
+    "bandset": "full",
+    "stratum": "z[0,1)",
+    "n": 1553,
+    "outlier_difference_R2_minus_R1": 0.10173857050869285,
+    "outlier_difference_CI95": [
+      0.06825499034127495,
+      0.13329040566645203
+    ],
+    "relative_outlier_change": 0.20680628272251309,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "source": "Mixed",
+    "seed": 23,
+    "bandset": "full",
+    "stratum": "z[1,2)",
+    "n": 409,
+    "outlier_difference_R2_minus_R1": -0.07090464547677261,
+    "outlier_difference_CI95": [
+      -0.11246943765281174,
+      -0.029339853300733496
+    ],
+    "relative_outlier_change": -0.14646464646464644,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "source": "Mixed",
+    "seed": 23,
+    "bandset": "full",
+    "stratum": "z[2,4.50001)",
+    "n": 14,
+    "outlier_difference_R2_minus_R1": 0.0,
+    "outlier_difference_CI95": [
+      0.0,
+      0.0
+    ],
+    "relative_outlier_change": 0.0,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "n": 1976,
+    "outlier_difference_R2_minus_R1": 0.19939271255060728,
+    "outlier_difference_CI95": [
+      0.17560728744939272,
+      0.22420293522267198
+    ],
+    "relative_outlier_change": 0.6900175131348512,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true,
+    "source": "Mixed",
+    "seed": 23,
+    "bandset": "HSC",
+    "NMAD_difference": 0.0379515215754509,
+    "CRPS_difference": 0.11648742854595184,
+    "CE_difference": 1.3047690391540527
+  },
+  {
+    "source": "Mixed",
+    "seed": 23,
+    "bandset": "HSC",
+    "stratum": "z[0,1)",
+    "n": 1553,
+    "outlier_difference_R2_minus_R1": 0.17965228589826143,
+    "outlier_difference_CI95": [
+      0.15003219575016097,
+      0.20734063103670317
+    ],
+    "relative_outlier_change": 0.7322834645669292,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "source": "Mixed",
+    "seed": 23,
+    "bandset": "HSC",
+    "stratum": "z[1,2)",
+    "n": 409,
+    "outlier_difference_R2_minus_R1": 0.28117359413202936,
+    "outlier_difference_CI95": [
+      0.23471882640586797,
+      0.3276283618581907
+    ],
+    "relative_outlier_change": 0.6534090909090909,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "source": "Mixed",
+    "seed": 23,
+    "bandset": "HSC",
+    "stratum": "z[2,4.50001)",
+    "n": 14,
+    "outlier_difference_R2_minus_R1": 0.0,
+    "outlier_difference_CI95": [
+      0.0,
+      0.0
+    ],
+    "relative_outlier_change": 0.0,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "n": 1976,
+    "outlier_difference_R2_minus_R1": 0.3006072874493927,
+    "outlier_difference_CI95": [
+      0.2773279352226721,
+      0.32388663967611336
+    ],
+    "relative_outlier_change": 0.5863770977295163,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true,
+    "source": "Mixed",
+    "seed": 23,
+    "bandset": "overlap",
+    "NMAD_difference": 0.08305904269218445,
+    "CRPS_difference": 0.2897835969924927,
+    "CE_difference": 2.8466715812683105
+  },
+  {
+    "source": "Mixed",
+    "seed": 23,
+    "bandset": "overlap",
+    "stratum": "z[0,1)",
+    "n": 1553,
+    "outlier_difference_R2_minus_R1": 0.30779137153895686,
+    "outlier_difference_CI95": [
+      0.28203477141017386,
+      0.33419188667095945
+    ],
+    "relative_outlier_change": 0.6704067321178121,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "source": "Mixed",
+    "seed": 23,
+    "bandset": "overlap",
+    "stratum": "z[1,2)",
+    "n": 409,
+    "outlier_difference_R2_minus_R1": 0.28361858190709044,
+    "outlier_difference_CI95": [
+      0.2396088019559902,
+      0.33007334963325186
+    ],
+    "relative_outlier_change": 0.40559440559440557,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  },
+  {
+    "source": "Mixed",
+    "seed": 23,
+    "bandset": "overlap",
+    "stratum": "z[2,4.50001)",
+    "n": 14,
+    "outlier_difference_R2_minus_R1": 0.0,
+    "outlier_difference_CI95": [
+      0.0,
+      0.0
+    ],
+    "relative_outlier_change": 0.0,
+    "bootstrap_unit": "unique galaxy; same paired resample",
+    "conditional_on_frozen_seed": true
+  }
+]

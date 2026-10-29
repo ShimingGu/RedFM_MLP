@@ -1,0 +1,182 @@
+[
+  {
+    "family": "break4000",
+    "slope": -0.8,
+    "av": 0.0,
+    "break_strength": 1.8,
+    "equivalent_width": 0.0,
+    "log_lnu": 28.0,
+    "template": "CWW_E_ext.sed"
+  },
+  {
+    "family": "break4000",
+    "slope": -0.8,
+    "av": 0.4,
+    "break_strength": 1.8,
+    "equivalent_width": 0.0,
+    "log_lnu": 28.0,
+    "template": "CWW_E_ext.sed"
+  },
+  {
+    "family": "break4000",
+    "slope": 0.4,
+    "av": 0.0,
+    "break_strength": 1.8,
+    "equivalent_width": 0.0,
+    "log_lnu": 28.0,
+    "template": "CWW_E_ext.sed"
+  },
+  {
+    "family": "break4000",
+    "slope": 0.4,
+    "av": 0.4,
+    "break_strength": 1.8,
+    "equivalent_width": 0.0,
+    "log_lnu": 28.0,
+    "template": "CWW_E_ext.sed"
+  },
+  {
+    "family": "weak_break",
+    "slope": -0.8,
+    "av": 0.0,
+    "break_strength": 1.05,
+    "equivalent_width": 0.0,
+    "log_lnu": 28.0,
+    "template": "CWW_E_ext.sed"
+  },
+  {
+    "family": "weak_break",
+    "slope": -0.8,
+    "av": 0.4,
+    "break_strength": 1.05,
+    "equivalent_width": 0.0,
+    "log_lnu": 28.0,
+    "template": "CWW_E_ext.sed"
+  },
+  {
+    "family": "weak_break",
+    "slope": 0.4,
+    "av": 0.0,
+    "break_strength": 1.05,
+    "equivalent_width": 0.0,
+    "log_lnu": 28.0,
+    "template": "CWW_E_ext.sed"
+  },
+  {
+    "family": "weak_break",
+    "slope": 0.4,
+    "av": 0.4,
+    "break_strength": 1.05,
+    "equivalent_width": 0.0,
+    "log_lnu": 28.0,
+    "template": "CWW_E_ext.sed"
+  },
+  {
+    "family": "lyman_continuum",
+    "slope": -0.8,
+    "av": 0.0,
+    "break_strength": 1.8,
+    "equivalent_width": 0.0,
+    "log_lnu": 28.0,
+    "template": "CWW_E_ext.sed"
+  },
+  {
+    "family": "lyman_continuum",
+    "slope": -0.8,
+    "av": 0.4,
+    "break_strength": 1.8,
+    "equivalent_width": 0.0,
+    "log_lnu": 28.0,
+    "template": "CWW_E_ext.sed"
+  },
+  {
+    "family": "lyman_continuum",
+    "slope": 0.4,
+    "av": 0.0,
+    "break_strength": 1.8,
+    "equivalent_width": 0.0,
+    "log_lnu": 28.0,
+    "template": "CWW_E_ext.sed"
+  },
+  {
+    "family": "lyman_continuum",
+    "slope": 0.4,
+    "av": 0.4,
+    "break_strength": 1.8,
+    "equivalent_width": 0.0,
+    "log_lnu": 28.0,
+    "template": "CWW_E_ext.sed"
+  },
+  {
+    "family": "empirical",
+    "slope": 0.0,
+    "av": 0.0,
+    "break_strength": 1.0,
+    "equivalent_width": 0.0,
+    "log_lnu": 28.0,
+    "template": "CWW_E_ext.sed"
+  },
+  {
+    "family": "empirical",
+    "slope": 0.0,
+    "av": 0.4,
+    "break_strength": 1.0,
+    "equivalent_width": 0.0,
+    "log_lnu": 28.0,
+    "template": "CWW_E_ext.sed"
+  },
+  {
+    "family": "empirical",
+    "slope": 0.0,
+    "av": 0.0,
+    "break_strength": 1.0,
+    "equivalent_width": 0.0,
+    "log_lnu": 28.0,
+    "template": "CWW_Sbc_ext.sed"
+  },
+  {
+    "family": "empirical",
+    "slope": 0.0,
+    "av": 0.4,
+    "break_strength": 1.0,
+    "equivalent_width": 0.0,
+    "log_lnu": 28.0,
+    "template": "CWW_Sbc_ext.sed"
+  },
+  {
+    "family": "empirical",
+    "slope": 0.0,
+    "av": 0.0,
+    "break_strength": 1.0,
+    "equivalent_width": 0.0,
+    "log_lnu": 28.0,
+    "template": "CWW_Scd_ext.sed"
+  },
+  {
+    "family": "empirical",
+    "slope": 0.0,
+    "av": 0.4,
+    "break_strength": 1.0,
+    "equivalent_width": 0.0,
+    "log_lnu": 28.0,
+    "template": "CWW_Scd_ext.sed"
+  },
+  {
+    "family": "empirical",
+    "slope": 0.0,
+    "av": 0.0,
+    "break_strength": 1.0,
+    "equivalent_width": 0.0,
+    "log_lnu": 28.0,
+    "template": "CWW_Im_ext.sed"
+  },
+  {
+    "family": "empirical",
+    "slope": 0.0,
+    "av": 0.4,
+    "break_strength": 1.0,
+    "equivalent_width": 0.0,
+    "log_lnu": 28.0,
+    "template": "CWW_Im_ext.sed"
+  }
+]

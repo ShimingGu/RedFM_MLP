@@ -1,0 +1,20 @@
+{
+  "GMS": {
+    "clean_no_train_or_val": 83829,
+    "historical_training_exposed": 270,
+    "historical_validation_only": 4,
+    "uncertain_exposure": 6
+  },
+  "C_SPEC": {
+    "clean_no_train_or_val": 1951,
+    "historical_training_exposed": 17,
+    "historical_validation_only": 5,
+    "uncertain_exposure": 3
+  },
+  "C_ZPHOT": {
+    "clean_no_train_or_val": 223677,
+    "historical_training_exposed": 35,
+    "historical_validation_only": 8,
+    "uncertain_exposure": 1280
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "trigger": "float32 subnormal probability averaged with zero underflowed to zero in Jensen-Shannon denominator",
+  "fix": "Compute normalized log densities and log-mixture with float64 logaddexp; no probability floor or source/held tuning",
+  "before_held_evaluation": true,
+  "network_weights_and_source_fits_changed": false,
+  "records": [
+    {
+      "split": "train",
+      "nonfinite_JS_before": 926,
+      "nonfinite_after": 0,
+      "physical_scores_unchanged": true
+    },
+    {
+      "split": "calibration",
+      "nonfinite_JS_before": 302,
+      "nonfinite_after": 0,
+      "physical_scores_unchanged": true
+    },
+    {
+      "split": "validation",
+      "nonfinite_JS_before": 330,
+      "nonfinite_after": 0,
+      "physical_scores_unchanged": true
+    }
+  ]
+}

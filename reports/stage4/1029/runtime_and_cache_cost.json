@@ -1,0 +1,88 @@
+{
+  "feature_extraction": [
+    {
+      "backbone": "B0",
+      "seconds": 1837.1804625988007,
+      "peak_GPU_bytes": 5854466048,
+      "cache_bytes": 213881911,
+      "native_replay": {
+        "not_applicable": "No historical redshift head on foundation-only B0"
+      },
+      "frozen": true
+    },
+    {
+      "backbone": "BS",
+      "seconds": 1895.9141340255737,
+      "peak_GPU_bytes": 5854466048,
+      "cache_bytes": 213858321,
+      "native_replay": {
+        "passed": true,
+        "n": 32,
+        "max_abs_logit_error": 0.0,
+        "max_abs_pdf_error": 0.0,
+        "metrics": {
+          "bias": 0.0234063770622015,
+          "median_bias": 0.011606818996369839,
+          "nmad": 0.015513196587562561,
+          "catastrophic_outlier_fraction": 0.03125,
+          "cross_entropy": 2.0911121368408203,
+          "mean_log_score": 2.0911123752593994,
+          "mean_crps": 0.023618651553988457,
+          "p16_p84_coverage": 0.78125,
+          "pit_mean": 0.45608291029930115
+        },
+        "archived_metrics": {
+          "bias": 0.0234063770622015,
+          "median_bias": 0.011606818996369839,
+          "nmad": 0.015513196587562561,
+          "catastrophic_outlier_fraction": 0.03125,
+          "cross_entropy": 2.0911121368408203,
+          "mean_log_score": 2.0911123752593994,
+          "mean_crps": 0.023618651553988457,
+          "p16_p84_coverage": 0.78125,
+          "pit_mean": 0.45608291029930115
+        }
+      },
+      "frozen": true
+    },
+    {
+      "backbone": "BC",
+      "seconds": 1891.0127592086792,
+      "peak_GPU_bytes": 5854466048,
+      "cache_bytes": 213815470,
+      "native_replay": {
+        "passed": true,
+        "n": 32,
+        "max_abs_logit_error": 0.0,
+        "max_abs_pdf_error": 0.0,
+        "metrics": {
+          "bias": 0.02133958227932453,
+          "median_bias": 0.030713308602571487,
+          "nmad": 0.06889387965202332,
+          "catastrophic_outlier_fraction": 0.09375,
+          "cross_entropy": 3.775624990463257,
+          "mean_log_score": 3.775624990463257,
+          "mean_crps": 0.1495991349220276,
+          "p16_p84_coverage": 0.71875,
+          "pit_mean": 0.4132723808288574
+        },
+        "archived_metrics": {
+          "bias": 0.02133958227932453,
+          "median_bias": 0.030713308602571487,
+          "nmad": 0.06889387965202332,
+          "catastrophic_outlier_fraction": 0.09375,
+          "cross_entropy": 3.775624990463257,
+          "mean_log_score": 3.775624990463257,
+          "mean_crps": 0.1495991349220276,
+          "p16_p84_coverage": 0.71875,
+          "pit_mean": 0.4132723808288574
+        }
+      },
+      "frozen": true
+    }
+  ],
+  "head_fits": 900,
+  "total_head_fit_seconds": 2376.6572473049164,
+  "median_head_fit_seconds": 2.6698718070983887,
+  "note": "Feature GPU peak is process allocation peak; fresh-head timings exclude backbone extraction. Query metric/statistics wall times are separately logged."
+}

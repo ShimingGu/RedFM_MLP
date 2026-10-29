@@ -1,0 +1,9 @@
+{
+  "original_source_model_variance_fraction_quantiles": [
+    0.04700400680303574,
+    0.845122754573822,
+    0.9886759728193283
+  ],
+  "fraction_bands_model_error_dominant": 0.8078125,
+  "note": "Observed-flux-dependent TEF is an approximate score, not a fully specified generative noise law. Noise-free matched controls use nominal1% measured errors; original decoder adds10% TEF. This distinction is explicit in physical-only comparisons."
+}

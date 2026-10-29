@@ -1,0 +1,32 @@
+/scratch/RedFM_MLP/scripts/stage2_physics.py:153: RuntimeWarning: All-NaN slice encountered
+  mag=22.5-2.5*np.log10(np.maximum(np.nanmedian(np.abs(f),axis=1),1e-30));z=pred['z_spec']
+/scratch/RedFM_MLP/scripts/stage2_physics.py:153: RuntimeWarning: All-NaN slice encountered
+  mag=22.5-2.5*np.log10(np.maximum(np.nanmedian(np.abs(f),axis=1),1e-30));z=pred['z_spec']
+/scratch/RedFM_MLP/scripts/stage2_physics.py:153: RuntimeWarning: All-NaN slice encountered
+  mag=22.5-2.5*np.log10(np.maximum(np.nanmedian(np.abs(f),axis=1),1e-30));z=pred['z_spec']
+/scratch/RedFM_MLP/scripts/stage2_physics.py:153: RuntimeWarning: All-NaN slice encountered
+  mag=22.5-2.5*np.log10(np.maximum(np.nanmedian(np.abs(f),axis=1),1e-30));z=pred['z_spec']
+/scratch/RedFM_MLP/scripts/stage2_physics.py:153: RuntimeWarning: All-NaN slice encountered
+  mag=22.5-2.5*np.log10(np.maximum(np.nanmedian(np.abs(f),axis=1),1e-30));z=pred['z_spec']
+/scratch/RedFM_MLP/scripts/stage2_physics.py:153: RuntimeWarning: All-NaN slice encountered
+  mag=22.5-2.5*np.log10(np.maximum(np.nanmedian(np.abs(f),axis=1),1e-30));z=pred['z_spec']
+/scratch/RedFM_MLP/scripts/stage2_physics.py:153: RuntimeWarning: All-NaN slice encountered
+  mag=22.5-2.5*np.log10(np.maximum(np.nanmedian(np.abs(f),axis=1),1e-30));z=pred['z_spec']
+/scratch/RedFM_MLP/scripts/stage2_physics.py:153: RuntimeWarning: All-NaN slice encountered
+  mag=22.5-2.5*np.log10(np.maximum(np.nanmedian(np.abs(f),axis=1),1e-30));z=pred['z_spec']
+/scratch/RedFM_MLP/scripts/stage2_physics.py:153: RuntimeWarning: All-NaN slice encountered
+  mag=22.5-2.5*np.log10(np.maximum(np.nanmedian(np.abs(f),axis=1),1e-30));z=pred['z_spec']
+/scratch/RedFM_MLP/scripts/stage2_physics.py:153: RuntimeWarning: All-NaN slice encountered
+  mag=22.5-2.5*np.log10(np.maximum(np.nanmedian(np.abs(f),axis=1),1e-30));z=pred['z_spec']
+/scratch/RedFM_MLP/scripts/stage2_physics.py:153: RuntimeWarning: All-NaN slice encountered
+  mag=22.5-2.5*np.log10(np.maximum(np.nanmedian(np.abs(f),axis=1),1e-30));z=pred['z_spec']
+/scratch/RedFM_MLP/scripts/stage2_physics.py:153: RuntimeWarning: All-NaN slice encountered
+  mag=22.5-2.5*np.log10(np.maximum(np.nanmedian(np.abs(f),axis=1),1e-30));z=pred['z_spec']
+/scratch/RedFM_MLP/scripts/stage2_physics.py:153: RuntimeWarning: All-NaN slice encountered
+  mag=22.5-2.5*np.log10(np.maximum(np.nanmedian(np.abs(f),axis=1),1e-30));z=pred['z_spec']
+/scratch/RedFM_MLP/scripts/stage2_physics.py:153: RuntimeWarning: All-NaN slice encountered
+  mag=22.5-2.5*np.log10(np.maximum(np.nanmedian(np.abs(f),axis=1),1e-30));z=pred['z_spec']
+/scratch/RedFM_MLP/scripts/stage2_physics.py:153: RuntimeWarning: All-NaN slice encountered
+  mag=22.5-2.5*np.log10(np.maximum(np.nanmedian(np.abs(f),axis=1),1e-30));z=pred['z_spec']
+Failed to `import dust_attenuation`
+Install from the repo with $ pip install git+https://github.com/karllark/dust_attenuation.git

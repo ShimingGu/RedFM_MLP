@@ -1,0 +1,26 @@
+[transformers] The fast path is not available because one of the required library is not installed. Falling back to torch implementation. To install follow https://github.com/fla-org/flash-linear-attention#installation and https://github.com/Dao-AILab/causal-conv1d
+Loading weights:   0%|          | 0/723 [00:00<?, ?it/s]Loading weights:   0%|          | 1/723 [00:00<06:46,  1.78it/s]Loading weights:   2%|▏         | 13/723 [00:00<00:28, 25.17it/s]Loading weights:   4%|▎         | 27/723 [00:00<00:13, 50.27it/s]Loading weights:   6%|▌         | 41/723 [00:00<00:09, 71.27it/s]Loading weights:   7%|▋         | 53/723 [00:00<00:08, 81.73it/s]Loading weights:  10%|█         | 75/723 [00:01<00:05, 112.48it/s]Loading weights:  12%|█▏        | 89/723 [00:01<00:05, 117.71it/s]Loading weights:  14%|█▍        | 103/723 [00:01<00:05, 110.80it/s]Loading weights:  16%|█▋        | 118/723 [00:01<00:05, 114.07it/s]Loading weights:  18%|█▊        | 131/723 [00:01<00:05, 102.44it/s]Loading weights:  20%|█▉        | 143/723 [00:01<00:05, 98.20it/s] Loading weights:  21%|██▏       | 154/723 [00:02<00:07, 72.58it/s]Loading weights:  23%|██▎       | 167/723 [00:02<00:06, 82.36it/s]Loading weights:  24%|██▍       | 177/723 [00:02<00:06, 85.32it/s]Loading weights:  27%|██▋       | 195/723 [00:02<00:05, 104.24it/s]Loading weights:  29%|██▊       | 207/723 [00:02<00:05, 97.20it/s] Loading weights:  31%|███       | 225/723 [00:02<00:04, 113.03it/s]Loading weights:  33%|███▎      | 239/723 [00:02<00:04, 119.57it/s]Loading weights:  35%|███▍      | 253/723 [00:02<00:03, 124.56it/s]Loading weights:  37%|███▋      | 266/723 [00:02<00:03, 119.32it/s]Loading weights:  39%|███▊      | 279/723 [00:03<00:03, 121.22it/s]Loading weights:  41%|████      | 293/723 [00:03<00:03, 125.33it/s]Loading weights:  42%|████▏     | 307/723 [00:03<00:03, 127.64it/s]Loading weights:  45%|████▍     | 322/723 [00:03<00:02, 133.97it/s]Loading weights:  46%|████▋     | 336/723 [00:03<00:02, 134.02it/s]Loading weights:  49%|████▊     | 352/723 [00:03<00:02, 141.35it/s]Loading weights:  51%|█████     | 367/723 [00:03<00:02, 119.60it/s]Loading weights:  53%|█████▎    | 384/723 [00:03<00:02, 128.29it/s]Loading weights:  55%|█████▌    | 398/723 [00:03<00:02, 129.98it/s]Loading weights:  57%|█████▋    | 412/723 [00:04<00:02, 131.51it/s]Loading weights:  59%|█████▉    | 426/723 [00:04<00:02, 127.58it/s]Loading weights:  71%|███████▏  | 516/723 [00:04<00:00, 337.90it/s]Loading weights:  85%|████████▍ | 612/723 [00:04<00:00, 511.08it/s]Loading weights:  98%|█████████▊| 706/723 [00:04<00:00, 629.67it/s]Loading weights: 100%|██████████| 723/723 [00:04<00:00, 160.19it/s]
+BC GMS canonical 0 / 2432
+BC GMS canonical 512 / 2432
+BC GMS canonical 1024 / 2432
+BC GMS canonical 1536 / 2432
+BC GMS canonical 2048 / 2432
+BC GMS alternate 0 / 2432
+BC GMS alternate 512 / 2432
+BC GMS alternate 1024 / 2432
+BC GMS alternate 1536 / 2432
+BC GMS alternate 2048 / 2432
+BC C_SPEC canonical 0 / 1968
+BC C_SPEC canonical 512 / 1968
+BC C_SPEC canonical 1024 / 1968
+BC C_SPEC canonical 1536 / 1968
+BC C_SPEC alternate 0 / 1968
+BC C_SPEC alternate 512 / 1968
+BC C_SPEC alternate 1024 / 1968
+BC C_SPEC alternate 1536 / 1968
+BC C_ZPHOT canonical 0 / 2432
+BC C_ZPHOT canonical 512 / 2432
+BC C_ZPHOT canonical 1024 / 2432
+BC C_ZPHOT canonical 1536 / 2432
+BC C_ZPHOT canonical 2048 / 2432
+FEATURE EXTRACTION COMPLETE BC 1891.0133004188538

@@ -1,0 +1,45 @@
+{
+  "hsc_rows": 28127,
+  "hsc_train": 22444,
+  "hsc_val": 5683,
+  "legacy_original_validation": 15053,
+  "clauds_queries": 256,
+  "filters": [
+    "BASS.g",
+    "BASS.r",
+    "DECam.g",
+    "DECam.r",
+    "DECam.z",
+    "HSC.g",
+    "HSC.i",
+    "HSC.i2",
+    "HSC.r",
+    "HSC.r2",
+    "HSC.y",
+    "HSC.z",
+    "MegaCam.u",
+    "MegaCam.u_star",
+    "MzLS.z",
+    "VIRCAM.H",
+    "VIRCAM.J",
+    "VIRCAM.Ks",
+    "VIRCAM.Y",
+    "WISE.W1",
+    "WISE.W2"
+  ],
+  "source_hsc_target_overlap": {
+    "radius_arcsec": 1.0,
+    "source_objects_excluded": 0,
+    "excluded_source_ids": [],
+    "minimum_retained_arcsec": 6.922833364857496
+  },
+  "source_legacy_target_overlap": {
+    "radius_arcsec": 1.0,
+    "source_objects_excluded": 0,
+    "excluded_source_ids": [],
+    "minimum_retained_arcsec": 130.84893772037128
+  },
+  "source_split_ranges": "Existing source cohorts already require 0<=z<=4.5; no high-z labels are clipped",
+  "outside_grid_source_labels": 0,
+  "target_labels_read": false
+}

@@ -1,0 +1,22 @@
+Failed to `import dust_attenuation`
+Install from the repo with $ pip install git+https://github.com/karllark/dust_attenuation.git
+development_HSC_tef0.0 objects 64 seconds 5.4 max quadrature TV 0.0
+development_HSC_tef0.1 objects 64 seconds 2.5 max quadrature TV 4.1617980173214164e-08
+development_Legacy_tef0.0 objects 64 seconds 2.3 max quadrature TV 5.048709793414476e-29
+development_Legacy_tef0.1 objects 64 seconds 2.2 max quadrature TV 9.89530235528946e-10
+validation_HSC_tef0.0 objects 64 seconds 5.2 max quadrature TV 0.0
+validation_HSC_tef0.1 objects 64 seconds 2.7 max quadrature TV 1.2837214846683764e-08
+validation_Legacy_tef0.0 objects 64 seconds 2.7 max quadrature TV 0.0
+validation_Legacy_tef0.1 objects 64 seconds 2.6 max quadrature TV 9.313367854701937e-10
+confirmation_HSC_tef0.0 objects 128 seconds 9.7 max quadrature TV 7.703719777548943e-34
+confirmation_HSC_tef0.1 objects 128 seconds 4.5 max quadrature TV 1.2325296339099623e-08
+confirmation_Legacy_tef0.0 objects 128 seconds 3.8 max quadrature TV 0.0
+confirmation_Legacy_tef0.1 objects 128 seconds 3.8 max quadrature TV 9.313225746154785e-10
+bands_HSC5 objects 128 seconds 3.4 max quadrature TV 7.703719777548943e-34
+bands_HSC3_gri objects 128 seconds 3.9 max quadrature TV 1.0773932856977808e-09
+bands_HSC3_grz objects 128 seconds 4.1 max quadrature TV 3.725290298461914e-09
+bands_Legacy3 objects 128 seconds 4.1 max quadrature TV 2.1093319091392004e-08
+bands_Legacy4_W1 objects 128 seconds 3.8 max quadrature TV 4.689582056016661e-13
+bands_Legacy5 objects 128 seconds 3.6 max quadrature TV 0.0
+bands_HSC5_W1 objects 128 seconds 3.6 max quadrature TV 0.0
+bands_HSC5_W1W2 objects 128 seconds 3.4 max quadrature TV 8.077935669463161e-28

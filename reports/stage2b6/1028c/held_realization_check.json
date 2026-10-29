@@ -1,0 +1,6 @@
+{
+  "corrected_before_model_lock_or_evaluation": true,
+  "change": "CWW family controls receive independent continuous slope/dust realizations; family chosen independently of M4 measurement case; CWW identities separate from unchanged-spectrum counterfactuals",
+  "source_training_data_or_settings_changed": false,
+  "held_metrics_inspected": false
+}

@@ -1,0 +1,1 @@
+PILOT GATE True {'GMS': {'passed': True, 'learning_backbones': ['B0', 'BS', 'BC']}, 'C_SPEC': {'passed': True, 'learning_backbones': ['B0', 'BS', 'BC']}, 'C_ZPHOT': {'passed': True, 'learning_backbones': ['B0', 'BS', 'BC']}}

@@ -1,0 +1,13 @@
+{
+  "protocol": "Frozen historical head on the same shared canonical cached last-token representations; FP32 head evaluation. Separate from native historical replay.",
+  "native_grid_BC": "0.00500003..5.99249983,300bins; do not compare bin-mass CE across grids",
+  "no_fresh_head_initialization_from_history": true,
+  "files_sha256": {
+    "GMS_BS.npz": "9b79f9c3024c2cfb62de3d7bcb3bd10ddb4dc13c705c9f8ec2a0f421cc472abf",
+    "C_ZPHOT_BS.npz": "b0e4c4deee65d223b9a7a54fec5fa3751a47b15b2620dd6a2f65469393ae2976",
+    "C_ZPHOT_BC.npz": "dea3e84cb14797ced3a02f83af5d20d04c2bd954159d506709dd96d7b95014b1",
+    "C_SPEC_BS.npz": "56f306e23828b5a072ed811a00e56f6e111d3dc420b27cb136fa8d33e9054205",
+    "C_SPEC_BC.npz": "10c555af24cc1ad3947ba125597a7aeb7d18205dabfd0bef81b05fe03ffca8e2",
+    "GMS_BC.npz": "f7377517b5c90b381f0b934a37b56c89de509571851cc5cdb6bc2d1302235ea7"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "passed": true,
+  "primary_models": 12,
+  "all_control_models": 20,
+  "all_controls_frozen": true,
+  "model_sha256": {
+    "models/HSC_R1_seed11/model.pt": "9f917d16f393a041efa4061048c7a6c3363c257d349f813c016ade79a820ecc2",
+    "models/HSC_R1_seed23/model.pt": "01ba9d8903e10a81bf1bef8947f303d2994f2b4c193383554aa10a0f1fbdac7b",
+    "models/HSC_R2_seed11/model.pt": "3e0274e192aa8a9332a37ae0270cd91f7a912dc999d00c54bda3f56be556eea6",
+    "models/HSC_R2_seed23/model.pt": "f13238f49054a1f472ece90fd9629d4fea3608c2fd0229811cd99d6fe55e019d",
+    "models/Legacy_R1_seed11/model.pt": "3938573b120604153deb8464203dd69122ac501f676aa260a93032135332e60a",
+    "models/Legacy_R1_seed23/model.pt": "fce743ea7b79927737134c274e95239b244abdbd748e79c562c12f16f760a6f0",
+    "models/Legacy_R2_seed11/model.pt": "8a3cbb8a75a56d8349cad835b42a07962ac96be1f6a018456bdb8c39a5be0e91",
+    "models/Legacy_R2_seed23/model.pt": "f2b8167be5840c6cdda4a0fca4fe527b632abe87eccc284fd6bb23ddefd89564",
+    "models/Mixed_C1_seed11/model.pt": "2fb154972fc23470cc7db58a2285113c10de3e39380d84a31e00cd036d8ba89e",
+    "models/Mixed_C1_seed23/model.pt": "480216e03ffbb8321f9ddc3ffc10a1758fbfb4dd590076f9be547a4900553521",
+    "models/Mixed_C2_seed11/model.pt": "f075d123a26ecbb0af7a890b3a2f4c424801f666137eccf5d77426ce1e60e299",
+    "models/Mixed_C2_seed23/model.pt": "604e436186b3d7d94efd3bd4ec41e661abbce65dd749e7e53545fb500b41e5f8",
+    "models/Mixed_C3_seed11/model.pt": "f804d73de765aad67175af19bedde1282e2b456c21b024e1afe45c88fd202827",
+    "models/Mixed_C3_seed23/model.pt": "b54ebcd205962cb930b4996ac2b4265207419abd48b85a090cbf592a7bb30ab5",
+    "models/Mixed_R0_seed11/model.pt": "4e178111f65dc9084754ff513e5c53947b50bba6f02fcbd5c847ce796b42dec9",
+    "models/Mixed_R1_brightness_seed11/model.pt": "7aff178cc9d985bee5b174df153d94e72b996b42877bf898ca290aed2335432c",
+    "models/Mixed_R1_seed11/model.pt": "efb5125ebbfdac5f1e7434283cad5b71a9153fc3eacce9d2e0fe87360cf55b77",
+    "models/Mixed_R1_seed23/model.pt": "3158e990ec2da007c340e07b521effb4feb355729504619815ea4b15d181a26a",
+    "models/Mixed_R2_seed11/model.pt": "6db8ded4c1f6112a75c113b67d16b1ff680217779b62afb836c733419216a4fc",
+    "models/Mixed_R2_seed23/model.pt": "8e0e9c5d1791fd77d5ed9fcd350566a5b40621ebf1f3b5da2f36c1a772c56170"
+  },
+  "protocol_sha256": "8ba3a30f2300862bbab9c91d4502a579f9b8fe2b5c1e5f8810a29473686d7999",
+  "target_labels_opened": false,
+  "created_UTC": "2026-10-28T23:43:50Z"
+}

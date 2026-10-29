@@ -1,0 +1,12 @@
+{
+  "study": "Retrospective GMS native head, sparse readout and engineered photometry kNN diagnostic after Stage4 query inspection",
+  "identities": "Stage4 GMS support/development/query and nested K=256 seeds 101,202,303; 1024 queries",
+  "heads": "reuse Stage4 hard/sigma3 for B0 BS BC NUM, seeds 11/23; optional native BS sigma3 uses same 256 train plus 256 development, hard CE selection",
+  "knn": "k10, identical Stage4 Gaussian KDE on 0..4.5 grid; original exact reproduction; hidden diagnostics use uniform weights and fixed euclidean standardized or centered cosine, K-only transforms",
+  "null": "20 independent fixed permutations per support subset; query labels never used in prediction",
+  "ablation": "normalized signed flux shape/masks; brightness; shape+brightness; shape+brightness+relative uncertainty; measurement-only absolute errors/mask/quality/EBV; original minus quality/EBV",
+  "uncertainty": "paired galaxy bootstrap seed 1029, 1000 samples; subset and initialization dependence retained; no pooled repeated galaxies",
+  "thresholds": [0.05,0.10,0.15,0.20],
+  "source_only": "all transformations fit K support only; no query labels in selection or prediction; study remains retrospective",
+  "historical": "no base, adapters, or historical heads modified; no Stage2C"
+}

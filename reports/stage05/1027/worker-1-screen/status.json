@@ -1,0 +1,12 @@
+{
+  "phase": "complete",
+  "gpu": {
+    "uuid": "dd002e82-c996-5c41-a8fd-0220ae1e9c32",
+    "memory_before_gib": {
+      "total": 10.75,
+      "free": 10.73345947265625,
+      "used": 0.01654052734375
+    }
+  },
+  "training": false
+}

@@ -1,0 +1,140 @@
+{
+  "stage": "Stage3 compact real-survey benchmark",
+  "seeds": [
+    11,
+    23
+  ],
+  "experiments": {
+    "E1": "HSC source -> independently grouped Legacy validation",
+    "E2": "Legacy source -> independently grouped HSC validation",
+    "E3": "Mixed independent populations -> spatially reserved COSMOS T2"
+  },
+  "models_primary": [
+    "R1",
+    "R2"
+  ],
+  "controls": [
+    "R0 seed11 Mixed",
+    "C1 Mixed both seeds",
+    "C2 Mixed both seeds",
+    "C3 Mixed both seeds",
+    "R1_brightness seed11 Mixed"
+  ],
+  "model_details": {
+    "FSPS_kernel_sha256": "fc0db74392c18fc1423d85bdbb93ea0c95b4da331049fb18c3abf7f68c923fd8",
+    "FSPS_shape": [
+      21,
+      300,
+      12
+    ],
+    "C2": "3600 log-wavelength full photon-response samples over all registered curve support; area normalized",
+    "C3": "12 fixed positive Gaussian functions in log rest wavelength; centers logspace600..60000 Angstrom; sigma=1.5 center spacings; actual response quadrature; no IGM or external SEDs",
+    "C3_centers_A": [
+      600.0,
+      911.94664977176,
+      1386.0778200498953,
+      2106.7150405290795,
+      3202.0195387237886,
+      4866.784984738121,
+      7397.080436652401,
+      11242.904537162318,
+      17088.215210614813,
+      25972.567686498325,
+      39475.99347945407,
+      60000.00000000002
+    ],
+    "generic_integration": "Three-point Gaussian quadrature on every actual passband interval",
+    "information_caveat": "C3 matches dimensions and trainable parameters, not information content; R2 additionally knows FSPS and IGM",
+    "encoder_optimization": "Encode each of21 fixed filter representations once before gathering valid bands: exactly equivalent to per-observation encoding under masked aggregation"
+  },
+  "optim": {
+    "updates": 5000,
+    "batch_size": 256,
+    "learning_rate": 0.002,
+    "weight_decay": 0.0001,
+    "evaluate_every": 250,
+    "neighbor_sigma_bins": 1.0,
+    "grad_clip": 10.0
+  },
+  "loss": "Unit-bin Gaussian neighbor CE sigma1; hard CE selects checkpoints",
+  "selection": "Minimum survey-balanced source validation hard CE; common2500/5000 snapshots; no target tuning",
+  "mixed_sampling": "One deterministic view per physical galaxy fixed in preparation; half batch uniformly sampled from each observed survey. Repeated galaxies never receive extra views or labels.",
+  "convergence": "Final three-evaluation mean improves <0.02 over mean1000 updates earlier, after3000 updates; no validation divergence>0.1. Otherwise common-budget inference only; no matched-convergence claim.",
+  "learning_gate": "Every primary source/seed best_update>0; validation CE improvement>=0.5; outliers<0.35 and NMAD<0.12; finite normalized PDFs; no nonfinite gradients. Fail -> no T2 labels.",
+  "grid": {
+    "bins": 300,
+    "zmin": 0,
+    "zmax": 4.5,
+    "outside": "Exclude and count; never clip target truth"
+  },
+  "point": "PDF median at first cumulative probability>=0.5 on bin centers",
+  "primary_endpoint": "Paired galaxy outlier fraction R2-R1; abs(zmedian-zspec)/(1+zspec)>0.15; T2 full band; per seed",
+  "uncertainty": "2000 paired galaxy bootstrap replicates, seed1029; 2.5/97.5 percentiles conditional on trained model. Training-seed range and SD separate.",
+  "secondary": [
+    "NMAD1.48 centered absolute deviation",
+    "mean normalized bias",
+    "hard CE",
+    "CRPS",
+    "nominal68%coverage",
+    "PIT histogram",
+    "PDF concentration",
+    "failure/insufficient bands",
+    "conditional z<1/1..2/>=2 and finer bins",
+    "source-defined brightness and SNR terciles",
+    "usable bands"
+  ],
+  "target": "T2 identity locked before source fitting, spectroscopic labels read only after source gate; oldT1 exploratory separately; T3 omitted",
+  "target_subsets": {
+    "full": "all11 actual available response bands",
+    "HSC": "actual HSC grizy",
+    "overlap": "actual HSC g,r,i,z (no filter substitutions)"
+  },
+  "counterfactuals": {
+    "C4_wrong_metadata": "Fixed measured flux/error, rotate valid filter IDs by one, no claim of physically generated data",
+    "C4_consistent": "Source-only synthetic positive control:128 fixed D2 SEDs actual HSC/Legacy/full response integration, independent noise SNR40; not real galaxies or high-z supervision",
+    "C4_paired": "Existing held validation S3 actual HSC/Legacy views, galaxy-paired metrics"
+  },
+  "physical_baselines": "D12 measured-error NNLS primary; D2 constrained diagnostic only, no universal real-galaxy calibration claim; no new score selection",
+  "brightness": "R1_brightness limited Mixed source-only ablation fixed in advance; primary all amplitude normalized",
+  "Qwen": "Frozen original HSC checkpoint, same T2 eligible identities in grizy source-format with explicit unavailable EBV; no new training; replay required; label-free inference may precede final label opening",
+  "success": "Both seeds improve T2 outlier endpoint and their conditional 95% bootstrap intervals exclude0; probability metrics/calibration must be reported regardless. External FSPS information claim only if comparable-capacity and generic/full-response controls do not account for result. No architecture-only attribution to R2. Unsupported z>=2 remains exploratory.",
+  "failure": "Any identity, unit, response hash or source-learning gate failure stops target label access. A valid compact common-budget comparison is not automatically full convergence or population-wide faint-target representativeness.",
+  "forbidden": [
+    "Qwen training",
+    "Stage2C",
+    "target checkpoint selection",
+    "target kernel/basis selection",
+    "source-test evaluation"
+  ],
+  "target_eligibility": "Frozen identities and flag4/CL>=97; after model lock retain0<specz<=4.5 and >=3 full available bands; count negative/zero and outside-grid references and insufficient-band failures separately; no target-derived relabeling or clipping",
+  "C4_seed_and_domain": "seed1029;128 fixed D2 mixtures; z uniform original centers0.1..1.2; Dirichlet(1,1); independent Gaussian nominalSNR40; amplitude1; HSC/Legacy/full responses; no target labels",
+  "dataset_sha256": {
+    "Legacy_eligible.npz": "db7c82e7e0e8801be230dfd300da63fccb407c74f1792dcb5611b8f67bf88c8c",
+    "HSC_training_joint_coverage.npz": "fcbc0d240d2f9c1956ad21d39db0b539438ad9ecd2880a4fab0b2e29a8d75914",
+    "T2_identity_locked.npz": "ec91475b9895efcc5b655855a0776ac55be47fd047a0a40741f7f66637331e69",
+    "HSC_eligible.npz": "7a15887e91259572a784ee665ff21289f7f539502020304955c5a5fc4ed933b4",
+    "T2_photometry.npz": "0751be255b8b15834b97ca54a7c4d3fd10efe696994ed54e8cdda23d3b0bf53a",
+    "Mixed_training_joint_coverage.npz": "dd1ce832145e0a4ec88dca371687ffce551d1efd3c5984629437e00ecf02fa02",
+    "legacy_membership_only.npz": "5e932b8edc4ef943f968343e2d967770be34c713d9a2c86027aef032f0a95c74",
+    "unlabeled_population_support.npz": "47257f686bc86b4a5b6a373ea0d09d3d7dd5387916c7aa63a159eb449c33ac5d",
+    "legacy_all_membership_astrometry.npz": "13692965e5845b9a429abab1d0dc0739f0d963fe36165be7981f2d85b1f829ec",
+    "T1_support.npz": "d919d05b4f1154ea2de7bc9a1969937fdb5d8df566b8da1d72ab614323a82132",
+    "legacy_exact_trainval.npz": "c8c39501b2f178a15bb3c3338e17e60c3b98e8d428af11a70e94eec1bd0940d6",
+    "representations.npz": "c1958bbb56f1c339053e48292f7029515770627a2e666ba21198f7907794f9a0",
+    "T2_support.npz": "0befcb9065873d60ee3098162d210832fe84c8fb76f991e06fd61a66dc7cb811",
+    "legacy_trainval_unified.npz": "d9153141bf284d95b6afa0edd0431e56e91ea319376fba385641f7f32722df71",
+    "Legacy_training_joint_coverage.npz": "89992f996e0be223db2b915ae8219b9e9273fefa8348c1b3a56a506056443638",
+    "unlabeled_population_identity.npz": "fe90d54afe48766c16996ec2dfdcb64e1351d19c3090d2a3f105a5d7f5ccd2c7",
+    "T2_candidate_identity.npz": "20a470aa0885bed459133c55c26c55b6ab16d8635933df702d246884b9ed9cf5",
+    "unlabeled_population_photometry.npz": "b47cbedf966b32aef3f2b2a8912769d26446ee6f0356aa792365e46094665ca0",
+    "Mixed_eligible.npz": "a595a684e3c142293799095c3ac996f8a91124b6db90e55b72f60feea8383d10"
+  },
+  "implementation_sha256": {
+    "stage3_support_1029.py": "d2e786b6e8f2b97422461cb881b61e3480eaa61759834c9b7c02cbaf69a4ff47",
+    "stage3_recover_1029.py": "c0ac1084b2b8e0f7ef9d13f533a7355a87ea4aacb3881459b174f6cb07c4bfeb",
+    "stage3_data_1029.py": "bc0cc520d66fbce2cfec47f537b838fdc562eafe27e127e7e7c23667ca9f794a",
+    "stage3_qwen_1029.py": "2f8401f0ba7e600a67635a21515df7bc2d5ab6e67762173c4b65195995dd8edb",
+    "stage3_models_1029.py": "e9499fc59f220a2ff019e8db86399952cbdbb946ae116a9ac29d44d6c9679302",
+    "stage3_train_1029.py": "0de6318f00891358f5afdccc6e457b67a657bac6a686fb955fc53893be068d9e"
+  }
+}

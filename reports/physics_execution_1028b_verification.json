@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "protected_prior_files": 990,
+  "old_filter_registry_unchanged": true,
+  "normalized_finite_PDF_archives_checked": 89,
+  "full_original_neural_replay_exact": true,
+  "source_only": true,
+  "no_real_CLAUDS_label_evaluation": true,
+  "Stage2A5_handoff_precedes_Stage2B5_protocol": true
+}

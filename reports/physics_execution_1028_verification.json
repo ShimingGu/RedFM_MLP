@@ -1,0 +1,376 @@
+{
+  "protected_historical_experiment_files": 529,
+  "original_protected_models": true,
+  "PDF_archives_checked": 71,
+  "archives": [
+    {
+      "path": "reports/stage2a/1028/confirm_Legacy_P2.npz",
+      "objects": 256,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2a/1028/screen_Legacy_P0.npz",
+      "objects": 256,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2a/1028/confirm_HSC_P2.npz",
+      "objects": 256,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2a/1028/stress_screen_dim7.npz",
+      "objects": 256,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2a/1028/stress_screen_noisy_dim0_b100_seed17.npz",
+      "objects": 256,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2a/1028/source_HSC_P0.npz",
+      "objects": 5683,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2a/1028/extinction_HSC_P0.npz",
+      "objects": 256,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2a/1028/CLAUDS_P2_HSC.npz",
+      "objects": 256,
+      "unsupported": 11
+    },
+    {
+      "path": "reports/stage2a/1028/stress_screen_native.npz",
+      "objects": 256,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2a/1028/cal_Legacy_0.03.npz",
+      "objects": 256,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2a/1028/stress_screen_sigma100.npz",
+      "objects": 256,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2a/1028/stress_screen_noisy_dim0_b100_seed43.npz",
+      "objects": 256,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2a/1028/CLAUDS_Pext_HSC.npz",
+      "objects": 256,
+      "unsupported": 11
+    },
+    {
+      "path": "reports/stage2a/1028/cal_HSC_0.00.npz",
+      "objects": 256,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2a/1028/CLAUDS_P0_HSC.npz",
+      "objects": 256,
+      "unsupported": 11
+    },
+    {
+      "path": "reports/stage2a/1028/CLAUDS_P2_full.npz",
+      "objects": 256,
+      "unsupported": 9
+    },
+    {
+      "path": "reports/stage2a/1028/cal_Legacy_0.10.npz",
+      "objects": 256,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2a/1028/cal_HSC_0.03.npz",
+      "objects": 256,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2a/1028/CLAUDS_Pext_full.npz",
+      "objects": 256,
+      "unsupported": 9
+    },
+    {
+      "path": "reports/stage2a/1028/CLAUDS_P0_full.npz",
+      "objects": 256,
+      "unsupported": 9
+    },
+    {
+      "path": "reports/stage2a/1028/source_Legacy_P0.npz",
+      "objects": 15053,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2a/1028/screen_HSC_P0.npz",
+      "objects": 256,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2a/1028/extinction_Legacy_P0.npz",
+      "objects": 256,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2a/1028/stress_screen_noisy_dim0_b100_seed29.npz",
+      "objects": 256,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2a/1028/cal_HSC_0.10.npz",
+      "objects": 256,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2a/1028/cal_Legacy_0.00.npz",
+      "objects": 256,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/CLAUDS_N1_shuffled_HSC.npz",
+      "objects": 256,
+      "unsupported": 11
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/stress_N2_screen_noisy_dim0_b100_seed17.npz",
+      "objects": 256,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/CLAUDS_N1_wrong_response.npz",
+      "objects": 256,
+      "unsupported": 9
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/real_N1.npz",
+      "objects": 1024,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/stress_N1_screen_sigma100.npz",
+      "objects": 256,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/real_N2_noise.npz",
+      "objects": 1024,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/CLAUDS_N0_wrong_response.npz",
+      "objects": 256,
+      "unsupported": 9
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/synthetic_N1_summary.npz",
+      "objects": 1312,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/stress_N2_screen_sigma100.npz",
+      "objects": 256,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/stress_N2_screen_native.npz",
+      "objects": 256,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/CLAUDS_N1_noise_HSC.npz",
+      "objects": 256,
+      "unsupported": 11
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/CLAUDS_N2_neural_only.npz",
+      "objects": 256,
+      "unsupported": 9
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/real_N0.npz",
+      "objects": 1024,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/synthetic_N0.npz",
+      "objects": 1312,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/CLAUDS_N1_shuffled_full.npz",
+      "objects": 256,
+      "unsupported": 9
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/CLAUDS_N1_brightness_full.npz",
+      "objects": 256,
+      "unsupported": 9
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/stress_N0_screen_sigma100.npz",
+      "objects": 256,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/synthetic_N1.npz",
+      "objects": 1312,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/CLAUDS_N2_wrong_response.npz",
+      "objects": 256,
+      "unsupported": 9
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/CLAUDS_N2_noise_full.npz",
+      "objects": 256,
+      "unsupported": 9
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/stress_N0_screen_noisy_dim0_b100_seed17.npz",
+      "objects": 256,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/real_N1_summary.npz",
+      "objects": 1024,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/CLAUDS_N0_full.npz",
+      "objects": 256,
+      "unsupported": 9
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/synthetic_N2.npz",
+      "objects": 1312,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/stress_N1_screen_native.npz",
+      "objects": 256,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/stress_N2_screen_dim7.npz",
+      "objects": 256,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/stress_N0_screen_dim7.npz",
+      "objects": 256,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/CLAUDS_N2_noise_HSC.npz",
+      "objects": 256,
+      "unsupported": 11
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/CLAUDS_N2_full.npz",
+      "objects": 256,
+      "unsupported": 9
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/stress_N0_screen_native.npz",
+      "objects": 256,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/CLAUDS_N1_full.npz",
+      "objects": 256,
+      "unsupported": 9
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/real_N1_noise.npz",
+      "objects": 1024,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/CLAUDS_N1_noise_full.npz",
+      "objects": 256,
+      "unsupported": 9
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/synthetic_N1_shuffled.npz",
+      "objects": 1312,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/CLAUDS_N1_summary_HSC.npz",
+      "objects": 256,
+      "unsupported": 11
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/CLAUDS_N2_HSC.npz",
+      "objects": 256,
+      "unsupported": 11
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/CLAUDS_N1_summary_full.npz",
+      "objects": 256,
+      "unsupported": 9
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/real_N1_shuffled.npz",
+      "objects": 1024,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/real_N1_brightness.npz",
+      "objects": 1024,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/CLAUDS_N0_HSC.npz",
+      "objects": 256,
+      "unsupported": 11
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/stress_N1_screen_dim7.npz",
+      "objects": 256,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/real_N2.npz",
+      "objects": 1024,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/stress_N1_screen_noisy_dim0_b100_seed17.npz",
+      "objects": 256,
+      "unsupported": 0
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/CLAUDS_N1_brightness_HSC.npz",
+      "objects": 256,
+      "unsupported": 11
+    },
+    {
+      "path": "reports/stage2b/1028/predictions/CLAUDS_N1_HSC.npz",
+      "objects": 256,
+      "unsupported": 11
+    }
+  ],
+  "checkpoints_and_scientific_settings_unchanged_after_target_evaluation": true,
+  "all_correctness_tests_pass": true,
+  "empty_set_fix": {
+    "trigger": "Five CLAUDS query objects have zero usable flux/error pairs",
+    "error": "Unmasked template shape divided by a tiny empty-set norm could overflow and yield NaN before the uniform fallback",
+    "correction": "Mask template shape before normalization; floor squared norm before sqrt for finite empty-set gradients",
+    "weights_unchanged": true,
+    "settings_unchanged": true,
+    "target_labels_used_for_fix": false,
+    "source_or_supported_predictions_max_PDF_change_CPU_vs_saved_GPU": 1.5218683984130621e-05,
+    "regression_test": "all_missing_finite_neutral_physics plus finite empty-set gradients",
+    "original_model_lock_sha256": "a0b3712a31609b2d0632c00a5abfc26d382035ff93a48dffcfa9e20334d72f6b",
+    "final_model_lock_sha256": "a0b3712a31609b2d0632c00a5abfc26d382035ff93a48dffcfa9e20334d72f6b"
+  }
+}

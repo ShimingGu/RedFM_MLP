@@ -1,0 +1,45 @@
+{
+  "candidates": [
+    {
+      "label": "hard300",
+      "lr": 0.002,
+      "smooth": 0.0,
+      "coarse": false,
+      "CE": 5.694026947021484,
+      "best_update": 0
+    },
+    {
+      "label": "lower_lr",
+      "lr": 0.0005,
+      "smooth": 0.0,
+      "coarse": false,
+      "CE": 5.694026947021484,
+      "best_update": 0
+    },
+    {
+      "label": "neighbor_CE",
+      "lr": 0.002,
+      "smooth": 3.0,
+      "coarse": false,
+      "CE": 5.621337890625,
+      "best_update": 50
+    },
+    {
+      "label": "coarse30",
+      "lr": 0.002,
+      "smooth": 0.0,
+      "coarse": true,
+      "CE": 5.661838054656982,
+      "best_update": 600
+    }
+  ],
+  "selected": {
+    "label": "neighbor_CE",
+    "lr": 0.002,
+    "smooth": 3.0,
+    "coarse": false,
+    "CE": 5.621337890625,
+    "best_update": 50
+  },
+  "target_or_held_filter_labels_used": false
+}

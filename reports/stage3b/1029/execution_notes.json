@@ -1,0 +1,7 @@
+{
+  "original_raw_reconstruction": "Exact source recovery completed; sampled source test rows transiently reconstructed but discarded for all training/metrics",
+  "membership_recovery_detail": "The running Python process had compiled before a metadata-only save was added. Test IDs were therefore extracted only from archived test_evaluation.object_id and joined to Tractor identity/positions; no test labels/predictions were inspected. Reproduction using the saved script now writes the same membership directly.",
+  "raw_reconstruction_log": "/scratch/.tmp-gsm/stage3_recovery_1029.log",
+  "new_target_label_policy": "New specz column remains unopened until complete source/model lock; frozen-Qwen and physical target predictions are label-free",
+  "C4_physical_diagnostics": "Computed before target-label access; never used to tune neural candidates"
+}

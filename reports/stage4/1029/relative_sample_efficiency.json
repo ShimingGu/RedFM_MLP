@@ -1,0 +1,362 @@
+[
+  {
+    "task": "GMS",
+    "arm": "B0",
+    "outlier_threshold": 0.1,
+    "minimum_supported_training_K": null,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "GMS",
+    "arm": "B0",
+    "outlier_threshold": 0.2,
+    "minimum_supported_training_K": 512,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "GMS",
+    "arm": "B0",
+    "outlier_threshold": 0.3,
+    "minimum_supported_training_K": 512,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "GMS",
+    "arm": "B0",
+    "outlier_threshold": 0.4,
+    "minimum_supported_training_K": 512,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "GMS",
+    "arm": "B0",
+    "outlier_threshold": 0.5,
+    "minimum_supported_training_K": 256,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "GMS",
+    "arm": "BS",
+    "outlier_threshold": 0.1,
+    "minimum_supported_training_K": null,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "GMS",
+    "arm": "BS",
+    "outlier_threshold": 0.2,
+    "minimum_supported_training_K": 512,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "GMS",
+    "arm": "BS",
+    "outlier_threshold": 0.3,
+    "minimum_supported_training_K": 512,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "GMS",
+    "arm": "BS",
+    "outlier_threshold": 0.4,
+    "minimum_supported_training_K": 256,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "GMS",
+    "arm": "BS",
+    "outlier_threshold": 0.5,
+    "minimum_supported_training_K": 256,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "GMS",
+    "arm": "BC",
+    "outlier_threshold": 0.1,
+    "minimum_supported_training_K": null,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "GMS",
+    "arm": "BC",
+    "outlier_threshold": 0.2,
+    "minimum_supported_training_K": 512,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "GMS",
+    "arm": "BC",
+    "outlier_threshold": 0.3,
+    "minimum_supported_training_K": 512,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "GMS",
+    "arm": "BC",
+    "outlier_threshold": 0.4,
+    "minimum_supported_training_K": 256,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "GMS",
+    "arm": "BC",
+    "outlier_threshold": 0.5,
+    "minimum_supported_training_K": 256,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "C_SPEC",
+    "arm": "B0",
+    "outlier_threshold": 0.1,
+    "minimum_supported_training_K": null,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "C_SPEC",
+    "arm": "B0",
+    "outlier_threshold": 0.2,
+    "minimum_supported_training_K": null,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "C_SPEC",
+    "arm": "B0",
+    "outlier_threshold": 0.3,
+    "minimum_supported_training_K": null,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "C_SPEC",
+    "arm": "B0",
+    "outlier_threshold": 0.4,
+    "minimum_supported_training_K": null,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "C_SPEC",
+    "arm": "B0",
+    "outlier_threshold": 0.5,
+    "minimum_supported_training_K": null,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "C_SPEC",
+    "arm": "BS",
+    "outlier_threshold": 0.1,
+    "minimum_supported_training_K": null,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "C_SPEC",
+    "arm": "BS",
+    "outlier_threshold": 0.2,
+    "minimum_supported_training_K": null,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "C_SPEC",
+    "arm": "BS",
+    "outlier_threshold": 0.3,
+    "minimum_supported_training_K": null,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "C_SPEC",
+    "arm": "BS",
+    "outlier_threshold": 0.4,
+    "minimum_supported_training_K": null,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "C_SPEC",
+    "arm": "BS",
+    "outlier_threshold": 0.5,
+    "minimum_supported_training_K": null,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "C_SPEC",
+    "arm": "BC",
+    "outlier_threshold": 0.1,
+    "minimum_supported_training_K": null,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "C_SPEC",
+    "arm": "BC",
+    "outlier_threshold": 0.2,
+    "minimum_supported_training_K": null,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "C_SPEC",
+    "arm": "BC",
+    "outlier_threshold": 0.3,
+    "minimum_supported_training_K": null,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "C_SPEC",
+    "arm": "BC",
+    "outlier_threshold": 0.4,
+    "minimum_supported_training_K": null,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "C_SPEC",
+    "arm": "BC",
+    "outlier_threshold": 0.5,
+    "minimum_supported_training_K": null,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "C_ZPHOT",
+    "arm": "B0",
+    "outlier_threshold": 0.1,
+    "minimum_supported_training_K": null,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "C_ZPHOT",
+    "arm": "B0",
+    "outlier_threshold": 0.2,
+    "minimum_supported_training_K": null,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "C_ZPHOT",
+    "arm": "B0",
+    "outlier_threshold": 0.3,
+    "minimum_supported_training_K": null,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "C_ZPHOT",
+    "arm": "B0",
+    "outlier_threshold": 0.4,
+    "minimum_supported_training_K": null,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "C_ZPHOT",
+    "arm": "B0",
+    "outlier_threshold": 0.5,
+    "minimum_supported_training_K": null,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "C_ZPHOT",
+    "arm": "BS",
+    "outlier_threshold": 0.1,
+    "minimum_supported_training_K": null,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "C_ZPHOT",
+    "arm": "BS",
+    "outlier_threshold": 0.2,
+    "minimum_supported_training_K": null,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "C_ZPHOT",
+    "arm": "BS",
+    "outlier_threshold": 0.3,
+    "minimum_supported_training_K": null,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "C_ZPHOT",
+    "arm": "BS",
+    "outlier_threshold": 0.4,
+    "minimum_supported_training_K": null,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "C_ZPHOT",
+    "arm": "BS",
+    "outlier_threshold": 0.5,
+    "minimum_supported_training_K": null,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "C_ZPHOT",
+    "arm": "BC",
+    "outlier_threshold": 0.1,
+    "minimum_supported_training_K": null,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "C_ZPHOT",
+    "arm": "BC",
+    "outlier_threshold": 0.2,
+    "minimum_supported_training_K": null,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "C_ZPHOT",
+    "arm": "BC",
+    "outlier_threshold": 0.3,
+    "minimum_supported_training_K": null,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "C_ZPHOT",
+    "arm": "BC",
+    "outlier_threshold": 0.4,
+    "minimum_supported_training_K": null,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  },
+  {
+    "task": "C_ZPHOT",
+    "arm": "BC",
+    "outlier_threshold": 0.5,
+    "minimum_supported_training_K": null,
+    "fixed_development_label_cost": 256,
+    "criterion": "Each of6 fixed support/head replicates has conditional galaxy-bootstrap upper95% outlier bound below threshold; no independence claim over repeated galaxies"
+  }
+]

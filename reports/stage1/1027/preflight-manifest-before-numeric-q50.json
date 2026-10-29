@@ -1,0 +1,134 @@
+{
+  "created_utc": "2026-10-27T15:50:04.366185+00:00",
+  "stage05_gate": {
+    "report_sha256": "437e949d5fb0f83207fc7d86edc58210f5f40bf8d8ddec8c7bd9ee05d707b8b1",
+    "review_sha256": "8a60bbe66fa8c097d22c3c19f612490058478ba854c457c2e3f45e788f3dd0e6",
+    "completed_utc": "2026-10-27T15:40:11.906310+00:00"
+  },
+  "config": {
+    "seed": 102701,
+    "train_seds": 128,
+    "validation_seds": 24,
+    "test_seds": 32,
+    "family_holdout_seds": 24,
+    "redshifts_per_sed": 2,
+    "redshift_uniform": [
+      0.05,
+      4.1
+    ],
+    "normalization": "RMS of observed valid fnu, same scale applied to errors; raw physical fluxes also saved",
+    "source_systems": [
+      "HSC",
+      "Legacy"
+    ],
+    "held_out_systems": [
+      "CLAUDS",
+      "new_filters"
+    ],
+    "source_labels": 512,
+    "z_min": 0,
+    "z_max": 4.5,
+    "n_z_bins": 90,
+    "probe_seeds": [
+      11,
+      23,
+      37
+    ],
+    "probe_updates": 400,
+    "probe_batch_size": 64,
+    "probe_lr": 0.002,
+    "probe_weight_decay": 0.0001,
+    "head_hidden_dim": 32,
+    "numerical_set_mlp_hidden": 680,
+    "primary_pooling": "last",
+    "secondary_pooling": "mean",
+    "random_architecture_seed": 1701,
+    "max_tokens": 1024,
+    "spectrum_family_test": "double_break_emission entirely absent from source supervised training",
+    "noise": "independent Gaussian sky-equivalent error at redshift-independent nuisance RMS S/N; extra noisy reobservation regenerated from clean flux",
+    "igm": "simplified mean Lyman-series opacity screen plus ionizing suppression; not a calibrated full IGM model",
+    "dust": "controlled power-law optical depth, not a fitted empirical law",
+    "absolute_luminosity": "Independent log Lnu(5500 A) uniform 27\u201330 before observation; all supervised inputs remove amplitude",
+    "no_real_target_catalogue": true,
+    "no_clauds_labels": true,
+    "clauds_success_claimed": false,
+    "trainable_backbone": false,
+    "adapter_training": false,
+    "reasoning": "Four-way conditional next-token scoring, no-example versus fixed two-example conditions; base and Instruct kept separate"
+  },
+  "records": 1312,
+  "sed_count": 208,
+  "split_counts": {
+    "train": 512,
+    "validation": 96,
+    "test": 512,
+    "family_holdout": 192
+  },
+  "max_token_length": 979,
+  "median_token_length": 461.0,
+  "registry_sha256": "ace98d2ad8b38afc4275afb627a3811451e3605a8a07412fc89234680bda8d5b",
+  "source_code_sha256": {
+    "stage1_physics_benchmark.py": "e38ae9179391c0e7e3160dc35fdfc77e70dc51951f7fc3ceb02669c35223b43f",
+    "stage1_sed_forward.py": "b40d1eb5249e263b4f9847fea31ee57d0b3340f04a0d7816c774f825fa7c33cc"
+  },
+  "templates": [
+    {
+      "name": "CWW_E_ext.sed",
+      "url": "https://raw.githubusercontent.com/gbrammer/eazy-photoz/f651e94d91042a84906090a66d2a3fec75504e21/templates/CWW+KIN/CWW_E_ext.sed",
+      "commit": "f651e94d91042a84906090a66d2a3fec75504e21",
+      "sha256": "8ac48c600bf072c40bef40ad605482e877b364f3703b1333c922988001edca56",
+      "bytes": 20898
+    },
+    {
+      "name": "CWW_Sbc_ext.sed",
+      "url": "https://raw.githubusercontent.com/gbrammer/eazy-photoz/f651e94d91042a84906090a66d2a3fec75504e21/templates/CWW+KIN/CWW_Sbc_ext.sed",
+      "commit": "f651e94d91042a84906090a66d2a3fec75504e21",
+      "sha256": "a811e785cf1e2bfd5f6779027fd24300a50936864004f8daadfb6704ce9aaa51",
+      "bytes": 20925
+    },
+    {
+      "name": "CWW_Scd_ext.sed",
+      "url": "https://raw.githubusercontent.com/gbrammer/eazy-photoz/f651e94d91042a84906090a66d2a3fec75504e21/templates/CWW+KIN/CWW_Scd_ext.sed",
+      "commit": "f651e94d91042a84906090a66d2a3fec75504e21",
+      "sha256": "720acc79d52405da571d77c196b0d81ac248269bd4779056b6916def902a82fe",
+      "bytes": 20925
+    },
+    {
+      "name": "CWW_Im_ext.sed",
+      "url": "https://raw.githubusercontent.com/gbrammer/eazy-photoz/f651e94d91042a84906090a66d2a3fec75504e21/templates/CWW+KIN/CWW_Im_ext.sed",
+      "commit": "f651e94d91042a84906090a66d2a3fec75504e21",
+      "sha256": "c6f8c9bed58c7f4845683722825c900fdc7b89764786b699615914e22df1fb1d",
+      "bytes": 21006
+    }
+  ],
+  "prepared_sha256": {
+    "response_DECam.z.npz": "95bb3d479c6a5e01e281730ff86acadc7ad5ca154c2c35f6eba0f4d6830698a1",
+    "response_VIRCAM.Ks.npz": "93ef930eb631a404e15a47891735e42de224ac2856b5ce8acbc08084913ae67c",
+    "response_HSC.y.npz": "56525c193b0b0237fe428f6b62af8b3d0935658a28dc4b417a42ff4c79f1dd5c",
+    "response_HSC.z.npz": "cb527ab1f07dae7ada54ae4a7022fc5c756702ac9f0f1506b33ce54d929784ad",
+    "response_VIRCAM.J.npz": "040868163331d886760d802c22cf0c54b97f0286c2223e74d83cbab84669cc78",
+    "response_HSC.g.npz": "6e6969aa3665bb6ca9bdab4ee854f5671cf53a01ae97ed6d96b47343e8311101",
+    "sed_parameters.json": "7d23fd3ee87dc077ca24715fa8f97c86298cbe60fe9f1340aaff361d066fa82f",
+    "input_examples.json": "4249927b750d4a189f634848b86cd9f38057e74a4137c228485ec25438d9f83f",
+    "response_VIRCAM.H.npz": "94a5bb235f7b21a39b0e7345b47ebdf6148308aed39aa31bb941e6751e061b6b",
+    "response_MegaCam.u.npz": "713f80d89f263b284cd60c17825c36d8b376a640061649b57b9f3fd0c3ad313c",
+    "photometry.npz": "501dba0afafdc2163704c642b05e35e549a6210b040f1fc8a72cc4edc7b000db",
+    "response_HSC.i.npz": "0e65fcf8fbe868ffb68be216e25c57d7624f51f7bdb35ec36828743573b00787",
+    "response_MegaCam.u_star.npz": "18319c2ff6be9da87f9b683fc2024182df29fc2e176fc8e06c15753b899fe011",
+    "response_WISE.W2.npz": "0f06b5c0f5005cf3baa085087b8b0bd15a30c42348d463734df120982e004bb9",
+    "response_VIRCAM.Y.npz": "479883847f429da895f3969aba63a2315b9aa91eefb2cf306d31b35bbcf703bd",
+    "response_HSC.r.npz": "a5e63a09b2f3e4d7ce1dbdfcf7a0c35c2fbd7df92199f04db2d6c843546368bb",
+    "records.jsonl": "ded91e4e555bf8a77077c15f2954e607681660ffe3c3d27ed1986fdf561f7c43",
+    "spectra.npz": "e1a48c86b4b2767cc2838088ae8def3e3708a5695068ad366d21788849f285a5",
+    "response_DECam.r.npz": "de77f593994f0af371bd66b8bee7a2d1a945bcbbd0ec022b0f9f0162a79e3194",
+    "reasoning_cases.json": "3eb781ee735258319e97c59d2186001f49c64a3c8f8c90664f3a6e81dba36bcf",
+    "response_DECam.g.npz": "b3bd18dfeee431dba01ef8e508b19bcff3f2f9f3a6e2653ab47672037bc63a70",
+    "response_WISE.W1.npz": "7140315fae06983c88d9dad5b3978f37dc67ad0e502e4dd631b23c2e618e225e",
+    "inputs.jsonl": "10dba2af7f7bf7dfb64422358a89564ddc2ee02c181a1b84f5d3f79c40204de1",
+    "templates/CWW_Sbc_ext.sed": "a811e785cf1e2bfd5f6779027fd24300a50936864004f8daadfb6704ce9aaa51",
+    "templates/CWW_Im_ext.sed": "c6f8c9bed58c7f4845683722825c900fdc7b89764786b699615914e22df1fb1d",
+    "templates/CWW_E_ext.sed": "8ac48c600bf072c40bef40ad605482e877b364f3703b1333c922988001edca56",
+    "templates/CWW_Scd_ext.sed": "720acc79d52405da571d77c196b0d81ac248269bd4779056b6916def902a82fe",
+    "templates/manifest.json": "a6e385915cf1589755da562566809c47d970c37b518b9c92d5cd7d4142271213"
+  }
+}

@@ -1,0 +1,135 @@
+{
+  "code_sha256": {
+    "scripts/diagnose_hsc_clauds_stage0.py": "2a180445b4f7d1ac8c7ee0f77275b44cc6be48fbd14786ca7a54ef4a43428614",
+    "scripts/stage0_source_ebv_control.py": "fee44c6fdc31cc330593846029d27f5f3aa26ffda542fa7f06f3a422af6e5602",
+    "scripts/report_hsc_clauds_stage0.py": "92bbee4d00c464497ad470d231fb9841c8761ad143a17bfbd82945b77c29d48f"
+  },
+  "protected_artifacts_unchanged": true,
+  "source_reference_checks": {
+    "original": {
+      "passed": true,
+      "n": 32,
+      "max_abs_logit_error": 0.0,
+      "max_abs_pdf_error": 0.0,
+      "metrics": {
+        "bias": 0.0234063770622015,
+        "median_bias": 0.011606818996369839,
+        "nmad": 0.015513196587562561,
+        "catastrophic_outlier_fraction": 0.03125,
+        "cross_entropy": 2.0911121368408203,
+        "mean_log_score": 2.0911123752593994,
+        "mean_crps": 0.023618651553988457,
+        "p16_p84_coverage": 0.78125,
+        "pit_mean": 0.45608291029930115
+      },
+      "archived_metrics": {
+        "bias": 0.0234063770622015,
+        "median_bias": 0.011606818996369839,
+        "nmad": 0.015513196587562561,
+        "catastrophic_outlier_fraction": 0.03125,
+        "cross_entropy": 2.0911121368408203,
+        "mean_log_score": 2.0911123752593994,
+        "mean_crps": 0.023618651553988457,
+        "p16_p84_coverage": 0.78125,
+        "pit_mean": 0.45608291029930115
+      }
+    },
+    "A": {
+      "passed": true,
+      "n": 256,
+      "max_abs_logit_error": 0.0,
+      "max_abs_pdf_error": 0.0,
+      "metrics": {
+        "bias": -0.5212217569351196,
+        "median_bias": -0.561786413192749,
+        "nmad": 0.13587935268878937,
+        "catastrophic_outlier_fraction": 0.96484375,
+        "cross_entropy": 20.045021057128906,
+        "mean_log_score": 20.04502296447754,
+        "mean_crps": 1.4921191930770874,
+        "p16_p84_coverage": 0.015625,
+        "pit_mean": 0.9897360801696777
+      },
+      "archived_metrics": {
+        "bias": -0.5212217569351196,
+        "median_bias": -0.561786413192749,
+        "nmad": 0.13587935268878937,
+        "catastrophic_outlier_fraction": 0.96484375,
+        "cross_entropy": 20.045021057128906,
+        "mean_log_score": 20.04502296447754,
+        "mean_crps": 1.4921191930770874,
+        "p16_p84_coverage": 0.015625,
+        "pit_mean": 0.9897360801696777
+      }
+    },
+    "B": {
+      "passed": true,
+      "n": 256,
+      "max_abs_logit_error": 0.0,
+      "max_abs_pdf_error": 0.0,
+      "metrics": {
+        "bias": -0.5421295762062073,
+        "median_bias": -0.5796546936035156,
+        "nmad": 0.12439452856779099,
+        "catastrophic_outlier_fraction": 0.97265625,
+        "cross_entropy": 13.372568130493164,
+        "mean_log_score": 13.372570037841797,
+        "mean_crps": 1.5309523344039917,
+        "p16_p84_coverage": 0.0078125,
+        "pit_mean": 0.9932519197463989
+      },
+      "archived_metrics": {
+        "bias": -0.5421295762062073,
+        "median_bias": -0.5796546936035156,
+        "nmad": 0.12439452856779099,
+        "catastrophic_outlier_fraction": 0.97265625,
+        "cross_entropy": 13.372568130493164,
+        "mean_log_score": 13.372570037841797,
+        "mean_crps": 1.5309523344039917,
+        "p16_p84_coverage": 0.0078125,
+        "pit_mean": 0.9932519197463989
+      }
+    },
+    "C": {
+      "passed": true,
+      "n": 256,
+      "max_abs_logit_error": 0.0,
+      "max_abs_pdf_error": 0.0,
+      "metrics": {
+        "bias": -0.5236397981643677,
+        "median_bias": -0.562180757522583,
+        "nmad": 0.13012902438640594,
+        "catastrophic_outlier_fraction": 0.96484375,
+        "cross_entropy": 18.473541259765625,
+        "mean_log_score": 18.473539352416992,
+        "mean_crps": 1.4976491928100586,
+        "p16_p84_coverage": 0.01171875,
+        "pit_mean": 0.9898231625556946
+      },
+      "archived_metrics": {
+        "bias": -0.5236397981643677,
+        "median_bias": -0.562180757522583,
+        "nmad": 0.13012902438640594,
+        "catastrophic_outlier_fraction": 0.96484375,
+        "cross_entropy": 18.473541259765625,
+        "mean_log_score": 18.473539352416992,
+        "mean_crps": 1.4976491928100586,
+        "p16_p84_coverage": 0.01171875,
+        "pit_mean": 0.9898231625556946
+      }
+    }
+  },
+  "catalogue_fingerprints": [
+    {
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/GalaxiesMLSpec/DESI_HSC_64x64_v2.hdf5",
+      "bytes": 36249693224,
+      "mtime_ns": 1792477445575398845
+    },
+    {
+      "path": "/arc/projects/ots/Cosmic_Imprint_of_Time/clauds/catalogs/COSMOS-HSCpipe-Phosphoros_morphological_multiband_updated.fits",
+      "bytes": 8179534080,
+      "mtime_ns": 1786583867750369038
+    }
+  ],
+  "report_sha256": "4819554d1179ee35fa8e5c317f1f0bd3d47ca76c5eeea71f49e71ca3ce650075"
+}

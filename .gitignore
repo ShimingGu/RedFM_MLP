@@ -13,3 +13,56 @@ dist/
 # Generated filter-aware data live in the persistent /arc project directory.
 # Match both a directory and the local compatibility symlink.
 /filter-aware-runs
+
+# Generated physics artifacts live in Cosmic_Imprint_of_Time.
+# Ignore both regular generated files and local compatibility symlinks.
+/reports/**/*.npz
+/reports/**/*.npy
+/reports/**/*.pt
+/reports/**/*.pth
+/reports/**/*.safetensors
+/reports/**/*.fits
+/reports/**/*.fit
+/reports/**/*.hdf5
+/reports/**/*.h5
+/reports/**/*.pkl
+/reports/**/*.pickle
+/reports/**/*.joblib
+/reports/**/*.jsonl
+/fast-check-runs/**/*.npz
+/fast-check-runs/**/*.npy
+/fast-check-runs/**/*.pt
+/fast-check-runs/**/*.pth
+/fast-check-runs/**/*.safetensors
+/fast-check-runs/**/*.fits
+/fast-check-runs/**/*.fit
+/fast-check-runs/**/*.hdf5
+/fast-check-runs/**/*.h5
+/fast-check-runs/**/*.pkl
+/fast-check-runs/**/*.pickle
+/fast-check-runs/**/*.joblib
+/fast-check-runs/**/*.jsonl
+/fast-check-plots/**/*.npz
+/fast-check-plots/**/*.npy
+/fast-check-plots/**/*.pt
+/fast-check-plots/**/*.pth
+/fast-check-plots/**/*.safetensors
+/fast-check-plots/**/*.fits
+/fast-check-plots/**/*.fit
+/fast-check-plots/**/*.hdf5
+/fast-check-plots/**/*.h5
+/fast-check-plots/**/*.pkl
+/fast-check-plots/**/*.pickle
+/fast-check-plots/**/*.joblib
+/fast-check-plots/**/*.jsonl
+
+# Archived large per-object tables / serialized inputs.
+/reports/stage05/1027/paired_objects.csv
+/reports/stage1/1027/paired_counterfactuals.csv
+/reports/stage2a5/1028b/alternative_modes_and_rank.csv
+/reports/stage2a5/1028b/per_band_residuals.csv
+/reports/stage2a6/1028c/per_band_residuals.csv
+/reports/stage2a6/1028c/redshift_modes.csv
+/reports/stage4/1029/conditional_metrics.csv
+/reports/stage4/1029/inputs/C_SPEC_alternate.json
+/reports/stage4_5/readout_knn_discrepancy_1029/neighbourhood_diagnostics.csv

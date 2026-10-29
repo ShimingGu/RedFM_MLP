@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "catalogue": "HSC",
+      "objects": 16,
+      "max_chi2_difference": 0.0,
+      "PDF_bit_exact": true
+    },
+    {
+      "catalogue": "Legacy",
+      "objects": 16,
+      "max_chi2_difference": 0.0,
+      "PDF_bit_exact": true
+    }
+  ],
+  "units": "AB nanomaggy fnu and its uncertainty",
+  "templates": "Twelve original pinned FSPS, rest5500 fnu normalized, free nonnegative coefficients",
+  "redshift_grid": "Original 300 centers/edges, [0,4.5]",
+  "effective_variance": "P0 sigma^2, P2 sigma^2+(0.10*max(f,0))^2",
+  "target_labels_read": false
+}

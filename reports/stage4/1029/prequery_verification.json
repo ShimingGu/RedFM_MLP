@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "heads_checked": 900,
+  "identical_initial_weights_per_task_seed": true,
+  "all_primary_objects_no_historical_train_or_val_exposure": true,
+  "all_backbones_frozen": true,
+  "all_normalizers_fit_only_K_support": true,
+  "query_not_used_for_selection": true,
+  "original_protocol_preserved": true,
+  "source_only_sparse_readout_amendment_verified": true,
+  "UTC": "2026-10-29T08:12:18Z"
+}

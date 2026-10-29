@@ -1,0 +1,19 @@
+{
+  "legacy_original_cache_missing": true,
+  "setting": "Audited same-galaxy HSC+Legacy multi-view subset, not the complete independently sampled Legacy cohort",
+  "source_id_match_and_position_radius_arcsec": 1.0,
+  "original_hsc_test_objects_excluded": true,
+  "original_legacy_test_group_assignments_excluded": true,
+  "source_val_union_reserved": true,
+  "paired_train_galaxies": 3260,
+  "paired_val_galaxies": 1880,
+  "ambiguous_train_groups_excluded": 0,
+  "target_overlap": {
+    "radius_arcsec": 1.0,
+    "source_objects_excluded": 0,
+    "excluded_source_ids": [],
+    "minimum_retained_arcsec": 82.45698687996497
+  },
+  "source_reference": "Native HDF/DESI spectroscopic labels with independently audited Iron agreement <=1e-6*(1+z)",
+  "full_mixed_population_training_pending": true
+}

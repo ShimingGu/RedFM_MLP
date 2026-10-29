@@ -1,0 +1,27 @@
+{
+  "passed": true,
+  "shared_groups": 126,
+  "same_target_precision_check": "1e-6*(1+z)",
+  "different_target_check": "Historical HSC native-vs-DR1 inclusion tolerance0.001*(1+z); repeated spectroscopy on same verified imaging identity, not relabeling",
+  "max_normalized_redshift_discrepancy": 2.638178427886531e-06,
+  "different_target_measurements": [
+    {
+      "group": "ls:9010:341035:1475",
+      "HSC_TARGETID": "2851364543660032",
+      "Legacy_TARGETID": "39627829469513155",
+      "same_spectroscopic_target": false,
+      "normalized_dz": 2.638178427886531e-06,
+      "tolerance": 0.001
+    }
+  ],
+  "validation_only_differences": [
+    {
+      "group": "ls:9010:341035:1475",
+      "HSC_TARGETID": "2851364543660032",
+      "Legacy_TARGETID": "39627829469513155",
+      "same_spectroscopic_target": false,
+      "normalized_dz": 2.638178427886531e-06,
+      "tolerance": 0.001
+    }
+  ]
+}

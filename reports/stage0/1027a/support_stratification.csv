@@ -1,0 +1,12 @@
+feature,value,n,common_support,flux_colour_pass,joint_pass
+complete,False,19,0,0,0
+complete,True,237,2,7,2
+brightness,faint,242,1,6,1
+brightness,middle,1,1,1,1
+brightness,missing,13,0,0,0
+sn,high,2,0,1,0
+sn,low,243,1,4,1
+sn,middle,5,1,2,1
+sn,missing,6,0,0,0
+quality,False,147,2,6,2
+quality,True,109,0,1,0

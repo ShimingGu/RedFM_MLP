@@ -1,0 +1,24 @@
+
+Available GPU memory: 10.51GB, seq_len: 1824, estimated batch size for tf_col: 935
+Offload decision: mode=GPU (reason=auto_gpu_fits: 183MB <= 5382MB safe gpu free)
+Output size: 0.18GB (repeat=1), CPU free: 960.21GB, GPU free: 10.51GB, Disk free (effective): 0.00GB @ None
+
+Available GPU memory: 10.23GB, seq_len: 103, estimated batch size for tf_row: 14901
+Offload decision: mode=GPU (reason=user_gpu_fits: 4MB <= 10478MB gpu free)
+Output size: 0.00GB (repeat=1), CPU free: 959.92GB, GPU free: 10.23GB, Disk free (effective): 0.00GB @ None
+
+Available GPU memory: 10.23GB, seq_len: 1824, estimated batch size for tf_icl: 231
+Offload decision: mode=GPU (reason=user_gpu_fits: 14MB <= 10478MB gpu free)
+Output size: 0.01GB (repeat=1), CPU free: 959.88GB, GPU free: 10.23GB, Disk free (effective): 0.00GB @ None
+
+Available GPU memory: 10.41GB, seq_len: 1824, estimated batch size for tf_col: 926
+Offload decision: mode=GPU (reason=auto_gpu_fits: 183MB <= 5331MB safe gpu free)
+Output size: 0.18GB (repeat=1), CPU free: 959.75GB, GPU free: 10.41GB, Disk free (effective): 0.00GB @ None
+
+Available GPU memory: 10.23GB, seq_len: 103, estimated batch size for tf_row: 14901
+Offload decision: mode=GPU (reason=user_gpu_fits: 4MB <= 10478MB gpu free)
+Output size: 0.00GB (repeat=1), CPU free: 959.75GB, GPU free: 10.23GB, Disk free (effective): 0.00GB @ None
+
+Available GPU memory: 10.23GB, seq_len: 1824, estimated batch size for tf_icl: 231
+Offload decision: mode=GPU (reason=user_gpu_fits: 14MB <= 10478MB gpu free)
+Output size: 0.01GB (repeat=1), CPU free: 959.76GB, GPU free: 10.23GB, Disk free (effective): 0.00GB @ None

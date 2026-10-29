@@ -1,0 +1,46 @@
+Failed to `import dust_attenuation`
+Install from the repo with $ pip install git+https://github.com/karllark/dust_attenuation.git
+replay_N1_shuffled 0 5.699 5.694
+replay_N1_shuffled 400 3.295 8.058
+replay_N1_shuffled 800 1.931 7.45
+tiny_N0 0 5.713 5.713
+tiny_N0 400 3.24 3.24
+tiny_N0 800 3.233 3.233
+tiny_N0 1200 3.223 3.223
+tiny_N0 1600 3.217 3.217
+tiny_N0 2000 3.216 3.216
+tiny_N1 0 5.706 5.706
+tiny_N1 400 3.221 3.221
+tiny_N1 800 1.839 1.839
+tiny_N1 1200 1.167 1.167
+tiny_N1 1600 1.032 1.032
+tiny_N1 2000 1.0 1.0
+tiny_N2_matched 0 4.936 4.936
+tiny_N2_matched 400 2.134 2.134
+tiny_N2_matched 800 1.685 1.685
+tiny_N2_matched 1200 1.604 1.604
+tiny_N2_matched 1600 1.341 1.341
+tiny_N2_matched 2000 0.935 0.935
+L0_N0 0 5.702 5.701
+L0_N0 400 4.193 4.292
+L0_N0 800 4.192 4.294
+L0_N0 1200 4.196 4.282
+L0_N0 1600 4.186 4.246
+L0_N0 2000 4.184 4.239
+L0_N1 0 5.704 5.698
+L0_N1 400 4.146 4.269
+L0_N1 800 3.87 4.056
+L0_N1 1200 2.275 2.428
+L0_N1 1600 1.774 1.858
+L0_N1 2000 1.717 1.783
+Traceback (most recent call last):
+  File "/scratch/RedFM_MLP/scripts/stage2b5_learnability.py", line 243, in <module>
+    parser=argparse.ArgumentParser();parser.add_argument('action',choices=['prepare','run']);args=parser.parse_args();globals()[args.action]()
+                                                                                                                      ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/scratch/RedFM_MLP/scripts/stage2b5_learnability.py", line 238, in run
+    d.write(OUT/'device.json',dict(device=DEVICE,reservation=info));initial_tests();replay_all();oracle();ladder()
+                                                                                                          ~~~~~~^^
+  File "/scratch/RedFM_MLP/scripts/stage2b5_learnability.py", line 187, in ladder
+    if not passed:raise RuntimeError('Elementary learnability gate failed; diagnose source training before architectural comparisons')
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Elementary learnability gate failed; diagnose source training before architectural comparisons

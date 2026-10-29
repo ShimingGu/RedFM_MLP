@@ -1,0 +1,7 @@
+{
+  "K_means": "Number of labels used in head gradient training, not total labels available",
+  "development_labels": 256,
+  "development_usage": "All fresh backbone heads and target-only MLP select checkpoint using the same fixed256 labelled development objects; no gradients on development",
+  "numeric_kNN_and_affine": "Use K fitted labels; no additional labelled hyperparameter calibration. Development labels are available under the same task protocol but not needed by these fixed baselines.",
+  "interpretation": "Learning curves compare representation sample efficiency at a fixed extra256-label development cost; never describe K as total target-supervision cost."
+}

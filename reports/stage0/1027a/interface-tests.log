@@ -1,0 +1,107 @@
+..................s......FF                                              [100%]
+=================================== FAILURES ===================================
+_________ test_completed_native_target_inputs_remain_byte_identical[1] _________
+
+level = 1
+
+    @pytest.mark.parametrize("level", (0,1,2))
+    def test_completed_native_target_inputs_remain_byte_identical(level):
+        fast = ROOT / "fast-check-runs/1023/hsc-qlora-to-legacy-clauds"
+        if not fast.exists():
+            pytest.skip("local audited query archive unavailable")
+        meta = json.loads((fast/'summary.json').read_text())["targets"]["clauds"]
+        with np.load(fast/'clauds_predictions.npz', allow_pickle=False) as a:
+            texts = serialize_rows(dict(features=a['features']), meta, catalogue="clauds", level=level)
+        if level == 0:
+            expected = json.loads((fast/'clauds_inputs.json').read_text())["texts"]
+        else:
+            p = ROOT/f"filter-aware-runs/1023/hsc-warmstart/level{level}/clauds_inputs.jsonl"
+>           expected = [json.loads(line)["text"] for line in p.read_text().splitlines()]
+                                                             ^^^^^^^^^^^^^
+
+tests/test_clauds_common_flux.py:89: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/local/lib/python3.13/pathlib/_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/pathlib/_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/scratch/RedFM_MLP/filter-aware-runs/1023/hsc-warmstart/level1/clauds_inputs.jsonl')
+mode = 'r', buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/scratch/RedFM_MLP/filter-aware-runs/1023/hsc-warmstart/level1/clauds_inputs.jsonl'
+
+/usr/local/lib/python3.13/pathlib/_local.py:537: FileNotFoundError
+_________ test_completed_native_target_inputs_remain_byte_identical[2] _________
+
+level = 2
+
+    @pytest.mark.parametrize("level", (0,1,2))
+    def test_completed_native_target_inputs_remain_byte_identical(level):
+        fast = ROOT / "fast-check-runs/1023/hsc-qlora-to-legacy-clauds"
+        if not fast.exists():
+            pytest.skip("local audited query archive unavailable")
+        meta = json.loads((fast/'summary.json').read_text())["targets"]["clauds"]
+        with np.load(fast/'clauds_predictions.npz', allow_pickle=False) as a:
+            texts = serialize_rows(dict(features=a['features']), meta, catalogue="clauds", level=level)
+        if level == 0:
+            expected = json.loads((fast/'clauds_inputs.json').read_text())["texts"]
+        else:
+            p = ROOT/f"filter-aware-runs/1023/hsc-warmstart/level{level}/clauds_inputs.jsonl"
+>           expected = [json.loads(line)["text"] for line in p.read_text().splitlines()]
+                                                             ^^^^^^^^^^^^^
+
+tests/test_clauds_common_flux.py:89: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/local/lib/python3.13/pathlib/_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/pathlib/_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/scratch/RedFM_MLP/filter-aware-runs/1023/hsc-warmstart/level2/clauds_inputs.jsonl')
+mode = 'r', buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/scratch/RedFM_MLP/filter-aware-runs/1023/hsc-warmstart/level2/clauds_inputs.jsonl'
+
+/usr/local/lib/python3.13/pathlib/_local.py:537: FileNotFoundError
+=============================== warnings summary ===============================
+tests/test_filter_photometry.py: 14 warnings
+  /scratch/.tmp-gsm/stage0-venv/lib/python3.13/site-packages/torch/jit/_script.py:362: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+    warnings.warn(
+
+tests/test_filter_photometry.py::test_trainer_none_test_dataset_does_not_evaluate_or_report_test
+  /scratch/RedFM_MLP/aion_magnitude/qwen_posttraining.py:634: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+  Consider using tensor.detach() first. (Triggered internally at /pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:836.)
+    f"loss={float(loss):.4f} "
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_clauds_common_flux.py::test_completed_native_target_inputs_remain_byte_identical[1]
+FAILED tests/test_clauds_common_flux.py::test_completed_native_target_inputs_remain_byte_identical[2]
+2 failed, 24 passed, 1 skipped, 15 warnings in 7.00s

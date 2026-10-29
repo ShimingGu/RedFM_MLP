@@ -1,0 +1,8 @@
+{
+  "phase": "complete",
+  "backbones_updated": false,
+  "supervision": "Synthetic source-filter observations only",
+  "target_filter_training": false,
+  "real_target_labels": false,
+  "configuration_fixed_before_probes": true
+}

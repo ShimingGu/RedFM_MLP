@@ -1,0 +1,10 @@
+BASS_g_flux F1
+BASS_g_sigma E1
+BASS_r_flux F2
+BASS_r_sigma E2
+MzLS_z_flux F15
+MzLS_z_sigma E15
+WISE_W1_flux F20
+WISE_W1_sigma E20
+WISE_W2_flux F21
+WISE_W2_sigma E21

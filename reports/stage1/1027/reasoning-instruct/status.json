@@ -1,0 +1,19 @@
+{
+  "phase": "complete",
+  "gpu": {
+    "uuid": "dd002e82-c996-5c41-a8fd-0220ae1e9c32",
+    "memory_before_gib": {
+      "total": 10.75,
+      "free": 10.73345947265625,
+      "used": 0.01654052734375
+    }
+  },
+  "backbone_frozen": true,
+  "candidate_token_ids": [
+    357,
+    417,
+    351,
+    414
+  ],
+  "scoring": "Tied LM unembedding; conditional next-token logits for four single-token space-prefixed option letters; no generation or photo-z fine-tuning"
+}

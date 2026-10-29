@@ -1,0 +1,42 @@
+[
+  {
+    "system": "HSC5",
+    "n": 128,
+    "median_G1_weight": 8.465035634328827e-08,
+    "fraction_low_G1_weight_below001": 0.984375,
+    "D12_near_zero_fraction": 0.828125,
+    "mean_G1_given_zero_D12": 0.0016687594632095262,
+    "D2_outliers": 0.9296875,
+    "real_z_ge2": 0
+  },
+  {
+    "system": "HSC5_W1W2",
+    "n": 128,
+    "median_G1_weight": 2.1422241713759095e-08,
+    "fraction_low_G1_weight_below001": 0.9921875,
+    "D12_near_zero_fraction": 0.0078125,
+    "mean_G1_given_zero_D12": 8.474686189045147e-09,
+    "D2_outliers": 0.6640625,
+    "real_z_ge2": 0
+  },
+  {
+    "system": "Legacy3",
+    "n": 128,
+    "median_G1_weight": 8.813287522299306e-06,
+    "fraction_low_G1_weight_below001": 0.75,
+    "D12_near_zero_fraction": 1.0,
+    "mean_G1_given_zero_D12": 0.04706314620076638,
+    "D2_outliers": 0.9921875,
+    "real_z_ge2": 0
+  },
+  {
+    "system": "Legacy5",
+    "n": 128,
+    "median_G1_weight": 7.045061889656843e-07,
+    "fraction_low_G1_weight_below001": 0.9375,
+    "D12_near_zero_fraction": 0.2578125,
+    "mean_G1_given_zero_D12": 0.008310956232821631,
+    "D2_outliers": 0.84375,
+    "real_z_ge2": 0
+  }
+]

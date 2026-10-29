@@ -1,0 +1,8 @@
+HEAD C_ZPHOT_B0_canonical_last_smooth10_K64_subset101_seed11 step 0 devCE 5.7203 gain 0.0
+HEAD C_ZPHOT_B0_canonical_last_smooth10_K256_subset101_seed11 step 75 devCE 5.4655 gain 0.253
+HEAD C_ZPHOT_BS_canonical_last_smooth10_K64_subset101_seed11 step 0 devCE 5.7172 gain 0.0
+HEAD C_ZPHOT_BS_canonical_last_smooth10_K256_subset101_seed11 step 75 devCE 5.4971 gain 0.218
+HEAD C_ZPHOT_BC_canonical_last_smooth10_K64_subset101_seed11 step 0 devCE 5.7201 gain 0.0
+HEAD C_ZPHOT_BC_canonical_last_smooth10_K256_subset101_seed11 step 100 devCE 5.4806 gain 0.237
+HEAD C_ZPHOT_NUM_canonical_last_smooth10_K64_subset101_seed11 step 150 devCE 5.2405 gain 0.5
+HEAD C_ZPHOT_NUM_canonical_last_smooth10_K256_subset101_seed11 step 575 devCE 4.9608 gain 0.782

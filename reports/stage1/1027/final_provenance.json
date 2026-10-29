@@ -1,0 +1,18 @@
+{
+  "code_sha256": {
+    "scripts/stage1_physics_benchmark.py": "8e19cbc0e43db25d0e3006db7efd4973202ac969262f961814deecf278065804",
+    "scripts/stage1_sed_forward.py": "b40d1eb5249e263b4f9847fea31ee57d0b3340f04a0d7816c774f825fa7c33cc",
+    "scripts/stage1_tabicl_control.py": "e14fa8e1475b60fae0ccb7edb727d1275aff303dcc3e7c8bb7e261bebc2a0f99",
+    "scripts/report_stage1_physics.py": "310c7202c8138bceb2c428441797733198b72fcb2c9a0469b270668c465d7d7a"
+  },
+  "stage05_completed_before_stage1": true,
+  "stage05_gate": {
+    "report_sha256": "437e949d5fb0f83207fc7d86edc58210f5f40bf8d8ddec8c7bd9ee05d707b8b1",
+    "review_sha256": "8a60bbe66fa8c097d22c3c19f612490058478ba854c457c2e3f45e788f3dd0e6",
+    "completed_utc": "2026-10-27T15:40:11.906310+00:00"
+  },
+  "archived_protected_files_verified": 41,
+  "backbones_updated": false,
+  "no_real_clauds_labels": true,
+  "held_out_real_test_evaluated": false
+}

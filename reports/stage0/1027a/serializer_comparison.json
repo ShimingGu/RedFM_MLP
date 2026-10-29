@@ -1,0 +1,70 @@
+{
+  "source_config": {
+    "schema_name": "galaxiesml-spec_native_photometry_specz_v1",
+    "decimals": 5,
+    "missing_token": "NA",
+    "prefix": "galaxy native_observed_photometry flux_unit=AB_nanomaggy errors=one_sigma extinction=as_catalogued"
+  },
+  "field_order": [
+    "HSC_PDR2_cmodel_g_flux",
+    "HSC_PDR2_cmodel_g_flux_error",
+    "HSC_PDR2_cmodel_r_flux",
+    "HSC_PDR2_cmodel_r_flux_error",
+    "HSC_PDR2_cmodel_i_flux",
+    "HSC_PDR2_cmodel_i_flux_error",
+    "HSC_PDR2_cmodel_z_flux",
+    "HSC_PDR2_cmodel_z_flux_error",
+    "HSC_PDR2_cmodel_y_flux",
+    "HSC_PDR2_cmodel_y_flux_error",
+    "MW_EBV"
+  ],
+  "query_token": "None is appended by source serializer or collator; last observed token is pooled. With EBV=NA this final token changes; omission also changes pooled field.",
+  "variants": {
+    "source_exact_na": "Exact source field names/order/precision, MW_EBV=NA. Source survey schema and PDR2 field aliases are COUNTERFACTUAL diagnostic tags, not CLAUDS catalogue provenance.",
+    "source_exact_omit_ebv": "Same diagnostic mapping, omit unavailable EBV; changes final pooling field.",
+    "target_schema_na": "Keep all photometry fixed, change only schema survey identifier galaxiesml-spec -> clauds. PDR2 names remain diagnostic aliases."
+  },
+  "target_photometry": "Actual raw CLAUDS HSC grizy; microJy scaled linearly; measured signed fluxes kept; no invented EBV or uncertainties.",
+  "token_audits": {
+    "source_exact_na": {
+      "n": 256,
+      "min": 158,
+      "median": 218.0,
+      "p95": 218.0,
+      "max": 223,
+      "max_seq_length": 512,
+      "truncated": 0,
+      "total_tokens": 55157
+    },
+    "source_exact_omit_ebv": {
+      "n": 256,
+      "min": 153,
+      "median": 213.0,
+      "p95": 213.0,
+      "max": 218,
+      "max_seq_length": 512,
+      "truncated": 0,
+      "total_tokens": 53877
+    },
+    "target_schema_na": {
+      "n": 256,
+      "min": 157,
+      "median": 217.0,
+      "p95": 217.0,
+      "max": 222,
+      "max_seq_length": 512,
+      "truncated": 0,
+      "total_tokens": 54901
+    }
+  },
+  "example_indices": [
+    0,
+    64,
+    128,
+    192,
+    214,
+    194,
+    27,
+    78
+  ]
+}

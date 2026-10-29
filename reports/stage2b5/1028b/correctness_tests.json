@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "permutation": true,
+  "empty_finite_output_and_gradients": true,
+  "scaling_symmetry": true,
+  "no_truth_in_inference_inputs": true,
+  "corrected_kernel_copied": true,
+  "negative_flux_and_invalid_sigma": "Inherited tested tensor_rows/decoder; masks checked in priorStage2B and sourceA.5"
+}

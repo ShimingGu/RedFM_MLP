@@ -1,0 +1,11 @@
+[
+  {
+    "label": "4B_CLAUDS_DoRA",
+    "adapter_config": "/arc/home/gsm/aion_output/figures/qwen-dora_posttraining-e10/dora/adapter/adapter_config.json",
+    "base_path": "/arc/home/gsm/hf_models/Qwen3.5-4B-Base",
+    "hidden_dim": 2560,
+    "use_dora": true,
+    "rank": 8,
+    "decision": "Compatible extra adaptation mechanism; omitted before query to retain one comparable QLoRA checkpoint perfamily"
+  }
+]

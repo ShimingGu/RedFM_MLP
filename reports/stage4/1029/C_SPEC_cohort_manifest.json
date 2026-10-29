@@ -1,0 +1,23 @@
+{
+  "task": "C_SPEC",
+  "clean": 1951,
+  "support_pool": 927,
+  "development": 256,
+  "query": 768,
+  "exposure_query": 17,
+  "uncertain_exposure_excluded": 3,
+  "validation_only_excluded": 5,
+  "range": "0<=z<=4.5, positive spec-z; never clipped",
+  "close_pairs_excluded": 0,
+  "outside_or_invalid_label_candidates": 0,
+  "minimum_full_bands": 3,
+  "identical_galaxies_for_all_backbones": true,
+  "query_labels_sealed": true,
+  "interpretation": "Exploratory support/query reuse of Stage3 T2; previously inspected, not new confirmation",
+  "source_role": "New exploratory split of old T2",
+  "subset_seeds": [
+    101,
+    202,
+    303
+  ]
+}

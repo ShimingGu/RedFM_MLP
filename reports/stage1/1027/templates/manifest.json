@@ -1,0 +1,30 @@
+[
+  {
+    "name": "CWW_E_ext.sed",
+    "url": "https://raw.githubusercontent.com/gbrammer/eazy-photoz/f651e94d91042a84906090a66d2a3fec75504e21/templates/CWW+KIN/CWW_E_ext.sed",
+    "commit": "f651e94d91042a84906090a66d2a3fec75504e21",
+    "sha256": "8ac48c600bf072c40bef40ad605482e877b364f3703b1333c922988001edca56",
+    "bytes": 20898
+  },
+  {
+    "name": "CWW_Sbc_ext.sed",
+    "url": "https://raw.githubusercontent.com/gbrammer/eazy-photoz/f651e94d91042a84906090a66d2a3fec75504e21/templates/CWW+KIN/CWW_Sbc_ext.sed",
+    "commit": "f651e94d91042a84906090a66d2a3fec75504e21",
+    "sha256": "a811e785cf1e2bfd5f6779027fd24300a50936864004f8daadfb6704ce9aaa51",
+    "bytes": 20925
+  },
+  {
+    "name": "CWW_Scd_ext.sed",
+    "url": "https://raw.githubusercontent.com/gbrammer/eazy-photoz/f651e94d91042a84906090a66d2a3fec75504e21/templates/CWW+KIN/CWW_Scd_ext.sed",
+    "commit": "f651e94d91042a84906090a66d2a3fec75504e21",
+    "sha256": "720acc79d52405da571d77c196b0d81ac248269bd4779056b6916def902a82fe",
+    "bytes": 20925
+  },
+  {
+    "name": "CWW_Im_ext.sed",
+    "url": "https://raw.githubusercontent.com/gbrammer/eazy-photoz/f651e94d91042a84906090a66d2a3fec75504e21/templates/CWW+KIN/CWW_Im_ext.sed",
+    "commit": "f651e94d91042a84906090a66d2a3fec75504e21",
+    "sha256": "c6f8c9bed58c7f4845683722825c900fdc7b89764786b699615914e22df1fb1d",
+    "bytes": 21006
+  }
+]

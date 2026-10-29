@@ -1,0 +1,14 @@
+{
+  "stage05_complete": true,
+  "no_blocking_correctness_problem_for_stage1": true,
+  "units": "Source nMgy and linear errors unchanged; no inferred EBV",
+  "pooling": "Actual last nonpadding vector verified against the trained head",
+  "precision": "BF16 autocast matched and native replay checked; historical decimal quantization measured",
+  "data_leakage": "Only source train EBV/preprocessing and original validation interventions; no CLAUDS target labels or test objects",
+  "stage1_requirements": [
+    "Photon-response weighted full-curve integration",
+    "Flat-fnu AB and redshift/energy-scaling forward tests before model probes",
+    "SED-identity splits before all counterfactual observations",
+    "Independent simulation protocol; no tuning to Stage05 predictions"
+  ]
+}

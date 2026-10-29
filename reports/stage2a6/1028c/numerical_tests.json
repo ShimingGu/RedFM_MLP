@@ -1,0 +1,30 @@
+{
+  "passed": true,
+  "D12_replay_max_absolute_difference": 0.0,
+  "single_amplitude_analytic_vs_adaptive": true,
+  "D2_NNLS_matches_independent": true,
+  "DM_quadrature_checks": [
+    {
+      "sigma": 0.1,
+      "order16": -1.1498179304730005,
+      "order32": -1.1498179304729925,
+      "adaptive_reference": -1.1498179304729952
+    },
+    {
+      "sigma": 0.001,
+      "order16": 3.4521449104621658,
+      "order32": 3.452144910480854,
+      "adaptive_reference": 3.4521449105725157
+    },
+    {
+      "sigma": 0.0001,
+      "order16": 5.754729675595249,
+      "order32": 5.754729676411057,
+      "adaptive_reference": 5.754729709704071
+    }
+  ],
+  "proper_prior_normalization": true,
+  "signed_flux_and_invalid_error_mask": true,
+  "profile_scale_invariance": true,
+  "proper_amplitude_prior_scale_covariance": true
+}

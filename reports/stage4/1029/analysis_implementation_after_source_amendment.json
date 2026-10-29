@@ -1,0 +1,10 @@
+{
+  "UTC": "2026-10-29T08:05:54Z",
+  "source_amendment_sha256": "2a54cc932ea9d5c05a5b400e4d2c55a800866a287e937dea331ac2d038c47fa6",
+  "candidate_head_code_sha256": "6c6269b2c7370331b0bd571b54148f3d025182764a216083e913c04bdc675d94",
+  "evaluation_sha256": "1f8ceaeb2fcba64cdbc5f353754280e7fba8ecec7cf6d2e41efba489523d77c1",
+  "statistics_sha256": "d6c1d08dfb19ee0754f6525cf7469fa6ba2569b680074b9dc4017c2c473a444f",
+  "verification_sha256": "a5b7f162cd171b12082c9600f2552d1a0716aece93eaf94cb827f8bc179c9e2a",
+  "report_sha256": "81aa04d922e592aedff9a5ba6d3b538216c8edefe436d52c9c2855f8d3be59d9",
+  "no_query_evaluation": true
+}

@@ -1,0 +1,11 @@
+{
+  "target_labels_opened_once": true,
+  "external_spec_table_not_reopened_on_resume": true,
+  "all_preexisting_primary_prediction_hashes_unchanged": true,
+  "models_not_reselected": true,
+  "source_test_evaluated": false,
+  "source_metrics": 8,
+  "target_metrics": 71,
+  "completed_UTC": "2026-10-28T23:47:29Z",
+  "collection_repair": "Exact ID type normalization only; missing common-snapshot tables recollected from identical frozen states; no new candidate or tuning"
+}

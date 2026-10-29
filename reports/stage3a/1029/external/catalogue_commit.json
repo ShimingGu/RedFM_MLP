@@ -1,0 +1,84 @@
+[
+  {
+    "sha": "a634a9ed5c1c17ea2629b2326e4dc99f235d8027",
+    "node_id": "C_kwDOKAdQWdoAKGE2MzRhOWVkNWMxYzE3ZWEyNjI5YjIzMjZlNGRjOTlmMjM1ZDgwMjc",
+    "commit": {
+      "author": {
+        "name": "Ali Ahmad Khostovan",
+        "email": "akhostov@gmail.com",
+        "date": "2025-10-31T01:50:32Z"
+      },
+      "committer": {
+        "name": "Ali Ahmad Khostovan",
+        "email": "akhostov@gmail.com",
+        "date": "2025-10-31T01:50:32Z"
+      },
+      "message": "finalized DR1.1 for release. 138 total programs included in this release",
+      "tree": {
+        "sha": "21a101398faaea12d297c6ffdea55598e67634cd",
+        "url": "https://api.github.com/repos/cosmosastro/speczcompilation/git/trees/21a101398faaea12d297c6ffdea55598e67634cd"
+      },
+      "url": "https://api.github.com/repos/cosmosastro/speczcompilation/git/commits/a634a9ed5c1c17ea2629b2326e4dc99f235d8027",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null,
+        "verified_at": null
+      }
+    },
+    "url": "https://api.github.com/repos/cosmosastro/speczcompilation/commits/a634a9ed5c1c17ea2629b2326e4dc99f235d8027",
+    "html_url": "https://github.com/cosmosastro/speczcompilation/commit/a634a9ed5c1c17ea2629b2326e4dc99f235d8027",
+    "comments_url": "https://api.github.com/repos/cosmosastro/speczcompilation/commits/a634a9ed5c1c17ea2629b2326e4dc99f235d8027/comments",
+    "author": {
+      "login": "akhostov",
+      "id": 96151885,
+      "node_id": "U_kgDOBbspTQ",
+      "avatar_url": "https://avatars.githubusercontent.com/u/96151885?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/akhostov",
+      "html_url": "https://github.com/akhostov",
+      "followers_url": "https://api.github.com/users/akhostov/followers",
+      "following_url": "https://api.github.com/users/akhostov/following{/other_user}",
+      "gists_url": "https://api.github.com/users/akhostov/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/akhostov/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/akhostov/subscriptions",
+      "organizations_url": "https://api.github.com/users/akhostov/orgs",
+      "repos_url": "https://api.github.com/users/akhostov/repos",
+      "events_url": "https://api.github.com/users/akhostov/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/akhostov/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "akhostov",
+      "id": 96151885,
+      "node_id": "U_kgDOBbspTQ",
+      "avatar_url": "https://avatars.githubusercontent.com/u/96151885?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/akhostov",
+      "html_url": "https://github.com/akhostov",
+      "followers_url": "https://api.github.com/users/akhostov/followers",
+      "following_url": "https://api.github.com/users/akhostov/following{/other_user}",
+      "gists_url": "https://api.github.com/users/akhostov/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/akhostov/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/akhostov/subscriptions",
+      "organizations_url": "https://api.github.com/users/akhostov/orgs",
+      "repos_url": "https://api.github.com/users/akhostov/repos",
+      "events_url": "https://api.github.com/users/akhostov/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/akhostov/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "52ef8ce705e03847152b6cdf9c5790b99c402cb8",
+        "url": "https://api.github.com/repos/cosmosastro/speczcompilation/commits/52ef8ce705e03847152b6cdf9c5790b99c402cb8",
+        "html_url": "https://github.com/cosmosastro/speczcompilation/commit/52ef8ce705e03847152b6cdf9c5790b99c402cb8"
+      }
+    ]
+  }
+]

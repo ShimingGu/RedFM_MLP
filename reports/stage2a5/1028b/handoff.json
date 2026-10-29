@@ -1,0 +1,15 @@
+{
+  "completed": true,
+  "replay_pass": true,
+  "integration_verified": true,
+  "NNLS_verified": true,
+  "corrected_kernel": "/scratch/RedFM_MLP/reports/stage2a5/1028b/response_kernel_highres.npz",
+  "Stage2B5_proceed": true,
+  "unresolved_invalidating_correctness_error": false,
+  "limits": [
+    "High-S/N template and photometric measurement mismatch persists",
+    "Magnitude-derived approximate HSC errors and unknown Galactic-correction history",
+    "r/i exposure mixtures unknown",
+    "Profile score is not a marginalized posterior"
+  ]
+}

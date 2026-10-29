@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "prior_files_unchanged": 1380,
+  "normalized_PDF_archives": 226,
+  "neural_and_gate_parameters_unchanged_after_source_lock": true,
+  "marginal_convergence_valid_on_new_inputs": true,
+  "all_intrinsic_SED_splits_disjoint": true,
+  "Stage2A6_precedes_Stage2B6": true,
+  "no_real_target_labels_or_source_tests": true
+}

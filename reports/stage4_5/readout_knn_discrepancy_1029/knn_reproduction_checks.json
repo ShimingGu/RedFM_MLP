@@ -1,0 +1,20 @@
+[
+  {
+    "subset_seed": 101,
+    "pdf_max_difference": 0.0,
+    "query_label_perturbation_pdf_max_difference": 0.0,
+    "query_row_permutation_pdf_max_difference": 0.0
+  },
+  {
+    "subset_seed": 202,
+    "pdf_max_difference": 0.0,
+    "query_label_perturbation_pdf_max_difference": 0.0,
+    "query_row_permutation_pdf_max_difference": 0.0
+  },
+  {
+    "subset_seed": 303,
+    "pdf_max_difference": 0.0,
+    "query_label_perturbation_pdf_max_difference": 0.0,
+    "query_row_permutation_pdf_max_difference": 0.0
+  }
+]

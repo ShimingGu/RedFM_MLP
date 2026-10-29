@@ -1,0 +1,6 @@
+band,filter_id,source_magnitude,source_error,target_flux,target_error,source_valid,target_valid,target_signed_nonpositive,target_sigma_valid,target_bad_flag,target_isClean_count,source_median_sigma,target_median_sigma
+g,HSC.g,HSC_metadata/g_cmodel_mag,HSC_metadata/g_cmodel_magsigma,FLUX_CMODEL_HSC-G,FLUXERR_CMODEL_HSC-G,22444,245,7,243,31,224,0.0173109769821167,0.002350162733820492
+r,HSC.r,HSC_metadata/r_cmodel_mag,HSC_metadata/r_cmodel_magsigma,FLUX_CMODEL_HSC-R,FLUXERR_CMODEL_HSC-R,22444,246,5,246,29,227,0.027746031060814857,0.003143795576343409
+i,HSC.i,HSC_metadata/i_cmodel_mag,HSC_metadata/i_cmodel_magsigma,FLUX_CMODEL_HSC-I,FLUXERR_CMODEL_HSC-I,22444,243,9,242,32,224,0.030933458358049393,0.0036652872142820944
+z,HSC.z,HSC_metadata/z_cmodel_mag,HSC_metadata/z_cmodel_magsigma,FLUX_CMODEL_HSC-Z,FLUXERR_CMODEL_HSC-Z,22444,250,6,249,47,209,0.05816483497619629,0.005618129498805887
+y,HSC.y,HSC_metadata/y_cmodel_mag,HSC_metadata/y_cmodel_magsigma,FLUX_CMODEL_HSC-Y,FLUXERR_CMODEL_HSC-Y,22443,244,19,241,40,215,0.10682602971792221,0.015024437125231082

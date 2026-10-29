@@ -1,0 +1,26 @@
+{
+  "numerical_gate_parameters_unchanged": true,
+  "object_metadata_kept_in_JSON_only": true,
+  "hashes": [
+    [
+      11,
+      {
+        "weight": "5d545b32d25c1d50261826b98d49be4ca66e3e3f7caee7c481104355194bcd9c",
+        "bias": "ac76643dae189e869cdd11c392ceb3d94103777c5be7a830cb8a42430fd54789",
+        "median": "8be8ef3c09587eeac7a4688c3b36daae41c17a085df1b584d272d8cd5c9d44b4",
+        "scale": "59ac4e88f8247e01bc1fb6ade47d2972cc85efda3b46dfb368a8584b6796ce90",
+        "parameters": "f13ee6ed54ea2aae9fc49a9faeb5da6e8ddef0e12ed5d30d35a624ae813e0485"
+      }
+    ],
+    [
+      23,
+      {
+        "weight": "082407d2766c14a0059efc40771addada583fa9bc54a9872346ebb31b827118f",
+        "bias": "a7dc33de61c77fac01ead309371984b0aa38eb837152c5fb5335bf6a67e8e2ef",
+        "median": "8be8ef3c09587eeac7a4688c3b36daae41c17a085df1b584d272d8cd5c9d44b4",
+        "scale": "59ac4e88f8247e01bc1fb6ade47d2972cc85efda3b46dfb368a8584b6796ce90",
+        "parameters": "f13ee6ed54ea2aae9fc49a9faeb5da6e8ddef0e12ed5d30d35a624ae813e0485"
+      }
+    ]
+  ]
+}

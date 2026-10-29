@@ -1,0 +1,27 @@
+{
+  "UTC": "2026-10-29T07:52:45Z",
+  "original_protocol_sha256": "4be1164c7b27ea03fef496696202ad8063b86d6a0c3827c041ca8fbebdf76581",
+  "trigger": "All B0/BS/BC C_ZPHOT K256 canonical hard and sigma3 pilot readouts select initialization while training fits; GMS passes and C_SPEC sigma3 learns. No query labels or metrics opened.",
+  "diagnostic": "Add one fixed sigma10-bin Gaussian label control to C_ZPHOT only, identical for all B0/BS/BC/NUM; no architecture, optimizer, head seed, support cohort, query cohort or base/adapter change",
+  "budgets": [
+    16,
+    32,
+    64,
+    128,
+    256,
+    512
+  ],
+  "primary_original_endpoints_retained": true,
+  "original_C_ZPHOT_hard_readout_inconclusive_due_to_nonlearning": true,
+  "selection": "No query-driven selection; all original conditions retained, broader control shown as an added exploratory sparse-readout curve",
+  "per_task_gate": "Already valid GMS/C_SPEC curves may run independently; C_ZPHOT waits for successful source/development readout gate under its added control",
+  "original_head_code_sha256": "dc5dd152ca1d026dab3780b4bfb44660da779218a2507c3e320cf9e2225620c0",
+  "amended_head_code_sha256": "6c6269b2c7370331b0bd571b54148f3d025182764a216083e913c04bdc675d94",
+  "expected_head_counts": {
+    "GMS": 264,
+    "C_SPEC": 264,
+    "C_ZPHOT": 372
+  },
+  "expected_total": 900,
+  "query_evaluated": false
+}

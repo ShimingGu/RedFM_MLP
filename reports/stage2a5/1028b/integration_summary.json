@@ -1,0 +1,113 @@
+{
+  "all_21_filters": true,
+  "all_12_templates": true,
+  "redshifts": [
+    0.0075,
+    0.1,
+    0.42,
+    1.0,
+    2.0,
+    3.0,
+    4.0,
+    4.4925
+  ],
+  "original_relative_difference_quantiles": [
+    3.512871002903029e-06,
+    0.0001273472540714663,
+    0.0015095535054234302,
+    0.00360252700418923
+  ],
+  "dense_half_A_max_relative_difference": 0.0008611087453289994,
+  "order3_vs5_pass": true,
+  "constant_fnu": [
+    {
+      "filter": "BASS.g",
+      "constant_fnu": 1.0
+    },
+    {
+      "filter": "BASS.r",
+      "constant_fnu": 1.0
+    },
+    {
+      "filter": "DECam.g",
+      "constant_fnu": 1.0
+    },
+    {
+      "filter": "DECam.r",
+      "constant_fnu": 1.0
+    },
+    {
+      "filter": "DECam.z",
+      "constant_fnu": 1.0
+    },
+    {
+      "filter": "HSC.g",
+      "constant_fnu": 1.0
+    },
+    {
+      "filter": "HSC.i",
+      "constant_fnu": 1.0
+    },
+    {
+      "filter": "HSC.i2",
+      "constant_fnu": 1.0
+    },
+    {
+      "filter": "HSC.r",
+      "constant_fnu": 1.0
+    },
+    {
+      "filter": "HSC.r2",
+      "constant_fnu": 1.0
+    },
+    {
+      "filter": "HSC.y",
+      "constant_fnu": 1.0
+    },
+    {
+      "filter": "HSC.z",
+      "constant_fnu": 1.0
+    },
+    {
+      "filter": "MegaCam.u",
+      "constant_fnu": 1.0
+    },
+    {
+      "filter": "MegaCam.u_star",
+      "constant_fnu": 1.0
+    },
+    {
+      "filter": "MzLS.z",
+      "constant_fnu": 1.0
+    },
+    {
+      "filter": "VIRCAM.H",
+      "constant_fnu": 1.0
+    },
+    {
+      "filter": "VIRCAM.J",
+      "constant_fnu": 1.0
+    },
+    {
+      "filter": "VIRCAM.Ks",
+      "constant_fnu": 1.0
+    },
+    {
+      "filter": "VIRCAM.Y",
+      "constant_fnu": 1.0
+    },
+    {
+      "filter": "WISE.W1",
+      "constant_fnu": 1.0
+    },
+    {
+      "filter": "WISE.W2",
+      "constant_fnu": 1.0
+    }
+  ],
+  "AB_nanomaggy_zero_point": 22.5,
+  "unit_conversion": 0.275422870333817,
+  "seconds": 23.683783531188965,
+  "passed": true,
+  "interpretation": "Old conservative interpolation and coarse filter quadrature differ from full convolution; significance is evaluated in measured-sigma units, not a universal flux tolerance"
+}

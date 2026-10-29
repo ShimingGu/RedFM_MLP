@@ -1,0 +1,36 @@
+{
+  "frozen_before_training": true,
+  "source_only": true,
+  "real_CLAUDS_evaluation": false,
+  "replay": "All original five arms, original kernel/seed11/800 updates/AdamW0.002/0.0001, same random batches and permutation generator; instrument training/gradients without changing objective",
+  "tiny": "32 deterministic elementary L0 source objects, N0,N1 2000 updates; N2 32 matched-basis source objects2000 updates",
+  "ladder": {
+    "L0": "One strong 4000A break, tiny independent intrinsic jitter, noiseless, z0.1\u20131.1, HSC5",
+    "L1": "Independent slope/break variations, noiseless HSC5",
+    "L2_luminosity": "Independent amplitude factor, f and sigma scaled together",
+    "L2_dust": "Independent power-law internal attenuation",
+    "L2_noise": "SNR30 independent Gaussian reobservation",
+    "L2_missing": "One random source band removed",
+    "L2_weak": "Weak or absent breaks; ambiguity explicitly assessed",
+    "L3": "Same intrinsic SED/redshift through HSC and Legacy responses, training/source-validation groups disjoint",
+    "L4": "Original frozen Stage1 synthetic benchmark; new source-only protocol distinctly labelled"
+  },
+  "source_counts": "1024 unique SEDs training +256 independent SEDs validation for new ladders; two views per SED for L3. Original512 train views/128 SEDs retained separately.",
+  "seeds": [
+    11,
+    23
+  ],
+  "screen": [
+    "Original300 hard-label CE lr0.002",
+    "Original300 hard-label CE lr0.0005",
+    "300-bin Gaussian neighbor-label CE sigma3 lr0.002",
+    "30-output head repeated into300 bins, hard-label CE lr0.002"
+  ],
+  "screen_selection": "Original synthetic source-validation hard CE only; no strict held-out filters/families",
+  "steps": 1200,
+  "gate2": "N0,N1 L0 independent validation CE improves >=0.5 and outliers<0.15; correct known-mixture oracle chi2 behavior",
+  "gate3": "At least one numerical architecture gains >=0.3 validation CE on independent source SED instances",
+  "gate4": "Only trained N1 vs N2, matched/mismatched/oracle and held-out controls with SED bootstrap; no automatic physics claim",
+  "gate5": "No population-scale real runs; no new target-label evaluations",
+  "kernel": "Verified Stage2A.5 union-knot Gauss quadrature; original kernel used only for exact failure replay"
+}

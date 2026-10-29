@@ -1,0 +1,26 @@
+[
+  {
+    "split": "train",
+    "rows": 3072,
+    "max_DM_quadrature_TV": 6.446903739742993e-07,
+    "finite_features": true
+  },
+  {
+    "split": "calibration",
+    "rows": 1024,
+    "max_DM_quadrature_TV": 7.183301704571932e-07,
+    "finite_features": true
+  },
+  {
+    "split": "validation",
+    "rows": 1024,
+    "max_DM_quadrature_TV": 5.398680968937697e-07,
+    "finite_features": true
+  },
+  {
+    "split": "held",
+    "rows": 7168,
+    "max_DM_quadrature_TV": 6.276147246353503e-07,
+    "finite_features": true
+  }
+]

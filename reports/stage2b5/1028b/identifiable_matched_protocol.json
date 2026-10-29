@@ -1,0 +1,11 @@
+{
+  "purpose": "Separate decoder learnability from the underdetermined twelve-component/five-band inverse problem",
+  "basis": "Pinned FSPS component0 with continuous independent 0-5% component1 mixing; all other components zero",
+  "redshift": "Original grid centers from0.1 to1.1, uniformly sampled",
+  "objects": "1024 unique training and256 independent validation SED mixtures, each observed through HSC and Legacy",
+  "models": ["N0", "N1", "N2"],
+  "optimization": "Use already source-selected neighbor CE sigma3, AdamW0.002/weight decay0.0001, 2000 updates, seed11; identical label budget",
+  "evaluation": "Source validation first; lock models before evaluating paired unseen full CLAUDS-like and new-only filter responses",
+  "limitations": "Near-single-family matched physics is an elementary diagnostic, not realistic population transfer",
+  "target_or_held_filter_labels_for_selection": false
+}

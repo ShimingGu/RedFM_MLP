@@ -1,0 +1,15 @@
+{
+  "guide_sha256": "97466db096d3e54ae3475d34babe4061d269b9f9bc43a1a1dca63e4f5552cdd8",
+  "prompts": {
+    "phys_guide_1027caa.md": "d5b4a8887a8b808a1190484e080e1e0d4338d5b9c0c42616363779b8e1777a04",
+    "phys_guide_1027cba.md": "c53cd2f3b230dfa229f1591c255dae1b7bfc85b50d0bec457b80b7ca703c5075"
+  },
+  "Stage2A5": "stage2a5/1028b/report.md",
+  "Stage2B5": "stage2b5/1028b/report.md",
+  "joint": "joint_physics_1028b.md",
+  "prior_files_unchanged": 990,
+  "Qwen_training": false,
+  "Stage2C": false,
+  "real_CLAUDS_evaluated": false,
+  "population_training": false
+}

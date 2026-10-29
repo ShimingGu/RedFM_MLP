@@ -1,0 +1,23 @@
+{
+  "wavelength_unit": "Angstrom; registry nm multiplied by ten",
+  "flux_unit": "AB nanomaggy; one nMgy=3.631e-29 erg/s/cm2/Hz",
+  "ab_reference_jy": 3631.0,
+  "cosmology": {
+    "cosmology": "<class 'astropy.cosmology._src.flrw.lambdacdm.FlatLambdaCDM'>",
+    "name": "Planck18",
+    "H0": "67.66 km / (Mpc s)",
+    "Om0": "0.30966",
+    "Tcmb0": "2.7255 K",
+    "Neff": "3.046",
+    "m_nu": "[0.   0.   0.06] eV",
+    "Ob0": "0.04897",
+    "meta": "{'Oc0': 0.2607, 'n': 0.9665, 'sigma8': 0.8102, 'tau': 0.0561, 'z_reion': <Quantity 7.82 redshift>, 't0': <Quantity 13.787 Gyr>, 'reference': 'Planck Collaboration 2018, 2020, A&A, 641, A6  (Paper VI), Table 2 (TT, TE, EE + lowE + lensing + BAO)'}"
+  },
+  "flambda_observed": "Llambda(lambda_observed/(1+z))/(4*pi*DL**2*(1+z))",
+  "fnu_band": "integral flambda*lambda*R dlambda / (c*integral R/lambda dlambda)",
+  "filter_grid": "actual response knots union 5-Angstrom grid, no pivot approximation",
+  "luminosity_nuisance": "raw physical independent luminosities retained; supervised features remove amplitude using observed RMS only",
+  "shared_empirical_library": "Empirical base templates shared by primary instance splits; full emergent spectra have unique dust/slope parameters. This is not an empirical-library-template-disjoint test. Double-break/emission family is entirely held out.",
+  "noise": "independent Gaussian controlled exposure/SNR, not a calibrated survey/image simulator",
+  "igm": "simplified line-screen/continuum attenuation approximation, not a validated full population IGM model"
+}

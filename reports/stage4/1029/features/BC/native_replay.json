@@ -1,0 +1,28 @@
+{
+  "passed": true,
+  "n": 32,
+  "max_abs_logit_error": 0.0,
+  "max_abs_pdf_error": 0.0,
+  "metrics": {
+    "bias": 0.02133958227932453,
+    "median_bias": 0.030713308602571487,
+    "nmad": 0.06889387965202332,
+    "catastrophic_outlier_fraction": 0.09375,
+    "cross_entropy": 3.775624990463257,
+    "mean_log_score": 3.775624990463257,
+    "mean_crps": 0.1495991349220276,
+    "p16_p84_coverage": 0.71875,
+    "pit_mean": 0.4132723808288574
+  },
+  "archived_metrics": {
+    "bias": 0.02133958227932453,
+    "median_bias": 0.030713308602571487,
+    "nmad": 0.06889387965202332,
+    "catastrophic_outlier_fraction": 0.09375,
+    "cross_entropy": 3.775624990463257,
+    "mean_log_score": 3.775624990463257,
+    "mean_crps": 0.1495991349220276,
+    "p16_p84_coverage": 0.71875,
+    "pit_mean": 0.4132723808288574
+  }
+}

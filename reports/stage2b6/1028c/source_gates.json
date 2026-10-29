@@ -1,0 +1,72 @@
+{
+  "N1_seed11": {
+    "validation_CE_improvement": 2.750368118286133,
+    "best_validation_CE": 2.9482879638671875,
+    "source_plateau": null,
+    "converged": false,
+    "meaningful_learning": true
+  },
+  "N2_original_seed11": {
+    "validation_CE_improvement": 2.4806747436523438,
+    "best_validation_CE": 2.921494483947754,
+    "source_plateau": 4400,
+    "converged": true,
+    "meaningful_learning": true
+  },
+  "N2_constrained_seed11": {
+    "validation_CE_improvement": 60.32481002807617,
+    "best_validation_CE": 16.921772003173828,
+    "source_plateau": null,
+    "converged": false,
+    "meaningful_learning": false
+  },
+  "N1_seed23": {
+    "validation_CE_improvement": 2.729438543319702,
+    "best_validation_CE": 2.972264051437378,
+    "source_plateau": null,
+    "converged": false,
+    "meaningful_learning": true
+  },
+  "N2_original_seed23": {
+    "validation_CE_improvement": 2.456472158432007,
+    "best_validation_CE": 2.918107748031616,
+    "source_plateau": null,
+    "converged": false,
+    "meaningful_learning": true
+  },
+  "N2_constrained_seed23": {
+    "validation_CE_improvement": 61.05458641052246,
+    "best_validation_CE": 16.54648780822754,
+    "source_plateau": null,
+    "converged": false,
+    "meaningful_learning": false
+  },
+  "N0_seed11": {
+    "validation_CE_improvement": 2.5031142234802246,
+    "best_validation_CE": 3.201267719268799,
+    "source_plateau": null,
+    "converged": false,
+    "meaningful_learning": true
+  },
+  "N1_kernel_seed11": {
+    "validation_CE_improvement": 2.6748194694519043,
+    "best_validation_CE": 3.023801326751709,
+    "source_plateau": 4800,
+    "converged": true,
+    "meaningful_learning": true
+  },
+  "N2_G1_seed11": {
+    "validation_CE_improvement": 38.481356620788574,
+    "best_validation_CE": 4.059548377990723,
+    "source_plateau": null,
+    "converged": false,
+    "meaningful_learning": true
+  },
+  "N2_G1_seed23": {
+    "validation_CE_improvement": 38.88363838195801,
+    "best_validation_CE": 3.9742183685302734,
+    "source_plateau": null,
+    "converged": false,
+    "meaningful_learning": true
+  }
+}

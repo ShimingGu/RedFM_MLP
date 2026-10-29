@@ -1,0 +1,58 @@
+{
+  "model": "Original frozen HSC QLoRA and PDF head",
+  "checkpoint": {
+    "directory": "/scratch/RedFM_MLP/fast-check-runs/1023/hsc-qlora-to-legacy-clauds/source_snapshot",
+    "update": "completed original HSC QLoRA"
+  },
+  "GPU": {
+    "uuid": "dd002e82-c996-5c41-a8fd-0220ae1e9c32",
+    "memory_before_gib": {
+      "total": 10.75,
+      "free": 10.73345947265625,
+      "used": 0.01654052734375
+    }
+  },
+  "seconds": 257.22878336906433,
+  "target_labels_read": false,
+  "weights_updated": false,
+  "source_replay": {
+    "passed": true,
+    "n": 32,
+    "max_abs_logit_error": 0.0,
+    "max_abs_pdf_error": 0.0,
+    "metrics": {
+      "bias": 0.0234063770622015,
+      "median_bias": 0.011606818996369839,
+      "nmad": 0.015513196587562561,
+      "catastrophic_outlier_fraction": 0.03125,
+      "cross_entropy": 2.0911121368408203,
+      "mean_log_score": 2.0911123752593994,
+      "mean_crps": 0.023618651553988457,
+      "p16_p84_coverage": 0.78125,
+      "pit_mean": 0.45608291029930115
+    },
+    "archived_metrics": {
+      "bias": 0.0234063770622015,
+      "median_bias": 0.011606818996369839,
+      "nmad": 0.015513196587562561,
+      "catastrophic_outlier_fraction": 0.03125,
+      "cross_entropy": 2.0911121368408203,
+      "mean_log_score": 2.0911123752593994,
+      "mean_crps": 0.023618651553988457,
+      "p16_p84_coverage": 0.78125,
+      "pit_mean": 0.45608291029930115
+    }
+  },
+  "token_audit": {
+    "n": 2045,
+    "min": 158,
+    "median": 218.0,
+    "p95": 222.0,
+    "max": 228,
+    "max_seq_length": 512,
+    "truncated": 0,
+    "total_tokens": 443340
+  },
+  "interface": "Original HSC source fields/order/precision and actual CLAUDS grizy flux in nanomaggies; MW_EBV=NA (unavailable); no UV/NIR bands accepted by original interface",
+  "limitations": "Counterfactual source schema alias; historical PDR2 nominal response differs from target exposure mixtures; missing EBV/terminal-token fragility measured in Stage0; no claim of equivalent information to full11-band numerical inference"
+}

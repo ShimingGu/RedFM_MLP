@@ -1,0 +1,16 @@
+PHASE waiting_for_last_head_selection
+PHASE prequery_integrity
+PREQUERY VERIFIED {'passed': True, 'heads_checked': 900, 'identical_initial_weights_per_task_seed': True, 'all_primary_objects_no_historical_train_or_val_exposure': True, 'all_backbones_frozen': True, 'all_normalizers_fit_only_K_support': True, 'query_not_used_for_selection': True, 'original_protocol_preserved': True, 'source_only_sparse_readout_amendment_verified': True, 'UTC': '2026-10-29T08:12:18Z'}
+PHASE query_evaluation
+QUERY EVALUATED GMS rows 602
+QUERY EVALUATED C_SPEC rows 1204
+QUERY EVALUATED C_ZPHOT rows 2022
+PHASE paired_statistics
+PAIRED STATISTICS COMPLETE 480 80
+PHASE report_and_figures
+PAPER II REPORT COMPLETE
+PHASE final_integrity
+PREQUERY VERIFIED {'passed': True, 'heads_checked': 900, 'identical_initial_weights_per_task_seed': True, 'all_primary_objects_no_historical_train_or_val_exposure': True, 'all_backbones_frozen': True, 'all_normalizers_fit_only_K_support': True, 'query_not_used_for_selection': True, 'original_protocol_preserved': True, 'source_only_sparse_readout_amendment_verified': True, 'UTC': '2026-10-29T08:17:43Z'}
+FINAL VERIFIED {'completed': True, 'protected_files_checked': 2519, 'historical_files_unchanged': True, 'all_base_model_full_content_hashes_unchanged': True, 'adapters_and_historical_heads_unchanged': True, 'head_models': 900, 'finite_normalized_prediction_files': 1008, 'all_backbones_no_grad': True, 'all_optimizers_fresh_heads_only': True, 'native_replays_BS_BC_exact': True, 'query_not_used_to_select_heads_or_format_or_pooling': True, 'old_T2_spec_study_exploratory': True, 'source_training_exposure_excluded': True, 'Stage2C': False, 'new_backbone_or_adapter_updates': False, 'UTC': '2026-10-29T08:18:02Z'}
+PHASE complete
+ALL WORK COMPLETE

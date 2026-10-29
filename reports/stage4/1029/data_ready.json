@@ -1,0 +1,78 @@
+{
+  "ready": true,
+  "all_three_backbones_same_primary_galaxies": true,
+  "no_historical_train_or_validation_exposure_in_primary_cohorts": true,
+  "Paper": "II CLAUDS frozen-readout branch",
+  "not_a_Stage2C_or_physics_kernel_experiment": true,
+  "task_definitions": {
+    "GMS": {
+      "task": "GMS",
+      "clean": 2304,
+      "support_pool": 1024,
+      "development": 256,
+      "query": 1024,
+      "exposure_query": 128,
+      "uncertain_exposure_excluded": 0,
+      "validation_only_excluded": 0,
+      "range": "0<=z<=4.5, positive spec-z; never clipped",
+      "close_pairs_excluded": 0,
+      "outside_or_invalid_label_candidates": 0,
+      "minimum_full_bands": 3,
+      "identical_galaxies_for_all_backbones": true,
+      "query_labels_sealed": true,
+      "interpretation": "Genuine off-diagonal transfer comparison; historical catalog evaluation membership retained; no historically trained objects in primary support/dev/query",
+      "source_role": "Historical HSC test membership for the entire clean downstream dataset; new head-only support/dev/query roles, no changes to old partitions",
+      "subset_seeds": [
+        101,
+        202,
+        303
+      ]
+    },
+    "C_SPEC": {
+      "task": "C_SPEC",
+      "clean": 1951,
+      "support_pool": 927,
+      "development": 256,
+      "query": 768,
+      "exposure_query": 17,
+      "uncertain_exposure_excluded": 3,
+      "validation_only_excluded": 5,
+      "range": "0<=z<=4.5, positive spec-z; never clipped",
+      "close_pairs_excluded": 0,
+      "outside_or_invalid_label_candidates": 0,
+      "minimum_full_bands": 3,
+      "identical_galaxies_for_all_backbones": true,
+      "query_labels_sealed": true,
+      "interpretation": "Exploratory support/query reuse of Stage3 T2; previously inspected, not new confirmation",
+      "source_role": "New exploratory split of old T2",
+      "subset_seeds": [
+        101,
+        202,
+        303
+      ]
+    },
+    "C_ZPHOT": {
+      "task": "C_ZPHOT",
+      "clean": 2304,
+      "support_pool": 1024,
+      "development": 256,
+      "query": 1024,
+      "exposure_query": 128,
+      "uncertain_exposure_excluded": 0,
+      "validation_only_excluded": 0,
+      "range": "0<=z<=4.5, positive spec-z; never clipped",
+      "close_pairs_excluded": 0,
+      "outside_or_invalid_label_candidates": 75,
+      "minimum_full_bands": 3,
+      "identical_galaxies_for_all_backbones": true,
+      "query_labels_sealed": true,
+      "interpretation": "Genuine off-diagonal transfer comparison; historical catalog evaluation membership retained; no historically trained objects in primary support/dev/query",
+      "source_role": "Historical BC test identities for clean ZPHOT experiment",
+      "subset_seeds": [
+        101,
+        202,
+        303
+      ]
+    }
+  }
+}

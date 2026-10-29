@@ -1,0 +1,56 @@
+{
+  "HSC_bands": [
+    {
+      "band": "g",
+      "valid": 512,
+      "median_mag": 20.071359649999998,
+      "median_magsigma": 0.00218008005,
+      "median_relative_sigma": 0.0020079279822870616,
+      "mag_flux_mapping_verified": true,
+      "uncertainty_propagation_verified": true
+    },
+    {
+      "band": "r",
+      "valid": 512,
+      "median_mag": 18.915826799999998,
+      "median_magsigma": 0.001222269205,
+      "median_relative_sigma": 0.001125751536784506,
+      "mag_flux_mapping_verified": true,
+      "uncertainty_propagation_verified": true
+    },
+    {
+      "band": "i",
+      "valid": 512,
+      "median_mag": 18.35390755,
+      "median_magsigma": 0.0007579627565000001,
+      "median_relative_sigma": 0.0006981095096118813,
+      "mag_flux_mapping_verified": true,
+      "uncertainty_propagation_verified": true
+    },
+    {
+      "band": "z",
+      "valid": 512,
+      "median_mag": 18.047588349999998,
+      "median_magsigma": 0.0011278550950000001,
+      "median_relative_sigma": 0.0010387929120204702,
+      "mag_flux_mapping_verified": true,
+      "uncertainty_propagation_verified": true
+    },
+    {
+      "band": "y",
+      "valid": 512,
+      "median_mag": 17.8350143,
+      "median_magsigma": 0.00175331009,
+      "median_relative_sigma": 0.0016148582955518866,
+      "mag_flux_mapping_verified": true,
+      "uncertainty_propagation_verified": true
+    }
+  ],
+  "measurement": "HSC PDR2 cmodel magnitudes; sigma uses first-order magnitude-error propagation, not raw signed-flux likelihood",
+  "invalid_policy": "m in (0,40), dm in (0,10), nonfinite censored; no raw flux errors or additional flags in local HDF",
+  "band_mapping": "g,r,i,z,y verified independently by exact HDF rows; nominal r/i vs unknown exposure r2/i2 mixture",
+  "extinction": "Original metadata says as_catalogued, no additional correction. HDF has no Galactic-correction attrs; exact history unresolved.",
+  "Legacy": "Tractor native nanomaggies, inverse variance -> sigma, NOBS mask; finite negatives retained. Cmodel and Tractor profile/aperture measurements are not interchangeable.",
+  "calibration": "No fitted zero point shifts",
+  "source_test_photometry_accessed": false
+}

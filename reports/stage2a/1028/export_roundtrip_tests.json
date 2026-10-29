@@ -1,0 +1,11 @@
+{
+  "EAZY_filter_file_roundtrip": true,
+  "throughput_max_relative_rounding": 1e-05,
+  "translation_configurations": [
+    "HSC",
+    "Legacy_DECam",
+    "Legacy_BASS_MzLS",
+    "CLAUDS"
+  ],
+  "passed": true
+}

@@ -1,0 +1,22 @@
+{
+  "completed": true,
+  "stage4_manifest_files_unchanged": 4953,
+  "stage4_scripts_unchanged": 10,
+  "historical_protected_files_unchanged": 2519,
+  "base_files_unchanged": 13,
+  "historical_file_failures": [],
+  "query_ids_identical": true,
+  "query_prediction_files": 122,
+  "maximum_pdf_normalization_error": 3.5762786865234375e-07,
+  "reproduced_stage4_heads": 48,
+  "original_knn_reproductions": 3,
+  "query_label_and_row_perturbations_passed": true,
+  "native_validation_and_query_replays_exact": true,
+  "new_native_heads": 6,
+  "base_or_adapter_updates": false,
+  "query_used_for_selection": false,
+  "retrospective": true,
+  "stage2c": false,
+  "links_valid": true,
+  "seconds": 17.482593536376953
+}

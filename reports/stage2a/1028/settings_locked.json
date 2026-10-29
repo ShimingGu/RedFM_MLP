@@ -1,0 +1,34 @@
+{
+  "P0_fractional_error": 0.0,
+  "P2_fractional_error": 0.1,
+  "selection": [
+    {
+      "fractional_error": 0.0,
+      "balanced_source_CE": 239.09934425354004,
+      "source_CE": [
+        424.5255126953125,
+        53.67317581176758
+      ]
+    },
+    {
+      "fractional_error": 0.03,
+      "balanced_source_CE": 5.300923109054565,
+      "source_CE": [
+        5.064756870269775,
+        5.5370893478393555
+      ]
+    },
+    {
+      "fractional_error": 0.1,
+      "balanced_source_CE": 4.491987228393555,
+      "source_CE": [
+        4.709610939025879,
+        4.2743635177612305
+      ]
+    }
+  ],
+  "target_labels_used": false,
+  "Pext": "G23 Rv3.1, independent SFD EBV, flat-fnu band attenuation; predeclared, not selected on target",
+  "shared_source_ids": 7,
+  "confirmation": "First 256 per source from complementary SHA256 object-ID calibration halves"
+}

@@ -1,0 +1,8 @@
+{
+  "code_sha256": "3952ab2d535310225ba9e48fbd4887d30378a9934526e21944bf10adfee45391",
+  "prepared_code_sha256": "0c41ef3deb0f26739a248dc04c3f614b44342edf322579cfa043733312119129",
+  "prepared_inputs_unchanged": true,
+  "protected_artifacts_unchanged": true,
+  "autocast": "torch.autocast(cuda,bfloat16), matching archived evaluation",
+  "tests_sha256": "66108693d8e1371e1243b7669dd0dc43f4305a40fbec63196d4007ca4cb03e5e"
+}

@@ -1,0 +1,12 @@
+{
+  "repo": "jingang/TabICL",
+  "revision": "4dcd344ece2c00be9e831fdd35bed57b5ad83e19",
+  "checkpoint": "tabicl-regressor-v2-20260212.ckpt",
+  "checkpoint_path": "/scratch/.tmp-gsm/stage1-tabicl-cache/models--jingang--TabICL/snapshots/4dcd344ece2c00be9e831fdd35bed57b5ad83e19/tabicl-regressor-v2-20260212.ckpt",
+  "checkpoint_sha256": "0db9cb538f114e79026bf08f45f41ad8dd7ad2de2aaca9a5ca8cd3bd9748ae7a",
+  "n_estimators": 4,
+  "train_rows": 512,
+  "fit": "In-context source X/y; no gradient updates",
+  "feature_information": "same normalized photometry, response summaries, masks; randomly permuted slots, 99 numerical features",
+  "target_labels_used_for_fit": false
+}

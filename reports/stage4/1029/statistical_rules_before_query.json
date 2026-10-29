@@ -1,0 +1,27 @@
+{
+  "UTC": "2026-10-29T07:29:36Z",
+  "primary_K": [
+    64,
+    256
+  ],
+  "relative_sample_efficiency_thresholds": [
+    0.1,
+    0.2,
+    0.3,
+    0.4,
+    0.5
+  ],
+  "threshold_criterion": "Every support/head replicate conditional galaxy-bootstrap upper95% bound below threshold, otherwise not established withinK<=512; all six source/development head-learnability checks must also pass",
+  "bootstrap_replicates": 1000,
+  "subset_seeds": [
+    101,
+    202,
+    303
+  ],
+  "head_seeds": [
+    11,
+    23
+  ],
+  "no_new_query_metrics_opened": true,
+  "interpretation": "AllK curves shown; largest gain secondary, not selected primary. No stability claim across independent query partitions: each task has one fixed query split. K training labels plus256 development labels for learned-head selection."
+}

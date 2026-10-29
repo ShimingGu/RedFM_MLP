@@ -1,0 +1,15 @@
+{
+  "prompts": {
+    "phys_guide_1027cab.md": "dd9961dec46ecdbf47f6845b2896d8fb391dc43e44a3e0f1958156a7b032859e",
+    "phys_guide_1027cbb.md": "d180c3752aa0f536d2fdaaa0073f254020e7a0ec731e65780e3cc48e4390b2a3"
+  },
+  "reports": [
+    "stage2a6/1028c/report.md",
+    "stage2b6/1028c/report.md",
+    "joint_physics_1028c.md"
+  ],
+  "Qwen_training": false,
+  "Stage2C": false,
+  "real_CLAUDS_evaluated": false,
+  "source_tests": false
+}

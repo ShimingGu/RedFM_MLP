@@ -1,0 +1,11 @@
+{
+  "device": "cuda",
+  "reservation": {
+    "uuid": "88b5a6d2-3af1-5088-9cb7-235af969d28e",
+    "memory_before_gib": {
+      "total": 10.75,
+      "free": 10.73345947265625,
+      "used": 0.01654052734375
+    }
+  }
+}

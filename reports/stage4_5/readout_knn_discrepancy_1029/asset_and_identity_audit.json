@@ -1,0 +1,61 @@
+{
+  "feature_hashes": {
+    "B0": "0b6070e68820f220f5fe14da45e633403d4120045663be1426e45ffa16efb6a4",
+    "BS": "95be58d64437b5be4ba175d8f323947af0eaf01f53b2f39e81b262c1a52f4781",
+    "BC": "03fd8b02048aa095921102f81576d1ca59a366cd113a07e9e64fd1d83428d244"
+  },
+  "existing_head_fits_reproduced": 48,
+  "maximum_head_pdf_replay_error": 0,
+  "identity": {
+    "support_pool__development": {
+      "shared_id": 0,
+      "shared_group": 0,
+      "min_arcsec": 34.41312554878001,
+      "within_1arcsec": 0,
+      "within_2arcsec": 0
+    },
+    "support_pool__query": {
+      "shared_id": 0,
+      "shared_group": 0,
+      "min_arcsec": 30.02578927007289,
+      "within_1arcsec": 0,
+      "within_2arcsec": 0
+    },
+    "development__query": {
+      "shared_id": 0,
+      "shared_group": 0,
+      "min_arcsec": 105.48777946897816,
+      "within_1arcsec": 0,
+      "within_2arcsec": 0
+    }
+  },
+  "known_historical_exposures": {
+    "BS_train_match": 0,
+    "BS_val_match": 0,
+    "BC_train_match": 0,
+    "BC_val_match": 0,
+    "BS_train_ambiguous": 0,
+    "BS_val_ambiguous": 0,
+    "BC_train_ambiguous": 0,
+    "BC_val_ambiguous": 0
+  },
+  "historical_stage4_verification": {
+    "completed": true,
+    "protected_files_checked": 2519,
+    "historical_files_unchanged": true,
+    "all_base_model_full_content_hashes_unchanged": true,
+    "adapters_and_historical_heads_unchanged": true,
+    "head_models": 900,
+    "finite_normalized_prediction_files": 1008,
+    "all_backbones_no_grad": true,
+    "all_optimizers_fresh_heads_only": true,
+    "native_replays_BS_BC_exact": true,
+    "query_not_used_to_select_heads_or_format_or_pooling": true,
+    "old_T2_spec_study_exploratory": true,
+    "source_training_exposure_excluded": true,
+    "Stage2C": false,
+    "new_backbone_or_adapter_updates": false,
+    "UTC": "2026-10-29T08:32:31Z"
+  },
+  "retrospective_query": true
+}

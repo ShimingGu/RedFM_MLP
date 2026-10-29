@@ -1,0 +1,8 @@
+..........................                                               [100%]
+=============================== warnings summary ===============================
+tests/test_filter_photometry.py: 14 warnings
+  /scratch/.tmp-gsm/stage0-venv/lib/python3.13/site-packages/torch/jit/_script.py:362: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+26 passed, 1 deselected, 14 warnings in 7.14s

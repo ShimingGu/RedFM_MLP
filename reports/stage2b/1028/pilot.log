@@ -1,0 +1,101 @@
+Failed to `import dust_attenuation`
+Install from the repo with $ pip install git+https://github.com/karllark/dust_attenuation.git
+real N0 11 step 0 val CE 5.7007
+real N0 11 step 200 val CE 4.0283
+real N0 11 step 400 val CE 3.9905
+real N0 11 step 600 val CE 3.757
+real N0 11 step 800 val CE 3.6206
+real N0 11 step 1000 val CE 3.6499
+real N1 11 step 0 val CE 5.6903
+real N1 11 step 200 val CE 3.5142
+real N1 11 step 400 val CE 3.1831
+real N1 11 step 600 val CE 3.2256
+real N1 11 step 800 val CE 3.0753
+real N1 11 step 1000 val CE 3.0398
+real N2 11 step 0 val CE 4.5605
+real N2 11 step 200 val CE 3.1763
+real N2 11 step 400 val CE 3.1699
+real N2 11 step 600 val CE 3.1527
+real N2 11 step 800 val CE 3.163
+real N2 11 step 1000 val CE 3.1026
+synthetic N0 11 step 0 val CE 5.6904
+synthetic N0 11 step 200 val CE 6.5995
+synthetic N0 11 step 400 val CE 6.743
+synthetic N0 11 step 600 val CE 7.1341
+synthetic N0 11 step 800 val CE 7.5687
+synthetic N1 11 step 0 val CE 5.694
+synthetic N1 11 step 200 val CE 7.4549
+synthetic N1 11 step 400 val CE 8.1581
+synthetic N1 11 step 600 val CE 7.8792
+synthetic N1 11 step 800 val CE 7.4312
+synthetic N2 11 step 0 val CE 5.835
+synthetic N2 11 step 200 val CE 7.2416
+synthetic N2 11 step 400 val CE 7.9761
+synthetic N2 11 step 600 val CE 7.705
+synthetic N2 11 step 800 val CE 7.5291
+real N1_summary 11 step 0 val CE 5.6903
+real N1_summary 11 step 200 val CE 3.6299
+real N1_summary 11 step 400 val CE 3.2076
+real N1_summary 11 step 600 val CE 3.0467
+real N1_summary 11 step 800 val CE 3.0671
+real N1_summary 11 step 1000 val CE 3.0426
+real N1_shuffled 11 step 0 val CE 5.6903
+real N1_shuffled 11 step 200 val CE 3.5123
+real N1_shuffled 11 step 400 val CE 3.2108
+real N1_shuffled 11 step 600 val CE 3.19
+real N1_shuffled 11 step 800 val CE 3.0887
+real N1_shuffled 11 step 1000 val CE 3.0676
+real N1_brightness 11 step 0 val CE 5.6995
+real N1_brightness 11 step 200 val CE 3.5109
+real N1_brightness 11 step 400 val CE 3.2004
+real N1_brightness 11 step 600 val CE 3.223
+real N1_brightness 11 step 800 val CE 3.0801
+real N1_brightness 11 step 1000 val CE 3.0421
+real N1_noise 11 step 0 val CE 5.6903
+real N1_noise 11 step 200 val CE 3.9899
+real N1_noise 11 step 400 val CE 3.3882
+real N1_noise 11 step 600 val CE 3.2286
+real N1_noise 11 step 800 val CE 3.179
+real N1_noise 11 step 1000 val CE 3.1584
+real N2_noise 11 step 0 val CE 4.5605
+real N2_noise 11 step 200 val CE 3.4042
+real N2_noise 11 step 400 val CE 3.4037
+real N2_noise 11 step 600 val CE 3.2231
+real N2_noise 11 step 800 val CE 3.1677
+real N2_noise 11 step 1000 val CE 3.1293
+synthetic N1_summary 11 step 0 val CE 5.694
+synthetic N1_summary 11 step 200 val CE 7.3647
+synthetic N1_summary 11 step 400 val CE 8.0382
+synthetic N1_summary 11 step 600 val CE 8.0816
+synthetic N1_summary 11 step 800 val CE 7.7438
+synthetic N1_shuffled 11 step 0 val CE 5.694
+synthetic N1_shuffled 11 step 200 val CE 7.404
+synthetic N1_shuffled 11 step 400 val CE 8.0582
+synthetic N1_shuffled 11 step 600 val CE 7.6909
+synthetic N1_shuffled 11 step 800 val CE 7.4505
+/scratch/RedFM_MLP/scripts/stage2_physics.py:153: RuntimeWarning: All-NaN slice encountered
+  mag=22.5-2.5*np.log10(np.maximum(np.nanmedian(np.abs(f),axis=1),1e-30));z=pred['z_spec']
+/scratch/RedFM_MLP/scripts/stage2_physics.py:153: RuntimeWarning: All-NaN slice encountered
+  mag=22.5-2.5*np.log10(np.maximum(np.nanmedian(np.abs(f),axis=1),1e-30));z=pred['z_spec']
+/scratch/RedFM_MLP/scripts/stage2_physics.py:153: RuntimeWarning: All-NaN slice encountered
+  mag=22.5-2.5*np.log10(np.maximum(np.nanmedian(np.abs(f),axis=1),1e-30));z=pred['z_spec']
+/scratch/RedFM_MLP/scripts/stage2_physics.py:153: RuntimeWarning: All-NaN slice encountered
+  mag=22.5-2.5*np.log10(np.maximum(np.nanmedian(np.abs(f),axis=1),1e-30));z=pred['z_spec']
+/scratch/RedFM_MLP/scripts/stage2_physics.py:153: RuntimeWarning: All-NaN slice encountered
+  mag=22.5-2.5*np.log10(np.maximum(np.nanmedian(np.abs(f),axis=1),1e-30));z=pred['z_spec']
+/scratch/RedFM_MLP/scripts/stage2_physics.py:153: RuntimeWarning: All-NaN slice encountered
+  mag=22.5-2.5*np.log10(np.maximum(np.nanmedian(np.abs(f),axis=1),1e-30));z=pred['z_spec']
+Traceback (most recent call last):
+  File "/scratch/RedFM_MLP/scripts/stage2_numerical.py", line 327, in <module>
+    p=argparse.ArgumentParser();p.add_argument('action',choices=['tests','prepare','run','report']);a=p.parse_args();globals()[a.action]()
+                                                                                                                     ~~~~~~~~~~~~~~~~~~~^^
+  File "/scratch/RedFM_MLP/scripts/stage2_numerical.py", line 285, in run
+    stem=f'CLAUDS_{name}_{system}';p=score(result,a,stem);targetrows+=phys.conditional(stem,a,p,True)
+                                     ~~~~~^^^^^^^^^^^^^^^
+  File "/scratch/RedFM_MLP/scripts/stage2_numerical.py", line 199, in score
+    device='cuda' if torch.cuda.is_available() else 'cpu';model=load_model(result,device);t=tensor_rows(a,device);raw=infer(model,t,wrong=wrong,neural_only=neural_only);p=phys.prediction(raw.pop('logits'),a.get('z',np.zeros(len(a['flux']))));p.update(raw);n=t['mask'].sum(1).cpu().numpy();p.update(n_valid=n,unsupported=n<3,object_id=a['object_id'])
+                                                                                                                                                                           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/RedFM_MLP/scripts/stage2_physics.py", line 122, in prediction
+    assert np.isfinite(p).all() and np.allclose(p.sum(1),1)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

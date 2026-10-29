@@ -1,0 +1,25 @@
+{
+  "N1": {
+    "permutation_max_abs": 2.9802322387695312e-08,
+    "masked_storage_invariance": true,
+    "common_scale_invariance": true,
+    "normalized_pdf": true
+  },
+  "N2": {
+    "permutation_max_abs": 1.9073486328125e-06,
+    "masked_storage_invariance": true,
+    "common_scale_invariance": true,
+    "normalized_pdf": true
+  },
+  "all_missing_finite_neutral_physics": true,
+  "signed_flux": true,
+  "absent_uncertainty_excluded": true,
+  "AB_normalization": true,
+  "kernel_direct_agreement": true,
+  "finite_correct_gradient": true,
+  "gradient_finite_difference": -0.010590999387204647,
+  "gradient_autograd": -0.010659042745828629,
+  "decoder_inputs_no_labels": true,
+  "no_fixed_filter_position": true,
+  "passed": true
+}

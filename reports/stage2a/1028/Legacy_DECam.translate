@@ -1,0 +1,10 @@
+DECam_g_flux F3
+DECam_g_sigma E3
+DECam_r_flux F4
+DECam_r_sigma E4
+DECam_z_flux F5
+DECam_z_sigma E5
+WISE_W1_flux F20
+WISE_W1_sigma E20
+WISE_W2_flux F21
+WISE_W2_sigma E21

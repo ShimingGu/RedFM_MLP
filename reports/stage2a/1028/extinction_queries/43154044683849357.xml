@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+<results status="ok">
+  <input>
+    <objname>      148.963390 1.567820 equ J2000    </objname>
+    <regSize>
+      5.0 deg
+    </regSize>
+  </input>
+  <result>
+    <desc>
+      E(B-V) Reddening
+    </desc>
+    <data>
+      <image>
+        https://irsa.ipac.caltech.edu:443//workspace/TMP_jfozWm_1704035/DUST/148.96338501_1.56781537_equ_j2000.v0001/p213Dust.fits
+      </image>
+      <table>
+        https://irsa.ipac.caltech.edu:443//workspace/TMP_jfozWm_1704035/DUST/148.96338501_1.56781537_equ_j2000.v0001/extinction.tbl
+      </table>
+    </data>
+    <statistics>
+      <refPixelValueSandF>
+             0.0184 (mag)
+      </refPixelValueSandF>
+      <refPixelValueSFD>
+             0.0213 (mag)
+      </refPixelValueSFD>
+      <refCoordinate>
+        148.963390 1.567820 equ J2000
+      </refCoordinate>
+      <meanValueSandF>
+           0.0185 (mag)
+      </meanValueSandF>
+      <meanValueSFD>
+           0.0216 (mag)
+      </meanValueSFD>
+      <stdSandF>
+           0.0012 (mag)
+      </stdSandF>
+      <stdSFD>
+           0.0014 (mag)
+      </stdSFD>
+      <maxValueSandF>
+           0.0208 (mag)
+      </maxValueSandF>
+      <maxValueSFD>
+           0.0242 (mag)
+      </maxValueSFD>
+      <minValueSandF>
+           0.0168 (mag)
+      </minValueSandF>
+      <minValueSFD>
+           0.0196 (mag)
+      </minValueSFD>
+    </statistics>
+  </result>
+  <result>
+    <desc>
+      100 Micron Emission
+    </desc>
+    <data>
+      <image>
+        https://irsa.ipac.caltech.edu:443//workspace/TMP_jfozWm_1704035/DUST/148.96338501_1.56781537_equ_j2000.v0001/p213i100.fits
+      </image>
+    </data>
+    <statistics>
+      <refPixelValue>
+           0.9933 (MJy/sr)
+      </refPixelValue>
+      <refCoordinate>
+        148.963390 1.567820 equ J2000
+      </refCoordinate>
+      <meanValue>
+         1.0030 (MJy/sr)
+      </meanValue>
+      <std>
+         0.0668 (MJy/sr)
+      </std>
+      <maxValue>
+         1.1302 (MJy/sr)
+      </maxValue>
+      <minValue>
+         0.9083 (MJy/sr)
+      </minValue>
+    </statistics>
+  </result>
+  <result>
+    <desc>
+      Dust Temperature
+    </desc>
+    <data>
+      <image>
+        https://irsa.ipac.caltech.edu:443//workspace/TMP_jfozWm_1704035/DUST/148.96338501_1.56781537_equ_j2000.v0001/p213temp.fits
+      </image>
+    </data>
+    <statistics>
+      <refPixelValue>
+          17.8272 (K)
+      </refPixelValue>
+      <refCoordinate>
+        148.963390 1.567820 equ J2000
+      </refCoordinate>
+      <meanValue>
+        17.8267 (K)
+      </meanValue>
+      <std>
+         0.0040 (K)
+      </std>
+      <maxValue>
+        17.8379 (K)
+      </maxValue>
+      <minValue>
+        17.8212 (K)
+      </minValue>
+    </statistics>
+  </result>
+</results>

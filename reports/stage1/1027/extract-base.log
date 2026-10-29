@@ -1,0 +1,13 @@
+[transformers] The fast path is not available because one of the required library is not installed. Falling back to torch implementation. To install follow https://github.com/fla-org/flash-linear-attention#installation and https://github.com/Dao-AILab/causal-conv1d
+Loading weights:   0%|          | 0/723 [00:00<?, ?it/s]Loading weights:   0%|          | 1/723 [00:00<05:53,  2.04it/s]Loading weights:   2%|▏         | 13/723 [00:00<00:25, 28.34it/s]Loading weights:   4%|▍         | 28/723 [00:00<00:12, 55.28it/s]Loading weights:   6%|▌         | 45/723 [00:00<00:08, 80.06it/s]Loading weights:   9%|▊         | 62/723 [00:00<00:06, 102.42it/s]Loading weights:  11%|█         | 76/723 [00:01<00:05, 112.30it/s]Loading weights:  13%|█▎        | 92/723 [00:01<00:05, 123.08it/s]Loading weights:  15%|█▍        | 107/723 [00:01<00:05, 113.51it/s]Loading weights:  18%|█▊        | 128/723 [00:01<00:04, 133.14it/s]Loading weights:  20%|█▉        | 143/723 [00:01<00:04, 135.64it/s]Loading weights:  22%|██▏       | 158/723 [00:01<00:04, 125.89it/s]Loading weights:  24%|██▍       | 173/723 [00:01<00:04, 126.27it/s]Loading weights:  27%|██▋       | 195/723 [00:01<00:03, 144.69it/s]Loading weights:  29%|██▉       | 210/723 [00:02<00:03, 129.42it/s]Loading weights:  31%|███▏      | 226/723 [00:02<00:03, 131.50it/s]Loading weights:  34%|███▍      | 248/723 [00:02<00:03, 147.49it/s]Loading weights:  37%|███▋      | 264/723 [00:02<00:03, 133.49it/s]Loading weights:  39%|███▊      | 279/723 [00:02<00:03, 132.04it/s]Loading weights:  42%|████▏     | 301/723 [00:02<00:02, 148.46it/s]Loading weights:  44%|████▍     | 317/723 [00:02<00:03, 134.67it/s]Loading weights:  46%|████▌     | 332/723 [00:02<00:02, 132.40it/s]Loading weights:  48%|████▊     | 349/723 [00:03<00:02, 141.87it/s]Loading weights:  50%|█████     | 364/723 [00:03<00:02, 131.91it/s]Loading weights:  53%|█████▎    | 383/723 [00:03<00:02, 143.48it/s]Loading weights:  55%|█████▌    | 398/723 [00:03<00:02, 139.52it/s]Loading weights:  57%|█████▋    | 413/723 [00:03<00:02, 136.40it/s]Loading weights:  60%|█████▉    | 432/723 [00:03<00:01, 150.63it/s]Loading weights:  73%|███████▎  | 528/723 [00:03<00:00, 371.66it/s]Loading weights:  86%|████████▋ | 624/723 [00:03<00:00, 533.42it/s]Loading weights:  99%|█████████▉| 716/723 [00:03<00:00, 623.76it/s]Loading weights: 100%|██████████| 723/723 [00:03<00:00, 184.14it/s]
+base 0 / 1312
+base 128 / 1312
+base 256 / 1312
+base 384 / 1312
+base 512 / 1312
+base 640 / 1312
+base 768 / 1312
+base 896 / 1312
+base 1024 / 1312
+base 1152 / 1312
+base 1280 / 1312

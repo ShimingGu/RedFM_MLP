@@ -1,0 +1,27 @@
+{
+  "FSPS_kernel_sha256": "fc0db74392c18fc1423d85bdbb93ea0c95b4da331049fb18c3abf7f68c923fd8",
+  "FSPS_shape": [
+    21,
+    300,
+    12
+  ],
+  "C2": "3600 log-wavelength full photon-response samples over all registered curve support; area normalized",
+  "C3": "12 fixed positive Gaussian functions in log rest wavelength; centers logspace600..60000 Angstrom; sigma=1.5 center spacings; actual response quadrature; no IGM or external SEDs",
+  "C3_centers_A": [
+    600.0,
+    911.94664977176,
+    1386.0778200498953,
+    2106.7150405290795,
+    3202.0195387237886,
+    4866.784984738121,
+    7397.080436652401,
+    11242.904537162318,
+    17088.215210614813,
+    25972.567686498325,
+    39475.99347945407,
+    60000.00000000002
+  ],
+  "generic_integration": "Three-point Gaussian quadrature on every actual passband interval",
+  "information_caveat": "C3 matches dimensions and trainable parameters, not information content; R2 additionally knows FSPS and IGM",
+  "encoder_optimization": "Encode each of21 fixed filter representations once before gathering valid bands: exactly equivalent to per-observation encoding under masked aggregation"
+}

@@ -1,0 +1,12 @@
+HEAD GMS_NUM_canonical_last_hard_K64_subset101_seed11 step 100 devCE 4.8534 gain 0.815
+HEAD GMS_NUM_canonical_last_smooth3_K64_subset101_seed11 step 575 devCE 3.3537 gain 2.314
+HEAD GMS_NUM_canonical_last_hard_K256_subset101_seed11 step 325 devCE 4.0085 gain 1.657
+HEAD GMS_NUM_canonical_last_smooth3_K256_subset101_seed11 step 800 devCE 2.9142 gain 2.752
+HEAD C_SPEC_NUM_canonical_last_hard_K64_subset101_seed11 step 50 devCE 5.554 gain 0.156
+HEAD C_SPEC_NUM_canonical_last_smooth3_K64_subset101_seed11 step 150 devCE 4.8889 gain 0.821
+HEAD C_SPEC_NUM_canonical_last_hard_K256_subset101_seed11 step 125 devCE 5.0085 gain 0.695
+HEAD C_SPEC_NUM_canonical_last_smooth3_K256_subset101_seed11 step 800 devCE 3.9807 gain 1.723
+HEAD C_ZPHOT_NUM_canonical_last_hard_K64_subset101_seed11 step 25 devCE 5.7003 gain 0.04
+HEAD C_ZPHOT_NUM_canonical_last_smooth3_K64_subset101_seed11 step 50 devCE 5.6202 gain 0.12
+HEAD C_ZPHOT_NUM_canonical_last_hard_K256_subset101_seed11 step 50 devCE 5.704 gain 0.038
+HEAD C_ZPHOT_NUM_canonical_last_smooth3_K256_subset101_seed11 step 175 devCE 5.4268 gain 0.316

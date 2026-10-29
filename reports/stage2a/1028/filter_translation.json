@@ -1,0 +1,528 @@
+{
+  "BASS.g": {
+    "EAZY_filter_number": 1,
+    "flux_column": "F1",
+    "error_column": "E1",
+    "response": {
+      "approximation": "Nominal system response; not an object-specific throughput.",
+      "curve_path": "filter_responses_v1/BASS.g.csv",
+      "curve_sha256": "21127e351b4fea34000e29f4c13ea1f01730ddd6fc438408ecdd1a805c294eb7",
+      "filter_id": "BASS.g",
+      "instrument": "Bok/90Prime",
+      "negative_response_samples_clipped": 0,
+      "original_path": "filter_responses_v1/BASS.g.ecsv",
+      "original_sha256": "2f231d81bcacde83f80804093475f8ee81b092395223c68b41a8b5fa7a54f329",
+      "pivot_nm": 475.9348959095759,
+      "source_commit": "8159ea61f1c8539136660b4c2e87fbbf94a70097",
+      "source_url": "https://raw.githubusercontent.com/desihub/speclite/8159ea61f1c8539136660b4c2e87fbbf94a70097/speclite/data/filters/BASS-g.ecsv",
+      "upstream_metadata": {
+        "airmass": 1.1,
+        "band_name": "g",
+        "description": "BASS g-band throughput based on data in the DESI mailing list [decam_chatter 5706], adjusted from X=1.0 to X=1.1 using a smoothed KPNO extinction curve.",
+        "group_name": "BASS",
+        "url": "https://desi.lbl.gov/trac/wiki/ImagingStandardBandpass"
+      },
+      "wavelength_unit": "nm",
+      "width_nm": 134.8664589180602
+    }
+  },
+  "BASS.r": {
+    "EAZY_filter_number": 2,
+    "flux_column": "F2",
+    "error_column": "E2",
+    "response": {
+      "approximation": "Nominal system response; not an object-specific throughput.",
+      "curve_path": "filter_responses_v1/BASS.r.csv",
+      "curve_sha256": "19c211e4ff6c086d25f2df812c35f87e9206ec0e503182d7e5dd70c3c37b19fb",
+      "filter_id": "BASS.r",
+      "instrument": "Bok/90Prime",
+      "negative_response_samples_clipped": 0,
+      "original_path": "filter_responses_v1/BASS.r.ecsv",
+      "original_sha256": "ab2c7cc8c114513d1ab365b929cac3c0f2d5190a04a43c54fa73f2e2eb96e411",
+      "pivot_nm": 639.7239027160568,
+      "source_commit": "8159ea61f1c8539136660b4c2e87fbbf94a70097",
+      "source_url": "https://raw.githubusercontent.com/desihub/speclite/8159ea61f1c8539136660b4c2e87fbbf94a70097/speclite/data/filters/BASS-r.ecsv",
+      "upstream_metadata": {
+        "airmass": 1.1,
+        "band_name": "r",
+        "description": "BASS r-band throughput based on data in the DESI mailing list [decam_chatter 5706], adjusted from X=1.0 to X=1.1 using a smoothed KPNO extinction curve.",
+        "group_name": "BASS",
+        "url": "https://desi.lbl.gov/trac/wiki/ImagingStandardBandpass"
+      },
+      "wavelength_unit": "nm",
+      "width_nm": 139.8792311054978
+    }
+  },
+  "DECam.g": {
+    "EAZY_filter_number": 3,
+    "flux_column": "F3",
+    "error_column": "E3",
+    "response": {
+      "approximation": "DECam DR1 total response at airmass 1.2; documented representative response for Legacy DR9 southern DECam photometry, not an exact per-exposure DR9 curve.",
+      "curve_path": "filter_responses_v1/DECam.g.csv",
+      "curve_sha256": "314e2b592b89620b644d1a096b8500d95507a1ed0a1de75c7f20410fcf1cd92c",
+      "filter_id": "DECam.g",
+      "instrument": "CTIO/DECam",
+      "negative_response_samples_clipped": 0,
+      "original_path": "filter_responses_v1/DECam.g.ecsv",
+      "original_sha256": "d1f3eeb01ab88a7afc4bea1cb1eac25d6fd68a89e053703d5e688828a95990d1",
+      "pivot_nm": 480.85074998391804,
+      "source_commit": "8159ea61f1c8539136660b4c2e87fbbf94a70097",
+      "source_url": "https://raw.githubusercontent.com/desihub/speclite/8159ea61f1c8539136660b4c2e87fbbf94a70097/speclite/data/filters/decamDR1-g.ecsv",
+      "upstream_metadata": {
+        "airmass": 1.2,
+        "band_name": "g",
+        "description": "DECam g-band DR1 throughput documented in T. M. C. Abbott et al 2018 ApJS 239 18. DOI:10.3847/1538-4365/aae9f0 = arXiv:1801.03181 Represents the total system throughput and average instrumental response across the science CCDs, including a reference airmass 1.2 atmosphere.  Values are multiplied by 0.557 to give a reasonable absolute throughput (from Douglas Tucker private communication).",
+        "group_name": "decamDR1",
+        "url": "http://www.ctio.noao.edu/noao/content/DECam-filter-information"
+      },
+      "wavelength_unit": "nm",
+      "width_nm": 113.12757650664528
+    }
+  },
+  "DECam.r": {
+    "EAZY_filter_number": 4,
+    "flux_column": "F4",
+    "error_column": "E4",
+    "response": {
+      "approximation": "DECam DR1 total response at airmass 1.2; documented representative response for Legacy DR9 southern DECam photometry, not an exact per-exposure DR9 curve.",
+      "curve_path": "filter_responses_v1/DECam.r.csv",
+      "curve_sha256": "0012c262de38b08d7f24c2976de6d8a29bf78e29aefc87c57ac2f1a1bfcf66b9",
+      "filter_id": "DECam.r",
+      "instrument": "CTIO/DECam",
+      "negative_response_samples_clipped": 0,
+      "original_path": "filter_responses_v1/DECam.r.ecsv",
+      "original_sha256": "7b4883a11e13286367d0a9468ef32b41674e2ea57f1f1baeec8a512e8e6ad692",
+      "pivot_nm": 641.7645640160802,
+      "source_commit": "8159ea61f1c8539136660b4c2e87fbbf94a70097",
+      "source_url": "https://raw.githubusercontent.com/desihub/speclite/8159ea61f1c8539136660b4c2e87fbbf94a70097/speclite/data/filters/decamDR1-r.ecsv",
+      "upstream_metadata": {
+        "airmass": 1.2,
+        "band_name": "r",
+        "description": "DECam r-band DR1 throughput documented in T. M. C. Abbott et al 2018 ApJS 239 18. DOI:10.3847/1538-4365/aae9f0 = arXiv:1801.03181 Represents the total system throughput and average instrumental response across the science CCDs, including a reference airmass 1.2 atmosphere.  Values are multiplied by 0.585 to give a reasonable absolute throughput (from Douglas Tucker private communication).",
+        "group_name": "decamDR1",
+        "url": "http://www.ctio.noao.edu/noao/content/DECam-filter-information"
+      },
+      "wavelength_unit": "nm",
+      "width_nm": 138.53520014889378
+    }
+  },
+  "DECam.z": {
+    "EAZY_filter_number": 5,
+    "flux_column": "F5",
+    "error_column": "E5",
+    "response": {
+      "approximation": "DECam DR1 total response at airmass 1.2; documented representative response for Legacy DR9 southern DECam photometry, not an exact per-exposure DR9 curve.",
+      "curve_path": "filter_responses_v1/DECam.z.csv",
+      "curve_sha256": "7b01b1438cae89df9240ca97074dd794976ee041ed45e9a3148b2a749ba84b17",
+      "filter_id": "DECam.z",
+      "instrument": "CTIO/DECam",
+      "negative_response_samples_clipped": 0,
+      "original_path": "filter_responses_v1/DECam.z.ecsv",
+      "original_sha256": "9bb1f48c657736b372f968c834fde7b90e274f9f398a861d052330b335127048",
+      "pivot_nm": 916.8854513833359,
+      "source_commit": "8159ea61f1c8539136660b4c2e87fbbf94a70097",
+      "source_url": "https://raw.githubusercontent.com/desihub/speclite/8159ea61f1c8539136660b4c2e87fbbf94a70097/speclite/data/filters/decamDR1-z.ecsv",
+      "upstream_metadata": {
+        "airmass": 1.2,
+        "band_name": "z",
+        "description": "DECam z-band DR1 throughput documented in T. M. C. Abbott et al 2018 ApJS 239 18. DOI:10.3847/1538-4365/aae9f0 = arXiv:1801.03181 Represents the total system throughput and average instrumental response across the science CCDs, including a reference airmass 1.2 atmosphere.  Values are multiplied by 0.587 to give a reasonable absolute throughput (from Douglas Tucker private communication).",
+        "group_name": "decamDR1",
+        "url": "http://www.ctio.noao.edu/noao/content/DECam-filter-information"
+      },
+      "wavelength_unit": "nm",
+      "width_nm": 125.37505032589537
+    }
+  },
+  "HSC.g": {
+    "EAZY_filter_number": 6,
+    "flux_column": "F6",
+    "error_column": "E6",
+    "response": {
+      "approximation": "HSC 2017 nominal total response. r/r2 and i/i2 exposure mixtures are not available in the existing feature cache; r and i are explicitly representative approximations.",
+      "curve_path": "filter_responses_v1/HSC.g.csv",
+      "curve_sha256": "66d8fe4e1c12fd4def9938f0bb69764efd1cd7b12f88217a0354a5df1dd2cffe",
+      "filter_id": "HSC.g",
+      "instrument": "Subaru/HSC",
+      "negative_response_samples_clipped": 0,
+      "original_path": "filter_responses_v1/HSC.g.ecsv",
+      "original_sha256": "118ab2e719cca39da5a0a956ee49fc45dbe24cbc98dce8602a978084be776b74",
+      "pivot_nm": 479.11542587232873,
+      "source_commit": "8159ea61f1c8539136660b4c2e87fbbf94a70097",
+      "source_url": "https://raw.githubusercontent.com/desihub/speclite/8159ea61f1c8539136660b4c2e87fbbf94a70097/speclite/data/filters/hsc2017-g.ecsv",
+      "upstream_metadata": {
+        "band_name": "g",
+        "group_name": "hsc2017"
+      },
+      "wavelength_unit": "nm",
+      "width_nm": 117.94066627242263
+    }
+  },
+  "HSC.i": {
+    "EAZY_filter_number": 7,
+    "flux_column": "F7",
+    "error_column": "E7",
+    "response": {
+      "approximation": "HSC 2017 nominal total response. r/r2 and i/i2 exposure mixtures are not available in the existing feature cache; r and i are explicitly representative approximations.",
+      "curve_path": "filter_responses_v1/HSC.i.csv",
+      "curve_sha256": "f87c977756ae6959c577520f272e9a0c7de6dd5e533136d888d06a69782fa5ae",
+      "filter_id": "HSC.i",
+      "instrument": "Subaru/HSC",
+      "negative_response_samples_clipped": 0,
+      "original_path": "filter_responses_v1/HSC.i.ecsv",
+      "original_sha256": "ec7f15e3bd69d2b55bac0bdcb3ed73140156d1cd9f8eecc12c8e6dcd4a086de4",
+      "pivot_nm": 768.8777145855436,
+      "source_commit": "8159ea61f1c8539136660b4c2e87fbbf94a70097",
+      "source_url": "https://raw.githubusercontent.com/desihub/speclite/8159ea61f1c8539136660b4c2e87fbbf94a70097/speclite/data/filters/hsc2017-i.ecsv",
+      "upstream_metadata": {
+        "band_name": "i",
+        "group_name": "hsc2017"
+      },
+      "wavelength_unit": "nm",
+      "width_nm": 144.22837573385522
+    }
+  },
+  "HSC.i2": {
+    "EAZY_filter_number": 8,
+    "flux_column": "F8",
+    "error_column": "E8",
+    "response": {
+      "approximation": "HSC 2017 nominal total response. r/r2 and i/i2 exposure mixtures are not available in the existing feature cache; r and i are explicitly representative approximations.",
+      "curve_path": "filter_responses_v1/HSC.i2.csv",
+      "curve_sha256": "bcb0ef60d0b963a8081fbbf59f4da35a87c16db2a36a735a2786923ce43d2803",
+      "filter_id": "HSC.i2",
+      "instrument": "Subaru/HSC",
+      "negative_response_samples_clipped": 0,
+      "original_path": "filter_responses_v1/HSC.i2.ecsv",
+      "original_sha256": "4eff9036de5168969c7d924d40704af98f8f30d99f6a5cdab3de1f17d685edc8",
+      "pivot_nm": 773.312238180501,
+      "source_commit": "8159ea61f1c8539136660b4c2e87fbbf94a70097",
+      "source_url": "https://raw.githubusercontent.com/desihub/speclite/8159ea61f1c8539136660b4c2e87fbbf94a70097/speclite/data/filters/hsc2017-i2.ecsv",
+      "upstream_metadata": {
+        "band_name": "i2",
+        "group_name": "hsc2017"
+      },
+      "wavelength_unit": "nm",
+      "width_nm": 144.63405010850266
+    }
+  },
+  "HSC.r": {
+    "EAZY_filter_number": 9,
+    "flux_column": "F9",
+    "error_column": "E9",
+    "response": {
+      "approximation": "HSC 2017 nominal total response. r/r2 and i/i2 exposure mixtures are not available in the existing feature cache; r and i are explicitly representative approximations.",
+      "curve_path": "filter_responses_v1/HSC.r.csv",
+      "curve_sha256": "729d91d8863bdc65485b081affae0c5ba31cb5c00bf6e34d9d912472126d7a7b",
+      "filter_id": "HSC.r",
+      "instrument": "Subaru/HSC",
+      "negative_response_samples_clipped": 0,
+      "original_path": "filter_responses_v1/HSC.r.ecsv",
+      "original_sha256": "65a8f726f624b9581c71547b8a5c933a3e0ade32488744b73f131a82477a9968",
+      "pivot_nm": 621.4047045598709,
+      "source_commit": "8159ea61f1c8539136660b4c2e87fbbf94a70097",
+      "source_url": "https://raw.githubusercontent.com/desihub/speclite/8159ea61f1c8539136660b4c2e87fbbf94a70097/speclite/data/filters/hsc2017-r.ecsv",
+      "upstream_metadata": {
+        "band_name": "r",
+        "group_name": "hsc2017"
+      },
+      "wavelength_unit": "nm",
+      "width_nm": 143.31794675349548
+    }
+  },
+  "HSC.r2": {
+    "EAZY_filter_number": 10,
+    "flux_column": "F10",
+    "error_column": "E10",
+    "response": {
+      "approximation": "HSC 2017 nominal total response. r/r2 and i/i2 exposure mixtures are not available in the existing feature cache; r and i are explicitly representative approximations.",
+      "curve_path": "filter_responses_v1/HSC.r2.csv",
+      "curve_sha256": "82f1170f28653572054c43874de29b4bec1229595b8481264ce2bae7952eea4b",
+      "filter_id": "HSC.r2",
+      "instrument": "Subaru/HSC",
+      "negative_response_samples_clipped": 0,
+      "original_path": "filter_responses_v1/HSC.r2.ecsv",
+      "original_sha256": "6a8ab7df288dca3413c8b5f84b8c28255b605471c3f080f72c30d0194fcb91b2",
+      "pivot_nm": 621.2649256900397,
+      "source_commit": "8159ea61f1c8539136660b4c2e87fbbf94a70097",
+      "source_url": "https://raw.githubusercontent.com/desihub/speclite/8159ea61f1c8539136660b4c2e87fbbf94a70097/speclite/data/filters/hsc2017-r2.ecsv",
+      "upstream_metadata": {
+        "band_name": "r2",
+        "group_name": "hsc2017"
+      },
+      "wavelength_unit": "nm",
+      "width_nm": 147.8231292517007
+    }
+  },
+  "HSC.y": {
+    "EAZY_filter_number": 11,
+    "flux_column": "F11",
+    "error_column": "E11",
+    "response": {
+      "approximation": "HSC 2017 nominal total response. r/r2 and i/i2 exposure mixtures are not available in the existing feature cache; r and i are explicitly representative approximations.",
+      "curve_path": "filter_responses_v1/HSC.y.csv",
+      "curve_sha256": "d78e4c97d60a5ca7d26e6a5f42c8a105f78bab81535d5bb405e4ca33ef1d119e",
+      "filter_id": "HSC.y",
+      "instrument": "Subaru/HSC",
+      "negative_response_samples_clipped": 0,
+      "original_path": "filter_responses_v1/HSC.y.ecsv",
+      "original_sha256": "c22c1fc7a1d9453defdb05acd53fc11349ca1a54f7008c9df2b056f4863d82e0",
+      "pivot_nm": 977.1716237876003,
+      "source_commit": "8159ea61f1c8539136660b4c2e87fbbf94a70097",
+      "source_url": "https://raw.githubusercontent.com/desihub/speclite/8159ea61f1c8539136660b4c2e87fbbf94a70097/speclite/data/filters/hsc2017-y.ecsv",
+      "upstream_metadata": {
+        "band_name": "y",
+        "group_name": "hsc2017"
+      },
+      "wavelength_unit": "nm",
+      "width_nm": 74.92359492359492
+    }
+  },
+  "HSC.z": {
+    "EAZY_filter_number": 12,
+    "flux_column": "F12",
+    "error_column": "E12",
+    "response": {
+      "approximation": "HSC 2017 nominal total response. r/r2 and i/i2 exposure mixtures are not available in the existing feature cache; r and i are explicitly representative approximations.",
+      "curve_path": "filter_responses_v1/HSC.z.csv",
+      "curve_sha256": "fc77a99419783ca15aec42ba23e670901456d87152e0d39f83eaf15e985dcacc",
+      "filter_id": "HSC.z",
+      "instrument": "Subaru/HSC",
+      "negative_response_samples_clipped": 0,
+      "original_path": "filter_responses_v1/HSC.z.ecsv",
+      "original_sha256": "b3ccbc4db3fbdcea2aa87fd4d0090ec8c18009471789380316fee73cddeed1ef",
+      "pivot_nm": 890.3114055170333,
+      "source_commit": "8159ea61f1c8539136660b4c2e87fbbf94a70097",
+      "source_url": "https://raw.githubusercontent.com/desihub/speclite/8159ea61f1c8539136660b4c2e87fbbf94a70097/speclite/data/filters/hsc2017-z.ecsv",
+      "upstream_metadata": {
+        "band_name": "z",
+        "group_name": "hsc2017"
+      },
+      "wavelength_unit": "nm",
+      "width_nm": 75.15659397715473
+    }
+  },
+  "MegaCam.u": {
+    "EAZY_filter_number": 13,
+    "flux_column": "F13",
+    "error_column": "E13",
+    "response": {
+      "approximation": "CFHT filter MP9302; average system response including nominal atmosphere, not a spatially resolved response.",
+      "curve_path": "filter_responses_v1/MegaCam.u.csv",
+      "curve_sha256": "021440c553bf2e209bdffab7eacea28164dd9841f68fd4b3cff6fdc1a92d6f57",
+      "filter_id": "MegaCam.u",
+      "instrument": "CFHT/MegaCam",
+      "negative_response_samples_clipped": 0,
+      "original_path": "filter_responses_v1/MegaCam.u.ecsv",
+      "original_sha256": "77fc7d76266fb2e96484341ac33eab216266e963b4f4d7ef18ff432942e99b11",
+      "pivot_nm": 367.61166222839256,
+      "source_commit": "8159ea61f1c8539136660b4c2e87fbbf94a70097",
+      "source_url": "https://raw.githubusercontent.com/desihub/speclite/8159ea61f1c8539136660b4c2e87fbbf94a70097/speclite/data/filters/cfht_megacam-u.ecsv",
+      "upstream_metadata": {
+        "band_name": "u",
+        "filter_number": 9302,
+        "group_name": "cfht_megacam"
+      },
+      "wavelength_unit": "nm",
+      "width_nm": 48.31909703225905
+    }
+  },
+  "MegaCam.u_star": {
+    "EAZY_filter_number": 14,
+    "flux_column": "F14",
+    "error_column": "E14",
+    "response": {
+      "approximation": "CFHT filter MP9301; average system response including nominal atmosphere, not a spatially resolved response.",
+      "curve_path": "filter_responses_v1/MegaCam.u_star.csv",
+      "curve_sha256": "47fc3464bceb09be9697c63e617288980ef622a2fdc3894f164000fbf2d348b5",
+      "filter_id": "MegaCam.u_star",
+      "instrument": "CFHT/MegaCam",
+      "negative_response_samples_clipped": 0,
+      "original_path": "filter_responses_v1/MegaCam.u_star.ecsv",
+      "original_sha256": "0b49ac7684ed8b0e0c7013c1efe9f237514f4ae1481813ce823335711296f6db",
+      "pivot_nm": 379.942589908473,
+      "source_commit": "8159ea61f1c8539136660b4c2e87fbbf94a70097",
+      "source_url": "https://raw.githubusercontent.com/desihub/speclite/8159ea61f1c8539136660b4c2e87fbbf94a70097/speclite/data/filters/cfht_megacam-ustar.ecsv",
+      "upstream_metadata": {
+        "band_name": "ustar",
+        "filter_number": 9301,
+        "group_name": "cfht_megacam"
+      },
+      "wavelength_unit": "nm",
+      "width_nm": 56.04829953180989
+    }
+  },
+  "MzLS.z": {
+    "EAZY_filter_number": 15,
+    "flux_column": "F15",
+    "error_column": "E15",
+    "response": {
+      "approximation": "Nominal system response; not an object-specific throughput.",
+      "curve_path": "filter_responses_v1/MzLS.z.csv",
+      "curve_sha256": "d6ed8a91c83c89dfed8e92316b41235bab076e4e92db425f69400e038ecf2a21",
+      "filter_id": "MzLS.z",
+      "instrument": "Mayall/Mosaic-3",
+      "negative_response_samples_clipped": 0,
+      "original_path": "filter_responses_v1/MzLS.z.ecsv",
+      "original_sha256": "4d3da144bfdcfc7084c3a0f1129d2f45c20b5144feae5321e70453763e990955",
+      "pivot_nm": 919.9326758181013,
+      "source_commit": "8159ea61f1c8539136660b4c2e87fbbf94a70097",
+      "source_url": "https://raw.githubusercontent.com/desihub/speclite/8159ea61f1c8539136660b4c2e87fbbf94a70097/speclite/data/filters/MzLS-z.ecsv",
+      "upstream_metadata": {
+        "airmass": 1.1,
+        "band_name": "z",
+        "description": "MzLS z-band throughput based on data in the DESI mailing list [decam_chatter 5706], adjusted from X=1.0 to X=1.1 using a smoothed KPNO extinction curve.",
+        "group_name": "MzLS",
+        "url": "https://desi.lbl.gov/trac/wiki/ImagingStandardBandpass"
+      },
+      "wavelength_unit": "nm",
+      "width_nm": 123.63547443064759
+    }
+  },
+  "VIRCAM.H": {
+    "EAZY_filter_number": 16,
+    "flux_column": "F16",
+    "error_column": "E16",
+    "response": {
+      "approximation": "ESO component curves combined by sedpy: filter, QE, mirrors and model atmosphere (airmass 1, PWV 1mm); nominal response, not object-specific.",
+      "curve_path": "filter_responses_v1/VIRCAM.H.csv",
+      "curve_sha256": "ae77220ef2a349f39f0a33a7bd5f8125db87d9f03c1ea04b8fae18116be3231e",
+      "filter_id": "VIRCAM.H",
+      "instrument": "VISTA/VIRCAM",
+      "negative_response_samples_clipped": 203,
+      "original_path": "filter_responses_v1/VIRCAM.H.par",
+      "original_sha256": "569bb938ca15ce16ca7528ee37dc8647166e830466db684451eda2f0e50fe8c9",
+      "pivot_nm": 1643.2806586301815,
+      "source_commit": "402e2566124cde8856b1ab37396c727a6f037879",
+      "source_url": "https://raw.githubusercontent.com/bd-j/sedpy/402e2566124cde8856b1ab37396c727a6f037879/sedpy/data/filters/vista_vircam_H.par",
+      "upstream_metadata": {
+        "header": "# Units :\n#   wavelength in Angstroms\n#    transmission in %\n# Bandpass Name : H\n# Instrument : VISTA/VIRCAM\n# Determined by : Unknown\n# Combined by : Stephen Thorp (@stevet40)\n# References :\n#   https://www.eso.org/sci/facilities/paranal/decommissioned/vircam/inst.html\n# Inputs :\n#   'Filters_QE_Atm_curves/'\n#     'VISTA_Filters_at80K_forETC_H.dat'            (filter transmission)\n#     'VISTA_M1_Reflectivity_forETC_2009-Sep12.txt' (M1 reflectivity)\n#     'VISTA_M2_Reflectivity_forETC_2007-Jun19.txt' (M2 reflectivity)\n#     'trans_10_10.dat'                             (atmosphere; PWV=1mm, airmass=1)\n#     'qe.tab'                                      (detector quantum efficiency)\n# Notes :\n#   Includes filter transmission QE, M1 & M2 reflectivity, and model atmosphere.\n#   All components taken from 'Filters_QE_Atm_curves.tar' from the ESO link above, with\n#   the files used listed under Inputs above. Assumed QE=0 outside tabulated range.\n#   Assumed atmosphere=1 and reflectivity=1 outside tabulated range.\n#   Truncated to range of tabulated QE, [8060, 35290] A.\n# \n#   Prior to April 2025, the file 'vista_vircam_H.par' in sedpy was filter transmission ONLY.\n#   The filer transmission ONLY is provided by the sedpy file 'vista_vircam_H_FILTER.par'"
+      },
+      "wavelength_unit": "nm",
+      "width_nm": 278.3988632654473
+    }
+  },
+  "VIRCAM.J": {
+    "EAZY_filter_number": 17,
+    "flux_column": "F17",
+    "error_column": "E17",
+    "response": {
+      "approximation": "ESO component curves combined by sedpy: filter, QE, mirrors and model atmosphere (airmass 1, PWV 1mm); nominal response, not object-specific.",
+      "curve_path": "filter_responses_v1/VIRCAM.J.csv",
+      "curve_sha256": "ca760d8ef14d982bd506d6c1a8954e1c55a3a95a1eb1d725642235a014cbebbf",
+      "filter_id": "VIRCAM.J",
+      "instrument": "VISTA/VIRCAM",
+      "negative_response_samples_clipped": 204,
+      "original_path": "filter_responses_v1/VIRCAM.J.par",
+      "original_sha256": "08eb5451cb9a7859ef6c49d106635d47a330262b66a3088453c973e0653df2f2",
+      "pivot_nm": 1252.7357146570741,
+      "source_commit": "402e2566124cde8856b1ab37396c727a6f037879",
+      "source_url": "https://raw.githubusercontent.com/bd-j/sedpy/402e2566124cde8856b1ab37396c727a6f037879/sedpy/data/filters/vista_vircam_J.par",
+      "upstream_metadata": {
+        "header": "# Units :\n#   wavelength in Angstroms\n#    transmission in %\n# Bandpass Name : J\n# Instrument : VISTA/VIRCAM\n# Determined by : Unknown\n# Combined by : Stephen Thorp (@stevet40)\n# References :\n#   https://www.eso.org/sci/facilities/paranal/decommissioned/vircam/inst.html\n# Inputs :\n#   'Filters_QE_Atm_curves/'\n#     'VISTA_Filters_at80K_forETC_J.dat'            (filter transmission)\n#     'VISTA_M1_Reflectivity_forETC_2009-Sep12.txt' (M1 reflectivity)\n#     'VISTA_M2_Reflectivity_forETC_2007-Jun19.txt' (M2 reflectivity)\n#     'trans_10_10.dat'                             (atmosphere; PWV=1mm, airmass=1)\n#     'qe.tab'                                      (detector quantum efficiency)\n# Notes :\n#   Includes filter transmission QE, M1 & M2 reflectivity, and model atmosphere.\n#   All components taken from 'Filters_QE_Atm_curves.tar' from the ESO link above, with\n#   the files used listed under Inputs above. Assumed QE=0 outside tabulated range.\n#   Assumed atmosphere=1 and reflectivity=1 outside tabulated range.\n#   Truncated to range of tabulated QE, [8060, 35290] A.\n# \n#   Prior to April 2025, the file 'vista_vircam_J.par' in sedpy was filter transmission ONLY.\n#   The filer transmission ONLY is provided by the sedpy file 'vista_vircam_J_FILTER.par'"
+      },
+      "wavelength_unit": "nm",
+      "width_nm": 161.45678258419142
+    }
+  },
+  "VIRCAM.Ks": {
+    "EAZY_filter_number": 18,
+    "flux_column": "F18",
+    "error_column": "E18",
+    "response": {
+      "approximation": "ESO component curves combined by sedpy: filter, QE, mirrors and model atmosphere (airmass 1, PWV 1mm); nominal response, not object-specific.",
+      "curve_path": "filter_responses_v1/VIRCAM.Ks.csv",
+      "curve_sha256": "2cbab88cc448d44d3be3eeed4409b330a2f4ea068365d04168d3be7f638f099a",
+      "filter_id": "VIRCAM.Ks",
+      "instrument": "VISTA/VIRCAM",
+      "negative_response_samples_clipped": 182,
+      "original_path": "filter_responses_v1/VIRCAM.Ks.par",
+      "original_sha256": "a7113064b3724127eb1881b1e58621a485673b540d15d1b83084dd3a886efe0c",
+      "pivot_nm": 2150.283774229999,
+      "source_commit": "402e2566124cde8856b1ab37396c727a6f037879",
+      "source_url": "https://raw.githubusercontent.com/bd-j/sedpy/402e2566124cde8856b1ab37396c727a6f037879/sedpy/data/filters/vista_vircam_Ks.par",
+      "upstream_metadata": {
+        "header": "# Units :\n#   wavelength in Angstroms\n#    transmission in %\n# Bandpass Name : Ks\n# Instrument : VISTA/VIRCAM\n# Determined by : Unknown\n# Combined by : Stephen Thorp (@stevet40)\n# References :\n#   https://www.eso.org/sci/facilities/paranal/decommissioned/vircam/inst.html\n# Inputs :\n#   'Filters_QE_Atm_curves/'\n#     'VISTA_Filters_at80K_forETC_Ks.dat'           (filter transmission)\n#     'VISTA_M1_Reflectivity_forETC_2009-Sep12.txt' (M1 reflectivity)\n#     'VISTA_M2_Reflectivity_forETC_2007-Jun19.txt' (M2 reflectivity)\n#     'trans_10_10.dat'                             (atmosphere; PWV=1mm, airmass=1)\n#     'qe.tab'                                      (detector quantum efficiency)\n# Notes :\n#   Includes filter transmission QE, M1 & M2 reflectivity, and model atmosphere.\n#   All components taken from 'Filters_QE_Atm_curves.tar' from the ESO link above, with\n#   the files used listed under Inputs above. Assumed QE=0 outside tabulated range.\n#   Assumed atmosphere=1 and reflectivity=1 outside tabulated range.\n#   Truncated to range of tabulated QE, [8060, 35290] A.\n# \n#   Prior to April 2025, the file 'vista_vircam_Ks.par' in sedpy was filter transmission ONLY.\n#   The filer transmission ONLY is provided by the sedpy file 'vista_vircam_Ks_FILTER.par'"
+      },
+      "wavelength_unit": "nm",
+      "width_nm": 287.4449588928605
+    }
+  },
+  "VIRCAM.Y": {
+    "EAZY_filter_number": 19,
+    "flux_column": "F19",
+    "error_column": "E19",
+    "response": {
+      "approximation": "ESO component curves combined by sedpy: filter, QE, mirrors and model atmosphere (airmass 1, PWV 1mm); nominal response, not object-specific.",
+      "curve_path": "filter_responses_v1/VIRCAM.Y.csv",
+      "curve_sha256": "cacf20653bed654222e12ddd0fb2a7c63830edae3c3952f6bf13f8dd3aadacc5",
+      "filter_id": "VIRCAM.Y",
+      "instrument": "VISTA/VIRCAM",
+      "negative_response_samples_clipped": 388,
+      "original_path": "filter_responses_v1/VIRCAM.Y.par",
+      "original_sha256": "4c0150a8f47a9ba93441e09888996640df51bdf75923e0a4f33f59aacf9f3d8b",
+      "pivot_nm": 1021.7465700685702,
+      "source_commit": "402e2566124cde8856b1ab37396c727a6f037879",
+      "source_url": "https://raw.githubusercontent.com/bd-j/sedpy/402e2566124cde8856b1ab37396c727a6f037879/sedpy/data/filters/vista_vircam_Y.par",
+      "upstream_metadata": {
+        "header": "# Units :\n#   wavelength in Angstroms\n#    transmission in %\n# Bandpass Name : Y\n# Instrument : VISTA/VIRCAM\n# Determined by : Unknown\n# Combined by : Stephen Thorp (@stevet40)\n# References :\n#   https://www.eso.org/sci/facilities/paranal/decommissioned/vircam/inst.html\n# Inputs :\n#   'Filters_QE_Atm_curves/'\n#     'VISTA_Filters_at80K_forETC_Y.dat'            (filter transmission)\n#     'VISTA_M1_Reflectivity_forETC_2009-Sep12.txt' (M1 reflectivity)\n#     'VISTA_M2_Reflectivity_forETC_2007-Jun19.txt' (M2 reflectivity)\n#     'trans_10_10.dat'                             (atmosphere; PWV=1mm, airmass=1)\n#     'qe.tab'                                      (detector quantum efficiency)\n# Notes :\n#   Includes filter transmission QE, M1 & M2 reflectivity, and model atmosphere.\n#   All components taken from 'Filters_QE_Atm_curves.tar' from the ESO link above, with\n#   the files used listed under Inputs above. Assumed QE=0 outside tabulated range.\n#   Assumed atmosphere=1 and reflectivity=1 outside tabulated range.\n#   Truncated to range of tabulated QE, [8060, 35290] A.\n# \n#   Prior to April 2025, the file 'vista_vircam_Y.par' in sedpy was filter transmission ONLY.\n#   The filer transmission ONLY is provided by the sedpy file 'vista_vircam_Y_FILTER.par'"
+      },
+      "wavelength_unit": "nm",
+      "width_nm": 89.6359885743171
+    }
+  },
+  "WISE.W1": {
+    "EAZY_filter_number": 20,
+    "flux_column": "F20",
+    "error_column": "E20",
+    "response": {
+      "approximation": "Wright et al. 2010 weighted mean relative spectral response; speclite zeros values below 1e-4 of maximum. AB flux convention comes from the catalogue, not the WISE Vega zero point.",
+      "curve_path": "filter_responses_v1/WISE.W1.csv",
+      "curve_sha256": "c6baf5f2a6d62d47543d14a83ae1bd533cac8fd66a064a7036119784f90ee17e",
+      "filter_id": "WISE.W1",
+      "instrument": "WISE",
+      "negative_response_samples_clipped": 0,
+      "original_path": "filter_responses_v1/WISE.W1.ecsv",
+      "original_sha256": "73d3c1595c3fb4bcff1c82f0f5f814b37754391924d8572e9328a9de54212a28",
+      "pivot_nm": 3368.2207939487366,
+      "source_commit": "8159ea61f1c8539136660b4c2e87fbbf94a70097",
+      "source_url": "https://raw.githubusercontent.com/desihub/speclite/8159ea61f1c8539136660b4c2e87fbbf94a70097/speclite/data/filters/wise2010-W1.ecsv",
+      "upstream_metadata": {
+        "airmass": 0.0,
+        "band_name": "W1",
+        "description": "WISE W1 weighted mean relative spectral response curve from Figure 6 of: Wright et al, \"The Wide-field Infrared Survey Explorer (WISE): Mission Description and Initial On-orbit Performance\", The Astronomical Journal, Volume 140, Issue 6, pp. 1868-1881 (2010). Values below 0.0001 of the maximum response are set to zero.",
+        "group_name": "wise2010",
+        "url": "http://dx.doi.org/10.1088/0004-6256/140/6/1868"
+      },
+      "wavelength_unit": "nm",
+      "width_nm": 682.4098204137304
+    }
+  },
+  "WISE.W2": {
+    "EAZY_filter_number": 21,
+    "flux_column": "F21",
+    "error_column": "E21",
+    "response": {
+      "approximation": "Wright et al. 2010 weighted mean relative spectral response; speclite zeros values below 1e-4 of maximum. AB flux convention comes from the catalogue, not the WISE Vega zero point.",
+      "curve_path": "filter_responses_v1/WISE.W2.csv",
+      "curve_sha256": "5f27fcbc35447a106eb6a3610369f0fc0b60b628846e47616c55e35475f77eae",
+      "filter_id": "WISE.W2",
+      "instrument": "WISE",
+      "negative_response_samples_clipped": 0,
+      "original_path": "filter_responses_v1/WISE.W2.ecsv",
+      "original_sha256": "3ac627c881466aebfda6d1d3220e7beffd52a64085bed343e7612d0413d07963",
+      "pivot_nm": 4617.903814631923,
+      "source_commit": "8159ea61f1c8539136660b4c2e87fbbf94a70097",
+      "source_url": "https://raw.githubusercontent.com/desihub/speclite/8159ea61f1c8539136660b4c2e87fbbf94a70097/speclite/data/filters/wise2010-W2.ecsv",
+      "upstream_metadata": {
+        "airmass": 0.0,
+        "band_name": "W2",
+        "description": "WISE W2 weighted mean relative spectral response curve from Figure 6 of: Wright et al, \"The Wide-field Infrared Survey Explorer (WISE): Mission Description and Initial On-orbit Performance\", The Astronomical Journal, Volume 140, Issue 6, pp. 1868-1881 (2010). Values below 0.0001 of the maximum response are set to zero.",
+        "group_name": "wise2010",
+        "url": "http://dx.doi.org/10.1088/0004-6256/140/6/1868"
+      },
+      "wavelength_unit": "nm",
+      "width_nm": 1050.7696849333333
+    }
+  }
+}

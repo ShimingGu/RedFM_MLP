@@ -1,0 +1,13 @@
+model,kind,few_examples,n,accuracy
+random,break_ambiguity,False,8,0.25
+random,break_ambiguity,True,8,0.25
+random,cross_filter_flux_rule,False,8,0.25
+random,cross_filter_flux_rule,True,8,0.25
+random,explicit_break_arithmetic,False,8,0.375
+random,explicit_break_arithmetic,True,8,0.25
+random,generic_arithmetic,False,8,0.5
+random,generic_arithmetic,True,8,0.375
+random,named_feature_without_rest_value,False,8,0.25
+random,named_feature_without_rest_value,True,8,0.25
+random,physical_consistency,False,8,0.25
+random,physical_consistency,True,8,0.25

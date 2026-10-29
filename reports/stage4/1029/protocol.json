@@ -1,0 +1,205 @@
+{
+  "study": "PaperII frozen-backbone head-only representation transfer; independent of PaperI kernels",
+  "backbones": [
+    "B0",
+    "BS",
+    "BC"
+  ],
+  "compatible_base": "Qwen3.5-4B-Base; same full content hashes and rank8 QLoRA shapes",
+  "tasks": [
+    "GMS",
+    "C_SPEC",
+    "C_ZPHOT"
+  ],
+  "task_interpretations": {
+    "GMS": "BC cross-survey; BS in-domain control, clean held-out galaxies",
+    "C_SPEC": "BS cross-survey; BC in-domain control; exploratory new split of previously inspected Stage3 T2",
+    "C_ZPHOT": "BS cross-survey ZPHOT agreement; BC in-domain control, not true-redshift accuracy"
+  },
+  "budgets": [
+    16,
+    32,
+    64,
+    128,
+    256,
+    512
+  ],
+  "primary_budgets": [
+    64,
+    256
+  ],
+  "subset_seeds": [
+    101,
+    202,
+    303
+  ],
+  "head_seeds": [
+    11,
+    23
+  ],
+  "primary": {
+    "format": "canonical",
+    "pooling": "last",
+    "loss": "hard_CE"
+  },
+  "controls": {
+    "smooth_sigma3": "Fixed Gaussian neighbor-label sigma3 bins atK64/256, all tasks/backbones",
+    "mean_pooling": "Canonical masked mean atK64/256, all tasks/backbones",
+    "formatting": "Same alternate flat signed-flux/error strings atK64/256 forGMS andC_SPEC, all backbones; source-native-like structural control, not exact BC median-imputed magnitude native format",
+    "negative_adapter": "Optional zero-effect initialized LoRA insertion check on B0, no backbone randomization required"
+  },
+  "feature_normalization": "Fit each feature mean and populationSTD on K support objects only; STD floor5% of median positiveSTD, absolute floor1e-4; clip standardized coordinates to[-10,10]; same rule for all backbones; no transductive/query statistics",
+  "head": {
+    "input_dim": 2560,
+    "hidden_dim": 32,
+    "output_dim": 300,
+    "activation": "SiLU",
+    "dropout": 0.1,
+    "initialization": "Fresh torch seed; identical initial weights across same-dimension backbone heads; never initialize from old head"
+  },
+  "optim": {
+    "algorithm": "AdamW",
+    "lr": 0.001,
+    "weight_decay": 0.01,
+    "updates": 800,
+    "batch_size": 64,
+    "validation_every": 25,
+    "gradient_clip": 5.0,
+    "selection": "Minimum development hard CE, including initialization; same head and subset seeds, batch indices and budget for all backbones"
+  },
+  "grid": {
+    "zmin": 0,
+    "zmax": 4.5,
+    "bins": 300,
+    "outside": "Count and exclude, never clip labels"
+  },
+  "point_estimator": "CDF median on original300 bin centers",
+  "sparse_supervision": "Main hard CE retained at allK. Separate fixed sigma3 smoothing at primaryK; no query choice of loss/smoothing.",
+  "pilot": "K64/256, subset101, head11, canonical/last/hard andsmooth, alltasks/allbackbones. No query metrics during pilot. ModerateK256 source/development learning must pass. Full protocol locked before any query evaluation.",
+  "learning_gate": "At least2/3 backbones per task improve development hardCE by>=0.05 with positive selected update atK256 under at least one preregistered loss; each selected head finite, training loss decreases>=0.3, frozen feature checks pass. Nonlearning arms are reported without interpreting them as representation rankings.",
+  "numerical_controls": [
+    "Uncertainty-aware target photometric kNN KDE, fixed k=min(10,K), Gaussian redshift bandwidthmax(.03*(1+zi),support_z_STD/sqrtK)",
+    "Compact target-only numerical MLP, same hidden32/output300/optimizer/head seeds/batches and hard loss; sigma3 control at primaryK",
+    "Affine correction of original frozen source-head median, ridge toward slope1, Gaussian residual PDF with fixed .03 minimum width; same K support; GMS usesBC, CLAUDS usesBS"
+  ],
+  "uncertainty": "Paired galaxy bootstrap1000 replicates(seed1029) conditional on subset/head seed; separate variability across3 subset seeds and2 initialization seeds; no pooling repeated predictions as independent galaxies",
+  "metrics": [
+    "NMAD1.48",
+    "outlier absdz/(1+z)>.15",
+    "mean and median normalizedbias",
+    "hard CE",
+    "CRPS",
+    "68%coverage",
+    "PIT hist",
+    "predictedzdistribution",
+    "concentration width.03",
+    "failures",
+    "redshift/magnitude/SNR/completeness/support strata"
+  ],
+  "query_policy": "All head/checkpoint/normalizer selections completed and hashed before sealed query labels are read. T2 reuse explicitly exploratory. No query-driven pooling, format, optimization orK selection.",
+  "exposure_diagnostic": "Evaluate primaryK64/256 frozen heads also on separately tagged historically trained objects; non-independent descriptive diagnostic, not matched causal exposure effect",
+  "original_heads": "Separate frozen original-head references on shared strings; never initialize fresh heads. BC native grid differs from fresh grid, so native-grid CE is not directly compared or plotted as K0 on fresh learning curve.",
+  "no_updates": [
+    "Qwen base",
+    "QLoRA adapters",
+    "DoRA adapters"
+  ],
+  "no_stage2C": true,
+  "extraction": {
+    "quantization": "NF4 double quantization, BF16 compute, same kbit preparation forB0/BS/BC",
+    "model_mode": "eval, allrequires_gradFalse, inference_mode, no KV cache",
+    "max_tokens": 1024,
+    "batch_size": 8,
+    "primary_pooling": "last actual nonpadding token",
+    "mean_control": "FP32 masked mean from same forward",
+    "integrity": "Native archived-head replay where executable, exact adapter tensor reload, parameter version counters and sample digests, unchanged on-disk hashes",
+    "cache": "Once per object per backbone/serialization; both pooling vectors saved; IDs and allinput/model/code hashes bound"
+  },
+  "input_definitions": {
+    "GMS_canonical": {
+      "rows": 2432,
+      "max_tokens": 213,
+      "min_tokens": 188,
+      "terminal_token_id": 30546,
+      "sha256": "f51cf9e8ef1b2c2a3a800c3c0769cfbb1adc8692e306301a0e66227b3c20a6d2",
+      "same_input_strings_all_backbones": true,
+      "actual_band_identity": true,
+      "physical_signed_fluxes": true,
+      "no_object_or_redshift_in_strings": true
+    },
+    "GMS_alternate": {
+      "rows": 2432,
+      "max_tokens": 280,
+      "min_tokens": 255,
+      "terminal_token_id": 30546,
+      "sha256": "4f981be32cee159699258f55e36b5d4de054cd8c5b11ed386f47fd16cc06207f",
+      "same_input_strings_all_backbones": true,
+      "actual_band_identity": true,
+      "physical_signed_fluxes": true,
+      "no_object_or_redshift_in_strings": true
+    },
+    "C_SPEC_canonical": {
+      "rows": 1968,
+      "max_tokens": 440,
+      "min_tokens": 276,
+      "terminal_token_id": 30546,
+      "sha256": "756551775fe649485528a1ba28268c02f187c4ba9a8b633a22671624fee1456d",
+      "same_input_strings_all_backbones": true,
+      "actual_band_identity": true,
+      "physical_signed_fluxes": true,
+      "no_object_or_redshift_in_strings": true
+    },
+    "C_SPEC_alternate": {
+      "rows": 1968,
+      "max_tokens": 575,
+      "min_tokens": 411,
+      "terminal_token_id": 30546,
+      "sha256": "de54e62b1fa9c571423079f04ac26a0136a20ede7635c9d329a66f40ded3de7f",
+      "same_input_strings_all_backbones": true,
+      "actual_band_identity": true,
+      "physical_signed_fluxes": true,
+      "no_object_or_redshift_in_strings": true
+    },
+    "C_ZPHOT_canonical": {
+      "rows": 2432,
+      "max_tokens": 454,
+      "min_tokens": 277,
+      "terminal_token_id": 30546,
+      "sha256": "d38be00d3d703444edaf90e0e11220353aa4bdb870f058215279ffd0cd1bb17c",
+      "same_input_strings_all_backbones": true,
+      "actual_band_identity": true,
+      "physical_signed_fluxes": true,
+      "no_object_or_redshift_in_strings": true
+    }
+  },
+  "data_hashes": {
+    "C_SPEC_photometry.npz": "36d7fa9e25b6872f50931ec3576462faeb6729cf3b080c5e984af5bc9fa33d55",
+    "C_SPEC_query_labels_sealed.npz": "afedc1c8cf9b5e56f7f8a813e93417255d647eda5a1df5d6be466953d8fc80e4",
+    "C_ZPHOT_query_labels_sealed.npz": "22040e9bc04a31737325e986ca3c39429cc9ca258eb675078c7521e2185fe79a",
+    "BC_historical_identity.npz": "2ca0a329b0c5d18837280028d9566a4969f5c0e94749f6fbb3b0d7b1829a7023",
+    "C_ZPHOT_support_development_labels.npz": "353236ec0f00600789823c33466b84305a1464070dd3086393990f73d5438986",
+    "GMS_full_exposure_audit.npz": "b70c6e2e9392308418ae7a2b0e81d62c64ced0713f8d9ec8f56b7ad03e1ccce0",
+    "BS_historical_identity.npz": "16ed246414cec93766d315c784af0e36ca153f48a32a4e6c046ded6a219b7651",
+    "C_ZPHOT_photometry.npz": "2bf84fee0782993c673ad353ab10b8aadd85a7c5884eed95df9eecc7b03d18de",
+    "GMS_photometry.npz": "d100322992b48a95153d027310ae0378e877abd86297f9c561b06806473e2dcc",
+    "C_SPEC_full_exposure_audit.npz": "ff27a026c63c5bee793847eb3678d7c1468aff6a07d92dc90565b6f1ab4a4c78",
+    "C_ZPHOT_full_exposure_audit.npz": "dfd42bf845417948548502ee0b9abe1ac6c40f6996e1a189810ee0d798c44cc4",
+    "GMS_support_development_labels.npz": "e576c26c7afcf6a2fcc36cf8f8c4c835c4bf14449592eb2e14fadb0bb4c51f89",
+    "GMS_query_labels_sealed.npz": "8619b51b6f78c4a4e8e3b8c6539c60423714e35d79e35877b52d6085a05cb7de",
+    "C_SPEC_support_development_labels.npz": "59430e9a24c7c0a3b40651e8878963167c652147ddb0ab94be15ce4a9777dd48"
+  },
+  "nested_subset_hashes": {
+    "C_ZPHOT_nested_subsets.json": "5098dc85526d978e5255987c658e4b5d0b389cdd45d9dff5dd9009281e06d9de",
+    "GMS_nested_subsets.json": "195707fac2198492acefc49b46f3846b68e07a26ed17c6dd6c92f4ab4e1639e2",
+    "C_SPEC_nested_subsets.json": "645cc260c7ea19735d97fcd58e335469fe483bb12253f2fe94f1a24fdab99f56"
+  },
+  "provenance_sha256": "6f30dccedf6c9432d70666a57913e11c11f25a86ce649089adca2fc10a21b142",
+  "guide_sha256": "97544af42ccb2523878a41608cd3ce6de75e868917764865ffa1f1fba0bf8539",
+  "candidate_code_sha256": {
+    "anecdote_features_1029.py": "e4a712cb8021c1563f6e84b27442abcab7c1c29cade20fa9a820ce8ac9d0ed8d",
+    "anecdote_data_1029.py": "2bb6a0682f0392d9d2d441582469cdc90be0afb2115b5dbf9d6910962ac726d9",
+    "anecdote_common_1029.py": "2ffd7e74719fe28b57fb9cebf21f628e2816cfcefebbda63eb7a840e551f76b5",
+    "anecdote_heads_1029.py": "dc5dd152ca1d026dab3780b4bfb44660da779218a2507c3e320cf9e2225620c0",
+    "anecdote_audit_1029.py": "9c35ce3d35c4e989bbbcea7217e8983787bf2f23aaecc76eca4bdcb82c9c6636"
+  }
+}

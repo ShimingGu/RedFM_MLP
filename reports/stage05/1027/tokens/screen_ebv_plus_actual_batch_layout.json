@@ -1,0 +1,168 @@
+{
+  "batch_size": 8,
+  "padding_side": "right",
+  "arrays": "screen_ebv_plus.npz",
+  "reconstruction": "input_ids[start:stop,:padded_width], attention_mask[start:stop,:padded_width]",
+  "batches": [
+    {
+      "start": 0,
+      "stop": 8,
+      "padded_width": 233
+    },
+    {
+      "start": 8,
+      "stop": 16,
+      "padded_width": 233
+    },
+    {
+      "start": 16,
+      "stop": 24,
+      "padded_width": 233
+    },
+    {
+      "start": 24,
+      "stop": 32,
+      "padded_width": 234
+    },
+    {
+      "start": 32,
+      "stop": 40,
+      "padded_width": 233
+    },
+    {
+      "start": 40,
+      "stop": 48,
+      "padded_width": 233
+    },
+    {
+      "start": 48,
+      "stop": 56,
+      "padded_width": 227
+    },
+    {
+      "start": 56,
+      "stop": 64,
+      "padded_width": 225
+    },
+    {
+      "start": 64,
+      "stop": 72,
+      "padded_width": 233
+    },
+    {
+      "start": 72,
+      "stop": 80,
+      "padded_width": 233
+    },
+    {
+      "start": 80,
+      "stop": 88,
+      "padded_width": 233
+    },
+    {
+      "start": 88,
+      "stop": 96,
+      "padded_width": 232
+    },
+    {
+      "start": 96,
+      "stop": 104,
+      "padded_width": 233
+    },
+    {
+      "start": 104,
+      "stop": 112,
+      "padded_width": 227
+    },
+    {
+      "start": 112,
+      "stop": 120,
+      "padded_width": 229
+    },
+    {
+      "start": 120,
+      "stop": 128,
+      "padded_width": 233
+    },
+    {
+      "start": 128,
+      "stop": 136,
+      "padded_width": 233
+    },
+    {
+      "start": 136,
+      "stop": 144,
+      "padded_width": 227
+    },
+    {
+      "start": 144,
+      "stop": 152,
+      "padded_width": 227
+    },
+    {
+      "start": 152,
+      "stop": 160,
+      "padded_width": 228
+    },
+    {
+      "start": 160,
+      "stop": 168,
+      "padded_width": 227
+    },
+    {
+      "start": 168,
+      "stop": 176,
+      "padded_width": 233
+    },
+    {
+      "start": 176,
+      "stop": 184,
+      "padded_width": 232
+    },
+    {
+      "start": 184,
+      "stop": 192,
+      "padded_width": 231
+    },
+    {
+      "start": 192,
+      "stop": 200,
+      "padded_width": 228
+    },
+    {
+      "start": 200,
+      "stop": 208,
+      "padded_width": 230
+    },
+    {
+      "start": 208,
+      "stop": 216,
+      "padded_width": 229
+    },
+    {
+      "start": 216,
+      "stop": 224,
+      "padded_width": 233
+    },
+    {
+      "start": 224,
+      "stop": 232,
+      "padded_width": 234
+    },
+    {
+      "start": 232,
+      "stop": 240,
+      "padded_width": 233
+    },
+    {
+      "start": 240,
+      "stop": 248,
+      "padded_width": 232
+    },
+    {
+      "start": 248,
+      "stop": 256,
+      "padded_width": 232
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "kernel_sha256": "fc0db74392c18fc1423d85bdbb93ea0c95b4da331049fb18c3abf7f68c923fd8",
+  "target_labels_read": false,
+  "D12": "NNLS perz, measured errors, uniform z density, no population prior, profile pseudo-posterior",
+  "D2": "fixed6/5 constrained profile diagnostic, no real adequacy/calibration claim",
+  "seconds": 32.80821681022644
+}

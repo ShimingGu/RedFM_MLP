@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "negative_flux_preserved": true,
+  "missing_or_invalid_sigma_excluded": true,
+  "column_order_fixed": true,
+  "normalization_profile_invariant": true,
+  "independent_BVLS_agrees": true
+}

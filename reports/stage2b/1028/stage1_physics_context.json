@@ -1,0 +1,35 @@
+{
+  "grid_bins": 90,
+  "template_bank": "Stage1 controlled bank, different from FSPS QSF12",
+  "metrics": [
+    {
+      "stratum": "test_HSC_correct",
+      "NMAD": 0.06160673126578331,
+      "outliers": 0.359375,
+      "CRPS": 0.47307106852531433,
+      "coverage": 0.515625
+    },
+    {
+      "stratum": "test_Legacy_correct",
+      "NMAD": 0.12376982718706131,
+      "outliers": 0.390625,
+      "CRPS": 0.6061993837356567,
+      "coverage": 0.3125
+    },
+    {
+      "stratum": "test_CLAUDS_correct",
+      "NMAD": 0.04969319701194763,
+      "outliers": 0.203125,
+      "CRPS": 0.23227208852767944,
+      "coverage": 0.296875
+    },
+    {
+      "stratum": "test_new_filters_correct",
+      "NMAD": 0.14936304092407227,
+      "outliers": 0.375,
+      "CRPS": 0.40179911255836487,
+      "coverage": 0.21875
+    }
+  ],
+  "CE_not_compared_across_grids": true
+}

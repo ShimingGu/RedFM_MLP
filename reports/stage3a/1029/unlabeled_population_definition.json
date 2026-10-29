@@ -1,0 +1,6 @@
+{
+  "random_seed": 1029,
+  "sampling": "Uniform without replacement12000 row candidates then first4096 nonstellar, nonparent, nonduplicated, nonsky I-band rows; independent of flux/z",
+  "labels_read": false,
+  "population": "Local COSMOS catalogue; not all CLAUDS fields"
+}

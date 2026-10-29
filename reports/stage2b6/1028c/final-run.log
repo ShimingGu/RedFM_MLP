@@ -1,0 +1,16 @@
+Failed to `import dust_attenuation`
+Install from the repo with $ pip install git+https://github.com/karllark/dust_attenuation.git
+physical cache held 512 / 7168
+physical cache held 1024 / 7168
+physical cache held 1536 / 7168
+physical cache held 2048 / 7168
+physical cache held 2560 / 7168
+physical cache held 3072 / 7168
+physical cache held 3584 / 7168
+physical cache held 4096 / 7168
+physical cache held 4608 / 7168
+physical cache held 5120 / 7168
+physical cache held 5632 / 7168
+physical cache held 6144 / 7168
+physical cache held 6656 / 7168
+physical cache held 7168 / 7168

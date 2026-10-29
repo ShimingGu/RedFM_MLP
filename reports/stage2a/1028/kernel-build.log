@@ -1,0 +1,15 @@
+Failed to `import dust_attenuation`
+Install from the repo with $ pip install git+https://github.com/karllark/dust_attenuation.git
+  0%|          | 0/12 [00:00<?, ?it/s]  8%|▊         | 1/12 [01:00<11:05, 60.51s/it] 25%|██▌       | 3/12 [01:01<02:24, 16.09s/it] 42%|████▏     | 5/12 [02:00<02:40, 22.92s/it] 50%|█████     | 6/12 [02:05<01:48, 18.05s/it] 75%|███████▌  | 9/12 [03:01<00:55, 18.41s/it] 83%|████████▎ | 10/12 [03:02<00:29, 14.90s/it] 92%|█████████▏| 11/12 [03:02<00:11, 11.63s/it]100%|██████████| 12/12 [03:07<00:00, 10.00s/it]100%|██████████| 12/12 [03:07<00:00, 15.64s/it]
+Template   0: tweak_fsps_QSF_12_v3_001.dat (NZ=1).
+Template   1: tweak_fsps_QSF_12_v3_002.dat (NZ=1).
+Template   2: tweak_fsps_QSF_12_v3_003.dat (NZ=1).
+Template   3: tweak_fsps_QSF_12_v3_004.dat (NZ=1).
+Template   4: tweak_fsps_QSF_12_v3_005.dat (NZ=1).
+Template   5: tweak_fsps_QSF_12_v3_006.dat (NZ=1).
+Template   6: tweak_fsps_QSF_12_v3_007.dat (NZ=1).
+Template   7: tweak_fsps_QSF_12_v3_008.dat (NZ=1).
+Template   8: tweak_fsps_QSF_12_v3_009.dat (NZ=1).
+Template   9: tweak_fsps_QSF_12_v3_010.dat (NZ=1).
+Template  10: tweak_fsps_QSF_12_v3_011.dat (NZ=1).
+Template  11: tweak_fsps_QSF_12_v3_012.dat (NZ=1).

@@ -1,0 +1,7 @@
+{
+  "passed": true,
+  "zero_response_recovers_shape_and_amplitude_prior": true,
+  "amplitude_shape_correlation_retained": true,
+  "coefficient_means_not_product_of_marginal_means": true,
+  "DM_residuals_use_posterior_mean_flux": true
+}

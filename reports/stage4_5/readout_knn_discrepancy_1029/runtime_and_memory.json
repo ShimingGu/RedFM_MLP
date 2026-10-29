@@ -1,0 +1,25 @@
+{
+  "native_extraction_seconds": 295.9933125972748,
+  "native_extraction_peak_GPU_bytes": 5854466048,
+  "native_head_training_seconds": 19.991218090057373,
+  "native_head_training_peak_GPU_bytes": "not separately recorded",
+  "CPU_diagnostics_wall_and_peak_memory": "not separately recorded",
+  "native_feature_cache_bytes": 43839985,
+  "archived_native_predictions_bytes": 2713957,
+  "native_GPU": {
+    "uuid": "88b5a6d2-3af1-5088-9cb7-235af969d28e",
+    "memory_before_gib": {
+      "total": 10.75,
+      "free": 10.73345947265625,
+      "used": 0.01654052734375
+    }
+  },
+  "head_GPU": {
+    "uuid": "88b5a6d2-3af1-5088-9cb7-235af969d28e",
+    "memory_before_gib": {
+      "total": 10.75,
+      "free": 10.73345947265625,
+      "used": 0.01654052734375
+    }
+  }
+}

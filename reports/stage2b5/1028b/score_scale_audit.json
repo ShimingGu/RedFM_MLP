@@ -1,0 +1,29 @@
+{
+  "source_only_posthoc_mathematical_diagnostic": true,
+  "settings_not_changed": true,
+  "held_response_or_real_target_not_reevaluated": true,
+  "formula": "Physical score is original Gaussian profile log likelihood divided by Nvalid/beta: temperature25 for5bands and55 for11bands. This is in addition to the10% TEF.",
+  "ranges": [
+    {
+      "domain": "identifiable",
+      "median_effective_likelihood_temperature": 25.0,
+      "median_neural_range": 6.820771217346191,
+      "median_tempered_physical_range": 3.554372549057007,
+      "median_untempered_physical_range": 88.85931396484375
+    },
+    {
+      "domain": "analytic",
+      "median_effective_likelihood_temperature": 25.0,
+      "median_neural_range": 6.921899795532227,
+      "median_tempered_physical_range": 2.8190109729766846,
+      "median_untempered_physical_range": 70.47527313232422
+    },
+    {
+      "domain": "matched",
+      "median_effective_likelihood_temperature": 25.0,
+      "median_neural_range": 7.975502967834473,
+      "median_tempered_physical_range": 3.524803638458252,
+      "median_untempered_physical_range": 88.12008666992188
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "handoff_sha256": "b1d04d7dac9e7b3060c124b86b9bd5f3f4ff864240ce303fceeabe4f1ffdd06d",
+  "handoff": {
+    "completed": true,
+    "Stage2B6_proceed": true,
+    "numerical_tests_passed": true,
+    "response_integrator": "stage2a5_audit.integrate: union-knot Gauss-Legendre with original Inoue14",
+    "kernel": "/scratch/RedFM_MLP/reports/stage2a5/1028b/response_kernel_highres.npz",
+    "kernel_sha256": "fc0db74392c18fc1423d85bdbb93ea0c95b4da331049fb18c3abf7f68c923fd8",
+    "D2_indices": [
+      6,
+      5
+    ],
+    "D3_indices": [
+      6,
+      5,
+      2
+    ],
+    "SED_basis": "/scratch/RedFM_MLP/reports/stage2a6/1028c/basis.npz",
+    "amplitude_prior": "HalfNormal(A;0,tau), A>=0, observed-frame normalized-kernel amplitude in nanomaggy; not an intrinsic luminosity prior",
+    "amplitude_prior_tau_nanomaggy": 261259.80224609372,
+    "physical_scores": {
+      "D12": "-0.5*NNLS chi2 full12",
+      "D2": "-0.5*NNLS chi2 fixed2",
+      "DM": "proper Beta(1,1) shape + halfNormal amplitude marginal"
+    },
+    "marginal_eligible": true,
+    "max_quadrature_posterior_TV": 4.1617980173214164e-08,
+    "uncertainty": "Measured sigma; separate fixed TEF0.10, never conflated with temperature",
+    "prior_provenance": "Pinned library only and unlabeled source-training flux scale",
+    "numerical_accuracy": "A.5 independent quadrature + A.6 amplitude analytic/adaptive and mixture convergence tests",
+    "limitations": [
+      "No constrained model declared universally reliable; assess true-z fit adequacy",
+      "Unknown real extinction history and cmodel/Tractor calibration remain",
+      "Proper observer-frame amplitude prior is not a luminosity population prior",
+      "Zero minimum chi2 and sharp PDFs do not establish reliability"
+    ],
+    "allowed_trust_features": [
+      "observed flux/error/mask",
+      "response curves",
+      "number valid",
+      "physical profile width/multimodality",
+      "cross-model disagreement",
+      "constrained residual/rank adequacy proxy"
+    ],
+    "forbidden_features": [
+      "z_spec",
+      "SED_truth",
+      "mixture_truth",
+      "mismatch_label"
+    ],
+    "interfaces": "stage2a6_identifiability.all_scores / two_profile / marginal_two",
+    "source_tests_read": false,
+    "target_labels_read": false,
+    "preferred_real_survey_score": null,
+    "real_source_adequacy_gate": "No universal reliable winner; diagnostic handoff only",
+    "single_template_score": "D1_profile and D1_evidence retained; point gains do not establish fit adequacy",
+    "source_selection_record": "/scratch/RedFM_MLP/reports/stage2a6/1028c/source_selection_record.json"
+  },
+  "acknowledged": "D2/DM are diagnostic, not universally source-validated real-galaxy likelihoods. Exact-family matched and deliberately mismatched controls are required."
+}

@@ -1,0 +1,27 @@
+{
+  "reports": {
+    "reports/stage05/1027/report.md": "437e949d5fb0f83207fc7d86edc58210f5f40bf8d8ddec8c7bd9ee05d707b8b1",
+    "reports/stage2b/1028/report.md": "cd2946177a5258c14a75ed933769d07d93f59571bdbe94c9529f37a879614a23",
+    "reports/stage2b6/1028c/report.md": "27c66e0132034448be98f6f9b7a31ac1a61ef923551dd684bf105d3ad872231e",
+    "reports/stage0/1027a/report.md": "4819554d1179ee35fa8e5c317f1f0bd3d47ca76c5eeea71f49e71ca3ce650075",
+    "reports/stage2b5/1028b/report.md": "746f494cadcc027e7e3f79ba9d99eb775928c2226bf9ce2eb7df521c0a7fd683",
+    "reports/filter-aware/1023/clauds-common-flux-evaluation/report.md": "4c421c02e71799bc1d5745f7439a97cc695cd30a5dd745138faba7e51a697e57",
+    "reports/filter-aware/1023/hsc-warmstart/level2/report.md": "31c20d77ca1861c38565de10d4ab33bae0a7f66a38bbc0ba920300fd0b24fc1c",
+    "reports/filter-aware/1023/hsc-warmstart/level1/report.md": "0be775b93f639c35afa799d56cedb1b485027bd483c96d15483cbdc75dec0114",
+    "reports/filter-aware/1023/hsc-warmstart/level0/report.md": "a59d303add586e5734a96b5a8add6b462b154f8fac91fb1b88b3665da61e1e5d",
+    "reports/filter-aware/1023/hsc-warmstart/resume-20261025T101017Z/level2/report.md": "24cce6c693064ea0dd5881077a2f477093fad687814a03ab143dbdadb68f4fc0",
+    "reports/filter-aware/1023/hsc-warmstart/resume-20261025T101017Z/level1/report.md": "8c76ab95d252bcb27aa9d9cc76c4efed7ede9ad39743e967a2380abc65687717",
+    "reports/stage1/1027/report.md": "098cee751d8ce0e68921d4e66c81138579093835bdf8a7326f71db2b40481b8c",
+    "reports/stage2a/1028/report.md": "f36555cf7e106bd32169d83a0e94af0ccb011f5c9a3178988d9abd15cd37b9f4",
+    "reports/stage2a5/1028b/report.md": "eefaafaca3a9a67caaee48c664a981f6b8da7b1419d86f63de696c88eb383bd0",
+    "reports/stage2a6/1028c/report.md": "41f4e568190c8d57f09a8650159b2ab27956b9e78e40be36186fc33868151c2d"
+  },
+  "findings": [
+    "Frozen Qwen interface and brightness fragility do not establish pretrained astrophysical knowledge",
+    "D12 degeneracy and real HSC SED mismatch persist; low-dimensional diagnostics are not universal likelihoods",
+    "Corrected21-filter union-knot integration and signed-flux masks are reusable",
+    "N1_kernel synthetic gain confounded by capacity and FSPS information; source convergence incomplete",
+    "Earlier CLAUDS256 are ZPHOT exploratory; paired Legacy views are not independent source population"
+  ],
+  "protected_files": 1890
+}

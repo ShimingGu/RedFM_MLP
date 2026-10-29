@@ -1,0 +1,6 @@
+{
+  "test_object_ids_only_from_archival_result": true,
+  "test_labels_or_predictions_inspected": false,
+  "reason": "Preserve all historical source-test identity exclusions; reconstruction saves training/validation photometry only",
+  "n_test_ids": 225080
+}

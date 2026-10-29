@@ -1,0 +1,50 @@
+{
+  "completed_utc": "2026-10-27T16:27:50.041200+00:00",
+  "stage_order": [
+    "0.5",
+    "1"
+  ],
+  "sequential_gate_verified": true,
+  "guides_sha256": {
+    "phys_guide_execution_1027.md": "ab01cf76364724b6325e643b0d4ecf83bcf589db73a7952b19c1695993f8500a",
+    "phys_guide_1027aa.md": "6444273d6e4daccc2726a878601417d67d8154864a4649e069b8b37fd8855a14",
+    "phys_guide_1027b.md": "516f3be24a9db3c8dd9fd6ec1d8d3161e5f4aea42f89571eb9424820e3eb008e"
+  },
+  "reports": {
+    "reports/stage05/1027/report.md": {
+      "sha256": "437e949d5fb0f83207fc7d86edc58210f5f40bf8d8ddec8c7bd9ee05d707b8b1",
+      "bytes": 10828
+    },
+    "reports/stage1/1027/report.md": {
+      "sha256": "098cee751d8ce0e68921d4e66c81138579093835bdf8a7326f71db2b40481b8c",
+      "bytes": 16998
+    },
+    "reports/joint_physics_1027.md": {
+      "sha256": "13f0da31e80097286f31ce0db4e07f67345cff109267f17661d80a7fb171d186",
+      "bytes": 2925
+    }
+  },
+  "stage05": {
+    "screening_conditions": 30,
+    "screening_objects": 256,
+    "full_conditions": 6,
+    "full_objects": 5683,
+    "native_replay_max_logit_difference": 0.0,
+    "training": false
+  },
+  "stage1": {
+    "unique_seds": 208,
+    "observations": 1312,
+    "supervised_source_observations": 512,
+    "probe_seeds": [
+      11,
+      23,
+      37
+    ],
+    "large_model_weights_updated": false
+  },
+  "tests_passed": 15,
+  "archived_models_and_stage0_unchanged": true,
+  "real_held_out_test_objects_evaluated": false,
+  "large_adapter_jobs_started": false
+}

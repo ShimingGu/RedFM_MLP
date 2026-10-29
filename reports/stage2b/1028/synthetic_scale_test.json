@@ -1,0 +1,20 @@
+[
+  {
+    "model": "N0",
+    "common_f_sigma_scale": 0.001,
+    "max_logit_change": 0.0,
+    "passed": true
+  },
+  {
+    "model": "N1",
+    "common_f_sigma_scale": 0.001,
+    "max_logit_change": 0.0,
+    "passed": true
+  },
+  {
+    "model": "N2",
+    "common_f_sigma_scale": 0.001,
+    "max_logit_change": 0.0,
+    "passed": true
+  }
+]

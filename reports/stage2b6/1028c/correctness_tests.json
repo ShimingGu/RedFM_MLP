@@ -1,0 +1,44 @@
+{
+  "passed": true,
+  "models": [
+    {
+      "arm": "N0",
+      "permutation_max_absolute": 0.0,
+      "finite_output": true,
+      "empty_finite": true
+    },
+    {
+      "arm": "N1",
+      "permutation_max_absolute": 2.60770320892334e-08,
+      "finite_output": true,
+      "empty_finite": true
+    },
+    {
+      "arm": "N2_original",
+      "permutation_max_absolute": 8.344650268554688e-07,
+      "finite_output": true,
+      "empty_finite": true
+    },
+    {
+      "arm": "N2_constrained",
+      "permutation_max_absolute": 0.0078125,
+      "finite_output": true,
+      "empty_finite": true
+    },
+    {
+      "arm": "N2_G1",
+      "permutation_max_absolute": 0.0078125,
+      "finite_output": true,
+      "empty_finite": true
+    },
+    {
+      "arm": "N1_kernel",
+      "permutation_max_absolute": 1.862645149230957e-08,
+      "finite_output": true,
+      "empty_finite": true
+    }
+  ],
+  "no_truth_or_mismatch_labels_in_inputs": true,
+  "rule_independent_of_learned_parameters": true,
+  "physics_handoff_hash_verified": true
+}

@@ -1,0 +1,14 @@
+{
+  "criteria": [
+    "First deterministic-ID-order low-specz/wrong z>3",
+    "First nearly-degenerate delta chi2<2",
+    "First correct minimum within0.03",
+    "Fixed indices0,1,2"
+  ],
+  "indices": [
+    0,
+    3,
+    1,
+    2
+  ]
+}

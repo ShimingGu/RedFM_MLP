@@ -1,0 +1,18 @@
+{
+  "primary_off_diagonal": {
+    "GMS": "K256: \u0394out=-6.01pp (range-13.87..-2.15), \u0394CE=-0.088, outlier improvement6/6, CE improvement6/6, all readout learning checks=True; K64: \u0394out=+0.00pp (range+0.00..+0.00), \u0394CE=+0.001, outlier improvement0/6, CE improvement3/6, all readout learning checks=False",
+    "C_SPEC": "K256: \u0394out=+0.04pp (range+0.00..+0.13), \u0394CE=-0.010, outlier improvement0/6, CE improvement6/6, all readout learning checks=False; K64: \u0394out=+0.04pp (range+0.00..+0.13), \u0394CE=-0.010, outlier improvement0/6, CE improvement6/6, all readout learning checks=False",
+    "C_ZPHOT": "K256: \u0394out=+0.08pp (range+0.00..+0.20), \u0394CE=+0.001, outlier improvement0/6, CE improvement3/6, all readout learning checks=False; K64: \u0394out=+0.07pp (range-0.39..+0.29), \u0394CE=+0.000, outlier improvement1/6, CE improvement3/6, all readout learning checks=False"
+  },
+  "foundation_knowledge_established": false,
+  "query_labels_used_for_selection": false,
+  "source_training_exposure_removed": true,
+  "base_or_adapter_updates": false,
+  "Stage2C": false,
+  "conclusion": "Conditional BC-to-GMS representation transfer observed; no practical advantage over simple numerical controls established.",
+  "GMS_K256_BC_minus_B0_outlier_pp": -6.005859375,
+  "primary_GMS_six_fit_outlier_and_CE_direction_consistent": true,
+  "C_SPEC_smooth3_gain_exploratory": true,
+  "hard_low_K_nonlearning_not_a_backbone_ranking": true,
+  "fixed_development_labels": 256
+}

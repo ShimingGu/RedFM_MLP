@@ -1,0 +1,33 @@
+{
+  "dependencies": {
+    "eazy": "0.8.7",
+    "numpy": "2.5.4",
+    "scipy": "1.17.1",
+    "astropy": "8.0.2",
+    "dust-extinction": "1.7",
+    "torch": "2.10.0"
+  },
+  "kernel_sha256": "e3874fdaf8fec41256e98a7e20a51404ebc6fbcef2f57ec3a3dabb12d6531558",
+  "templates_manifest_sha256": "5de29839bf21ecdbb3b021dd665c48b034a6fd522dd8984ea89ff435056a16e6",
+  "filter_registry_sha256": "ace98d2ad8b38afc4275afb627a3811451e3605a8a07412fc89234680bda8d5b",
+  "IGM": "EAZY Inoue14 enabled",
+  "dust": "FSPS QSF12 library includes its intrinsic template dust; no additional internal dust fit",
+  "normalization": "Templates divided by rest 5500A fnu; free nonnegative amplitudes remove absolute (1+z)/luminosity-distance factors omitted by EAZY integration",
+  "probability": "Midpoint-bin profile exp(-chi2/2) times bin width; no population prior, no EAZY template-error posterior correction",
+  "P1": "Not run: optional population prior would introduce another selection assumption",
+  "P2": "Fixed source-only candidates fractional template errors 0,0.03,0.10; balanced source CE on deterministic calibration halves, confirmation halves untouched",
+  "physical_tests": {
+    "constant_fnu_relative_error": 2.220446049250313e-16,
+    "independent_stage1_relative_error": 0.013966978999372824,
+    "AB_zero_nanomaggy_mag": 22.5,
+    "CLAUDS_microJy_scale": 0.275422870333817,
+    "spectral_density_conversion": true,
+    "all_response_units_verified": true,
+    "known_nonnegative_mixture_chi2": 1.6275889480286995e-27,
+    "signed_flux_retained": true,
+    "missing_sigma_masked": true,
+    "missing_bands": true,
+    "free_amplitude_scale_invariance": true,
+    "passed": true
+  }
+}

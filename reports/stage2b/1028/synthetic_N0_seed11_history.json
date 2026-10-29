@@ -1,0 +1,102 @@
+{
+  "name": "N0",
+  "domain": "synthetic",
+  "seed": 11,
+  "model_kind": "N0",
+  "response": "full",
+  "brightness": false,
+  "history": [
+    {
+      "update": 0,
+      "validation_ce": 5.690354824066162,
+      "seconds": 0.0010063648223876953
+    },
+    {
+      "update": 50,
+      "validation_ce": 6.4527153968811035,
+      "seconds": 0.21596288681030273
+    },
+    {
+      "update": 100,
+      "validation_ce": 6.559389114379883,
+      "seconds": 0.44417262077331543
+    },
+    {
+      "update": 150,
+      "validation_ce": 6.610065460205078,
+      "seconds": 0.6737942695617676
+    },
+    {
+      "update": 200,
+      "validation_ce": 6.599498748779297,
+      "seconds": 0.9011662006378174
+    },
+    {
+      "update": 250,
+      "validation_ce": 6.55548620223999,
+      "seconds": 1.1280174255371094
+    },
+    {
+      "update": 300,
+      "validation_ce": 6.490232944488525,
+      "seconds": 1.354396104812622
+    },
+    {
+      "update": 350,
+      "validation_ce": 6.562979221343994,
+      "seconds": 1.581644058227539
+    },
+    {
+      "update": 400,
+      "validation_ce": 6.743025302886963,
+      "seconds": 1.807913064956665
+    },
+    {
+      "update": 450,
+      "validation_ce": 6.810966491699219,
+      "seconds": 2.0347867012023926
+    },
+    {
+      "update": 500,
+      "validation_ce": 6.964212894439697,
+      "seconds": 2.2619125843048096
+    },
+    {
+      "update": 550,
+      "validation_ce": 7.227466583251953,
+      "seconds": 2.487835168838501
+    },
+    {
+      "update": 600,
+      "validation_ce": 7.134108066558838,
+      "seconds": 2.7141757011413574
+    },
+    {
+      "update": 650,
+      "validation_ce": 7.333244323730469,
+      "seconds": 2.9400038719177246
+    },
+    {
+      "update": 700,
+      "validation_ce": 7.412017822265625,
+      "seconds": 3.168379545211792
+    },
+    {
+      "update": 750,
+      "validation_ce": 7.328098297119141,
+      "seconds": 3.3940789699554443
+    },
+    {
+      "update": 800,
+      "validation_ce": 7.568725109100342,
+      "seconds": 3.6201608180999756
+    }
+  ],
+  "best_step": 0,
+  "best_validation_ce": 5.690354824066162,
+  "updates": 800,
+  "trainable_parameters": 113900,
+  "seconds": 3.620267629623413,
+  "peak_GPU_bytes": 73900544,
+  "template_error": 0.1
+}

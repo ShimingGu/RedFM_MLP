@@ -1,0 +1,13 @@
+condition,baseline,median_prediction_shift,mean_abs_prediction_shift,rescued_outliers,new_outliers
+original_source_exact_na,original_archived_native,-0.0599999874830246,0.08191405236721039,1,2
+original_source_exact_omit_ebv,original_archived_native,-0.04500000178813934,0.045585934072732925,0,2
+original_target_schema_na,original_archived_native,-0.0599999874830246,0.08308593183755875,1,2
+A_source_exact_na,A_native_full,-0.0599999874830246,0.09556639194488525,3,2
+A_source_exact_omit_ebv,A_native_full,-0.04500000178813934,0.04746093600988388,0,2
+A_target_schema_na,A_native_full,-0.04500000178813934,0.09890623390674591,5,2
+B_source_exact_na,B_flux_hsc,0.824999988079071,0.7968164682388306,65,5
+B_source_exact_omit_ebv,B_flux_hsc,0.015000000596046448,0.09691406041383743,5,0
+B_target_schema_na,B_flux_hsc,0.809999942779541,0.7764257192611694,65,6
+C_source_exact_na,C_flux_hsc,0.8400000333786011,0.8155664801597595,59,7
+C_source_exact_omit_ebv,C_flux_hsc,0.2849999964237213,0.3707226514816284,22,3
+C_target_schema_na,C_flux_hsc,0.824999988079071,0.8040819764137268,61,7

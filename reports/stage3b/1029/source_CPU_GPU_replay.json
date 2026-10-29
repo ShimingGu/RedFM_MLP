@@ -1,0 +1,66 @@
+{
+  "passed": true,
+  "models": [
+    {
+      "model": "HSC_R1_seed11",
+      "source_CPU_GPU_max_PDF_difference": 2.682209014892578e-07,
+      "n": 32
+    },
+    {
+      "model": "HSC_R1_seed23",
+      "source_CPU_GPU_max_PDF_difference": 3.948807716369629e-07,
+      "n": 32
+    },
+    {
+      "model": "HSC_R2_seed11",
+      "source_CPU_GPU_max_PDF_difference": 5.438923835754395e-07,
+      "n": 32
+    },
+    {
+      "model": "HSC_R2_seed23",
+      "source_CPU_GPU_max_PDF_difference": 4.3585896492004395e-07,
+      "n": 32
+    },
+    {
+      "model": "Legacy_R1_seed11",
+      "source_CPU_GPU_max_PDF_difference": 6.332993507385254e-08,
+      "n": 32
+    },
+    {
+      "model": "Legacy_R1_seed23",
+      "source_CPU_GPU_max_PDF_difference": 7.450580596923828e-08,
+      "n": 32
+    },
+    {
+      "model": "Legacy_R2_seed11",
+      "source_CPU_GPU_max_PDF_difference": 2.3096799850463867e-07,
+      "n": 32
+    },
+    {
+      "model": "Legacy_R2_seed23",
+      "source_CPU_GPU_max_PDF_difference": 1.4528632164001465e-07,
+      "n": 32
+    },
+    {
+      "model": "Mixed_R1_seed11",
+      "source_CPU_GPU_max_PDF_difference": 2.8312206268310547e-07,
+      "n": 32
+    },
+    {
+      "model": "Mixed_R1_seed23",
+      "source_CPU_GPU_max_PDF_difference": 3.725290298461914e-07,
+      "n": 32
+    },
+    {
+      "model": "Mixed_R2_seed11",
+      "source_CPU_GPU_max_PDF_difference": 2.5331974029541016e-07,
+      "n": 32
+    },
+    {
+      "model": "Mixed_R2_seed23",
+      "source_CPU_GPU_max_PDF_difference": 2.7567148208618164e-07,
+      "n": 32
+    }
+  ],
+  "tolerance": 0.0001
+}

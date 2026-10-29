@@ -1,0 +1,8 @@
+{
+  "phase": "complete",
+  "normalization": "nonnegative profile-likelihood amplitude per SED/redshift",
+  "template_count": 20,
+  "redshift_grid_bins": 90,
+  "template_prototypes": "fixed analytic/CWW parameter grid, never evaluation SED identities or their truth parameters",
+  "pdf": "equal-template profile-likelihood pseudo-posterior; not a calibrated Bayesian posterior"
+}

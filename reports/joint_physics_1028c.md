@@ -1,0 +1,15 @@
+# Sequential SED-identifiability and trust execution — 1028c
+
+[Stage2A.6](stage2a6/1028c/report.md) completed before [Stage2B.6](stage2b6/1028c/report.md). Historical code and results remain unchanged. All model/prior/temperature/trust decisions use source data or pinned-library definitions; no CLAUDS labels, real source tests, Qwen training, Stage2C or population-scale training are used.
+
+Reducing SED flexibility can remove wrong exact-fit plateaus, but it can also exclude true spectra. In128 paired confirmation galaxies, HSC outliers fall from83.6% forD12 to18.0% for a single-template restriction, while median true-z chi-square worsens from228 to4654 and68% coverage vanishes. The fixedD2 basis and its proper marginal evidence are poor fits to real galaxies. No new universal real-data likelihood is selected.
+
+Actual WISE leverage remains decisive: on the same galaxies, Legacy grz/grzW1/grzW1W2 outliers are98.4%/4.7%/3.9%; HSC+WISE gives7.8% versus83.6% for HSC alone. This supports wavelength coverage beyond raw band count, with photometric-pipeline and uncertainty confounding still explicit.
+
+Stage2B.6 uses fresh independent SED partitions, paired seeds, common-update checkpoints and source-only plateau criteria. Forced constrained physics is tested alongside the original broad score, observed-data G1, and a source-calibrated tiny G2 only where fixed controls justify it. Source-calibrated N1 and global-physics controls account for extra calibration labels. Conditional per-domain outcomes, paired-SED intervals and training-seed variation are separate; missing convergence or source learning makes architectural superiority inconclusive.
+
+The verified integrator, normalized latent priors, masked amplitude profile and low-dimensional decoder are reusable engineering components. Their numerical correctness does not make a misspecified physical likelihood reliable. Adaptive trust cannot infer hidden calibration errors merely from a low minimum chi-square, and can collapse toward ignoring physics or extrapolate badly to unseen band counts/SNR. The real-source check is diagnostic, not validation of a synthetic gate.
+
+The independent reports contain the quantitative outcomes, including negative gates, PDF quality and computation budgets. These results do not establish successful real CLAUDS transfer or pretrained astrophysical knowledge.
+
+The conditional positive control is strong in point estimates but insufficient scientifically: G1 has0% M1 full-response outliers in both seeds, yet CE18.55/8.75. Strictly new-only G1 outliers vary from6.25% to70.31% across seeds. G2 fails to preserve the full-response advantage. Independent D2/DM inference is excellent only when its family is correct. Neither primary N1 seed reaches the final source plateau within the fixed budget, so fully matched-convergence superiority remains inconclusive. The physical-kernel input control also shows a substantial information-access effect, preventing a clean decoder-only attribution.

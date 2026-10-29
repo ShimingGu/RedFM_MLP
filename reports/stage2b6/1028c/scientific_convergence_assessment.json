@@ -1,0 +1,85 @@
+{
+  "criteria": "Same registered rolling criterion assessed at cap, in addition to first transient plateau. No held results choose budgets.",
+  "models": [
+    {
+      "model": "N0_seed11",
+      "learned_better_than_uniform": true,
+      "first_plateau": null,
+      "last_window_converged": false,
+      "CE_change_over_final1000": 0.12401453653971384,
+      "architecture_ranking_allowed": false
+    },
+    {
+      "model": "N1_kernel_seed11",
+      "learned_better_than_uniform": true,
+      "first_plateau": 4800,
+      "last_window_converged": true,
+      "CE_change_over_final1000": 0.0006512006123857716,
+      "architecture_ranking_allowed": true
+    },
+    {
+      "model": "N1_seed11",
+      "learned_better_than_uniform": true,
+      "first_plateau": null,
+      "last_window_converged": false,
+      "CE_change_over_final1000": 0.0720745722452798,
+      "architecture_ranking_allowed": false
+    },
+    {
+      "model": "N1_seed23",
+      "learned_better_than_uniform": true,
+      "first_plateau": null,
+      "last_window_converged": false,
+      "CE_change_over_final1000": 0.02380140622456839,
+      "architecture_ranking_allowed": false
+    },
+    {
+      "model": "N2_G1_seed11",
+      "learned_better_than_uniform": true,
+      "first_plateau": null,
+      "last_window_converged": false,
+      "CE_change_over_final1000": 0.20303742090861032,
+      "architecture_ranking_allowed": false
+    },
+    {
+      "model": "N2_G1_seed23",
+      "learned_better_than_uniform": true,
+      "first_plateau": null,
+      "last_window_converged": false,
+      "CE_change_over_final1000": 0.17191235224405954,
+      "architecture_ranking_allowed": false
+    },
+    {
+      "model": "N2_constrained_seed11",
+      "learned_better_than_uniform": false,
+      "first_plateau": null,
+      "last_window_converged": false,
+      "CE_change_over_final1000": 0.5341631571451799,
+      "architecture_ranking_allowed": false
+    },
+    {
+      "model": "N2_constrained_seed23",
+      "learned_better_than_uniform": false,
+      "first_plateau": null,
+      "last_window_converged": false,
+      "CE_change_over_final1000": 0.11534500122070312,
+      "architecture_ranking_allowed": false
+    },
+    {
+      "model": "N2_original_seed11",
+      "learned_better_than_uniform": true,
+      "first_plateau": 4400,
+      "last_window_converged": false,
+      "CE_change_over_final1000": 0.05258146921793605,
+      "architecture_ranking_allowed": false
+    },
+    {
+      "model": "N2_original_seed23",
+      "learned_better_than_uniform": true,
+      "first_plateau": null,
+      "last_window_converged": false,
+      "CE_change_over_final1000": 0.048293113708496094,
+      "architecture_ranking_allowed": false
+    }
+  ]
+}

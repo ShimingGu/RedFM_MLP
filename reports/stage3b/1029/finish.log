@@ -1,0 +1,103 @@
+COLLECTED frozen HSC_R1_seed11
+COLLECTED frozen HSC_R1_seed23
+COLLECTED frozen HSC_R2_seed11
+COLLECTED frozen HSC_R2_seed23
+COLLECTED frozen Legacy_R1_seed11
+COLLECTED frozen Legacy_R1_seed23
+COLLECTED frozen Legacy_R2_seed11
+COLLECTED frozen Legacy_R2_seed23
+COLLECTED frozen Mixed_C1_seed11
+COLLECTED frozen Mixed_C1_seed23
+COLLECTED frozen Mixed_C2_seed11
+COLLECTED frozen Mixed_C2_seed23
+COLLECTED frozen Mixed_C3_seed11
+COLLECTED frozen Mixed_C3_seed23
+COLLECTED frozen Mixed_R0_seed11
+COLLECTED frozen Mixed_R1_brightness_seed11
+COLLECTED frozen Mixed_R1_seed11
+COLLECTED frozen Mixed_R1_seed23
+COLLECTED frozen Mixed_R2_seed11
+COLLECTED frozen Mixed_R2_seed23
+/scratch/RedFM_MLP/scripts/stage3_evaluate_1029.py:69: RuntimeWarning: All-NaN slice encountered
+  mm=np.isin(a['band_id'],bids);f=np.where(mm,a['flux'],0).sum(1);mag=22.5-2.5*np.log10(np.where(f>0,f,np.nan));sn=np.nanmedian(np.where(valid,np.abs(a['flux']/a['sigma']),np.nan),axis=1)
+/scratch/RedFM_MLP/scripts/stage3_evaluate_1029.py:69: RuntimeWarning: All-NaN slice encountered
+  mm=np.isin(a['band_id'],bids);f=np.where(mm,a['flux'],0).sum(1);mag=22.5-2.5*np.log10(np.where(f>0,f,np.nan));sn=np.nanmedian(np.where(valid,np.abs(a['flux']/a['sigma']),np.nan),axis=1)
+/scratch/RedFM_MLP/scripts/stage3_evaluate_1029.py:69: RuntimeWarning: All-NaN slice encountered
+  mm=np.isin(a['band_id'],bids);f=np.where(mm,a['flux'],0).sum(1);mag=22.5-2.5*np.log10(np.where(f>0,f,np.nan));sn=np.nanmedian(np.where(valid,np.abs(a['flux']/a['sigma']),np.nan),axis=1)
+/scratch/RedFM_MLP/scripts/stage3_evaluate_1029.py:69: RuntimeWarning: All-NaN slice encountered
+  mm=np.isin(a['band_id'],bids);f=np.where(mm,a['flux'],0).sum(1);mag=22.5-2.5*np.log10(np.where(f>0,f,np.nan));sn=np.nanmedian(np.where(valid,np.abs(a['flux']/a['sigma']),np.nan),axis=1)
+/scratch/RedFM_MLP/scripts/stage3_evaluate_1029.py:69: RuntimeWarning: All-NaN slice encountered
+  mm=np.isin(a['band_id'],bids);f=np.where(mm,a['flux'],0).sum(1);mag=22.5-2.5*np.log10(np.where(f>0,f,np.nan));sn=np.nanmedian(np.where(valid,np.abs(a['flux']/a['sigma']),np.nan),axis=1)
+/scratch/RedFM_MLP/scripts/stage3_evaluate_1029.py:69: RuntimeWarning: All-NaN slice encountered
+  mm=np.isin(a['band_id'],bids);f=np.where(mm,a['flux'],0).sum(1);mag=22.5-2.5*np.log10(np.where(f>0,f,np.nan));sn=np.nanmedian(np.where(valid,np.abs(a['flux']/a['sigma']),np.nan),axis=1)
+/scratch/RedFM_MLP/scripts/stage3_evaluate_1029.py:69: RuntimeWarning: All-NaN slice encountered
+  mm=np.isin(a['band_id'],bids);f=np.where(mm,a['flux'],0).sum(1);mag=22.5-2.5*np.log10(np.where(f>0,f,np.nan));sn=np.nanmedian(np.where(valid,np.abs(a['flux']/a['sigma']),np.nan),axis=1)
+/scratch/RedFM_MLP/scripts/stage3_evaluate_1029.py:69: RuntimeWarning: All-NaN slice encountered
+  mm=np.isin(a['band_id'],bids);f=np.where(mm,a['flux'],0).sum(1);mag=22.5-2.5*np.log10(np.where(f>0,f,np.nan));sn=np.nanmedian(np.where(valid,np.abs(a['flux']/a['sigma']),np.nan),axis=1)
+/scratch/RedFM_MLP/scripts/stage3_evaluate_1029.py:69: RuntimeWarning: All-NaN slice encountered
+  mm=np.isin(a['band_id'],bids);f=np.where(mm,a['flux'],0).sum(1);mag=22.5-2.5*np.log10(np.where(f>0,f,np.nan));sn=np.nanmedian(np.where(valid,np.abs(a['flux']/a['sigma']),np.nan),axis=1)
+/scratch/RedFM_MLP/scripts/stage3_evaluate_1029.py:69: RuntimeWarning: All-NaN slice encountered
+  mm=np.isin(a['band_id'],bids);f=np.where(mm,a['flux'],0).sum(1);mag=22.5-2.5*np.log10(np.where(f>0,f,np.nan));sn=np.nanmedian(np.where(valid,np.abs(a['flux']/a['sigma']),np.nan),axis=1)
+/scratch/RedFM_MLP/scripts/stage3_evaluate_1029.py:69: RuntimeWarning: All-NaN slice encountered
+  mm=np.isin(a['band_id'],bids);f=np.where(mm,a['flux'],0).sum(1);mag=22.5-2.5*np.log10(np.where(f>0,f,np.nan));sn=np.nanmedian(np.where(valid,np.abs(a['flux']/a['sigma']),np.nan),axis=1)
+/scratch/RedFM_MLP/scripts/stage3_evaluate_1029.py:69: RuntimeWarning: All-NaN slice encountered
+  mm=np.isin(a['band_id'],bids);f=np.where(mm,a['flux'],0).sum(1);mag=22.5-2.5*np.log10(np.where(f>0,f,np.nan));sn=np.nanmedian(np.where(valid,np.abs(a['flux']/a['sigma']),np.nan),axis=1)
+/scratch/RedFM_MLP/scripts/stage3_evaluate_1029.py:69: RuntimeWarning: All-NaN slice encountered
+  mm=np.isin(a['band_id'],bids);f=np.where(mm,a['flux'],0).sum(1);mag=22.5-2.5*np.log10(np.where(f>0,f,np.nan));sn=np.nanmedian(np.where(valid,np.abs(a['flux']/a['sigma']),np.nan),axis=1)
+/scratch/RedFM_MLP/scripts/stage3_evaluate_1029.py:69: RuntimeWarning: All-NaN slice encountered
+  mm=np.isin(a['band_id'],bids);f=np.where(mm,a['flux'],0).sum(1);mag=22.5-2.5*np.log10(np.where(f>0,f,np.nan));sn=np.nanmedian(np.where(valid,np.abs(a['flux']/a['sigma']),np.nan),axis=1)
+/scratch/RedFM_MLP/scripts/stage3_evaluate_1029.py:69: RuntimeWarning: All-NaN slice encountered
+  mm=np.isin(a['band_id'],bids);f=np.where(mm,a['flux'],0).sum(1);mag=22.5-2.5*np.log10(np.where(f>0,f,np.nan));sn=np.nanmedian(np.where(valid,np.abs(a['flux']/a['sigma']),np.nan),axis=1)
+/scratch/RedFM_MLP/scripts/stage3_evaluate_1029.py:69: RuntimeWarning: All-NaN slice encountered
+  mm=np.isin(a['band_id'],bids);f=np.where(mm,a['flux'],0).sum(1);mag=22.5-2.5*np.log10(np.where(f>0,f,np.nan));sn=np.nanmedian(np.where(valid,np.abs(a['flux']/a['sigma']),np.nan),axis=1)
+/scratch/RedFM_MLP/scripts/stage3_evaluate_1029.py:69: RuntimeWarning: All-NaN slice encountered
+  mm=np.isin(a['band_id'],bids);f=np.where(mm,a['flux'],0).sum(1);mag=22.5-2.5*np.log10(np.where(f>0,f,np.nan));sn=np.nanmedian(np.where(valid,np.abs(a['flux']/a['sigma']),np.nan),axis=1)
+/scratch/RedFM_MLP/scripts/stage3_evaluate_1029.py:69: RuntimeWarning: All-NaN slice encountered
+  mm=np.isin(a['band_id'],bids);f=np.where(mm,a['flux'],0).sum(1);mag=22.5-2.5*np.log10(np.where(f>0,f,np.nan));sn=np.nanmedian(np.where(valid,np.abs(a['flux']/a['sigma']),np.nan),axis=1)
+/scratch/RedFM_MLP/scripts/stage3_evaluate_1029.py:69: RuntimeWarning: All-NaN slice encountered
+  mm=np.isin(a['band_id'],bids);f=np.where(mm,a['flux'],0).sum(1);mag=22.5-2.5*np.log10(np.where(f>0,f,np.nan));sn=np.nanmedian(np.where(valid,np.abs(a['flux']/a['sigma']),np.nan),axis=1)
+/scratch/RedFM_MLP/scripts/stage3_evaluate_1029.py:69: RuntimeWarning: All-NaN slice encountered
+  mm=np.isin(a['band_id'],bids);f=np.where(mm,a['flux'],0).sum(1);mag=22.5-2.5*np.log10(np.where(f>0,f,np.nan));sn=np.nanmedian(np.where(valid,np.abs(a['flux']/a['sigma']),np.nan),axis=1)
+/scratch/RedFM_MLP/scripts/stage3_evaluate_1029.py:69: RuntimeWarning: All-NaN slice encountered
+  mm=np.isin(a['band_id'],bids);f=np.where(mm,a['flux'],0).sum(1);mag=22.5-2.5*np.log10(np.where(f>0,f,np.nan));sn=np.nanmedian(np.where(valid,np.abs(a['flux']/a['sigma']),np.nan),axis=1)
+/scratch/RedFM_MLP/scripts/stage3_evaluate_1029.py:69: RuntimeWarning: All-NaN slice encountered
+  mm=np.isin(a['band_id'],bids);f=np.where(mm,a['flux'],0).sum(1);mag=22.5-2.5*np.log10(np.where(f>0,f,np.nan));sn=np.nanmedian(np.where(valid,np.abs(a['flux']/a['sigma']),np.nan),axis=1)
+/scratch/RedFM_MLP/scripts/stage3_evaluate_1029.py:69: RuntimeWarning: All-NaN slice encountered
+  mm=np.isin(a['band_id'],bids);f=np.where(mm,a['flux'],0).sum(1);mag=22.5-2.5*np.log10(np.where(f>0,f,np.nan));sn=np.nanmedian(np.where(valid,np.abs(a['flux']/a['sigma']),np.nan),axis=1)
+/scratch/RedFM_MLP/scripts/stage3_evaluate_1029.py:69: RuntimeWarning: All-NaN slice encountered
+  mm=np.isin(a['band_id'],bids);f=np.where(mm,a['flux'],0).sum(1);mag=22.5-2.5*np.log10(np.where(f>0,f,np.nan));sn=np.nanmedian(np.where(valid,np.abs(a['flux']/a['sigma']),np.nan),axis=1)
+/scratch/RedFM_MLP/scripts/stage3_evaluate_1029.py:69: RuntimeWarning: All-NaN slice encountered
+  mm=np.isin(a['band_id'],bids);f=np.where(mm,a['flux'],0).sum(1);mag=22.5-2.5*np.log10(np.where(f>0,f,np.nan));sn=np.nanmedian(np.where(valid,np.abs(a['flux']/a['sigma']),np.nan),axis=1)
+/scratch/RedFM_MLP/scripts/stage3_evaluate_1029.py:69: RuntimeWarning: All-NaN slice encountered
+  mm=np.isin(a['band_id'],bids);f=np.where(mm,a['flux'],0).sum(1);mag=22.5-2.5*np.log10(np.where(f>0,f,np.nan));sn=np.nanmedian(np.where(valid,np.abs(a['flux']/a['sigma']),np.nan),axis=1)
+/scratch/RedFM_MLP/scripts/stage3_evaluate_1029.py:69: RuntimeWarning: All-NaN slice encountered
+  mm=np.isin(a['band_id'],bids);f=np.where(mm,a['flux'],0).sum(1);mag=22.5-2.5*np.log10(np.where(f>0,f,np.nan));sn=np.nanmedian(np.where(valid,np.abs(a['flux']/a['sigma']),np.nan),axis=1)
+/scratch/RedFM_MLP/scripts/stage3_evaluate_1029.py:69: RuntimeWarning: All-NaN slice encountered
+  mm=np.isin(a['band_id'],bids);f=np.where(mm,a['flux'],0).sum(1);mag=22.5-2.5*np.log10(np.where(f>0,f,np.nan));sn=np.nanmedian(np.where(valid,np.abs(a['flux']/a['sigma']),np.nan),axis=1)
+/scratch/RedFM_MLP/scripts/stage3_evaluate_1029.py:69: RuntimeWarning: All-NaN slice encountered
+  mm=np.isin(a['band_id'],bids);f=np.where(mm,a['flux'],0).sum(1);mag=22.5-2.5*np.log10(np.where(f>0,f,np.nan));sn=np.nanmedian(np.where(valid,np.abs(a['flux']/a['sigma']),np.nan),axis=1)
+/scratch/RedFM_MLP/scripts/stage3_evaluate_1029.py:69: RuntimeWarning: All-NaN slice encountered
+  mm=np.isin(a['band_id'],bids);f=np.where(mm,a['flux'],0).sum(1);mag=22.5-2.5*np.log10(np.where(f>0,f,np.nan));sn=np.nanmedian(np.where(valid,np.abs(a['flux']/a['sigma']),np.nan),axis=1)
+/scratch/RedFM_MLP/scripts/stage3_evaluate_1029.py:69: RuntimeWarning: All-NaN slice encountered
+  mm=np.isin(a['band_id'],bids);f=np.where(mm,a['flux'],0).sum(1);mag=22.5-2.5*np.log10(np.where(f>0,f,np.nan));sn=np.nanmedian(np.where(valid,np.abs(a['flux']/a['sigma']),np.nan),axis=1)
+/scratch/RedFM_MLP/scripts/stage3_evaluate_1029.py:69: RuntimeWarning: All-NaN slice encountered
+  mm=np.isin(a['band_id'],bids);f=np.where(mm,a['flux'],0).sum(1);mag=22.5-2.5*np.log10(np.where(f>0,f,np.nan));sn=np.nanmedian(np.where(valid,np.abs(a['flux']/a['sigma']),np.nan),axis=1)
+/scratch/RedFM_MLP/scripts/stage3_evaluate_1029.py:69: RuntimeWarning: All-NaN slice encountered
+  mm=np.isin(a['band_id'],bids);f=np.where(mm,a['flux'],0).sum(1);mag=22.5-2.5*np.log10(np.where(f>0,f,np.nan));sn=np.nanmedian(np.where(valid,np.abs(a['flux']/a['sigma']),np.nan),axis=1)
+/scratch/RedFM_MLP/scripts/stage3_evaluate_1029.py:69: RuntimeWarning: All-NaN slice encountered
+  mm=np.isin(a['band_id'],bids);f=np.where(mm,a['flux'],0).sum(1);mag=22.5-2.5*np.log10(np.where(f>0,f,np.nan));sn=np.nanmedian(np.where(valid,np.abs(a['flux']/a['sigma']),np.nan),axis=1)
+/scratch/RedFM_MLP/scripts/stage3_evaluate_1029.py:69: RuntimeWarning: All-NaN slice encountered
+  mm=np.isin(a['band_id'],bids);f=np.where(mm,a['flux'],0).sum(1);mag=22.5-2.5*np.log10(np.where(f>0,f,np.nan));sn=np.nanmedian(np.where(valid,np.abs(a['flux']/a['sigma']),np.nan),axis=1)
+/scratch/RedFM_MLP/scripts/stage3_evaluate_1029.py:69: RuntimeWarning: All-NaN slice encountered
+  mm=np.isin(a['band_id'],bids);f=np.where(mm,a['flux'],0).sum(1);mag=22.5-2.5*np.log10(np.where(f>0,f,np.nan));sn=np.nanmedian(np.where(valid,np.abs(a['flux']/a['sigma']),np.nan),axis=1)
+/scratch/RedFM_MLP/scripts/stage3_evaluate_1029.py:69: RuntimeWarning: All-NaN slice encountered
+  mm=np.isin(a['band_id'],bids);f=np.where(mm,a['flux'],0).sum(1);mag=22.5-2.5*np.log10(np.where(f>0,f,np.nan));sn=np.nanmedian(np.where(valid,np.abs(a['flux']/a['sigma']),np.nan),axis=1)
+/scratch/RedFM_MLP/scripts/stage3_evaluate_1029.py:69: RuntimeWarning: All-NaN slice encountered
+  mm=np.isin(a['band_id'],bids);f=np.where(mm,a['flux'],0).sum(1);mag=22.5-2.5*np.log10(np.where(f>0,f,np.nan));sn=np.nanmedian(np.where(valid,np.abs(a['flux']/a['sigma']),np.nan),axis=1)
+/scratch/RedFM_MLP/scripts/stage3_evaluate_1029.py:69: RuntimeWarning: All-NaN slice encountered
+  mm=np.isin(a['band_id'],bids);f=np.where(mm,a['flux'],0).sum(1);mag=22.5-2.5*np.log10(np.where(f>0,f,np.nan));sn=np.nanmedian(np.where(valid,np.abs(a['flux']/a['sigma']),np.nan),axis=1)
+/scratch/RedFM_MLP/scripts/stage3_evaluate_1029.py:69: RuntimeWarning: All-NaN slice encountered
+  mm=np.isin(a['band_id'],bids);f=np.where(mm,a['flux'],0).sum(1);mag=22.5-2.5*np.log10(np.where(f>0,f,np.nan));sn=np.nanmedian(np.where(valid,np.abs(a['flux']/a['sigma']),np.nan),axis=1)
+/scratch/RedFM_MLP/scripts/stage3_evaluate_1029.py:69: RuntimeWarning: All-NaN slice encountered
+  mm=np.isin(a['band_id'],bids);f=np.where(mm,a['flux'],0).sum(1);mag=22.5-2.5*np.log10(np.where(f>0,f,np.nan));sn=np.nanmedian(np.where(valid,np.abs(a['flux']/a['sigma']),np.nan),axis=1)
+EVALUATION COMPLETE 71

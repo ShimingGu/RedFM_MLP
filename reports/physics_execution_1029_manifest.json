@@ -1,0 +1,43 @@
+{
+  "stages": {
+    "3A": "/scratch/RedFM_MLP/reports/stage3a/1029/report.md",
+    "3B": "/scratch/RedFM_MLP/reports/stage3b/1029/report.md"
+  },
+  "joint": "/scratch/RedFM_MLP/reports/joint_physics_1029.md",
+  "benchmark_sha256": "8ba3a30f2300862bbab9c91d4502a579f9b8fe2b5c1e5f8810a29473686d7999",
+  "source_model_lock_sha256": "041a554ab498160fe6b84f08efe32256873e128910827de0ceeedb739d0e31ed",
+  "source_gate_UTC": "2026-10-28T23:43:50Z",
+  "target_label_open_UTC": "2026-10-28T23:44:12Z",
+  "scripts_sha256": {
+    "stage3_report_1029.py": "d09fe5e998f42bd0c7cbcbe976a8c5db77f973018eee1b7144afb3a39a148681",
+    "stage3_support_1029.py": "d2e786b6e8f2b97422461cb881b61e3480eaa61759834c9b7c02cbaf69a4ff47",
+    "stage3_interpret_1029.py": "73c1c82beba62095a71a593e9754c49e642f53205363d569e83c39ee3181c4e4",
+    "stage3_recover_1029.py": "c0ac1084b2b8e0f7ef9d13f533a7355a87ea4aacb3881459b174f6cb07c4bfeb",
+    "stage3_data_1029.py": "bc0cc520d66fbce2cfec47f537b838fdc562eafe27e127e7e7c23667ca9f794a",
+    "stage3_qwen_1029.py": "2f8401f0ba7e600a67635a21515df7bc2d5ab6e67762173c4b65195995dd8edb",
+    "stage3_finish_1029.py": "545744b19683ee7fe770e2bd59f5816abead2060b0791923e8f21347e9e0eb79",
+    "stage3_evaluate_1029.py": "633d036d722f0ed2bcf3f58e09db4e04ced872e88a595764ce414821b6844397",
+    "stage3_models_1029.py": "e9499fc59f220a2ff019e8db86399952cbdbb946ae116a9ac29d44d6c9679302",
+    "stage3_train_1029.py": "0de6318f00891358f5afdccc6e457b67a657bac6a686fb955fc53893be068d9e",
+    "stage3_diagnostics_1029.py": "11e9860266dda093ef5dc1ce15c608d5c2d8b0c13e657a5b3a9419117965c1c3"
+  },
+  "verification": {
+    "completed": true,
+    "protected_files_checked": 1890,
+    "protected_files_unchanged": true,
+    "protocol_unchanged": true,
+    "all_preregistered_dataset_hashes_match": true,
+    "all_preregistered_candidate_implementation_hashes_match": true,
+    "all20_frozen_model_hashes_match": true,
+    "finite_normalized_prediction_files": 207,
+    "source_split_disjoint": true,
+    "COSMOS_field_held_out": true,
+    "target_IDs_unique": true,
+    "target_labels_in_range_without_clipping": true,
+    "original_Qwen_artifacts_unchanged": true,
+    "source_test_evaluated": false,
+    "Qwen_training": false,
+    "Stage2C": false,
+    "UTC": "2026-10-28T23:52:04Z"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "reason": "N0 training plateaued on tiny identifiable examples and L0, while N1 and independent physical oracle learned. Random band-to-slot permutation prevented a stable conventional MLP representation.",
+  "correction": "Canonical numerical wavelength ordering for N0 only; full response/mask features retained; original replay unchanged",
+  "source_evidence": "Initial L0 N0 validation CE4.226, outliers54.3%, exactly constant medians; N1 outliers0%",
+  "heldout_filter_or_target_labels_used": false
+}

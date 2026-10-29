@@ -1,0 +1,1 @@
+Early cache filenames omitted sample count. They were used only for initial invariance checks before the task process was stopped and corrected. Final matched datasets include sample count in their names. No downstream matched training results use these files. Historical Stage1/2A/2B outputs were untouched.

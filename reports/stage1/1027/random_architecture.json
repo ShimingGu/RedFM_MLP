@@ -1,0 +1,15 @@
+{
+  "seed": 1701,
+  "class_name": "Qwen3_5TextModel",
+  "parameters": 4205751296,
+  "frozen": true,
+  "text_architecture": "same full text stack, vision branch unused in both conditions",
+  "quantization": "reloaded NF4 double-quantized, matching pretrained frozen representation",
+  "files": {
+    "model-00004-of-00005.safetensors": "b641e23bb79e2e270609b553de6a359b641b425c193d06ce69ae7169500bb64b",
+    "model-00005-of-00005.safetensors": "c679093200b2b82178c73725da8d8fed58b76cb934097e93d52b004d23ff6769",
+    "model-00002-of-00005.safetensors": "d9dfec17e3c36b26c21e2879e55af32b9361aea1da9349e6f52fb32178336c9c",
+    "model-00001-of-00005.safetensors": "5a9a011e0ca7897ccdde2688f0dd14ae34fca8fb0ba03ee6de6e50e363675c94",
+    "model-00003-of-00005.safetensors": "23748dcda4b6476c824f790427753b219fdcd34236aca461d59bb63ffcbebcb0"
+  }
+}

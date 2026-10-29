@@ -1,0 +1,30 @@
+{
+  "passed": true,
+  "arms": [
+    {
+      "model": "N0",
+      "max_validation_CE_trajectory_difference": 0.0,
+      "all_original_evaluation_steps_reproduced": true
+    },
+    {
+      "model": "N1",
+      "max_validation_CE_trajectory_difference": 0.0,
+      "all_original_evaluation_steps_reproduced": true
+    },
+    {
+      "model": "N2",
+      "max_validation_CE_trajectory_difference": 0.0,
+      "all_original_evaluation_steps_reproduced": true
+    },
+    {
+      "model": "N1_summary",
+      "max_validation_CE_trajectory_difference": 0.0,
+      "all_original_evaluation_steps_reproduced": true
+    },
+    {
+      "model": "N1_shuffled",
+      "max_validation_CE_trajectory_difference": 0.0,
+      "all_original_evaluation_steps_reproduced": true
+    }
+  ]
+}

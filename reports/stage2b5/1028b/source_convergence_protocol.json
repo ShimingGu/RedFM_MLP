@@ -1,0 +1,10 @@
+{
+  "reason": "Both source-validation trajectories were still decreasing at the2000-update cutoff; inspect optimization confounding without reusing held-response results",
+  "updates": 4000,
+  "models": [
+    "N1",
+    "N2"
+  ],
+  "settings": "Same source-selected sigma3 neighborCE, lr0.002, seed11, data and weights initialization",
+  "held_response_or_real_target_evaluation": false
+}

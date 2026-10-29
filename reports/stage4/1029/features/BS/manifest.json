@@ -1,0 +1,143 @@
+{
+  "family": "BS",
+  "protocol_sha256": "4be1164c7b27ea03fef496696202ad8063b86d6a0c3827c041ca8fbebdf76581",
+  "base_files_sha256": {
+    "video_preprocessor_config.json": "d039cd7d88b3502a99edd455496b75b44ecf7dd3b3669748bafac37e6cecc085",
+    "README.md": "76ead24ea3de5a52610c755ffa0b6e7cb51e3c413f124a3776bc6f16b694474e",
+    "vocab.json": "ce99b4cb2983d118806ce0a8b777a35b093e2000a503ebde25853284c9dfa003",
+    "tokenizer.json": "fe000e3ed39ed12b8d2481d527d44f93c65d37e87645d2dcc80d1bf9d50d2927",
+    "model.safetensors.index.json": "eae340074abb0a5f31a6621f7ae8e8248a7c1790df04a722c4e4b70c2a6d1dbb",
+    "config.json": "ddc63e1c717afa86c865bb5e01313d89d72bb53b97ad4a8a03ba8510c0621670",
+    "LICENSE": "50cbab8a892c5f2993b8c7351a99182507472def3b1374558308605d99b86b32",
+    ".gitattributes": "34448b82c17d60fec9b65b1f093c115ddbaadc04beb1b0140b6bfed2e012a930",
+    "model.safetensors-00002-of-00002.safetensors": "590fbaac095dd31db886c322d9d2f7df47777966391acf306ddddc3e4e3a15ef",
+    "tokenizer_config.json": "3891e840d7dc5fca0af33d3a25083a735e36fe06214e3f707024820cb6b9f89c",
+    "model.safetensors-00001-of-00002.safetensors": "df547074dce70532a0493e5433152bd17a65efb89088cfabc2e7e2371a93d712",
+    "preprocessor_config.json": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516",
+    "merges.txt": "a9d356d7bdf1ef4949e3e748e95b8e10ad9d4e2e838eddc38a0a7b6b94d1db8d"
+  },
+  "adapter_files_sha256": {
+    "/arc/home/gsm/aion_output/figures/qwen-galaxiesml-spec-qlora-specz-e10/qlora/adapter/README.md": "9063a9a01f00f40a29ff64f212a824468018faf080313974980ae4473b2c67e4",
+    "/arc/home/gsm/aion_output/figures/qwen-galaxiesml-spec-qlora-specz-e10/qlora/adapter/adapter_config.json": "336756dd3bea517475b6b999b917a7fdc5b477736d2b6b3b4958c630ba6c9d07",
+    "/arc/home/gsm/aion_output/figures/qwen-galaxiesml-spec-qlora-specz-e10/qlora/adapter/adapter_model.safetensors": "7cb2471eaf9794824f16dd7db298fe9c499da69bb84b63810646c82651ef34ba",
+    "/arc/home/gsm/aion_output/figures/qwen-galaxiesml-spec-qlora-specz-e10/qlora/photoz_head.pt": "760a0a05b312215b634cd36c5a3830be2fa81969741f21b0d8cdbab9af01ed92",
+    "/arc/home/gsm/aion_output/figures/qwen-galaxiesml-spec-qlora-specz-e10/qlora/result.pt": "7cfd36eacef1d114b7ba11bc5c3f24723920238cc3a3edfc3f337788435e7500"
+  },
+  "tokenizer_sha256": "fe000e3ed39ed12b8d2481d527d44f93c65d37e87645d2dcc80d1bf9d50d2927",
+  "extraction_code_sha256": "e4a712cb8021c1563f6e84b27442abcab7c1c29cade20fa9a820ce8ac9d0ed8d",
+  "feature_files": {
+    "GMS_canonical": {
+      "path": "/scratch/RedFM_MLP/reports/stage4/1029/features/BS/GMS_canonical.npz",
+      "sha256": "95be58d64437b5be4ba175d8f323947af0eaf01f53b2f39e81b262c1a52f4781",
+      "input_sha256": "f51cf9e8ef1b2c2a3a800c3c0769cfbb1adc8692e306301a0e66227b3c20a6d2",
+      "rows": 2432,
+      "dimension": 2560,
+      "poolings": [
+        "last",
+        "FP32_masked_mean"
+      ],
+      "dtype": "float32 cached; NF4/BF16 frozen forward",
+      "seconds": 251.8002142906189,
+      "deterministic_repeat_max": 0.0
+    },
+    "GMS_alternate": {
+      "path": "/scratch/RedFM_MLP/reports/stage4/1029/features/BS/GMS_alternate.npz",
+      "sha256": "233d846438b2071665a1a89d6c47ff4711983cdfb62ced47a1d16dc23f140a2f",
+      "input_sha256": "4f981be32cee159699258f55e36b5d4de054cd8c5b11ed386f47fd16cc06207f",
+      "rows": 2432,
+      "dimension": 2560,
+      "poolings": [
+        "last",
+        "FP32_masked_mean"
+      ],
+      "dtype": "float32 cached; NF4/BF16 frozen forward",
+      "seconds": 325.5340678691864,
+      "deterministic_repeat_max": 0.0
+    },
+    "C_SPEC_canonical": {
+      "path": "/scratch/RedFM_MLP/reports/stage4/1029/features/BS/C_SPEC_canonical.npz",
+      "sha256": "4da08f395f22e8984fe1296ed91609aacba486fbe3087369cbd81ab4d2921ba3",
+      "input_sha256": "756551775fe649485528a1ba28268c02f187c4ba9a8b633a22671624fee1456d",
+      "rows": 1968,
+      "dimension": 2560,
+      "poolings": [
+        "last",
+        "FP32_masked_mean"
+      ],
+      "dtype": "float32 cached; NF4/BF16 frozen forward",
+      "seconds": 369.52886748313904,
+      "deterministic_repeat_max": 0.0
+    },
+    "C_SPEC_alternate": {
+      "path": "/scratch/RedFM_MLP/reports/stage4/1029/features/BS/C_SPEC_alternate.npz",
+      "sha256": "676bebf3ec7ef4459a6aa15398dbe6f580bcde58f1474693822b2f67f4ec2e89",
+      "input_sha256": "de54e62b1fa9c571423079f04ac26a0136a20ede7635c9d329a66f40ded3de7f",
+      "rows": 1968,
+      "dimension": 2560,
+      "poolings": [
+        "last",
+        "FP32_masked_mean"
+      ],
+      "dtype": "float32 cached; NF4/BF16 frozen forward",
+      "seconds": 476.7697777748108,
+      "deterministic_repeat_max": 0.0
+    },
+    "C_ZPHOT_canonical": {
+      "path": "/scratch/RedFM_MLP/reports/stage4/1029/features/BS/C_ZPHOT_canonical.npz",
+      "sha256": "1b275379f4b33fc3d64e923151f3f2b0808236e5a5ec3f6a32293597448c43e1",
+      "input_sha256": "d38be00d3d703444edaf90e0e11220353aa4bdb870f058215279ffd0cd1bb17c",
+      "rows": 2432,
+      "dimension": 2560,
+      "poolings": [
+        "last",
+        "FP32_masked_mean"
+      ],
+      "dtype": "float32 cached; NF4/BF16 frozen forward",
+      "seconds": 462.1577560901642,
+      "deterministic_repeat_max": 0.0
+    }
+  },
+  "GPU": {
+    "uuid": "dd002e82-c996-5c41-a8fd-0220ae1e9c32",
+    "memory_before_gib": {
+      "total": 10.75,
+      "free": 10.73345947265625,
+      "used": 0.01654052734375
+    }
+  },
+  "seconds": 1895.9141340255737,
+  "peak_GPU_bytes": 5854466048,
+  "all_parameters_frozen": true,
+  "model_eval": true,
+  "no_optimizer_exists": true,
+  "native_replay": {
+    "passed": true,
+    "n": 32,
+    "max_abs_logit_error": 0.0,
+    "max_abs_pdf_error": 0.0,
+    "metrics": {
+      "bias": 0.0234063770622015,
+      "median_bias": 0.011606818996369839,
+      "nmad": 0.015513196587562561,
+      "catastrophic_outlier_fraction": 0.03125,
+      "cross_entropy": 2.0911121368408203,
+      "mean_log_score": 2.0911123752593994,
+      "mean_crps": 0.023618651553988457,
+      "p16_p84_coverage": 0.78125,
+      "pit_mean": 0.45608291029930115
+    },
+    "archived_metrics": {
+      "bias": 0.0234063770622015,
+      "median_bias": 0.011606818996369839,
+      "nmad": 0.015513196587562561,
+      "catastrophic_outlier_fraction": 0.03125,
+      "cross_entropy": 2.0911121368408203,
+      "mean_log_score": 2.0911123752593994,
+      "mean_crps": 0.023618651553988457,
+      "p16_p84_coverage": 0.78125,
+      "pit_mean": 0.45608291029930115
+    }
+  },
+  "in_memory_parameter_signature_unchanged": true,
+  "parameter_sample_sha256": "c2ff6099819b765a605ff3490d64ab562f951ae5dfa4c72704cd48e19a02dc37"
+}

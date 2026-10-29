@@ -1,0 +1,19 @@
+{
+  "evaluation_code_sha256": "2098d25cb0f81befaeb57a93b7e17442b62695fa9bbc0b3c801542e17724f611",
+  "UTC": "2026-10-28T23:36:52Z",
+  "target_labels_opened": false,
+  "notes": [
+    "Executable evaluator materializes already locked metrics and model families; no changes to neural candidate implementation or optimization",
+    "Secondary source-q99 brightness/source-q01 SNR strata use source photometry only; fixed here before T2 label access",
+    "Capacity/information controls receive paired galaxy bootstrap under same2000-replicate rule",
+    "Common2500/5000 model snapshots are reported separately from source-selected primary checkpoints",
+    "S3 existing actual validation pairs and fresh seed1029 D2 simulations are diagnostic only",
+    "Before target-label access, corrected source-transfer brightness summaries to use native Legacy z and Legacy source thresholds where i is absent; target conditional metrics continue actual HSCi with HSC source thresholds; no passband substitution or model change"
+  ],
+  "prelabel_version_history": [
+    {
+      "sha256": "179cdd2552a3d352118b85238ed82ec386df46cff36e050d6cb85bea7ae8d2a5",
+      "UTC": "2026-10-28T23:29:50Z"
+    }
+  ]
+}

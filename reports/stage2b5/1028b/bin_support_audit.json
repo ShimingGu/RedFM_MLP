@@ -1,0 +1,24 @@
+{
+  "train_observations": 512,
+  "train_unique_SEDs": 128,
+  "train_unique_latent_redshifts": 256,
+  "occupied_bins": 166,
+  "total_bins": 300,
+  "source_validation_observations": 96,
+  "fraction_validation_labels_in_unseen_training_bins": 0.3333333333333333,
+  "training_z_quantiles": [
+    0.06518460065126419,
+    0.2576569773256779,
+    2.1734098196029663,
+    3.75625764131546,
+    4.084527492523193
+  ],
+  "validation_z_quantiles": [
+    0.10003852844238281,
+    0.2787940502166748,
+    1.8538273572921753,
+    3.9145398139953613,
+    4.013422012329102
+  ],
+  "interpretation": "Hard independently parameterized 300-bin classes have sparse label coverage; this is not a label-index bug or direct evidence of redshift non-identifiability"
+}

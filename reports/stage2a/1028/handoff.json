@@ -1,0 +1,14 @@
+{
+  "stage": "Stage2A",
+  "completed": true,
+  "physical_checks_passed": true,
+  "baseline_evaluation_complete": true,
+  "unresolved_invalidating_error": false,
+  "Stage2B_proceed": true,
+  "limitations": [
+    "Catalogue historical Galactic correction equivalence is not proven; untreated primary and independent correction sensitivity delimit its effect",
+    "HSC r/r2 and i/i2 exposure mixtures unavailable; nominal r/i adopted",
+    "Legacy original independent training cache missing; audited paired-view pilot available",
+    "CLAUDS ZPHOT shares template-fitting assumptions; not independent spectroscopy"
+  ]
+}

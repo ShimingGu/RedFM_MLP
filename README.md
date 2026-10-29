@@ -10,6 +10,22 @@ This directory is a lightweight code/documentation snapshot for the current
 AION + all-magnitude fusion workflow after the M-adapter feasibility round and
 before implementing AION partial fine-tuning experiments.
 
+## Physics / Cross-Matching artifact storage
+
+Large experimental arrays, checkpoints, catalogues and per-object tables live
+outside Git in
+`/arc/projects/ots/Cosmic_Imprint_of_Time/RedFM_MLP_artifacts/physics_branch2_20261029`.
+Reports, summary metrics, figures, code and the SHA-256 inventory remain here.
+On a machine with access to that archive, restore the original artifact paths:
+
+```bash
+python scripts/link_physics_storage.py --verify
+```
+
+This creates ignored local symlinks. See
+[the storage and branch notes](docs/physics_artifact_storage.md) and
+[the physics synthesis](physics_branch2.md).
+
 Core package modules include:
 
 - `aion_magnitude.config`, `dataset`, `caching`, `models`, `training`, and `metrics`

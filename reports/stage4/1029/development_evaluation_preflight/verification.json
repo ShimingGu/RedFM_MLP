@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "task": "GMS",
+      "CPU_GPU_development_CE_difference": 0.0
+    },
+    {
+      "task": "C_SPEC",
+      "CPU_GPU_development_CE_difference": 0.0
+    },
+    {
+      "task": "C_ZPHOT",
+      "CPU_GPU_development_CE_difference": 0.0
+    },
+    {
+      "conditional_metric_rows": 41,
+      "bootstrap_identity_difference_zero": true,
+      "no_actual_query_labels_read": true
+    }
+  ]
+}

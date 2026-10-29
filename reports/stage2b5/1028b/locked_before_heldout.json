@@ -1,0 +1,21 @@
+{
+  "source_screen": {
+    "label": "neighbor_CE",
+    "lr": 0.002,
+    "smooth": 3.0,
+    "coarse": false,
+    "CE": 5.621337890625,
+    "best_update": 50
+  },
+  "checkpoints": {
+    "N0": "bdff71e4fe1a58a18c198c0b2c6c0ee1b1b7ac47665beb37abba826fd4f91ce3",
+    "N1": "07f04c190ad1585d9a8f56d2f833f686d43b05c978dd304c3f00ff31fa8ad8b2",
+    "N2": "557ad5612774624023b06d2059223a4e0b98001dc186e4a82217c946227b4b93"
+  },
+  "source_validation_improvement": {
+    "N0": 0.06702566146850586,
+    "N1": 0.07268905639648438,
+    "N2": 0.3402833938598633
+  },
+  "real_target_evaluated": false
+}

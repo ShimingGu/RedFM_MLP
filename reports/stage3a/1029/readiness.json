@@ -1,0 +1,40 @@
+{
+  "status": "READY_FOR_COMPACT_STAGE3B",
+  "independent_Legacy_recovered": true,
+  "exact_historical_input_fingerprints": true,
+  "original_validation_ids_redshifts_and_features_bit_exact": true,
+  "independent_target_spectroscopy_available": true,
+  "confirmation_labels_opened": false,
+  "high_z_supervision": "Actual full recovered Legacy training has zero z>=2; HSC likewise. All high-z target inference is extrapolation.",
+  "source_catalogue": {
+    "spectroscopy": "DESI DR1 Iron zall-pix-iron, zcatalog/v1",
+    "photometry": "Legacy DR9 Iron tractorphot v1.1",
+    "quality": "primary GALAXY,TGT,ZWARN0,COADD_FIBERSTATUS0,DELTACHI2>40,main bright/dark,finiteZ/ZERR,0<=z<=4.5,min3 bands"
+  },
+  "target": {
+    "catalogue": "COSMOS Spectroscopic Compilation DR1.1 unique",
+    "sha256": "6ffd1145ed9caeba6c16f8e4267415682562b1a37549ac07a070ba5eb6336e99",
+    "GitHub_data_commit": "a634a9ed5c1c17ea2629b2326e4dc99f235d8027",
+    "quality": "flag4,CL>=97,priority1; no broad-lineflags",
+    "matching": "<=0.5 arcsec, second neighbor>1 arcsec, unique, no parent/duplicate/sky/star in HSCi",
+    "identity_count": 2045,
+    "labels": "Spec-z column unopened; target performance not computed"
+  },
+  "spatial_holdout": "Exclude all source training/modelselection at147<RA<153,-1<DEC<5; additional historical HSC and Legacy train/val/test target overlap exclusions",
+  "limitations": [
+    "Actual source high-z supervision absent",
+    "HSC nominalr/i exposure mixture uncertain",
+    "No established historical extinction/calibration equivalence",
+    "T2 bright selection does not represent full faint photometric population",
+    "D12 degenerate and D2 real SED mismatch persists",
+    "Compact common-budget training cannot imply full convergence"
+  ],
+  "primary_sources": [
+    "https://data.desi.lbl.gov/doc/releases/dr1/vac/lsdr9-photometry/",
+    "https://github.com/moustakas/desi-photometry",
+    "https://cosmos.astro.caltech.edu/page/specz",
+    "https://github.com/cosmosastro/speczcompilation",
+    "https://arxiv.org/html/2503.00120v1"
+  ],
+  "checked_UTC": "2026-10-28T23:25:08Z"
+}

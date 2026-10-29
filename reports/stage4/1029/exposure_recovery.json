@@ -1,0 +1,28 @@
+{
+  "BC_train": 60000,
+  "BC_validation": 15000,
+  "BC_test": 225000,
+  "BC_original_validation_IDs_and_ZPHOT_bit_exact": true,
+  "BC_original_test_IDs_exact": true,
+  "BC_original_test_metrics_inspected": false,
+  "BC_training_label_type": "ZPHOT pseudo-label",
+  "BS_train": 22444,
+  "BS_validation": 5683,
+  "BS_test": 83853,
+  "BS_original_membership_verified": true,
+  "BC_native_training_magnitude_medians": [
+    25.977767944335938,
+    25.803855895996094,
+    25.464431762695312,
+    25.128427505493164,
+    24.86415672302246,
+    24.64280128479004,
+    24.341413497924805,
+    24.810382843017578,
+    24.58324432373047,
+    24.365999221801758,
+    24.095584869384766
+  ],
+  "native_AB_convention_warning": "BC ZP23 historical values are used only for native replay, not physically calibrated main inputs",
+  "elapsed_UTC": "2026-10-29T07:00:09Z"
+}

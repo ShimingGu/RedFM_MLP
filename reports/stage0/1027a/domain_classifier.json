@@ -1,0 +1,185 @@
+{
+  "models": {
+    "logistic": {
+      "parameters": {
+        "C": 1.0,
+        "class_weight": "balanced",
+        "dual": false,
+        "fit_intercept": true,
+        "intercept_scaling": 1,
+        "l1_ratio": 0.0,
+        "max_iter": 2000,
+        "n_jobs": null,
+        "penalty": "deprecated",
+        "random_state": 1027,
+        "solver": "lbfgs",
+        "tol": 0.0001,
+        "verbose": 0,
+        "warm_start": false
+      },
+      "validation": {
+        "n_source": 64,
+        "n_target": 64,
+        "auc": 0.992431640625,
+        "auc_bootstrap_95": [
+          0.9782486451325398,
+          1.0
+        ],
+        "balanced_accuracy": 0.96875,
+        "log_loss": 0.10171624361292202
+      },
+      "heldout": {
+        "n_source": 64,
+        "n_target": 64,
+        "auc": 0.99658203125,
+        "auc_bootstrap_95": [
+          0.9898891625615764,
+          1.0
+        ],
+        "balanced_accuracy": 0.9609375,
+        "log_loss": 0.07301046371250253
+      }
+    },
+    "hist_gradient": {
+      "parameters": {
+        "categorical_features": "from_dtype",
+        "class_weight": "balanced",
+        "early_stopping": false,
+        "interaction_cst": null,
+        "l2_regularization": 5.0,
+        "learning_rate": 0.1,
+        "loss": "log_loss",
+        "max_bins": 255,
+        "max_depth": null,
+        "max_features": 1.0,
+        "max_iter": 120,
+        "max_leaf_nodes": 7,
+        "min_samples_leaf": 20,
+        "monotonic_cst": null,
+        "n_iter_no_change": 10,
+        "random_state": 1027,
+        "scoring": "loss",
+        "tol": 1e-07,
+        "validation_fraction": 0.1,
+        "verbose": 0,
+        "warm_start": false
+      },
+      "validation": {
+        "n_source": 64,
+        "n_target": 64,
+        "auc": 1.0,
+        "auc_bootstrap_95": [
+          0.9999999999999999,
+          1.0
+        ],
+        "balanced_accuracy": 0.9921875,
+        "log_loss": 0.01908359694157264
+      },
+      "heldout": {
+        "n_source": 64,
+        "n_target": 64,
+        "auc": 0.99853515625,
+        "auc_bootstrap_95": [
+          0.9948670239660229,
+          1.0
+        ],
+        "balanced_accuracy": 0.9765625,
+        "log_loss": 0.10782578339112707
+      }
+    }
+  },
+  "preprocessor": {
+    "softness": [
+      0.017280131578445435,
+      0.027851510792970657,
+      0.030890950933098793,
+      0.05810045450925827,
+      0.10683637112379074
+    ],
+    "median": [
+      6.934962272644043,
+      7.515962600708008,
+      7.904555320739746,
+      7.545598030090332,
+      7.104558944702148,
+      0.6335861682891846,
+      0.4397428035736084,
+      -0.32933974266052246,
+      -0.4331519603729248,
+      5.1491952035576105e-08,
+      -3.002514858962968e-08,
+      2.9569491744041443e-08,
+      -7.693597581237555e-08,
+      -2.091837814077735e-11,
+      6.916945457458496,
+      7.491264820098877,
+      7.8992767333984375,
+      7.541240692138672,
+      7.086338043212891,
+      0.0019797412678599358,
+      0.001115251681767404,
+      0.0007417479064315557,
+      0.0010609142482280731,
+      0.0016715119127184153
+    ],
+    "scale": [
+      1.817274570465088,
+      1.379214882850647,
+      1.1100599765777588,
+      1.0424131155014038,
+      1.034242868423462,
+      0.5168405771255493,
+      0.26441892981529236,
+      0.08584818989038467,
+      0.04728994518518448,
+      0.5739628076553345,
+      0.560901403427124,
+      0.5921775698661804,
+      0.5483042597770691,
+      0.5448122024536133,
+      1.332281231880188,
+      0.9419276714324951,
+      0.7533482909202576,
+      0.7543854117393494,
+      0.8310335278511047,
+      0.003862651763483882,
+      0.0013096999609842896,
+      0.0006108725210651755,
+      0.0008518607937730849,
+      0.0014615593245252967
+    ],
+    "names": [
+      "asinh_flux_g",
+      "asinh_flux_r",
+      "asinh_flux_i",
+      "asinh_flux_z",
+      "asinh_flux_y",
+      "asinh_colour_g_r",
+      "asinh_colour_r_i",
+      "asinh_colour_i_z",
+      "asinh_colour_z_y",
+      "log_sigma_g",
+      "log_sigma_r",
+      "log_sigma_i",
+      "log_sigma_z",
+      "log_sigma_y",
+      "asinh_sn_g",
+      "asinh_sn_r",
+      "asinh_sn_i",
+      "asinh_sn_z",
+      "asinh_sn_y",
+      "log_relative_sigma_g",
+      "log_relative_sigma_r",
+      "log_relative_sigma_i",
+      "log_relative_sigma_z",
+      "log_relative_sigma_y"
+    ],
+    "missing_indicator_weight": 1.0,
+    "joint": true
+  },
+  "source_train": 13466,
+  "target_train": 128,
+  "target_validation": 64,
+  "target_heldout": 64,
+  "caveat": "Domain separability is not proof of zero support; probabilities are not calibrated density ratios. No redshift labels used. Hyperparameters fixed in code."
+}

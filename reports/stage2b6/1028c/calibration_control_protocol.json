@@ -1,0 +1,9 @@
+{
+  "declared_before_held_response_metrics": true,
+  "purpose": "Account for the extra calibration-label exposure of a five-parameter G2 gate",
+  "shared_labels": "The same independent source calibration SEDs for G2 and scalar controls; no network training on these labels",
+  "N1_control": "One global temperature selected from0.5,1,2 by worst-domain source-calibration CE",
+  "N2_control": "One fixed global physics coefficient selected from0,0.05,0.2,1 by worst-domain source-calibration CE",
+  "G2_validation": "Compute per-domain source-validation CE and gate distribution without refitting or checkpoint selection",
+  "limitations": "Extra calibration supervision is explicit. A learned gate is not credited with identical supervision to an uncalibrated N1."
+}

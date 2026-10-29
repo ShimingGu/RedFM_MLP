@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/scratch/RedFM_MLP/scripts/diagnose_hsc_clauds_stage0.py", line 449, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "/scratch/RedFM_MLP/scripts/diagnose_hsc_clauds_stage0.py", line 445, in main
+    elif args.stage=='prepare':prepare(args.output_dir)
+                               ~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/scratch/RedFM_MLP/scripts/diagnose_hsc_clauds_stage0.py", line 232, in prepare
+    out.mkdir(parents=True,exist_ok=True);(out/'inputs').mkdir()
+                                          ~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/local/lib/python3.13/pathlib/_local.py", line 722, in mkdir
+    os.mkdir(self, mode)
+    ~~~~~~~~^^^^^^^^^^^^
+FileExistsError: [Errno 17] File exists: 'reports/stage0/1027a/inputs'

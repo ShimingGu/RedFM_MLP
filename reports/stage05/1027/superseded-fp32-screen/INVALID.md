@@ -1,0 +1,1 @@
+Superseded screening: custom runner lacked the archived BF16 autocast context. Native logit replay failed. These outputs are excluded from all scientific tables and conclusions. All screening was rerun with matched BF16 execution.
