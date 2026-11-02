@@ -121,6 +121,7 @@ def test_output_updates_and_exact_interrupted_resume_preserve_budget(tmp_path,he
     assert a['global_update']==b['global_update']==9 and a['examples_seen']==b['examples_seen']==21
     assert [h['val'] for h in a['history']]==[h['val'] for h in b['history']]
     assert all(h['gradient_diagnostics']['head_output_grad_max']>0 for h in a['history'])
+    assert all(h['epoch_wall_seconds_this_process']>0 and 'peak_reserved_gib' in h['gpu_memory'] for h in a['history'])
     assert any(not torch.equal(initial[k],aa[k]) for k in initial if k.startswith('photoz_head.net.6.'))
     if head=='softmax':
         c=run('canonical',fn=canonical)

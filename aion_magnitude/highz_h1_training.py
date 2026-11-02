@@ -100,6 +100,8 @@ def train_loop(model,tokenizer,device,train_texts,train_z,train_ids,val_texts,va
         tmp.write_text(hashlib.sha256(path.read_bytes()).hexdigest()+'\n');tmp.replace(proof)
         if checkpoint_hook is not None:checkpoint_hook(value)
     for epoch in range(epoch0,c.epochs):
+        epoch_started=time.time()
+        if device.type=='cuda':torch.cuda.reset_peak_memory_stats(device)
         warm=epoch<c.head_warmup_epochs;model.train();model.freeze_qwen_representation=warm
         for p in adapter_params:p.requires_grad_(not warm)
         if warm:model.qwen.eval()
@@ -152,6 +154,7 @@ def train_loop(model,tokenizer,device,train_texts,train_z,train_ids,val_texts,va
         assert all(math.isfinite(float(v)) for v in scores.values())
         history.append(dict(epoch=epoch,global_update=update,examples_seen=examples,phase=phase,val=scores,
             training_loss=diag['loss_sum']/diag['examples'],gradient_diagnostics=diag.copy(),parameter_changes=changes(),
+            epoch_wall_seconds_this_process=time.time()-epoch_started,gpu_memory=dict(allocated_gib=torch.cuda.memory_allocated(device)/2**30 if device.type=='cuda' else 0.,reserved_gib=torch.cuda.memory_reserved(device)/2**30 if device.type=='cuda' else 0.,peak_allocated_gib=torch.cuda.max_memory_allocated(device)/2**30 if device.type=='cuda' else 0.,peak_reserved_gib=torch.cuda.max_memory_reserved(device)/2**30 if device.type=='cuda' else 0.),
             prediction_diagnostics={**source_prediction_stats(evaluation),**scale_diagnostics},lr=[g['lr'] for g in optimizer.param_groups]))
         if scores['cross_entropy']<best:
             best=scores['cross_entropy'];best_state=state();best_update=update
